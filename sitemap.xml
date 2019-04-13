@@ -2,7 +2,28 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://yoursite.com/2019/04/12/hello-world/</loc>
+    <loc>http://licheetools.github.io/liuyan/index.html</loc>
+    
+    <lastmod>2019-04-13T01:29:56.041Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://licheetools.github.io/categories/index.html</loc>
+    
+    <lastmod>2019-04-13T01:25:32.634Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://licheetools.github.io/about/index.html</loc>
+    
+    <lastmod>2019-04-13T01:22:34.741Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://licheetools.github.io/2019/04/12/hello-world/</loc>
     
     <lastmod>2019-04-12T14:26:54.828Z</lastmod>
     

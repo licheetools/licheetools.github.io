@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>Hexo</title>
+  <title>编程思录</title>
   
   
   <link href="/atom.xml" rel="self"/>
   
-  <link href="http://yoursite.com/"/>
+  <link href="http://licheetools.github.io/"/>
   <updated>2019-04-12T14:26:54.828Z</updated>
-  <id>http://yoursite.com/</id>
+  <id>http://licheetools.github.io/</id>
   
   <author>
-    <name>John Doe</name>
+    <name>Envy</name>
     
   </author>
   
@@ -18,8 +18,8 @@
   
   <entry>
     <title>Hello World</title>
-    <link href="http://yoursite.com/2019/04/12/hello-world/"/>
-    <id>http://yoursite.com/2019/04/12/hello-world/</id>
+    <link href="http://licheetools.github.io/2019/04/12/hello-world/"/>
+    <id>http://licheetools.github.io/2019/04/12/hello-world/</id>
     <published>2019-04-12T13:57:34.687Z</published>
     <updated>2019-04-12T14:26:54.828Z</updated>
     
