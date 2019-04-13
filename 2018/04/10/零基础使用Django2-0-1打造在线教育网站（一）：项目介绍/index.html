@@ -16,21 +16,10 @@
     <link rel="dns-prefetch" href="http://licheetools.github.io">
     <!--SEO-->
 
-    <meta name="keywords" content="life">
+    <meta name="keywords" content="django建站">
 
 
-    <meta name="description" content="
-
-  
-  
-    对不起，此文章为加密内容，只有管理员才能查看.
-    
-  
-
-Incorrect Password!
-No content to display!
-
-U2FsdGVk...">
+    <meta name="description" content="写在前面嘿，小伙伴们你们好，很高兴你能看到这套教程，这是我在学习慕课网时的一些笔记，希望对即将学习Django的你们，能提供一些帮助。在每篇文章的后面，我会把我在这部分出现的BUG以及解决方法附...">
 
 
 
@@ -42,7 +31,7 @@ U2FsdGVk...">
     <!--Title-->
 
 
-<title>行者有梦，千里亦趋 | 编程思录，记录思考</title>
+<title>零基础使用Django2.0.1打造在线教育网站（一）：项目介绍 | 编程思录，记录思考</title>
 
 
     <link rel="alternate" href="/atom.xml" title="编程思录，记录思考" type="application/atom+xml">
@@ -175,16 +164,16 @@ U2FsdGVk...">
                     <p id="process"></p>
 <article class="post">
     <div class="post-head">
-        <h1 id="行者有梦，千里亦趋">
+        <h1 id="零基础使用Django2.0.1打造在线教育网站（一）：项目介绍">
             
-	            行者有梦，千里亦趋
+	            零基础使用Django2.0.1打造在线教育网站（一）：项目介绍
             
         </h1>
         <div class="post-meta">
     
         <span class="categories-meta fa-wrap">
             <i class="fa fa-folder-open-o"></i>
-            <a class="category-link" href="/categories/life/">life</a>
+            <a class="category-link" href="/categories/django/">django</a>
         </span>
     
 
@@ -193,7 +182,7 @@ U2FsdGVk...">
             <i class="fa fa-tags"></i>
             <span class="tags-meta">
                 
-                    <a class="tag-link" href="/tags/life/">life</a>
+                    <a class="tag-link" href="/tags/django建站/">django建站</a>
                 
             </span>
         </span>
@@ -203,7 +192,7 @@ U2FsdGVk...">
         
         <span class="fa-wrap">
             <i class="fa fa-clock-o"></i>
-            <span class="date-meta">2017/03/01</span>
+            <span class="date-meta">2018/04/10</span>
         </span>
         
             <span class="fa-wrap">
@@ -218,20 +207,15 @@ U2FsdGVk...">
     </div>
     
     <div class="post-body post-content">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<div id="hbe-security">
-  <div class="hbe-input-container">
-  <input type="password" class="hbe-form-control" id="pass" placeholder="对不起，此文章为加密内容，只有管理员才能查看.">
-    <label for="pass">对不起，此文章为加密内容，只有管理员才能查看.</label>
-    <div class="bottom-line"></div>
-  </div>
-</div>
-<div id="decryptionError" style="display: none;">Incorrect Password!</div>
-<div id="noContentError" style="display: none;">No content to display!</div>
-<div id="encrypt-blog" style="display:none">
-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
-</div>
-<script src="/lib/crypto-js.js"></script><script src="/lib/blog-encrypt.js"></script><link href="/css/blog-encrypt.css" rel="stylesheet" type="text/css">
+        <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>嘿，小伙伴们你们好，很高兴你能看到这套教程，这是我在学习慕课网时的一些笔记，希望对即将学习Django的你们，能提供一些帮助。在每篇文章的后面，我会把我在这部分出现的BUG以及解决方法附上，以供大家参考，大家有什么问题可以在评论下方留言。</p>
+<h2 id="项目介绍"><a href="#项目介绍" class="headerlink" title="项目介绍"></a>项目介绍</h2><h3 id="Django介绍"><a href="#Django介绍" class="headerlink" title="Django介绍"></a>Django介绍</h3><p>Django是目前Python Web开发中的主流框架，因为它有许多功能强大的第三方插件，你可以很方便的开发出自己的工具包，这使得它具有很强的可扩展性，被许多大型公司使用，如Google，豆瓣，YouTube，知乎，instagram等。</p>
+<h3 id="在线网站介绍"><a href="#在线网站介绍" class="headerlink" title="在线网站介绍"></a>在线网站介绍</h3><p>我们这个网站功能强大，具有完整的个人中心，用户登录，注册以及找回密码等功能。下面分别介绍各个部分的功能：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">点击个人中心: 你可以修改头像，密码，邮箱，可以看到我的课程以及我的收藏。还可以删除我的收藏，消息。</span><br><span class="line"></span><br><span class="line">点击导航栏: 你可以看到公开课，授课讲师，授课机构和全局搜索。</span><br><span class="line"></span><br><span class="line">点击公开课：你可以看到课程列表，排序-搜索。热门课程推荐和课程的分页。</span><br><span class="line"></span><br><span class="line">点击课程：你可以在课程详情页中对课程进行收藏和取消收藏。同时可以采用富文本对课程内容进行展示。</span><br><span class="line"></span><br><span class="line">点击开始学习：你可以看到课程的章节信息和评论信息以及课程资源的下载链接。</span><br><span class="line"></span><br><span class="line">点击授课讲师：你可以看到授课讲师的列表页，可以对讲师进行人气排序以及分页，右侧还有讲师排行榜。</span><br><span class="line"></span><br><span class="line">点击讲师的详情页面：你可以对讲师进行收藏和分享，以及看到该讲师的全部课程。</span><br><span class="line"></span><br><span class="line">点击导航栏: 你可以看到授课机构，它有分页，排序和筛选功能。</span><br><span class="line"></span><br><span class="line">机构列表页右侧有快速提交我要学习的表单，之后你便可以开始学习了。</span><br><span class="line"></span><br><span class="line">点击机构：它的左侧会呈现：机构首页,机构课程，机构介绍，机构讲师这四部分。</span><br><span class="line"></span><br><span class="line">后台管理系统可以切换主题。左侧每一个功能都有列表显示,具有增删改查，筛选功能。</span><br><span class="line"></span><br><span class="line">课程列表页可以对不同字段进行排序。你可以选择多条记录进行删除操作。</span><br><span class="line"></span><br><span class="line">课程列表页：点击过滤器，选择字段范围开始搜索,结果可以导出csv，xml，json等格式文本。</span><br><span class="line"></span><br><span class="line">你可以在课程新增页面上传图片，和进行富文本的编辑，时间选择，添加章节，添加课程资源等。</span><br><span class="line"></span><br><span class="line">日志记录：它可以记录后台人员的操作情况。</span><br><span class="line"></span><br><span class="line">其他的大家可以在后期的学习过程中慢慢体会，这里就不一一而足了。</span><br></pre></td></tr></table></figure></p>
+<h3 id="学完过后"><a href="#学完过后" class="headerlink" title="学完过后"></a>学完过后</h3><p>你不仅对Django的基础知识有了一个比较深刻的印象，还对MTV，MVC模式有了一个更加全面的了解，举一反三，你可以利用它开发各种类型的网站，如电商购物,在线旅游，公司官网，个人博客等其他网站。具体可以点击查看这个<a href="https://www.djangosites.org/" target="_blank" rel="noopener">基于django的网站</a>（可能要翻墙的哈）。</p>
+<h2 id="开发环境介绍"><a href="#开发环境介绍" class="headerlink" title="开发环境介绍"></a>开发环境介绍</h2><h3 id="环境介绍"><a href="#环境介绍" class="headerlink" title="环境介绍"></a>环境介绍</h3><p>网站是在windows下通过pycharm和virtualenv搭建的开发环境下进行的开发.</p>
+<h3 id="后台介绍"><a href="#后台介绍" class="headerlink" title="后台介绍"></a>后台介绍</h3><p>采用xadmin进行开发。之前用过django-suit，发现它只是单纯的对admin进行了美化，并没有更高级的功能。鉴于此，我们推荐使用xadmin进行后台管理。它有许多的拓展功能，如下所示：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">xadmin常用插件</span><br><span class="line">自定义xadmin插件</span><br><span class="line">xadmin的富文本编辑</span><br><span class="line">xadmin的excel导入功能。</span><br><span class="line">一些开源的django开发库。</span><br></pre></td></tr></table></figure></p>
+<p>到此，项目的所有介绍结束，但为了你对后面的开发有一个提前的认识，这里传送一些资料。</p>
+<h2 id="补充资料"><a href="#补充资料" class="headerlink" title="补充资料"></a>补充资料</h2><p>1、<strong>[入门]</strong> <a href="http://www.runoob.com/django/django-tutorial.html" target="_blank" rel="noopener">菜鸟Django 教程</a>，非常简短的教程，可以快速让你有一个清楚的认识。<br>2、<strong>[基础]</strong> <a href="https://code.ziqiangxuetang.com/django/django-tutorial.html" target="_blank" rel="noopener">自强学堂Django</a>，非常不错的教程，可以没事看一看。<br>3、<strong>[基础]</strong> <a href="http://www.liujiangblog.com/course/django/2" target="_blank" rel="noopener">刘江的Django教程</a>，非常适合入门的小白阅读，还有2个例子供你练习。<br>4、<strong>[入门]</strong> <a href="http://dwz.cn/VHRVxWfC" target="_blank" rel="noopener">1元学习《Django零基础到项目实战》</a>，非常不错的基础入门<strong>视频</strong>教程。<br>5、<strong>[基础]</strong><a href="http://edu.51cto.com/course/2787.html" target="_blank" rel="noopener">用Python Django快速做出高大上的BBS论坛网站</a>，这是免费的<strong>视频</strong>教程，大家可以试着去练手。</p>
+
     </div>
     
         <div class="reward" ontouchstart>
@@ -264,11 +248,11 @@ U2FsdGVkX19q+xxakjUuvec3MwItGIhP6l1cVKhLUrkyLnRh5fGJaiVEF3fmfGqoNhA4OjU7bsgKKfZo
 
 <div class="article-nav prev-next-wrap clearfix">
     
-        <a href="/2017/03/02/爬虫实战系列：（一）58同城-转转商品信息爬取/" class="pre-post btn btn-default" title="爬虫实战系列：（一）58同城-转转商品信息爬取">
-            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
-            <span class="hidden-xs">爬虫实战系列：（一）58同城-转转商品信息爬取</span>
-        </a>
     
+        <a href="/2017/03/04/关于博主/" class="next-post btn btn-default" title="关于博主">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">关于博主</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
     
 </div>
 
@@ -310,7 +294,7 @@ U2FsdGVkX19q+xxakjUuvec3MwItGIhP6l1cVKhLUrkyLnRh5fGJaiVEF3fmfGqoNhA4OjU7bsgKKfZo
     <div class="widget">
         <h3 class="title">文章目录</h3>
         
-            <p>暂无目录</p>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#写在前面"><span class="toc-text">写在前面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#项目介绍"><span class="toc-text">项目介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Django介绍"><span class="toc-text">Django介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#在线网站介绍"><span class="toc-text">在线网站介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#学完过后"><span class="toc-text">学完过后</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#开发环境介绍"><span class="toc-text">开发环境介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#环境介绍"><span class="toc-text">环境介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#后台介绍"><span class="toc-text">后台介绍</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#补充资料"><span class="toc-text">补充资料</span></a></li></ol>
         
     </div>
 </aside>
