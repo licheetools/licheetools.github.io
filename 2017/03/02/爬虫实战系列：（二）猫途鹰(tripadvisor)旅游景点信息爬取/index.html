@@ -19,9 +19,8 @@
     <meta name="keywords" content="爬虫实战">
 
 
-    <meta name="description" content="
-说在前面在上一篇中，我们说到某个内容从属于多个分类(即它有多个标签)，应该如何把它所属的全部标签都爬取下来呢？这一期博主就将教你如何实现这一功能。我们以猫途鹰这个网站为例，向大家演示一下。
-爬...">
+    <meta name="description" content="说在前面在上一篇中，我们说到某个内容从属于多个分类(即它有多个标签)，应该如何把它所属的全部标签都爬取下来呢？这一期博主就将教你如何实现这一功能。我们以猫途鹰这个网站为例，向大家演示一下。
+爬取...">
 
 
 
@@ -206,15 +205,10 @@
 </div>
             
             
-            <p class="fa fa-exclamation-triangle warning">
-                本文于<strong>771</strong>天之前发表，文中内容可能已经过时。
-            </p>
-        
     </div>
     
     <div class="post-body post-content">
-        <p><img src="https://storage1.cuntuku.com/2018/03/31/DB6JV.jpg" alt="DB6JV.jpg"><br><a id="more"></a></p>
-<h2 id="说在前面"><a href="#说在前面" class="headerlink" title="说在前面"></a>说在前面</h2><p>在上一篇中，我们说到某个内容从属于多个分类(即它有多个标签)，应该如何把它所属的全部标签都爬取下来呢？这一期博主就将教你如何实现这一功能。我们以<a href="https://www.tripadvisor.cn/Attractions-g60763-Activities-New_York_City_New_York.html" target="_blank" rel="noopener">猫途鹰</a>这个网站为例，向大家演示一下。</p>
+        <h2 id="说在前面"><a href="#说在前面" class="headerlink" title="说在前面"></a>说在前面</h2><p>在上一篇中，我们说到某个内容从属于多个分类(即它有多个标签)，应该如何把它所属的全部标签都爬取下来呢？这一期博主就将教你如何实现这一功能。我们以<a href="https://www.tripadvisor.cn/Attractions-g60763-Activities-New_York_City_New_York.html" target="_blank" rel="noopener">猫途鹰</a>这个网站为例，向大家演示一下。</p>
 <h2 id="爬取内容"><a href="#爬取内容" class="headerlink" title="爬取内容"></a>爬取内容</h2><p>如下图所示，我们需要爬取该图中所示景点的信息，具体包括：标题，封面图片，分类等信息。</p>
 <h2 id="知识补充"><a href="#知识补充" class="headerlink" title="知识补充"></a>知识补充</h2><h3 id="get-方法的使用"><a href="#get-方法的使用" class="headerlink" title="get()方法的使用"></a>get()方法的使用</h3><p>我们在上一篇中，获取标题，地址，单标签的文本信息采用了get_text()方法，但是如果要获取图片呢？我们是不能和之前一样，要采用一种新的方法：get(‘attr’)。这么说你可能有些困惑，举个简单的例子，看下面的代码:<br><code>&lt;a href=http://licheetools.top&gt; share my life with you &lt;/a&gt;</code><br>如果你只想获取网站信息，只需要.get(‘href’)即可。获取图片只需要.get(‘src’)因为图片的格式一般是这样的：<code>&lt;img src=&quot;http://licheetools.top/index.html/first.jpg&quot; alt=&quot;第一张图片&quot;&gt;</code></p>
 <h3 id="stripped-strings的用法"><a href="#stripped-strings的用法" class="headerlink" title="stripped_strings的用法"></a>stripped_strings的用法</h3><p>在这里你可以认为是高级的get_text(),它这个可以同时取出多个文本，待会就采用这个来爬取多个标签。</p>
