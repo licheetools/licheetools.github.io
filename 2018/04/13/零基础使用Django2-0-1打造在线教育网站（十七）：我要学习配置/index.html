@@ -1,0 +1,423 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="编程思录，记录思考">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://licheetools.github.io">
+    <!--SEO-->
+
+    <meta name="keywords" content="django建站">
+
+
+    <meta name="description" content="写在前面本篇笔记我们将介绍我要学习小页面的配置，为什么需要单独介绍，是因为这个和其他页面的耦合度不是很高，单独写一篇便于今后学习的需要。
+本篇笔记对应于第十七篇代码，对应于github的位置是h...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+
+    <!--Title-->
+
+
+<title>零基础使用Django2.0.1打造在线教育网站（十七）：我要学习配置 | 编程思录，记录思考</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="编程思录，记录思考" type="application/atom+xml">
+
+
+    <link rel="icon" href="./favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+	<div class="hide">
+		<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+	</div>
+
+
+
+
+
+
+    
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header" style="background-image:url(https://upload-images.jianshu.io/upload_images/8964398-b1ba9582ea8b69ba.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)">
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title="Envy">
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 点滴进步，都是收获 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://licheetools.github.io">编程思录，记录思考</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>首页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/font/"><i class="fa "></i>前端</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/java/"><i class="fa "></i>Java</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/django/"><i class="fa "></i>Django</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/flask/"><i class="fa "></i>Flask</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/spider/"><i class="fa "></i>爬虫</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/data/"><i class="fa "></i>数据分析</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/money/"><i class="fa "></i>付费教程</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/life/"><i class="fa "></i>生活记录</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives"><i class="fa "></i>时间轴</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/about/"><i class="fa "></i>关于博主</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/liuyan/"><i class="fa "></i>留言板</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="零基础使用Django2.0.1打造在线教育网站（十七）：我要学习配置">
+            
+	            零基础使用Django2.0.1打造在线教育网站（十七）：我要学习配置
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/django/">django</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/django建站/">django建站</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2018/04/13</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>本篇笔记我们将介绍我要学习小页面的配置，为什么需要单独介绍，是因为这个和其他页面的耦合度不是很高，单独写一篇便于今后学习的需要。</p>
+<p>本篇笔记对应于第十七篇代码，对应于github的位置是<a href="https://github.com/licheetools/eduline。" target="_blank" rel="noopener">https://github.com/licheetools/eduline。</a></p>
+<h2 id="配置我要学习"><a href="#配置我要学习" class="headerlink" title="配置我要学习"></a>配置我要学习</h2><p>这就是我要学习的页面，它是通过Ajax来控制的，也就是异步的javascript和xml。它可以在保证当前页面不被重新刷新的条件下，提交表单向后台传送数据。<br><img src="https://upload-images.jianshu.io/upload_images/8964398-a114b34dcbb10a7e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt><br>正如你在前面所学习的那样，但凡涉及到了表单的提交都会有一个form验证。我们仿照前面的逻辑在operation应用下面新建一个forms.py文件，用于此处表单的验证。</p>
+<p>然后在里面添加如下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">from django import forms</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class UserAskForm(forms.Form):</span><br><span class="line">    name = forms.CharField(required=True, min_length=2, max_length=20)</span><br><span class="line">    mobile = forms.CharField(required=True, min_length=11, max_length=11)</span><br><span class="line">    course_name = forms.CharField(required=True, min_length=5, max_length=50)</span><br></pre></td></tr></table></figure></p>
+<p>就是这个样子：<img src="https://upload-images.jianshu.io/upload_images/8964398-5270ca8e5e39ba90.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt><br>接着打开operation/models.py文件,发现这两个函数定义的字段信息非常相似，连要求都是一样的：<img src="https://upload-images.jianshu.io/upload_images/8964398-7d073f0ef09124d6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt><br>那么我们就有一个疑问，如何让代码重复利用，不需要再次重新造轮子呢？我们可以利用Django自带的ModelForm,这比form强大多了，除了继承现有的字段还可以新增字段！新增代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># 进阶版的函数</span><br><span class="line">class AnotherUserAskForm(forms.ModelForm):</span><br><span class="line">    # 除了继承现有的字段还可以新增字段</span><br><span class="line">    class Meta:</span><br><span class="line">        model = UserAsk</span><br><span class="line">        # 自定义需要验证的字段</span><br><span class="line">        fields = [&quot;name&quot;, &quot;mobile&quot;, &quot;course_name&quot;]</span><br></pre></td></tr></table></figure></p>
+<p>就是这个样子：<img src="https://upload-images.jianshu.io/upload_images/8964398-ce41dced520d6f5a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>接下来的一步就是path的配置了，现在有一个疑问，就是我们的项目url文件，已经存放了很多url，如果我们再往里面新增url就很容易造成管理上的混乱：<img src="https://upload-images.jianshu.io/upload_images/8964398-95190512407fc3cd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>我们在思考能不能像高考考场一样，有许多分考场，学生在各个分考场的试卷会送到省里，在保证考试有效的情况下，避免人员来往市区的麻烦。Django里面其实也是有的，所以我们就采用include的机制，来达到这个目的：在保证path的有效情况下，将各个app应用的path分开放置，最后将app的path引入项目的path就可以了。下面我们开始在organization应用下面，新建urls.py文件，里面增加如下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">from django.urls import path, include, re_path</span><br><span class="line">from .views import OrgView</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">urlpatterns = [</span><br><span class="line">    # 课程机构列表页url</span><br><span class="line">    path(&quot;list/&quot;, OrgView.as_view(), name=&quot;org_list&quot;),</span><br><span class="line">]</span><br></pre></td></tr></table></figure></p>
+<p>然后回到我们的eduline/urls.py文件，我们将刚才的那行path用下面的一行include代码替换掉：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">### 继续Ajax配置</span><br><span class="line">前面说到我要学习的页面，它是通过Ajax来控制的，是一种异步加载方式，所以我们此时不能在view里面直接render一个页面回来，应该是给前端返回json数据，而不是页面。这里我们就要用到HttpResponse这个类，它指明了给用户返回哪种类型的数据。</span><br><span class="line"></span><br><span class="line">打开organization/views.py文件，在里面添加如下代码：</span><br></pre></td></tr></table></figure></p>
+<p>from operation.forms import AnotherUserAskForm</p>
+<h1 id="我要学习功能实现"><a href="#我要学习功能实现" class="headerlink" title="我要学习功能实现"></a>我要学习功能实现</h1><p>class AddUserAskView(View):<br>    def post(self, request):<br>        userask_form = AnotherUserAskForm(request.POST)</p>
+<pre><code># 判断form是否有效
+if userask_form.is_valid():
+    #  注意modelform和form的区别，modelform它有model的属性，而且有个参数commit，当它为真时会把数据存入到数据库
+    user_ask = userask_form.save(commit=True)
+
+    # 如果保存成功,则返回json,不过后面必须有content_type用于告诉浏览器返回的类型
+    return HttpResponse(&quot;{&apos;status&apos;: &apos;success&apos;}&quot;, content_type=&apos;application/json&apos;)
+else:
+    # 如果保存失败，则返回json,并将form的错误信息通过msg传递到前端进行显示
+    return HttpResponse(&quot;{&apos;status&apos;: &apos;fail&apos;, &apos;msg&apos;:{0}}&quot;.format(userask_form.errors),  content_type=&apos;application/json&apos;)
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">*****</span><br><span class="line">**由于格式存在一定问题，本篇后续内容无法上传，因此后续内容请搜索微信公众号：啃饼思录，进行阅读！！！**</span><br><span class="line"></span><br><span class="line">*****</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">打开我们的operation/forms.py文件，里面加上如下代码：</span><br></pre></td></tr></table></figure>
+<p>import re</p>
+<h1 id="验证手机号码是否合法"><a href="#验证手机号码是否合法" class="headerlink" title="验证手机号码是否合法"></a>验证手机号码是否合法</h1><pre><code>def clean_mobile(self):
+    mobile = self.cleaned_data[&quot;mobile&quot;]
+    REGEX_MOBILE = &quot;^1[358]\d{9}$|^147\d{8}$|^176\d{8}$&quot;
+    p = re.compile(REGEX_MOBILE)
+    if p.match(mobile):
+        return mobile
+    else:
+        raise forms.ValidationError(&quot;手机号码非法&quot;, code=&quot;mobile_invalid&quot;)
+</code></pre><p><code>`</code><br>关于正则表达式的用法，大家可以关注我的另一个专题《趣玩Python爬虫》，我目前在筹划中，预计9月份就会更新了。</p>
+<p>接下来你可以重复刚才的测试操作，看手机号码验证是否生效了，这里就不一一演示了。</p>
+<p>至此，我们关于我要学习的小页面的配置就到此为止了，感谢你的赏阅。下一篇笔记，我们就介绍课程机构的详情页面的配置了。</p>
+<p>本篇笔记对应于第十七篇代码，对应于github的位置是<a href="https://github.com/licheetools/eduline。" target="_blank" rel="noopener">https://github.com/licheetools/eduline。</a></p>
+
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="https://upload-images.jianshu.io/upload_images/8964398-58d04ffa926103d9.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">觉得不错，赏包辣条吃呗！</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href target="_blank">编程思录</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2018/04/13/零基础使用Django2-0-1打造在线教育网站（十八）：机构详情页配置/" class="pre-post btn btn-default" title="零基础使用Django2.0.1打造在线教育网站（十八）：机构详情页配置">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">零基础使用Django2.0.1打造在线教育网站（十八）：机构详情页配置</span>
+        </a>
+    
+    
+        <a href="/2018/04/12/零基础使用Django2-0-1打造在线教育网站（十六）：列表分页功能/" class="next-post btn btn-default" title="零基础使用Django2.0.1打造在线教育网站（十六）：列表分页功能">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">零基础使用Django2.0.1打造在线教育网站（十六）：列表分页功能</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+    <div id="vcomments" class="valine"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+
+    <script>
+        new Valine({
+            av: AV,
+            el: '#vcomments',
+            appId: '8zvHFFu5l2ah8lh0DEPH393B-gzGzoHsz',
+            appKey: 'UNmB24200qMtyyrun5z99nOE',
+            placeholder: '听说长得好看的，都已经留言了！',
+            notify: false,
+            verify: false,
+            avatar: 'mm',
+            meta: 'nick,mail'.split(','),
+            pageSize: '10',
+            path: window.location.pathname,
+            lang: 'zh-CN'.toLowerCase()
+        })
+    </script>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#写在前面"><span class="toc-text">写在前面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#配置我要学习"><span class="toc-text">配置我要学习</span></a></li></ol><li class="toc-item toc-level-1"><a class="toc-link" href="#我要学习功能实现"><span class="toc-text">我要学习功能实现</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#验证手机号码是否合法"><span class="toc-text">验证手机号码是否合法</span></a>
+        
+    </li></div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2017-2019
+                </span> |
+                <span>
+				编程思录,保留所有权利
+                    <!--Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>-->
+                </span> |
+                <span>
+				<a style="color: #6a7576" href="http://www.miitbeian.gov.cn">赣ICP备18013455号-5</a>
+                    <!--Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>-->
+                </span>
+            </div>
+			
+			<div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+			
+        </div>
+    </div>
+</div>
+
+
+
+
+    <script src="/assets/tagcanvas.min.js?rev=2.9"></script>
+    <script>
+        var tagOption = {
+            textColour: 'red', // 字体颜色
+            outlineMethod: 'block', // 选中模式
+            outlineColour: '#FFDAB9', // 选中模式的颜色
+            interval: 30 || 30, // 动画帧之间的时间间隔，值越大，转动幅度越大
+            textHeight: 13,
+            outlineRadius: 3,
+            freezeActive: true || '', // 选中的标签是否继续滚动
+            frontSelect: true || '', // 不选标签云后部的标签
+            initial: [0.1, -0.1],
+            depth: 0.5,
+            decel: 0.95,
+            maxSpeed: 0.03,
+            reverse: true || '', // 是否反向触发
+            fadeIn: 500, // 进入动画时间
+            wheelZoom: false || '' // 是否启用鼠标滚轮
+        }
+        TagCanvas.Start('tag-cloud-3d','',tagOption);
+    </script>
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+</body>
+</html>
