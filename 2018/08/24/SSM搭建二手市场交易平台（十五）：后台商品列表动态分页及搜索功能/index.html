@@ -1,0 +1,431 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="编程思录，记录思考">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://blog.licheetools.top">
+    <!--SEO-->
+
+    <meta name="keywords" content="SSM框架,JAVA后端">
+
+
+    <meta name="description" content="写在前面本篇我们来介绍后台商品列表动态分页和后台商品搜索功能的开发，这里面会涉及到mybatis-pagehelper的使用。
+商品列表动态分页忘了告诉你，你可以按住shift+ctrl+T进行...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+
+    <!--Title-->
+
+
+<title>SSM搭建二手市场交易平台（十五）：后台商品列表动态分页及搜索功能 | 编程思录，记录思考</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="编程思录，记录思考" type="application/atom+xml">
+
+
+    <link rel="icon" href="./favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+	<div class="hide">
+		<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+	</div>
+
+
+
+
+
+
+    
+
+    <script>
+        (function(){
+            var bp = document.createElement('script');
+            var curProtocol = window.location.protocol.split(':')[0];
+            if (curProtocol === 'https') {
+                bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+            }
+            else {
+                bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+            }
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(bp, s);
+        })();
+    </script>
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header" style="background-image:url(https://upload-images.jianshu.io/upload_images/8964398-b1ba9582ea8b69ba.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)">
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title="Envy">
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 点滴进步，都是收获 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://blog.licheetools.top">编程思录，记录思考</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>首页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/font/"><i class="fa "></i>前端</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/java/"><i class="fa "></i>Java</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/django/"><i class="fa "></i>Django</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/flask/"><i class="fa "></i>Flask</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/spider/"><i class="fa "></i>爬虫</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/data/"><i class="fa "></i>数据分析</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/money/"><i class="fa "></i>付费教程</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/life/"><i class="fa "></i>生活记录</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives"><i class="fa "></i>时间轴</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/about/"><i class="fa "></i>关于博主</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/liuyan/"><i class="fa "></i>留言板</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="SSM搭建二手市场交易平台（十五）：后台商品列表动态分页及搜索功能">
+            
+	            SSM搭建二手市场交易平台（十五）：后台商品列表动态分页及搜索功能
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/java/">java</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/JAVA后端/">JAVA后端</a> <a class="tag-link" href="/tags/SSM框架/">SSM框架</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2018/08/24</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>本篇我们来介绍后台商品列表动态分页和后台商品搜索功能的开发，这里面会涉及到mybatis-pagehelper的使用。</p>
+<h2 id="商品列表动态分页"><a href="#商品列表动态分页" class="headerlink" title="商品列表动态分页"></a>商品列表动态分页</h2><p>忘了告诉你，你可以按住shift+ctrl+T进行类的搜索，这个功能是非常好用的。好了，我们正式开始介绍后台商品列表动态分页功能的实现。</p>
+<p>首先打开ProductManageController.java文件，在里面新增以下代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">/***</span><br><span class="line"> *</span><br><span class="line"> * 后台管理员--后台商品列表及动态分页</span><br><span class="line"> * */</span><br><span class="line">@RequestMapping(&quot;list.do&quot;)</span><br><span class="line">@ResponseBody   //自动序列化json功能</span><br><span class="line">public ServerResponse getList(HttpSession session,@RequestParam(value = &quot;pageNum&quot;,defaultValue = &quot;1&quot;) int pageNum, @RequestParam(value = &quot;pageSize&quot;,defaultValue = &quot;10&quot;) int pageSize)&#123;</span><br><span class="line"></span><br><span class="line">    //判断一下登录情况</span><br><span class="line">    User user=(User) session.getAttribute(Const.CURRENT_USER);</span><br><span class="line">    if(user ==null)&#123;</span><br><span class="line">        return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),&quot;用户未登录，请登录&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    //判断一下是不是管理员身份</span><br><span class="line">    if(iUserService.checkAdminRole(user).isSuccess())&#123;</span><br><span class="line">        //如果是管理员就进行后台商品列表及动态分页的逻辑</span><br><span class="line">        return iProductService.getProductList(pageNum,pageSize);</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">        return ServerResponse.createByErrorMessage(&quot;无权限操作，需要管理员权限&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接着打开ProductServiceImpl.java文件，里面写入以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">/***</span><br><span class="line">     *</span><br><span class="line">     * 后台管理员--后台商品列表及动态分页</span><br><span class="line">     * */</span><br><span class="line">    public ServerResponse&lt;PageInfo&gt; getProductList(int pageNum,int pageSize)&#123;</span><br><span class="line">        /***</span><br><span class="line">         * 使用mybatis-pagehelper的三个步骤：</span><br><span class="line">         * 1、startPage--start</span><br><span class="line">         * 2、填充自己的sql查询逻辑</span><br><span class="line">         * 3、pageHelper-收尾</span><br><span class="line">         * */</span><br><span class="line">        //startPage--start</span><br><span class="line">        PageHelper.startPage(pageNum,pageSize);</span><br><span class="line"></span><br><span class="line">        //填充自己的sql查询逻辑</span><br><span class="line">        List&lt;Product&gt; productList =productMapper.selectList();</span><br><span class="line">        List&lt;ProductListVo&gt; productListVoList = Lists.newArrayList();  //Lists这是guava对list的封装</span><br><span class="line">        for(Product productItem : productList)&#123;</span><br><span class="line">            ProductListVo productListVo = assembleProductListVo(productItem);</span><br><span class="line">            productListVoList.add(productListVo);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        //pageHelper-收尾</span><br><span class="line">        PageInfo pageResult = new PageInfo(productList);</span><br><span class="line">        pageResult.setList(productListVoList);</span><br><span class="line">        return ServerResponse.createBySuccess(pageResult);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //新的商品用于商品列表信息的获取</span><br><span class="line">    private ProductListVo assembleProductListVo(Product product) &#123;</span><br><span class="line">        ProductListVo productListVo = new ProductListVo();</span><br><span class="line">        productListVo.setId(product.getId());</span><br><span class="line">        productListVo.setCategoryId(product.getCategoryId());</span><br><span class="line">        productListVo.setName(product.getName());</span><br><span class="line">        productListVo.setSubtitle(product.getSubtitle());</span><br><span class="line">        productListVo.setMainImage(product.getMainImage());</span><br><span class="line">        productListVo.setPrice(product.getPrice());</span><br><span class="line">        productListVo.setStatus(product.getStatus());</span><br><span class="line">        productListVo.setImageHost(PropertiesUtil.getProperty(&quot;ftp.server.http.prefix&quot;, &quot;http://img.licheetools.top/&quot;));</span><br><span class="line"></span><br><span class="line">        return productListVo;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>关于这段代码，我需要说明几点事项：<br>1、因为这里我们使用了mybatis-pagehelper这个分页插件，因此有必要了解一下它的官方文档：<a href="https://github.com/pagehelper/Mybatis-PageHelper/blob/master/wikis/zh/HowToUse.md" target="_blank" rel="noopener">使用方法</a>，觉得看不懂得可以参看这篇文章：<a href="https://blog.csdn.net/cs_hnu_scw/article/details/80718467" target="_blank" rel="noopener">手把手教你如何玩转插件：分页插件（Pagehelper）</a>。</p>
+<p>2、因为我们后台已经有一个实现商品详情信息的功能了，这里我们只是对其进行分页而已，而且是不需要获取更多的信息，因此有必要新建一个product对象，我们称其为ProductListVo。所以我们就要打开vo这个包，在里面新建一个ProductListVo类，里面的代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line">package top.store.vo;</span><br><span class="line"></span><br><span class="line">import java.math.BigDecimal;</span><br><span class="line"></span><br><span class="line">public class ProductListVo &#123;</span><br><span class="line">    private Integer id;</span><br><span class="line">    private Integer categoryId;</span><br><span class="line">    private String name;</span><br><span class="line">    private String subtitle;</span><br><span class="line">    private String mainImage;</span><br><span class="line">    private BigDecimal price;</span><br><span class="line">    private Integer status;</span><br><span class="line">    private String imageHost;</span><br><span class="line"></span><br><span class="line">    public Integer getId() &#123;</span><br><span class="line">        return id;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setId(Integer id) &#123;</span><br><span class="line">        this.id = id;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public Integer getCategoryId() &#123;</span><br><span class="line">        return categoryId;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setCategoryId(Integer categoryId) &#123;</span><br><span class="line">        this.categoryId = categoryId;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String getName() &#123;</span><br><span class="line">        return name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setName(String name) &#123;</span><br><span class="line">        this.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String getSubtitle() &#123;</span><br><span class="line">        return subtitle;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setSubtitle(String subtitle) &#123;</span><br><span class="line">        this.subtitle = subtitle;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String getMainImage() &#123;</span><br><span class="line">        return mainImage;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setMainImage(String mainImage) &#123;</span><br><span class="line">        this.mainImage = mainImage;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public BigDecimal getPrice() &#123;</span><br><span class="line">        return price;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setPrice(BigDecimal price) &#123;</span><br><span class="line">        this.price = price;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public Integer getStatus() &#123;</span><br><span class="line">        return status;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setStatus(Integer status) &#123;</span><br><span class="line">        this.status = status;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String getImageHost() &#123;</span><br><span class="line">        return imageHost;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setImageHost(String imageHost) &#123;</span><br><span class="line">        this.imageHost = imageHost;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>也许你也注意到，我们就是选择自己需要的信息然后才进行组装成一个新的product。</p>
+<p>3、我们继续回到ProductServiceImpl.java文件，这后面的那段组装新的Product的代码是不是非常眼熟，对就是和我们之前的商品详情信息组装几乎是一模一样的，但是还依然要注意ImageHost这个字段的获取，你可以照搬前面的代码。</p>
+<p>4、看到<code>List&lt;Product&gt; productList =productMapper.selectList();</code>这段代码，说明我们需要需要去productMapper.java文件里面添加以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Product&gt; selectList();</span><br></pre></td></tr></table></figure></p>
+<p>然后打开productMapper.xml文件，往里面添加以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;select id=&quot;selectList&quot; resultMap=&quot;BaseResultMap&quot;&gt;</span><br><span class="line">    select</span><br><span class="line">    &lt;include refid=&quot;Base_Column_List&quot;/&gt;</span><br><span class="line">    from store_product</span><br><span class="line">    order by id asc</span><br><span class="line">&lt;/select&gt;</span><br></pre></td></tr></table></figure></p>
+<p>最后打开IProductService.java文件，里面写入以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ServerResponse&lt;PageInfo&gt; getProductList(int pageNum, int pageSize);    //后台管理员--后台商品列表及动态分页</span><br></pre></td></tr></table></figure></p>
+<h2 id="后台商品搜索功能开发"><a href="#后台商品搜索功能开发" class="headerlink" title="后台商品搜索功能开发"></a>后台商品搜索功能开发</h2><p>老规矩，我们首先打开ProductManageController.java文件，在里面新增以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">/***</span><br><span class="line"> *</span><br><span class="line"> * 后台管理员--后台商品搜索功能</span><br><span class="line"> * */</span><br><span class="line">@RequestMapping(&quot;search.do&quot;)</span><br><span class="line">@ResponseBody   //自动序列化json功能</span><br><span class="line">public ServerResponse productSearch(HttpSession session,String productName,Integer productId,@RequestParam(value = &quot;pageNum&quot;,defaultValue = &quot;1&quot;) int pageNum, @RequestParam(value = &quot;pageSize&quot;,defaultValue = &quot;10&quot;) int pageSize)&#123;</span><br><span class="line">    //判断一下登录情况</span><br><span class="line">    User user=(User) session.getAttribute(Const.CURRENT_USER);</span><br><span class="line">    if(user ==null)&#123;</span><br><span class="line">        return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),&quot;用户未登录，请登录&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    //判断一下是不是管理员身份</span><br><span class="line">    if(iUserService.checkAdminRole(user).isSuccess())&#123;</span><br><span class="line">        //如果是管理员就进行后台商品搜索功能开发的逻辑</span><br><span class="line">        return iProductService.productSearch(productName,productId,pageNum,pageSize);</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">        return ServerResponse.createByErrorMessage(&quot;无权限操作，需要管理员权限&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>接着打开ProductServiceImpl.java文件，里面写入以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">/***</span><br><span class="line"> *</span><br><span class="line"> * 后台管理员--后台商品搜索功能(同样也需要分页)</span><br><span class="line"> * */</span><br><span class="line">public ServerResponse&lt;PageInfo&gt; productSearch(String productName,Integer productId,int pageNum, int pageSize)&#123;</span><br><span class="line"></span><br><span class="line">    //startPage--start</span><br><span class="line">    PageHelper.startPage(pageNum,pageSize);</span><br><span class="line"></span><br><span class="line">    if(StringUtils.isNotBlank(productName))&#123;</span><br><span class="line">        productName = new StringBuilder().append(&quot;%&quot;).append(productName).append(&quot;%&quot;).toString();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //填充自己的sql查询逻辑</span><br><span class="line">    List&lt;Product&gt; productList =productMapper.selectByNameAndProductId(productName,productId);</span><br><span class="line">    List&lt;ProductListVo&gt; productListVoList = Lists.newArrayList();  //Lists这是guava对list的封装</span><br><span class="line">    for(Product productItem : productList)&#123;</span><br><span class="line">        ProductListVo productListVo = assembleProductListVo(productItem);</span><br><span class="line">        productListVoList.add(productListVo);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //pageHelper-收尾</span><br><span class="line">    PageInfo pageResult = new PageInfo(productList);</span><br><span class="line">    pageResult.setList(productListVoList);</span><br><span class="line">    return ServerResponse.createBySuccess(pageResult);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>关于这段代码，我需要说明几点事项：<br>1、<code>productName = new StringBuilder().append(&quot;%&quot;).append(productName).append(&quot;%&quot;).toString();</code>这行代码的意思就是构造一个新的productName对象，就是用于数据库字段的查找，我们知道如果你要进行查找，特别是模糊查找，那么相应的sql语句是：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from store_product where name like %productName%；</span><br></pre></td></tr></table></figure></p>
+<p>这里我们为了xml里面书写sql语句的便捷，就在这里进行了转化，此时的<code>productName=%productName%</code>。</p>
+<p>2、%：表示任意0个或多个字，可匹配任意类型和长度的字符；_： 表示任意单个字符，匹配单个任意字符，它常用来限制表达式的字符长度语句。</p>
+<p>3、看到<code>productMapper.selectByNameAndProductId(productName,productId);</code>你应该就知道需要打开dao包的ProductMapper.java这个接口，在里面定义一个查询sql的方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Product&gt; selectByNameAndProductId(@Param(value = &quot;productName&quot;) String productName,@Param(value = &quot;productId&quot;) Integer productId);  //注意在mybatis里面，多个参数时需要使用param注解。</span><br></pre></td></tr></table></figure></p>
+<p>然后我们打开ProductMapper.xml文件，在里面新增sql查询语句：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;select id=&quot;selectByNameAndProductId&quot; resultMap=&quot;BaseResultMap&quot; parameterType=&quot;map&quot;&gt;</span><br><span class="line">  select</span><br><span class="line">  &lt;include refid=&quot;Base_Column_List&quot;/&gt;</span><br><span class="line">  from store_product</span><br><span class="line">  where id=#&#123;productId&#125; || name like #&#123;productName&#125;</span><br><span class="line">&lt;/select&gt;</span><br></pre></td></tr></table></figure></p>
+<p>这种你觉得可以莫，我觉得不能使用短路或，因为一旦前面id为空，后面就不进行判断了，所以我们需要进行改写：</p>
+<p>下面的如何？使用了if判断条件，但是还是有问题就是假如两个条件都不满足条件，那就会报错，因此这种也是不可以的：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;select id=&quot;selectByNameAndProductId&quot; resultMap=&quot;BaseResultMap&quot; parameterType=&quot;map&quot;&gt;</span><br><span class="line">  select</span><br><span class="line">  &lt;include refid=&quot;Base_Column_List&quot;/&gt;</span><br><span class="line">  from store_product</span><br><span class="line">  &lt;if test=&quot;productName != null&quot;&gt;</span><br><span class="line">    where name like #&#123;productName&#125;</span><br><span class="line">  &lt;/if&gt;</span><br><span class="line">  &lt;if test=&quot;productId != null&quot;&gt;</span><br><span class="line">    and id =#&#123;productId&#125;</span><br><span class="line">  &lt;/if&gt;</span><br><span class="line">&lt;/select&gt;</span><br></pre></td></tr></table></figure></p>
+<p>再来看看下面这个版本，这个经过使用<code>where 1=1</code>这个条件，的确可以满足要求，但是你不觉得这个太Low了莫？在这里加一个没有任何关系的<code>where 1=1</code>是不是没必要？对，mybatis给我们提供了一个where判断，可以避免这种情况的发生。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;select id=&quot;selectByNameAndProductId&quot; resultMap=&quot;BaseResultMap&quot; parameterType=&quot;map&quot;&gt;</span><br><span class="line">  select</span><br><span class="line">  &lt;include refid=&quot;Base_Column_List&quot;/&gt;</span><br><span class="line">  from store_product</span><br><span class="line">  where 1=1</span><br><span class="line">  &lt;if test=&quot;productName != null&quot;&gt;</span><br><span class="line">    and name like #&#123;productName&#125;</span><br><span class="line">  &lt;/if&gt;</span><br><span class="line">  &lt;if test=&quot;productId != null&quot;&gt;</span><br><span class="line">    and id =#&#123;productId&#125;</span><br><span class="line">  &lt;/if&gt;</span><br><span class="line">&lt;/select&gt;</span><br></pre></td></tr></table></figure></p>
+<p>就是下面的代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;select id=&quot;selectByNameAndProductId&quot; resultMap=&quot;BaseResultMap&quot; parameterType=&quot;map&quot;&gt;</span><br><span class="line">    select</span><br><span class="line">    &lt;include refid=&quot;Base_Column_List&quot;/&gt;</span><br><span class="line">    from store_product</span><br><span class="line">    &lt;where&gt;</span><br><span class="line">        &lt;if test=&quot;productName != null&quot;&gt;</span><br><span class="line">            and name like #&#123;productName&#125;</span><br><span class="line">        &lt;/if&gt;</span><br><span class="line">        &lt;if test=&quot;productId != null&quot;&gt;</span><br><span class="line">            and id =#&#123;productId&#125;</span><br><span class="line">        &lt;/if&gt;</span><br><span class="line">    &lt;/where&gt;</span><br><span class="line">&lt;/select&gt;</span><br></pre></td></tr></table></figure></p>
+<p>或者是这样的，都是可以的：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;select id=&quot;selectByNameAndProductId&quot; resultMap=&quot;BaseResultMap&quot; parameterType=&quot;map&quot;&gt;</span><br><span class="line">    select</span><br><span class="line">    &lt;include refid=&quot;Base_Column_List&quot;/&gt;</span><br><span class="line">    from store_product</span><br><span class="line">    &lt;where&gt;</span><br><span class="line">        &lt;if test=&quot;productName != null&quot;&gt;</span><br><span class="line">            or name like #&#123;productName&#125;</span><br><span class="line">        &lt;/if&gt;</span><br><span class="line">        &lt;if test=&quot;productId != null&quot;&gt;</span><br><span class="line">            or id =#&#123;productId&#125;</span><br><span class="line">        &lt;/if&gt;</span><br><span class="line">    &lt;/where&gt;</span><br><span class="line">&lt;/select&gt;</span><br></pre></td></tr></table></figure></p>
+<p>也就是说一旦逻辑传到where里面，而且if判断条件成立的情况下，将所有的or或者and替换为where，这样我们就不需要担心后面的where条件是否成立了。</p>
+<p>最后打开IProductService.java文件，里面写入以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ServerResponse&lt;PageInfo&gt; productSearch(String productName,Integer productId,int pageNum, int pageSize);  //后台管理员--后台商品搜索功能(同样也需要分页)</span><br></pre></td></tr></table></figure></p>
+<p>这样我们本篇关于后台商品列表动态分页和后台商品搜索功能的开发介绍就到此为止了，感谢你的赏阅！</p>
+
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="https://upload-images.jianshu.io/upload_images/8964398-58d04ffa926103d9.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">觉得不错，赏包辣条吃呗！</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href target="_blank">编程思录</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2018/08/25/SSM搭建二手市场交易平台（十六）：后台文件和富文本图片上传的开发/" class="pre-post btn btn-default" title="SSM搭建二手市场交易平台（十六）：后台文件和富文本图片上传的开发">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">SSM搭建二手市场交易平台（十六）：后台文件和富文本图片上传的开发</span>
+        </a>
+    
+    
+        <a href="/2018/08/23/SSM搭建二手市场交易平台（十四）：商品详情信息获取/" class="next-post btn btn-default" title="SSM搭建二手市场交易平台（十四）：商品详情信息获取">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">SSM搭建二手市场交易平台（十四）：商品详情信息获取</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+    <div id="vcomments" class="valine"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+
+    <script>
+        new Valine({
+            av: AV,
+            el: '#vcomments',
+            appId: '8zvHFFu5l2ah8lh0DEPH393B-gzGzoHsz',
+            appKey: 'UNmB24200qMtyyrun5z99nOE',
+            placeholder: '听说长得好看的，都已经留言了！',
+            notify: false,
+            verify: false,
+            avatar: 'mm',
+            meta: 'nick,mail'.split(','),
+            pageSize: '10',
+            path: window.location.pathname,
+            lang: 'zh-CN'.toLowerCase()
+        })
+    </script>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#写在前面"><span class="toc-text">写在前面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#商品列表动态分页"><span class="toc-text">商品列表动态分页</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#后台商品搜索功能开发"><span class="toc-text">后台商品搜索功能开发</span></a></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2017-2019
+                </span> |
+                <span>
+				编程思录,保留所有权利
+                    <!--Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>-->
+                </span> |
+                <span>
+				<a style="color: #black" href="http://www.miitbeian.gov.cn">赣ICP备18013455号-5</a>
+                    <!--Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>-->
+                </span>
+            </div>
+			
+			<div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+			
+			<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1277113902'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s96.cnzz.com/z_stat.php%3Fid%3D1277113902%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));</script>
+        </div>
+    </div>
+</div>
+
+
+
+
+    <script src="/assets/tagcanvas.min.js?rev=2.9"></script>
+    <script>
+        var tagOption = {
+            textColour: 'red', // 字体颜色
+            outlineMethod: 'block', // 选中模式
+            outlineColour: '#FFDAB9', // 选中模式的颜色
+            interval: 30 || 30, // 动画帧之间的时间间隔，值越大，转动幅度越大
+            textHeight: 13,
+            outlineRadius: 3,
+            freezeActive: true || '', // 选中的标签是否继续滚动
+            frontSelect: true || '', // 不选标签云后部的标签
+            initial: [0.1, -0.1],
+            depth: 0.5,
+            decel: 0.95,
+            maxSpeed: 0.03,
+            reverse: true || '', // 是否反向触发
+            fadeIn: 500, // 进入动画时间
+            wheelZoom: false || '' // 是否启用鼠标滚轮
+        }
+        TagCanvas.Start('tag-cloud-3d','',tagOption);
+    </script>
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+</body>
+</html>

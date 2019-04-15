@@ -1,0 +1,500 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="编程思录，记录思考">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://blog.licheetools.top">
+    <!--SEO-->
+
+    <meta name="keywords" content="SSM框架,JAVA后端">
+
+
+    <meta name="description" content="jdk的安装1、使用rpm -qa|grep jdk命令查看是否存在jdk。
+2、新建develpoer和setup文件夹，具体是/develpoer/setup；
+3、进入到setup文件夹，...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+
+    <!--Title-->
+
+
+<title>SSM搭建二手市场交易平台（二十九）：项目部署上线 | 编程思录，记录思考</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="编程思录，记录思考" type="application/atom+xml">
+
+
+    <link rel="icon" href="./favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+	<div class="hide">
+		<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+	</div>
+
+
+
+
+
+
+    
+
+    <script>
+        (function(){
+            var bp = document.createElement('script');
+            var curProtocol = window.location.protocol.split(':')[0];
+            if (curProtocol === 'https') {
+                bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+            }
+            else {
+                bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+            }
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(bp, s);
+        })();
+    </script>
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header" style="background-image:url(https://upload-images.jianshu.io/upload_images/8964398-b1ba9582ea8b69ba.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)">
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title="Envy">
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 点滴进步，都是收获 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://blog.licheetools.top">编程思录，记录思考</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>首页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/font/"><i class="fa "></i>前端</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/java/"><i class="fa "></i>Java</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/django/"><i class="fa "></i>Django</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/flask/"><i class="fa "></i>Flask</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/spider/"><i class="fa "></i>爬虫</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/data/"><i class="fa "></i>数据分析</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/money/"><i class="fa "></i>付费教程</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/life/"><i class="fa "></i>生活记录</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives"><i class="fa "></i>时间轴</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/about/"><i class="fa "></i>关于博主</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/liuyan/"><i class="fa "></i>留言板</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="SSM搭建二手市场交易平台（二十九）：项目部署上线">
+            
+	            SSM搭建二手市场交易平台（二十九）：项目部署上线
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/java/">java</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/JAVA后端/">JAVA后端</a> <a class="tag-link" href="/tags/SSM框架/">SSM框架</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2018/09/06</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="jdk的安装"><a href="#jdk的安装" class="headerlink" title="jdk的安装"></a>jdk的安装</h2><p>1、使用<code>rpm -qa|grep jdk</code>命令查看是否存在jdk。</p>
+<p>2、新建develpoer和setup文件夹，具体是/develpoer/setup；</p>
+<p>3、进入到setup文件夹，执行<code>sudo wget https://download.oracle.com/otn-pub/java/jdk/8u201-b09/42970487e3af4f5aa5bca3f542482c60/jdk-8u201-linux-x64.rpm?AuthParam=1553169636_b11b9e5be288ddf0358ea33e6f97682e</code>，后面的https则是jdk的rpm地址，具体的点击这里<a href="https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html" target="_blank" rel="noopener">jdk8</a>；注意后面的AuthParam，这个需要我们F12调出开发者模式，然后再次点击下载按钮，在headers里面可以直接寻找。然后对下载完的jdk进行重命名，命令如下：<code>sudo mv jdk-8u201-linux-x64.rpm?AuthParam=1553169636_b11b9e5be288ddf0358ea33e6f97682e jdk-8u201-linux-x64.rpm</code>这样名字就发生了改变，变成<code>jdk-8u201-linux-x64.rpm</code>。<br>4、如果觉得下载速度很慢，你可以使用<code>sudo wget http://learning.happymmall.com/jdk/jdk-7u80-linux-x64.rpm</code>这样我就就不需要进行修改名字了。<br>5、接下来使用下面的命令赋予用户权限：<code>sudo chmod +x jdk-7u80-linux-x64.rpm</code>，或者其他的权限，如777权限。</p>
+<p>6、接下来使用下面的命令进行安装jdk：<code>sudo rpm -ivh jdk-7u80-linux-x64.rpm</code>，这样改jdk就直接被安装在setup这个文件夹里面了。如果出现下面的问题，请接着看：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ubuntu RPM should not be used directly install RPM packages, use Alien instead!</span><br></pre></td></tr></table></figure></p>
+<p>方法1：</p>
+<ol>
+<li><p>先安装 alien 和 fakeroot 这两个工具，其中前者可以将 rpm 包转换为 deb 包。安装命令为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install alien fakeroot</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>将需要安装的 rpm 包下载备用，假设为 package.rpm</p>
+</li>
+<li><p>使用 alien 将 rpm 包转换为 deb 包：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fakeroot alien package.rpm</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>一旦转换成功，我们可以即刻使用以下指令来安装：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo dpkg -i package.deb</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>方法:2：<br>1.输入以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install rpm alien</span><br></pre></td></tr></table></figure></p>
+<p>2..输入以下代码：（过程有点慢，等待一下）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alien -d package.rpm</span><br></pre></td></tr></table></figure></p>
+<p>3..输入以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo dpkg -i package.deb</span><br></pre></td></tr></table></figure></p>
+<p>详细的点击这里<a href="https://blog.csdn.net/suleil1/article/details/49471723" target="_blank" rel="noopener">bug解决方法</a><br>如下图所示：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">ubuntu@VM-0-4-ubuntu:~/java/developer/setup$ ls</span><br><span class="line"> jdk1.8_1.8.0202-1_amd64.deb   jdk-8u202-linux-x64.rpm  &apos;jdk-8u202-linux-x64.rpm?AuthParam=1553176185_71b2a824d4d35c4a61c57ccd5f476606&apos;</span><br><span class="line">ubuntu@VM-0-4-ubuntu:~/java/developer/setup$ sudo dpkg -i jdk1.8_1.8.0202-1_amd64.deb</span><br><span class="line">Selecting previously unselected package jdk1.8.</span><br><span class="line">(Reading database ... 86516 files and directories currently installed.)</span><br><span class="line">Preparing to unpack jdk1.8_1.8.0202-1_amd64.deb ...</span><br><span class="line">Unpacking jdk1.8 (1.8.0202-1) ...</span><br><span class="line">Setting up jdk1.8 (1.8.0202-1) ...</span><br><span class="line">ubuntu@VM-0-4-ubuntu:~/java/developer/setup$</span><br></pre></td></tr></table></figure></p>
+<p>之后就会将我们的jdk默认安装在/usr/java/jdk1.8.0_202-amd64下面，我们使用ls或者ll就能查看信息：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">ubuntu@VM-0-4-ubuntu:/usr/java/jdk1.8.0_202-amd64$ ll</span><br><span class="line">total 26016</span><br><span class="line">drwxr-xr-x 8 root root     4096 Mar 21 22:24 ./</span><br><span class="line">drwxr-xr-x 4 root root     4096 Mar 21 22:23 ../</span><br><span class="line">drwxr-xr-x 2 root root     4096 Mar 21 22:24 bin/</span><br><span class="line">-rw-r--r-- 1 root root     3244 Dec 16 04:50 COPYRIGHT</span><br><span class="line">drwxr-xr-x 3 root root     4096 Mar 21 22:24 include/</span><br><span class="line">drwxr-xr-x 4 root root     4096 Mar 21 22:23 .java/</span><br><span class="line">-rw-r--r-- 1 root root  5211154 Dec 12 18:20 javafx-src.zip</span><br><span class="line">drwxr-xr-x 5 root root     4096 Mar 21 22:24 jre/</span><br><span class="line">drwxr-xr-x 5 root root     4096 Mar 21 22:24 lib/</span><br><span class="line">-rw-r--r-- 1 root root       40 Dec 16 04:50 LICENSE</span><br><span class="line">drwxr-xr-x 4 root root     4096 Mar 21 22:24 man/</span><br><span class="line">-rw-r--r-- 1 root root      159 Dec 16 04:50 README.html</span><br><span class="line">-rw-r--r-- 1 root root      424 Dec 16 04:50 release</span><br><span class="line">-rw-r--r-- 1 root root 21105955 Dec 16 04:50 src.zip</span><br><span class="line">-rw-r--r-- 1 root root   112724 Dec 12 18:20 THIRDPARTYLICENSEREADME-JAVAFX.txt</span><br><span class="line">-rw-r--r-- 1 root root   153824 Dec 16 04:50 THIRDPARTYLICENSEREADME.txt</span><br><span class="line">ubuntu@VM-0-4-ubuntu:/usr/java/jdk1.8.0_202-amd64$</span><br></pre></td></tr></table></figure></p>
+<p>7、接下来就是环境变量的设置了，使用下面的命令即可：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim /etc/profile</span><br></pre></td></tr></table></figure></p>
+<p>在文件的最底部添加下面的代码：（这里面把其他环境也添加了，你可以自己有选择的粘贴）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">export JAVA_HOME=/usr/java/jdk1.8.0_202-amd64</span><br><span class="line">export CLASSPATH=.:$JAVA_HOME/jre/lib/rt.jar:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar</span><br><span class="line">export MAVEN_HOME=/home/ubuntu/java/developer/apache-maven-3.0.5</span><br><span class="line">export NODE_HOME=/usr/local/node-v4.4.7-linux-x64</span><br><span class="line">export RUBY_HOME=/usr/local/ruby</span><br><span class="line">export CATALINA_HOME=/home/ubuntu/java/developer/apache-tomcat-7.0.73</span><br><span class="line"></span><br><span class="line">export PATH=$PATH:$JAVA_HOME/bin:$CATALINA_HOME/bin:$MAVEN_HOME/bin:$NODE_HOME/bin:/usr/local/bin:$RUBY_HOME/bin</span><br><span class="line"></span><br><span class="line">export LC_ALL=en_US.UTF-8</span><br></pre></td></tr></table></figure></p>
+<p>也可以点击这里<a href="http://learning.happymmall.com/env/" target="_blank" rel="noopener">profile</a>，选择profile文件，然后打开即可。</p>
+<p>8、接下来我们激活刚才的命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source  /etc/profile</span><br></pre></td></tr></table></figure></p>
+<p>9、使用<code>java -version</code>查看是否安装成功，出现java的版本就说明成功了。如果出现<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Error occurred during initialization of VM</span><br><span class="line">java/lang/NoClassDefFoundError: java/lang/Object</span><br></pre></td></tr></table></figure></p>
+<p>，请参考这篇文章：<a href="https://blog.csdn.net/hanxue_wuhen/article/details/71312947" target="_blank" rel="noopener">解决办法</a>或者这篇文章：<a href="https://blog.51cto.com/53cto/1702607" target="_blank" rel="noopener">办法2</a><br>，当然我这里也直接附上解决办法。因为你的<code>/usr/java/jdk1.8.0_202-amd64/jre/lib</code><br>下面缺少<code>rt.jar</code>；还有<code>/usr/java/jdk1.8.0_202-amd64/lib</code>下面缺少<code>tools.jar</code>。那是因为你编译过度，将jar文件编译为<code>tools.pack</code>和<code>rt.pack</code>，这里我们直接使用反编译工具unpack200即可。分两步进行，首先执行反编译，然后移动文件即可。(当然，你完全可以在对应的目录下反编译，这样就不需要移动文件了。)<br>1、反编译，使用下面的命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo unpack200  /usr/java/jdk1.8.0_202-amd64/lib/tools.pack  tools.jar</span><br></pre></td></tr></table></figure></p>
+<p>这样我们的tools.jar就被编译在当前文件夹了。<br>同样执行：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo unpack200  /usr/java/jdk1.8.0_202-amd64/lib/rt.pack  rt.jar</span><br></pre></td></tr></table></figure></p>
+<p>这样我们的rt.jar就被编译在当前文件夹了。<br>2、移动文件, tools.jar就是在/usr/java/jdk1.8.0_202-amd64/lib文件下面，你使用这样的命令就可以：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo cp /usr/java/jdk1.8.0_202-amd64/lib/tools.jar /usr/java/jdk1.8.0_202-amd64/lib</span><br></pre></td></tr></table></figure></p>
+<p>而rt.jar则是在/usr/java/jdk1.8.0_202-amd64/jre/lib，记得不要搞错！<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo cp /usr/java/jdk1.8.0_202-amd64/lib/rt.jar /usr/java/jdk1.8.0_202-amd64/jre/lib</span><br></pre></td></tr></table></figure></p>
+<p>接下来重复第9步，查看是否成功！<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ubuntu@VM-0-4-ubuntu:/usr/java/jdk1.8.0_202-amd64/lib$ java -version</span><br><span class="line">java version &quot;1.8.0_202&quot;</span><br><span class="line">Java(TM) SE Runtime Environment (build 1.8.0_202-b08)</span><br><span class="line">Java HotSpot(TM) 64-Bit Server VM (build 25.202-b08, mixed mode)</span><br><span class="line">ubuntu@VM-0-4-ubuntu:/usr/java/jdk1.8.0_202-amd64/lib$</span><br></pre></td></tr></table></figure></p>
+<p>如果有多个版本的java，这个java -version是根据你的环境设置来体现的。至此我们java的安装就结束了。</p>
+<h2 id="tomcat的安装"><a href="#tomcat的安装" class="headerlink" title="tomcat的安装"></a>tomcat的安装</h2><p>进入developer文件夹，里面输入以下命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo wget http://learning.happymmall.com/tomcat/apache-tomcat-7.0.73.tar.gz</span><br></pre></td></tr></table></figure></p>
+<p>待下载完毕以后，我们就开始解压它，命令如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo tar -zxvf apache-tomcat-7.0.73.tar.gz</span><br></pre></td></tr></table></figure></p>
+<p>查看一下，发现没问题：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ubuntu@VM-0-4-ubuntu:~/java/developer$ ll</span><br><span class="line">total 8752</span><br><span class="line">drwxrwxr-x 4 ubuntu ubuntu    4096 Mar 22 10:25 ./</span><br><span class="line">drwxrwxr-x 4 ubuntu ubuntu    4096 Mar 21 18:20 ../</span><br><span class="line">drwxr-xr-x 9 root   root      4096 Mar 22 10:25 apache-tomcat-7.0.73/</span><br><span class="line">-rw-r--r-- 1 root   root   8938514 Apr 17  2017 apache-tomcat-7.0.73.tar.gz</span><br><span class="line">drwxrwxr-x 2 ubuntu ubuntu    4096 Mar 21 22:22 setup/</span><br></pre></td></tr></table></figure></p>
+<p>接下来，我们可以把<code>apache-tomcat-7.0.73.tar.gz</code>移动到setup文件夹下面：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo mv apache-tomcat-7.0.73.tar.gz setup/</span><br></pre></td></tr></table></figure></p>
+<p>发现setup里面是这样的：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">drwxrwxr-x 2 ubuntu ubuntu      4096 Mar 22 10:28  ./</span><br><span class="line">drwxrwxr-x 4 ubuntu ubuntu      4096 Mar 22 10:28  ../</span><br><span class="line">-rw-r--r-- 1 root   root     8938514 Apr 17  2017  apache-tomcat-7.0.73.tar.gz</span><br><span class="line">-rw-r--r-- 1 ubuntu ubuntu 156926672 Mar 21 22:22  jdk1.8_1.8.0202-1_amd64.deb</span><br><span class="line">-rw-rw-r-- 1 ubuntu ubuntu 178418154 Mar 21 22:12  jdk-8u202-linux-x64.rpm</span><br><span class="line">-rw-r--r-- 1 root   root       85416 Mar 21 22:20 &apos;jdk-8u202-linux-x64.rpm?AuthParam=1553176185_71b2a824d4d35c4a61c57ccd5f476606&apos;</span><br></pre></td></tr></table></figure></p>
+<p>接下来，我们退回到上一层，也就是developer文件夹，然后进入到apache-tomcat-7.0.73这个文件夹：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">ubuntu@VM-0-4-ubuntu:~/java/developer$ cd apache-tomcat-7.0.73</span><br><span class="line">ubuntu@VM-0-4-ubuntu:~/java/developer/apache-tomcat-7.0.73$ ll</span><br><span class="line">total 124</span><br><span class="line">drwxr-xr-x 9 root   root    4096 Mar 22 10:25 ./</span><br><span class="line">drwxrwxr-x 4 ubuntu ubuntu  4096 Mar 22 10:28 ../</span><br><span class="line">drwxr-xr-x 2 root   root    4096 Mar 22 10:25 bin/</span><br><span class="line">drwxr-xr-x 2 root   root    4096 Nov  8  2016 conf/</span><br><span class="line">drwxr-xr-x 2 root   root    4096 Mar 22 10:25 lib/</span><br><span class="line">-rw-r--r-- 1 root   root   56846 Nov  8  2016 LICENSE</span><br><span class="line">drwxr-xr-x 2 root   root    4096 Nov  8  2016 logs/</span><br><span class="line">-rw-r--r-- 1 root   root    1239 Nov  8  2016 NOTICE</span><br><span class="line">-rw-r--r-- 1 root   root    8965 Nov  8  2016 RELEASE-NOTES</span><br><span class="line">-rw-r--r-- 1 root   root   16195 Nov  8  2016 RUNNING.txt</span><br><span class="line">drwxr-xr-x 2 root   root    4096 Mar 22 10:25 temp/</span><br><span class="line">drwxr-xr-x 7 root   root    4096 Nov  8  2016 webapps/</span><br><span class="line">drwxr-xr-x 2 root   root    4096 Nov  8  2016 work/</span><br><span class="line">ubuntu@VM-0-4-ubuntu:~/java/developer/apache-tomcat-7.0.73$</span><br></pre></td></tr></table></figure></p>
+<p>接下来编辑conf/server.xml文件，使用的命令如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim conf/server.xml</span><br></pre></td></tr></table></figure></p>
+<p>我们编辑它的目的就是修改utf的字符集，我们直接在当前模式（默认情况），输入/8080，然后回车就能找到这个connection（下面的截图是我们在widows下面的配置。）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">F:\tomcat\apache-tomcat-8.5.34\conf\server.xml</span><br></pre></td></tr></table></figure></p>
+<p>{我的路径是这里，你打开它，找到第69-71行代码：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-727121717de4b380.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt><br>添加这一行代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">URIEncoding=&quot;UTF-8&quot;</span><br></pre></td></tr></table></figure></p>
+<p>注意：截图中之所以有是因为我已经配置完了，之前是没有的。}</p>
+<p>你添加这个以后进行保存退出即可。<br>接下来就是开始运行，进入到bin目录，具体的可以参看这些：<br>启动使用：在配置环境的bin目录下使用startup.bat命令；<br>关闭使用：在配置环境的bin目录下使用shutdown.bat命令。<br>这个的配置环境，我们在前面进行了配置，也就是这些：<br>就是<code>${CATALINA_HOME}/bin/startup.bat</code>或者是<code>${CATALINA_HOME}/bin/shutdown.bat</code>。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">ubuntu@VM-0-4-ubuntu:~/java/developer/apache-tomcat-7.0.73/bin$ sudo ./startup.sh</span><br><span class="line">Using CATALINA_BASE:   /home/ubuntu/java/developer/apache-tomcat-7.0.73</span><br><span class="line">Using CATALINA_HOME:   /home/ubuntu/java/developer/apache-tomcat-7.0.73</span><br><span class="line">Using CATALINA_TMPDIR: /home/ubuntu/java/developer/apache-tomcat-7.0.73/temp</span><br><span class="line">Using JRE_HOME:        /usr</span><br><span class="line">Using CLASSPATH:       /home/ubuntu/java/developer/apache-tomcat-7.0.73/bin/bootstrap.jar:/home/ubuntu/java/developer/apache-tomcat-7.0.73/bin/tomcat-juli.jar</span><br><span class="line">Tomcat started.</span><br><span class="line">ubuntu@VM-0-4-ubuntu:~/java/developer/apache-tomcat-7.0.73/bin$</span><br></pre></td></tr></table></figure></p>
+<p>出现这个Tomcat started.就说明配置成功，且启动成功了。此时，由于我们的防火墙还没有配置，你用公网IP的8080端口就能访问到我们的tomcat首页了：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-acb99d9892a64b64.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<h2 id="maven的安装"><a href="#maven的安装" class="headerlink" title="maven的安装"></a>maven的安装</h2><p>我们回到developer文件夹，在里面进行相关操作，在里面输入以下命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo wget http://learning.happymmall.com/maven/apache-maven-3.0.5-bin.tar.gz</span><br></pre></td></tr></table></figure></p>
+<p>待下载完毕以后，我们就开始解压它，命令如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo tar -zxvf apache-maven-3.0.5-bin.tar.gz</span><br></pre></td></tr></table></figure></p>
+<p>查看一下，发现没问题：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">ubuntu@VM-0-4-ubuntu:~/java/developer$ ll</span><br><span class="line">total 5052</span><br><span class="line">drwxrwxr-x 5 ubuntu ubuntu    4096 Mar 22 10:56 ./</span><br><span class="line">drwxrwxr-x 4 ubuntu ubuntu    4096 Mar 21 18:20 ../</span><br><span class="line">drwxr-xr-x 6 root   root      4096 Mar 22 10:56 apache-maven-3.0.5/</span><br><span class="line">-rw-r--r-- 1 root   root   5144659 Apr 17  2017 apache-maven-3.0.5-bin.tar.gz</span><br><span class="line">drwxr-xr-x 9 root   root      4096 Mar 22 10:25 apache-tomcat-7.0.73/</span><br><span class="line">drwxrwxr-x 2 ubuntu ubuntu    4096 Mar 22 10:28 setup/</span><br></pre></td></tr></table></figure></p>
+<p>接下来，我们可以把<code>apache-maven-3.0.5-bin.tar.gz</code>移动到setup文件夹下面：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo mv apache-maven-3.0.5-bin.tar.gz setup/</span><br></pre></td></tr></table></figure></p>
+<p>发现setup里面是这样的：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">ubuntu@VM-0-4-ubuntu:~/java/developer/setup$ ll</span><br><span class="line">total 341356</span><br><span class="line">drwxrwxr-x 2 ubuntu ubuntu      4096 Mar 22 10:57  ./</span><br><span class="line">drwxrwxr-x 5 ubuntu ubuntu      4096 Mar 22 10:57  ../</span><br><span class="line">-rw-r--r-- 1 root   root     5144659 Apr 17  2017  apache-maven-3.0.5-bin.tar.gz</span><br><span class="line">-rw-r--r-- 1 root   root     8938514 Apr 17  2017  apache-tomcat-7.0.73.tar.gz</span><br><span class="line">-rw-r--r-- 1 ubuntu ubuntu 156926672 Mar 21 22:22  jdk1.8_1.8.0202-1_amd64.deb</span><br><span class="line">-rw-rw-r-- 1 ubuntu ubuntu 178418154 Mar 21 22:12  jdk-8u202-linux-x64.rpm</span><br></pre></td></tr></table></figure></p>
+<p>接下来，我们直接输入<code>mvn -version</code>，看是不是成功出现版本号了，如果没有，请检查环境变量是否设置有误:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ubuntu@VM-0-4-ubuntu:~/java/developer/apache-maven-3.0.5$ mvn -version</span><br><span class="line">Apache Maven 3.0.5 (r01de14724cdef164cd33c7c8c2fe155faf9602da; 2013-02-19 21:51:28+0800)</span><br><span class="line">Maven home: /home/ubuntu/java/developer/apache-maven-3.0.5</span><br><span class="line">Java version: 1.8.0_202, vendor: Oracle Corporation</span><br><span class="line">Java home: /usr/java/jdk1.8.0_202-amd64/jre</span><br><span class="line">Default locale: en_US, platform encoding: UTF-8</span><br><span class="line">OS name: &quot;linux&quot;, version: &quot;4.15.0-29-generic&quot;, arch: &quot;amd64&quot;, family: &quot;unix&quot;</span><br></pre></td></tr></table></figure></p>
+<h2 id="vsftpd的安装"><a href="#vsftpd的安装" class="headerlink" title="vsftpd的安装"></a>vsftpd的安装</h2><p>同样我们退回到developer文件夹，我们使用下面的命令进行安装：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install vsftpd</span><br></pre></td></tr></table></figure></p>
+<p>如果你使用centOs，则使用<code>sudo yum-y install vsftpd</code>。现在我们需要创建一个文件夹，退回到developer文件夹的上一层，因为我们创建的这个product文件和这个developer的是同级别的:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ubuntu@VM-0-4-ubuntu:~/java$ mkdir product</span><br><span class="line">ubuntu@VM-0-4-ubuntu:~/java$ cd product</span><br><span class="line">ubuntu@VM-0-4-ubuntu:~/java/product$ ll</span><br><span class="line">total 8</span><br><span class="line">drwxrwxr-x 2 ubuntu ubuntu 4096 Mar 22 11:13 ./</span><br><span class="line">drwxrwxr-x 5 ubuntu ubuntu 4096 Mar 22 11:13 ../</span><br><span class="line">ubuntu@VM-0-4-ubuntu:~/java/product$</span><br></pre></td></tr></table></figure></p>
+<p>接着进入到product文件夹，在里面新建一个ftpfile，然后赋予其可以登录ftpserver，但是没有登录其他的权限：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ubuntu@VM-0-4-ubuntu:~/java/product$ mkdir ftpfile</span><br><span class="line">ubuntu@VM-0-4-ubuntu:~/java/product$ sudo useradd ftpuser -d /product/ftpfile -s /sbin/nologin</span><br></pre></td></tr></table></figure></p>
+<p>紧接着赋予其用户组：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ubuntu@VM-0-4-ubuntu:~/java/product$ sudo chown -R ftpuser.ftpuser ./ftpfile/</span><br></pre></td></tr></table></figure></p>
+<p>查看一下，发现多了一个ftpfile文件：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ubuntu@VM-0-4-ubuntu:~/java/product$ ll</span><br><span class="line">total 12</span><br><span class="line">drwxrwxr-x 3 ubuntu  ubuntu  4096 Mar 22 11:15 ./</span><br><span class="line">drwxrwxr-x 5 ubuntu  ubuntu  4096 Mar 22 11:13 ../</span><br><span class="line">drwxrwxr-x 2 ftpuser ftpuser 4096 Mar 22 11:15 ftpfile/</span><br></pre></td></tr></table></figure></p>
+<p>接下来我们重置ftpuser的登录密码：（我的密码是admin123）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ubuntu@VM-0-4-ubuntu:~/java/product$ sudo passwd ftpuser</span><br><span class="line">Enter new UNIX password: </span><br><span class="line">Retype new UNIX password: </span><br><span class="line">passwd: password updated successfully</span><br><span class="line">ubuntu@VM-0-4-ubuntu:~/java/product$</span><br></pre></td></tr></table></figure></p>
+<p>接下来进入到/etc/vsftpd文件，如果没有改文件夹，说明那些都是直接在/etc下面，不安全，我们在/etc新建一个vsftpd的文件夹，依次执行下面的命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo mv /etc/ftpusers /etc/vsftpd</span><br><span class="line">sudo mv /etc/vsftpd.conf /etc/vsftpd</span><br></pre></td></tr></table></figure></p>
+<p>紧接着，进入vsftpd文件夹，在里面执行<code>sudo vim chroot_list</code>，在里面添加<code>ftpuser</code>即可，然后保存退出即可。</p>
+<p>下面修改其安全策略：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim /etc/selinux/config</span><br></pre></td></tr></table></figure></p>
+<p>确保里面的代码是这样的，没有就进行添加：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELINUX=disabled</span><br><span class="line"></span><br><span class="line">SELINUXTYPE=targeted</span><br></pre></td></tr></table></figure></p>
+<p>当然你可以使用下面的命令，这个结果和刚才修改config的效果是一样的：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo setsebool -P ftp_home_dir 1</span><br></pre></td></tr></table></figure></p>
+<p>接下来我们备份一下这个<code>vsftpd.conf</code>，并将线上的进行复制：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo mv vsftpd.conf vsftpd.conf.bak</span><br><span class="line"></span><br><span class="line">sudo wget http://learning.happymmall.com/vsftpdconfig/vsftpd.conf</span><br></pre></td></tr></table></figure></p>
+<p>查看一下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">ubuntu@VM-0-4-ubuntu:/etc/vsftpd$ ll</span><br><span class="line">total 32</span><br><span class="line">drwxr-xr-x   2 root root 4096 Mar 22 12:01 ./</span><br><span class="line">drwxr-xr-x 100 root root 4096 Mar 22 11:34 ../</span><br><span class="line">-rw-r--r--   1 root root    8 Mar 22 11:38 chroot_list</span><br><span class="line">-rw-r--r--   1 root root  132 Mar 22 11:30 ftpusers</span><br><span class="line">-rw-r--r--   1 root root 4786 Apr 17  2017 vsftpd.conf</span><br><span class="line">-rw-r--r--   1 root root 5850 Mar 22 11:32 vsftpd.conf.bak</span><br></pre></td></tr></table></figure></p>
+<p>这样vsftpd我们就安装好了。</p>
+<h2 id="nginx的安装"><a href="#nginx的安装" class="headerlink" title="nginx的安装"></a>nginx的安装</h2><p>因为nginx需要编译，因此我们需要进入到setup这个文件夹，在里面执行下面的命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo wget http://learning.happymmall.com/nginx/linux-nginx-1.10.2.tar.gz</span><br></pre></td></tr></table></figure></p>
+<p>nginx的安装需要依赖，因此我们先执行：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install build-essential libtool libpcre3  libpcre3-dev zlib1g-dev openssl</span><br></pre></td></tr></table></figure></p>
+<p>查看一下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">ubuntu@VM-0-4-ubuntu:~/java/developer/setup$ ll</span><br><span class="line">total 342252</span><br><span class="line">drwxrwxr-x 2 ubuntu ubuntu      4096 Mar 22 12:05  ./</span><br><span class="line">drwxrwxr-x 5 ubuntu ubuntu      4096 Mar 22 10:57  ../</span><br><span class="line">-rw-r--r-- 1 root   root     5144659 Apr 17  2017  apache-maven-3.0.5-bin.tar.gz</span><br><span class="line">-rw-r--r-- 1 root   root     8938514 Apr 17  2017  apache-tomcat-7.0.73.tar.gz</span><br><span class="line">-rw-r--r-- 1 ubuntu ubuntu 156926672 Mar 21 22:22  jdk1.8_1.8.0202-1_amd64.deb</span><br><span class="line">-rw-rw-r-- 1 ubuntu ubuntu 178418154 Mar 21 22:12  jdk-8u202-linux-x64.rpm</span><br><span class="line">-rw-r--r-- 1 root   root       85416 Mar 21 22:20 &apos;jdk-8u202-linux-x64.rpm?AuthParam=1553176185_71b2a824d4d35c4a61c57ccd5f476606&apos;</span><br><span class="line">-rw-r--r-- 1 root   root      910812 Apr 17  2017  linux-nginx-1.10.2.tar.gz</span><br></pre></td></tr></table></figure></p>
+<p>接下来进行解压安装：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo tar -zxvf linux-nginx-1.10.2.tar.gz</span><br></pre></td></tr></table></figure></p>
+<p>查看一下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">ubuntu@VM-0-4-ubuntu:~/java/developer/setup$ ll</span><br><span class="line">total 342256</span><br><span class="line">drwxrwxr-x 3 ubuntu ubuntu      4096 Mar 22 12:16  ./</span><br><span class="line">drwxrwxr-x 5 ubuntu ubuntu      4096 Mar 22 10:57  ../</span><br><span class="line">-rw-r--r-- 1 root   root     5144659 Apr 17  2017  apache-maven-3.0.5-bin.tar.gz</span><br><span class="line">-rw-r--r-- 1 root   root     8938514 Apr 17  2017  apache-tomcat-7.0.73.tar.gz</span><br><span class="line">-rw-r--r-- 1 ubuntu ubuntu 156926672 Mar 21 22:22  jdk1.8_1.8.0202-1_amd64.deb</span><br><span class="line">-rw-rw-r-- 1 ubuntu ubuntu 178418154 Mar 21 22:12  jdk-8u202-linux-x64.rpm</span><br><span class="line">-rw-r--r-- 1 root   root       85416 Mar 21 22:20 &apos;jdk-8u202-linux-x64.rpm?AuthParam=1553176185_71b2a824d4d35c4a61c57ccd5f476606&apos;</span><br><span class="line">-rw-r--r-- 1 root   root      910812 Apr 17  2017  linux-nginx-1.10.2.tar.gz</span><br><span class="line">drwxr-xr-x 8   1001   1001      4096 Oct 18  2016  nginx-1.10.2/</span><br></pre></td></tr></table></figure></p>
+<p>进入解压好的nginx-1.10.2目录，查看一下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">ubuntu@VM-0-4-ubuntu:~/java/developer/setup/nginx-1.10.2$ ll</span><br><span class="line">total 700</span><br><span class="line">drwxr-xr-x 8   1001   1001   4096 Oct 18  2016 ./</span><br><span class="line">drwxrwxr-x 3 ubuntu ubuntu   4096 Mar 22 12:16 ../</span><br><span class="line">drwxr-xr-x 6   1001   1001   4096 Mar 22 12:16 auto/</span><br><span class="line">-rw-r--r-- 1   1001   1001 264254 Oct 18  2016 CHANGES</span><br><span class="line">-rw-r--r-- 1   1001   1001 402997 Oct 18  2016 CHANGES.ru</span><br><span class="line">drwxr-xr-x 2   1001   1001   4096 Mar 22 12:16 conf/</span><br><span class="line">-rwxr-xr-x 1   1001   1001   2481 Oct 18  2016 configure*</span><br><span class="line">drwxr-xr-x 4   1001   1001   4096 Mar 22 12:16 contrib/</span><br><span class="line">drwxr-xr-x 2   1001   1001   4096 Mar 22 12:16 html/</span><br><span class="line">-rw-r--r-- 1   1001   1001   1397 Oct 18  2016 LICENSE</span><br><span class="line">drwxr-xr-x 2   1001   1001   4096 Mar 22 12:16 man/</span><br><span class="line">-rw-r--r-- 1   1001   1001     49 Oct 18  2016 README</span><br><span class="line">drwxr-xr-x 9   1001   1001   4096 Mar 22 12:16 src/</span><br><span class="line">ubuntu@VM-0-4-ubuntu:~/java/developer/setup/nginx-1.10.2$</span><br></pre></td></tr></table></figure></p>
+<p>接下来执行下面的命令：(默认编译为当前路径)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ./configure</span><br></pre></td></tr></table></figure></p>
+<p>紧接着执行：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo make</span><br></pre></td></tr></table></figure></p>
+<p>如果运行出现下面的情况，请不要慌：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">make[1]: *** [objs/src/core/ngx_murmurhash.o] Error 1</span><br><span class="line">make[1]: Leaving directory &apos;/home/ubuntu/java/developer/setup/nginx-1.10.2&apos;</span><br><span class="line">Makefile:8: recipe for target &apos;build&apos; failed</span><br><span class="line">make: *** [build] Error 2</span><br></pre></td></tr></table></figure></p>
+<p>找到我们<code>nginx-1.10.2/objs/Makefile</code>文件，将里面的-Werror删除掉即可：<br><img src="https://upload-images.jianshu.io/upload_images/8964398-888fadaed2128fe8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt><br>（注意只是删除-Werror，改行其余信息不能动），之后重新运行刚才的代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo make</span><br></pre></td></tr></table></figure></p>
+<p>如果最后出现下面的说明，就说明可以了，我们继续往后：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make[1]: Leaving directory &apos;/home/ubuntu/java/developer/setup/nginx-1.10.2&apos;</span><br></pre></td></tr></table></figure></p>
+<p>继续执行安装命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo make install</span><br></pre></td></tr></table></figure></p>
+<p>后面的防火墙配置，我们就专门会说的。接下来配置其详细信息。<br>查看一下它所在的目录：<br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ubuntu@VM-0-4-ubuntu:~/java/developer/setup/nginx-1.10.2$ whereis nginx</span><br><span class="line">nginx: /usr/sbin/nginx /usr/lib/nginx /etc/nginx /usr/local/nginx /usr/share/nginx /usr/share/man/man8/nginx.8.gz</span><br></pre></td></tr></table></figure></p>
+<p>我们进入到/usr/local/nginx下面，然后进入到conf里面，接着编辑主文件：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim nginx.conf</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-816e7d0cabc6a3eb.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>我们往下拉，我们https server的位置添加下面一行代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">include vhost/*.conf;</span><br></pre></td></tr></table></figure></p>
+<p>（截图是我已经配置好的，目的是让大家对此有一个更清醒的认识。）</p>
+<p>紧接着在nginx.conf文件的同级目录下面新建vhost文件夹：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo mkdir vhost</span><br></pre></td></tr></table></figure></p>
+<p>进入到该文件夹，添加我们反向代理的文件。</p>
+<p>当然你也可以参考这篇文章进行安装：<a href="https://www.cnblogs.com/EasonJim/p/7806879.html" target="_blank" rel="noopener">ubuntu安装nginx</a></p>
+<h2 id="mysql的安装"><a href="#mysql的安装" class="headerlink" title="mysql的安装"></a>mysql的安装</h2><p>首先查看是否安装：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo rpm -qa| grep mysql-server</span><br></pre></td></tr></table></figure></p>
+<p>没有我们就开始安装：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install mysql-server</span><br></pre></td></tr></table></figure></p>
+<p>这个我们就直接安装在java这个文件夹里面了。<br>然后修改MySQL的字符集：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim /etc/mysql/mysql.conf.d/mysqld.cnf</span><br></pre></td></tr></table></figure></p>
+<p>在mysqld部分添加下面的代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">character-set-server=utf8</span><br><span class="line">default-character-set=utf8</span><br></pre></td></tr></table></figure></p>
+<p>然后是mysql的启动：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo sysv-rc-conf mysqld on</span><br><span class="line">sudo sysv-rc-conf --list mysqld</span><br></pre></td></tr></table></figure></p>
+<p>注意一下，我们要的是2-5是开的，0和6是关闭的即可。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ubuntu@VM-0-4-ubuntu:/etc/apt$ sudo sysv-rc-conf --list mysqld</span><br><span class="line">mysqld       2:on       3:on    4:on    5:on</span><br><span class="line">ubuntu@VM-0-4-ubuntu:/etc/apt$</span><br></pre></td></tr></table></figure></p>
+<p>关于MySQL的防火墙的配置，我们在后面也会说明的。<br>接下来我们开始启动mysql，使用下面的命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo service mysql restart</span><br></pre></td></tr></table></figure></p>
+<p>如果提示没有sysv-rc-conf，请参看这篇文章：<a href="https://blog.csdn.net/sw1009374593/article/details/84929494" target="_blank" rel="noopener">ubuntu 18 当使用命令sudo apt-get install sysv-rc-conf安装不上时，提示“ E: 无法定位软件包问题</a>.<br>如果重启出现<code>Can &#39;t connect to local MySQL server through socket &#39;/tmp/mysql.sock &#39;(2) &quot;;</code>的情况，请注意，我们应该查看这篇文章：<a href="https://blog.csdn.net/hjf161105/article/details/78850658" target="_blank" rel="noopener">解决办法</a>。或者这篇文章：<a href="https://blog.csdn.net/u012150360/article/details/84546192" target="_blank" rel="noopener">办法2</a><br>开始创建数据库：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">create database `secondhandmarket` default character set utf8 COLLATE utf8_general_ci;</span><br></pre></td></tr></table></figure></p>
+<p>插入新用户：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">insert into mysql.user(host,user,authentication_string)values(&quot;127.0.0.1&quot;,&quot;envy&quot;,authentication_string(&quot;envy&quot;));</span><br></pre></td></tr></table></figure></p>
+<p>创建数据表，我们首先查看sql的路径：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/home/ubuntu/java/squirrel/secondhandmarket.sql</span><br></pre></td></tr></table></figure></p>
+<p>然后进入mysql，我们首先使用<code>use secondhandmarket;</code>，接着执行：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source /home/ubuntu/java/squirrel/secondhandmarket.sql</span><br></pre></td></tr></table></figure></p>
+<p>接着查看一下表：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">show tables;</span><br><span class="line"></span><br><span class="line">select * from admin\G;</span><br></pre></td></tr></table></figure></p>
+
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="https://upload-images.jianshu.io/upload_images/8964398-58d04ffa926103d9.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">觉得不错，赏包辣条吃呗！</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href target="_blank">编程思录</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+    
+        <a href="/2018/09/05/SSM搭建二手市场交易平台（二十八）：前台订单获取以及后台管理员订单管理功能开发/" class="next-post btn btn-default" title="SSM搭建二手市场交易平台（二十八）：前台订单获取以及后台管理员订单管理功能开发">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">SSM搭建二手市场交易平台（二十八）：前台订单获取以及后台管理员订单管理功能开发</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+    <div id="vcomments" class="valine"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+
+    <script>
+        new Valine({
+            av: AV,
+            el: '#vcomments',
+            appId: '8zvHFFu5l2ah8lh0DEPH393B-gzGzoHsz',
+            appKey: 'UNmB24200qMtyyrun5z99nOE',
+            placeholder: '听说长得好看的，都已经留言了！',
+            notify: false,
+            verify: false,
+            avatar: 'mm',
+            meta: 'nick,mail'.split(','),
+            pageSize: '10',
+            path: window.location.pathname,
+            lang: 'zh-CN'.toLowerCase()
+        })
+    </script>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#jdk的安装"><span class="toc-text">jdk的安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#tomcat的安装"><span class="toc-text">tomcat的安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#maven的安装"><span class="toc-text">maven的安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#vsftpd的安装"><span class="toc-text">vsftpd的安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#nginx的安装"><span class="toc-text">nginx的安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#mysql的安装"><span class="toc-text">mysql的安装</span></a></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2017-2019
+                </span> |
+                <span>
+				编程思录,保留所有权利
+                    <!--Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>-->
+                </span> |
+                <span>
+				<a style="color: #black" href="http://www.miitbeian.gov.cn">赣ICP备18013455号-5</a>
+                    <!--Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>-->
+                </span>
+            </div>
+			
+			<div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+			
+			<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1277113902'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s96.cnzz.com/z_stat.php%3Fid%3D1277113902%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));</script>
+        </div>
+    </div>
+</div>
+
+
+
+
+    <script src="/assets/tagcanvas.min.js?rev=2.9"></script>
+    <script>
+        var tagOption = {
+            textColour: 'red', // 字体颜色
+            outlineMethod: 'block', // 选中模式
+            outlineColour: '#FFDAB9', // 选中模式的颜色
+            interval: 30 || 30, // 动画帧之间的时间间隔，值越大，转动幅度越大
+            textHeight: 13,
+            outlineRadius: 3,
+            freezeActive: true || '', // 选中的标签是否继续滚动
+            frontSelect: true || '', // 不选标签云后部的标签
+            initial: [0.1, -0.1],
+            depth: 0.5,
+            decel: 0.95,
+            maxSpeed: 0.03,
+            reverse: true || '', // 是否反向触发
+            fadeIn: 500, // 进入动画时间
+            wheelZoom: false || '' // 是否启用鼠标滚轮
+        }
+        TagCanvas.Start('tag-cloud-3d','',tagOption);
+    </script>
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+</body>
+</html>

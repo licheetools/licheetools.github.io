@@ -1,0 +1,468 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="编程思录，记录思考">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://blog.licheetools.top">
+    <!--SEO-->
+
+    <meta name="keywords" content="SSM框架,JAVA后端">
+
+
+    <meta name="description" content="开发流程环境搭建：这里以windows10 64Bit为环境进行环境搭建。具体包括jdk的安装，Tomcat的安装，nginx的安装。数据库及接口的配置：介绍表的设计思路，接口的设计思路项目初始...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+
+    <!--Title-->
+
+
+<title>SSM搭建二手市场交易平台（一）：开发流程与环境搭建 | 编程思录，记录思考</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="编程思录，记录思考" type="application/atom+xml">
+
+
+    <link rel="icon" href="./favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+	<div class="hide">
+		<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+	</div>
+
+
+
+
+
+
+    
+
+    <script>
+        (function(){
+            var bp = document.createElement('script');
+            var curProtocol = window.location.protocol.split(':')[0];
+            if (curProtocol === 'https') {
+                bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+            }
+            else {
+                bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+            }
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(bp, s);
+        })();
+    </script>
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header" style="background-image:url(https://upload-images.jianshu.io/upload_images/8964398-b1ba9582ea8b69ba.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)">
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title="Envy">
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 点滴进步，都是收获 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://blog.licheetools.top">编程思录，记录思考</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>首页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/font/"><i class="fa "></i>前端</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/java/"><i class="fa "></i>Java</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/django/"><i class="fa "></i>Django</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/flask/"><i class="fa "></i>Flask</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/spider/"><i class="fa "></i>爬虫</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/data/"><i class="fa "></i>数据分析</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/money/"><i class="fa "></i>付费教程</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/life/"><i class="fa "></i>生活记录</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives"><i class="fa "></i>时间轴</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/about/"><i class="fa "></i>关于博主</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/liuyan/"><i class="fa "></i>留言板</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="SSM搭建二手市场交易平台（一）：开发流程与环境搭建">
+            
+	            SSM搭建二手市场交易平台（一）：开发流程与环境搭建
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/java/">java</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/JAVA后端/">JAVA后端</a> <a class="tag-link" href="/tags/SSM框架/">SSM框架</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2018/08/10</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="开发流程"><a href="#开发流程" class="headerlink" title="开发流程"></a>开发流程</h2><p><strong>环境搭建：</strong>这里以windows10 64Bit为环境进行环境搭建。具体包括jdk的安装，Tomcat的安装，nginx的安装。<br><strong>数据库及接口的配置：</strong>介绍表的设计思路，接口的设计思路<br><strong>项目初始化：</strong>介绍Spring，Spring MVC，MyBatis的使用<br><strong>用户模块：</strong>介绍个人中心资料修改，商品收藏等<br><strong>分类模块：</strong>介绍如何进行二手商品类目的分类以及插件的使用<br><strong>商品模块：</strong>主要介绍商品的富文本展示<br><strong>购物车模块：</strong>介绍添加商品，更新购物车，查询购物车数量，价格动态显示<br><strong>收货地址模块：</strong>添加地址，删除更新地址，地址详情，地址的列表等<br><strong>支付模块：</strong>介绍支付宝的支付功能，回调功能，查询订单的支付状态，生成支付的二维码<br><strong>订单模块：</strong>分为前台和后台，前台就是创建订单，获取订单的信息，列表的详情页，取消订单；后台负责订单的搜索，订单的详情，订单的发货<br><strong>云服务器模块：</strong>介绍云服务器的配置与项目的打包上线。</p>
+<h3 id="淘宝技术架构"><a href="#淘宝技术架构" class="headerlink" title="淘宝技术架构"></a>淘宝技术架构</h3><p>这里我找了一篇文章，大家可以了解一下：<a href="https://wenku.baidu.com/view/02f1a42e876fb84ae45c3b3567ec102de2bddfec.html" target="_blank" rel="noopener">淘宝技术架构</a></p>
+<p>在之前我们都是采用all in one的方式来进行项目的发布与运行：就是你的Application Server里面包含了Application ，File和DataBase，这样做的好处就是节省开支，但坏处就是很容易造成服务器挂掉。</p>
+<p>然后就各自分开，各自采用不同的服务器：Application Server，File Server，DataBase Server,这种能防止File Server挂掉以后，系统还能运行，但是还是不能满足我们高并发的要求（因为你每次数据请求都必须直接与数据库进行连接，当访问量达到一定数量的时候，数据库响应时间也是很费资源），于是架构又开始升级。</p>
+<p>我们知道80%的数据访问只存在于20%的数据上面，而且我们不希望每次都是从数据库中取出数据，于是我们可以使用缓存。缓存分为很多种，本地缓存和远程缓存。本地缓存称为local cache，远程缓存称为Remote Disteibuted Cache。我从网上找了几张图片，大家可以了解一下：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-99b422d0b55974b2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>演化过程：在Application Server这里添加添加了一个负载均衡调度器，也变成了一个集群。<br><img src="https://upload-images.jianshu.io/upload_images/8964398-57aa6ca597f2bf19.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-c3bc544458e2425b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt><br>利用负载均衡调度器解决服务器的Session共享的问题，但是也有缺点：假设Application1的服务器重启了，那么它上面所有的sessio就全没了；然后就是我们的负载均衡调度器成了一个有状态的服务器，实现容灾就有麻烦。如果你让每个session都在各个服务器里面有一个备份，这的确能解决这个问题，但是当数量达到一个级别以后，这种方式是很费资源的。那么你又说，为我们可以让browser在提交数据的同时带上cookie，这样就不用担心服务器不能正常识别资源了，但是你想过没有，cookie的长度是有限的而且是有时间限制的，而且还是存放在本地，它的安全性就等不到保证了。</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-93263de8115619dc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt><br>于是又有人提出了一种新的方式，我们可以专门弄一个session服务器，用于存放session。当你想获取应用的时候，可以从session服务器获取session。但是我们需要注意这个session server是单点的，我们最好把它也做成一个集群。</p>
+<p>现在我们继续回到前面的架构图，我们现在发现数据库是一个瓶颈，我们可以对它进行读写分离：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-7a51015a9ddf8e97.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>我们这里的Slave是辅库，Master是主库，我们把所有的读的操作都让Slave辅库来进行，把所有的写的操作都让Master主库负责。这样做的话，把你Application也需要做相应的变化：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-ab27db5e1c72732a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-f5de04268a0357c4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>在这个过程中，安全性，数据分析，监控，反作弊等都值得大家去注意；<br>然后随着技术的发展，SOA架构，服务化，消息队列，任务调度，多机房等方向发展。</p>
+<h2 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h2><h3 id="jdk的安装"><a href="#jdk的安装" class="headerlink" title="jdk的安装"></a>jdk的安装</h3><p>我这里使用的是jdk10的版本，你可以使用jdk7,8,9，再低的版本就不建议使用了。<br>关于jdk的安装，我这里就不介绍了，直接开启传送大门：<a href="https://www.baidu.com/link?url=8GLQ4FTvZyMgsmkW3g7Iw71d_PfEytmT6IPWwCk4BOjAMP8J-DOwLcxBtkDGx4gNFVJ3KCK18tB_HXubJFTK2FpCCXd0tfdUHP2zs8Uf5Fu&amp;wd=&amp;eqid=f99123ca000091f0000000025c01f8ff" target="_blank" rel="noopener">java的<em>jdk安装</em>(超详细版)</a></p>
+<h3 id="Tomcat的安装"><a href="#Tomcat的安装" class="headerlink" title="Tomcat的安装"></a>Tomcat的安装</h3><p>Tomcat它是一个Web容器，javaEE项目都存放在里面。<br>同样Tomcat的安装，我也是直接开启传送大门，注意一下这里推荐使用Tomcat8系列： <a href="https://www.cnblogs.com/beginner-boy/p/7806680.html" target="_blank" rel="noopener">windows下tomcat的安装配置</a><br>下面简单说一下Tomcat的启动与关闭：<br>启动使用：在配置环境的bin目录下使用startup.bat命令；<br>关闭使用：在配置环境的bin目录下使用shutdown.bat命令。<br>就是<code>${CATALINA_HOME}/bin/startup.bat</code>或者是<code>${CATALINA_HOME}/bin/shutdown.bat</code><br>对了，你还需要配置UTF-8的字符集：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">F:\tomcat\apache-tomcat-8.5.34\conf\server.xml</span><br></pre></td></tr></table></figure></p>
+<p>我的路径是这里，你打开它，找到第69-71行代码：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-727121717de4b380.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>添加这一行代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">URIEncoding=&quot;UTF-8&quot;</span><br></pre></td></tr></table></figure></p>
+<p>注意：截图中之所以有是因为我已经配置完了，之前是没有的。</p>
+<h3 id="Maven的安装"><a href="#Maven的安装" class="headerlink" title="Maven的安装"></a>Maven的安装</h3><p>Maven全称是Apache Maven Project–Apache的优秀开源项目，Maven是java项目的构建和管理工具。Maven的用途很大，这里简单说一下：<br>1、用Maven可以方便的创建项目，基于archetype可以创建多种类型的java项目；<br>2、Maven仓库对jar包（artifact）进行统一管理，避免jar文件的重复拷贝和版本冲突；<br>3、团队开发，Maven管理项目的release（正式版本）和snapshot（开发版本）版本，方便多模块（module）项目的各个模块之间的快速集成</p>
+<p>关于Maven的安装，大家可以参考这篇文章：<a href="https://www.cnblogs.com/yyiou/p/7411409.html" target="_blank" rel="noopener">Maven安装教程详解</a><br>不过要说明的是，如果下载速度过慢，建议使用镜像下载：<br><a href="https://mirrors.tuna.tsinghua.edu.cn/apache/maven/maven-3/" target="_blank" rel="noopener">maven下载</a><br><img src="https://upload-images.jianshu.io/upload_images/8964398-e9aac8d8720134b3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>随便点击一个，然后选择binaries这个文件夹，选择以.zip结尾的文件就可以了。<br>然后安装按照文章里面的说明就可以了，最后你可以在dos状态下使用<code>mvn -version</code>来验证安装是否正确：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-3137c6fa6817619b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>还要注意一下，就是我的Maven项目地址已经发生了改变,由默认的位置变为:<code>F:\Maven\repo</code>，这一点你注意一下。</p>
+<p>下面是一些常用的maven命令：<br>清除命令：mvn clean<br>编译命令： mvn compile<br>打包命令：mvn package<br>跳过单元测试：mvn clean package -Dmaven.test.skip=true</p>
+<h3 id="vsftpd安装"><a href="#vsftpd安装" class="headerlink" title="vsftpd安装"></a>vsftpd安装</h3><p>vsftpd 是“very secure FTP daemon”的缩写，是一个完全免费的、开放源代码的ftp服务器软件,但是它是适用于linux系统，要想在windows上搭建是一件非常麻烦的事。我从网上找了很久，找到了一个小而巧的FTP Server，不需要安装，点击之后输入用户和密码就能使用。</p>
+<p>第一步，从我的gitee上面下载一个名为FTP Server.zip的压缩文件，解压就只有下面2个文件：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-dd0edcd0ae9084c2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>你单击第二个exe，设置账户和密码，以及ftp的路径，然后去浏览器地址栏输入：<br><code>ftp://localhost</code>，就完成了自己FTP Server的搭建。</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-81d069900689ebff.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>接下来是nginx的安装。</p>
+<h3 id="nginx的安装"><a href="#nginx的安装" class="headerlink" title="nginx的安装"></a>nginx的安装</h3><p>nginx是一款轻量级的web服务器，也是一款反向代理服务器；它的功能很强大，这里简单介绍一下：<br>1、可直接支持Rails和PHP的程序；<br>2、可作为HTTP反向代理服务器；<br>3、作为负载均衡服务器；<br>4、作为邮件代理服务器；<br>5、帮助实现前端动静分离；<br>nginx的特点：高稳定，高性能，资源占用少，功能丰富，模块化结构，支持热部署</p>
+<p>具体的安装我这里就不介绍了，大家可以参考这篇文章就行了：<a href="https://www.cnblogs.com/Chiler/p/8027167.html" target="_blank" rel="noopener">Nginx在windows上安装 及 Nginx的配置及优化</a></p>
+<p>安装完以后，打开<code>C:\Windows\System32\drivers\etc\hosts</code>文件，新增一行代码：<br><code>127.0.0.1    store.licheetools.top</code>然后你去浏览器地址栏中输入<code>127.0.0.1</code>，<code>store.licheetools.top</code>，或者<code>localhost</code>就能正常访问到nginx的首页了。（如果访问不了，请关闭之前开启的FTP Server）</p>
+<p>接下来就是相关文件的配置了，首先找到nginx的安装目录下面的conf文件：<code>F:\Maven\nginx-1.14.1\conf</code>，接着我们打开其中的<code>nginx.conf</code>文件：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-816e7d0cabc6a3eb.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>我们往下拉，我们在大概第95行的位置添加下面一行代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">include vhost/*.conf;</span><br></pre></td></tr></table></figure></p>
+<p>截图是我已经配置好的，目的是让大家对此有一个更清醒的认识。</p>
+<p>接着在<code>nginx.conf</code>文件的同级目录下面新建<strong>vhost文件夹</strong>（名字你可以不这样命令，但是必须和前面我们在nginx.conf文件中定义的代码名一样，否则就会出现找不到文件的bug）</p>
+<p>然后在里面新建名为<code>image.licheetools.top.conf</code>的文件，必须与.conf结尾。你可以不命令这个名字，但怕你后面不会正常运行，建议还是按照我的命令进行运行吧。（这里你可以在<code>F:\Maven\envy\img</code>文件夹里面放置一张名为test.jpg的图片，后面测试会用上）</p>
+<p>在里面写入以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen 80;</span><br><span class="line">    autoindex off;</span><br><span class="line">    server_name image.licheetools.top;   #这个名称必须和文件名一致</span><br><span class="line">    access_log c:/access.log combined;</span><br><span class="line">    index index.html index.htm index.jsp index.php;</span><br><span class="line">    #error_page 404 /404.html;</span><br><span class="line">    if ( $query_string ~* &quot;.*[\;&apos;\&lt;\&gt;].*&quot; )&#123;</span><br><span class="line">        return 404;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    location ~ /(mmall_fe|mmall_admin_fe)/dist/view/* &#123;</span><br><span class="line">        deny all;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    location / &#123;</span><br><span class="line">        root F:\Maven\envy\img;   #这个就是前面的那个ftp server的路径</span><br><span class="line">        add_header Access-Control-Allow-Origin *;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>然后打开：<code>C:\Windows\System32\drivers\etc\hosts</code>文件，修改刚才新增的那行代码：<code>127.0.0.1    image.licheetools.top</code>。保存完以后，我们重新打开一个cmd命令，进入到nginx的安装目录。输入<code>nginx.exe -t</code>，如果配置文件没有报错，继续输入<code>nginx.exe -s reload</code>。然后你去浏览器地址栏中输入<code>http://image.licheetools.top\test.jpg</code>就能正常访问到我们在<code>F:\Maven\envy\img</code>下面放置的test.jpg文件了。（如果访问不了，请关闭之前开启的FTP Server）</p>
+<p>上面介绍的是文件转发的测试，接下来我们来测试一下端口的转发。</p>
+<h3 id="端口转发测试"><a href="#端口转发测试" class="headerlink" title="端口转发测试"></a>端口转发测试</h3><p>我们继续在vhost里面新建名为<code>tomcat.licheetools.top.conf</code>的文件，必须与.conf结尾。你可以不命令这个名字，但怕你后面不会正常运行，建议还是按照我的命令进行运行吧。（这里你可以在<code>F:\Maven\envy\img</code>文件夹里面放置一张名为test.jpg的图片，后面测试会用上）</p>
+<p>在里面写入以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen 80;</span><br><span class="line">    autoindex on;</span><br><span class="line">    server_name tomcat.licheetools.top;    #这个名称必须和文件名一致</span><br><span class="line">    access_log c:/access.log combined;</span><br><span class="line">    index index.html index.htm index.jsp index.php;</span><br><span class="line">    #error_page 404 /404.html;</span><br><span class="line">    if ( $query_string ~* &quot;.*[\;&apos;\&lt;\&gt;].*&quot; )&#123;</span><br><span class="line">        return 404;</span><br><span class="line">    &#125;</span><br><span class="line">    location / &#123;</span><br><span class="line">        proxy_pass http://127.0.0.1:8080;</span><br><span class="line">        add_header Access-Control-Allow-Origin *;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>然后打开：<code>C:\Windows\System32\drivers\etc\hosts</code>文件，继续新增的一行代码：<code>127.0.0.1    tomcat.licheetools.top</code>。保存完以后，我们重新打开一个cmd命令，进入到tomcat安装目录的bin目录，在里面执行<code>startup.bat</code>，来启动我们的tomcat服务器。此时你去浏览器地址栏中输入<code>http://localhost:8080/</code>看是不是出现了tomcat的默认首页。</p>
+<p>紧接着我们另开启一个新的cmd命令行，进入到nginx的安装目录，输入<code>nginx.exe -s reload</code>。</p>
+<p>然后你去浏览器地址栏中输入<code>http://tomcat.licheetools.top</code>就能正常访问到tomcat的默认首页。（如果访问不了，请关闭之前开启的FTP Server）</p>
+<h3 id="mysql的安装"><a href="#mysql的安装" class="headerlink" title="mysql的安装"></a>mysql的安装</h3><p>关于mysql的安装，我在这篇笔记里面有过详细的介绍，这里就不再介绍了。<br><a href="https://www.jianshu.com/p/6b007bc61f5c" target="_blank" rel="noopener">零基础使用Django2.0.1打造在线教育网站（二）：开发环境配置</a></p>
+<p>mysql的登录：在dos状态下使用mysql -uroot -p然后输入密码进行登录。<br>mysql的配置（注意这里所说的配置不光对windows有用，对于linux或者unix也是有用的）<strong>SQL语句结尾的分号必须带上，表示语句结束</strong><br>（1）查看目前mysql的用户：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select user,host from mysql.user;</span><br></pre></td></tr></table></figure></p>
+<p>（2）修改root密码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">set password for root@localhost=password(&apos;yourpassword&apos;);</span><br><span class="line"></span><br><span class="line">set password for root@127.0.0.1=password(&apos;yourpassword&apos;);</span><br></pre></td></tr></table></figure></p>
+<p>（3）使用exit退出mysql;<br>（4）重新登录mysql输入mysql -u root -p;<br>（5）输入密码登录成功；<br>（6）删除匿名用户，执行下面的命令：<br>查看是否有匿名用户：<code>select user,host from mysql.user;</code><br>删除匿名用户：<code>delete feom mysql.user where user = &#39;&#39;;</code><br>再次查看：<code>select user,host from mysql.user;</code><br>刷新，使上述操作生效：<code>flush privilgges;</code><br>（7）插入mysql新用户：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">insert into mysql.user(Host,User,Password)values(&quot;localhost&quot;,&quot;yourusername&quot;,password(&quot;yourpassword&quot;));</span><br></pre></td></tr></table></figure></p>
+<p>刷新，使上述操作生效：<code>flush privilgges;</code><br>（8）创建新的数据库(database)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">create database &apos;databasename&apos; default character set utf8 collate utf8_general_ci;</span><br></pre></td></tr></table></figure></p>
+<p>（9）本地用户赋予所有权限<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grant all privileges on databasename.* to yourname@localhost identified by &apos;yourpassword&apos;;</span><br></pre></td></tr></table></figure></p>
+<p>（10）给账号开通外网所有权限<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grant all privileges on databasename.* to &apos;yourname&apos;@&apos;%&apos; identified by &apos;yourpassword&apos;;</span><br></pre></td></tr></table></figure></p>
+<p>上面的权限可以根据自己的需要进行适当的修改，举个例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grant  select,insert,update on databasename.* to &apos;yourname&apos;@&apos;192.168.01.01&apos; identified by &apos;yourpassword&apos;;</span><br></pre></td></tr></table></figure></p>
+<p>代表只开通增改查权限给指定的账号，并也指定了ip的地址。<br>刷新，使上述操作生效：<code>flush privilgges;</code><br>（11）查看本地的IP地址：<br>windows系统使用：ipconfig，而linux用户使用ifconfig</p>
+<h3 id="git的安装"><a href="#git的安装" class="headerlink" title="git的安装"></a>git的安装</h3><p>关于git的安装，这里直接开启传送大门：<a href="https://www.cnblogs.com/wj-1314/p/7993819.html" target="_blank" rel="noopener">Git安装教程（windows）</a><br>下面是一些基础的配置：<br>1、配置用户名（提交时会用到）<br><code>git config --global user.name &quot;envy&quot;</code>(envy是我的用户名)<br>2、配置邮箱（提交时会用到）<br><code>git config --global user.email &quot;envy@licheetools.top&quot;</code>(<a href="mailto:envy@licheetools.top" target="_blank" rel="noopener">envy@licheetools.top</a>是我的邮箱)<br>3、其他的一些配置<br><code>git config --global merge.tools &quot;kdiff3&quot;</code>（注意一下，如果你没安装kdiff3就不需要这一行）<br><code>git config --global core.autocrlf false</code>（设置这个的好处就是不用管不同系统中换行符错乱的问题）<br>4、编码问题：<br><code>git config --global gui.encoding utf-8</code>（避免git gui中的中文乱码）<br><code>git config --global core.quotepath off</code>（避免git status显示的中文文件名乱码）</p>
+<p>在windows上面一般还需要配置一下大小写的问题：<br><code>git config --global core.ignorecase false</code></p>
+<h3 id="git-ssh-key-pair的配置"><a href="#git-ssh-key-pair的配置" class="headerlink" title="git ssh key pair的配置"></a>git ssh key pair的配置</h3><p>1、你可以在linux上或者windows上的Git Bash命令行窗口中输入：<br><code>ssh-keygen -t rsa -C &quot;envy@licheetools.top&quot;</code><br>2、然后一路回车，不要输入任何密码，生成ssh key pair<br>3、ssh-add ~/.ssh/id_rsa<br>4、cat ~/.ssh/id_rsa.pub</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-30cbfa05e5ad7113.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>5、复制公共钥匙到粘贴板，我这里是使用gitee（你当然可以使用github）<br>6、查看git的版本:<code>git --version</code></p>
+<p>至此，我们关于开发流程与环境搭建的介绍就到此为止了，感谢你的赏阅！</p>
+
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="https://upload-images.jianshu.io/upload_images/8964398-58d04ffa926103d9.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">觉得不错，赏包辣条吃呗！</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href target="_blank">编程思录</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2018/08/11/SSM搭建二手市场交易平台（二）：数据表设计/" class="pre-post btn btn-default" title="SSM搭建二手市场交易平台（二）：数据表设计">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">SSM搭建二手市场交易平台（二）：数据表设计</span>
+        </a>
+    
+    
+        <a href="/2018/08/05/关于JAVA你必须知道的那些事（九）：数据库连接利器JDBC介绍/" class="next-post btn btn-default" title="关于JAVA你必须知道的那些事（九）：数据库连接利器JDBC介绍">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">关于JAVA你必须知道的那些事（九）：数据库连接利器JDBC介绍</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+    <div id="vcomments" class="valine"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+
+    <script>
+        new Valine({
+            av: AV,
+            el: '#vcomments',
+            appId: '8zvHFFu5l2ah8lh0DEPH393B-gzGzoHsz',
+            appKey: 'UNmB24200qMtyyrun5z99nOE',
+            placeholder: '听说长得好看的，都已经留言了！',
+            notify: false,
+            verify: false,
+            avatar: 'mm',
+            meta: 'nick,mail'.split(','),
+            pageSize: '10',
+            path: window.location.pathname,
+            lang: 'zh-CN'.toLowerCase()
+        })
+    </script>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#开发流程"><span class="toc-text">开发流程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#淘宝技术架构"><span class="toc-text">淘宝技术架构</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#环境搭建"><span class="toc-text">环境搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#jdk的安装"><span class="toc-text">jdk的安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Tomcat的安装"><span class="toc-text">Tomcat的安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Maven的安装"><span class="toc-text">Maven的安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#vsftpd安装"><span class="toc-text">vsftpd安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#nginx的安装"><span class="toc-text">nginx的安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#端口转发测试"><span class="toc-text">端口转发测试</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#mysql的安装"><span class="toc-text">mysql的安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#git的安装"><span class="toc-text">git的安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#git-ssh-key-pair的配置"><span class="toc-text">git ssh key pair的配置</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2017-2019
+                </span> |
+                <span>
+				编程思录,保留所有权利
+                    <!--Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>-->
+                </span> |
+                <span>
+				<a style="color: #black" href="http://www.miitbeian.gov.cn">赣ICP备18013455号-5</a>
+                    <!--Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>-->
+                </span>
+            </div>
+			
+			<div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+			
+			<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1277113902'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s96.cnzz.com/z_stat.php%3Fid%3D1277113902%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));</script>
+        </div>
+    </div>
+</div>
+
+
+
+
+    <script src="/assets/tagcanvas.min.js?rev=2.9"></script>
+    <script>
+        var tagOption = {
+            textColour: 'red', // 字体颜色
+            outlineMethod: 'block', // 选中模式
+            outlineColour: '#FFDAB9', // 选中模式的颜色
+            interval: 30 || 30, // 动画帧之间的时间间隔，值越大，转动幅度越大
+            textHeight: 13,
+            outlineRadius: 3,
+            freezeActive: true || '', // 选中的标签是否继续滚动
+            frontSelect: true || '', // 不选标签云后部的标签
+            initial: [0.1, -0.1],
+            depth: 0.5,
+            decel: 0.95,
+            maxSpeed: 0.03,
+            reverse: true || '', // 是否反向触发
+            fadeIn: 500, // 进入动画时间
+            wheelZoom: false || '' // 是否启用鼠标滚轮
+        }
+        TagCanvas.Start('tag-cloud-3d','',tagOption);
+    </script>
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+</body>
+</html>

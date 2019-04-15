@@ -1,0 +1,420 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="编程思录，记录思考">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://blog.licheetools.top">
+    <!--SEO-->
+
+    <meta name="keywords" content="SSM框架,JAVA后端">
+
+
+    <meta name="description" content="写在前面本篇开始，我们介绍用户模块功能，里面包含的知识点很多，具体有：登录；用户名验证；注册；忘记密码；提交问题答案；重置密码；获取用户信息；更新用户信息；退出登录等。
+学到的技术1、理解横向越...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+
+    <!--Title-->
+
+
+<title>SSM搭建二手市场交易平台（六）：用户登录模块 | 编程思录，记录思考</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="编程思录，记录思考" type="application/atom+xml">
+
+
+    <link rel="icon" href="./favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+	<div class="hide">
+		<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+	</div>
+
+
+
+
+
+
+    
+
+    <script>
+        (function(){
+            var bp = document.createElement('script');
+            var curProtocol = window.location.protocol.split(':')[0];
+            if (curProtocol === 'https') {
+                bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+            }
+            else {
+                bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+            }
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(bp, s);
+        })();
+    </script>
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header" style="background-image:url(https://upload-images.jianshu.io/upload_images/8964398-b1ba9582ea8b69ba.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)">
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title="Envy">
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 点滴进步，都是收获 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://blog.licheetools.top">编程思录，记录思考</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>首页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/font/"><i class="fa "></i>前端</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/java/"><i class="fa "></i>Java</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/django/"><i class="fa "></i>Django</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/flask/"><i class="fa "></i>Flask</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/spider/"><i class="fa "></i>爬虫</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/data/"><i class="fa "></i>数据分析</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/money/"><i class="fa "></i>付费教程</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/life/"><i class="fa "></i>生活记录</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives"><i class="fa "></i>时间轴</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/about/"><i class="fa "></i>关于博主</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/liuyan/"><i class="fa "></i>留言板</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="SSM搭建二手市场交易平台（六）：用户登录模块">
+            
+	            SSM搭建二手市场交易平台（六）：用户登录模块
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/java/">java</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/JAVA后端/">JAVA后端</a> <a class="tag-link" href="/tags/SSM框架/">SSM框架</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2018/08/15</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>本篇开始，我们介绍用户模块功能，里面包含的知识点很多，具体有：登录；用户名验证；注册；忘记密码；提交问题答案；重置密码；获取用户信息；更新用户信息；退出登录等。</p>
+<h2 id="学到的技术"><a href="#学到的技术" class="headerlink" title="学到的技术"></a>学到的技术</h2><p>1、理解横向越权、纵向越权安全漏洞；<br>2、MD5 明文加密机增加salt 值；<br>3、Guava 缓存的使用；<br>4、高复用服务响应对象的设计思想及抽象分装；<br>5、Mybatis-plugins的使用技巧<br>6、session 的使用；<br>7、方法局部演进。</p>
+<h3 id="横向越权、纵向越权安全漏洞介绍"><a href="#横向越权、纵向越权安全漏洞介绍" class="headerlink" title="横向越权、纵向越权安全漏洞介绍"></a>横向越权、纵向越权安全漏洞介绍</h3><p>横向越权：攻击者尝试访问与他拥有相同权限的用户的资源<br>纵向越权：低级别攻击者尝试访问高级别用户的资源</p>
+<h3 id="高复用服务响应对象的设计思想及抽象分装"><a href="#高复用服务响应对象的设计思想及抽象分装" class="headerlink" title="高复用服务响应对象的设计思想及抽象分装"></a>高复用服务响应对象的设计思想及抽象分装</h3><p>这里的意思就是说对于一些经常使用到的代码，我们对其进行了封装，以便更好的进行使用。</p>
+<h3 id="用户登录功能实现"><a href="#用户登录功能实现" class="headerlink" title="用户登录功能实现"></a>用户登录功能实现</h3><p>在我们之前定义的controller包下新建一个包，名称为portal（门户的意思就是给前端用的，你也可以取其他的名字，随意），然后在里面创建一个类，取名UserController。</p>
+<p>（<strong>注意一下，这里我就不再按照之前那种写到哪里，代码就粘贴到哪里的方式了，而是直接附上功能较为完整的代码</strong>）</p>
+<p>在UserController.java里面写入如下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">package top.store.controller.portal;</span><br><span class="line"></span><br><span class="line">import org.springframework.beans.factory.annotation.Autowired;</span><br><span class="line">import org.springframework.stereotype.Controller;</span><br><span class="line">import org.springframework.web.bind.annotation.RequestMapping;</span><br><span class="line">import org.springframework.web.bind.annotation.RequestMethod;</span><br><span class="line">import org.springframework.web.bind.annotation.ResponseBody;</span><br><span class="line">import top.store.common.Const;</span><br><span class="line">import top.store.common.ServerResponse;</span><br><span class="line">import top.store.pojo.User;</span><br><span class="line">import top.store.service.IUserService;</span><br><span class="line"></span><br><span class="line">import javax.servlet.http.HttpSession;</span><br><span class="line"></span><br><span class="line">/***</span><br><span class="line"> * 用户登录</span><br><span class="line"> * @author lenovo</span><br><span class="line"> * */</span><br><span class="line">@Controller</span><br><span class="line">@RequestMapping(&quot;/user/&quot;)  //这是我们对整个用户功能配置的一个类似于namespace的东西</span><br><span class="line">public class UserController &#123;</span><br><span class="line"></span><br><span class="line">    @Autowired</span><br><span class="line">    private IUserService iUserService;</span><br><span class="line"></span><br><span class="line">    @RequestMapping(value = &quot;login.do&quot;,method = RequestMethod.POST)  //这里就是具体的每个方法的url链接</span><br><span class="line">    @ResponseBody   //自动序列化json功能</span><br><span class="line">    public ServerResponse&lt;User&gt; login(String username, String password, HttpSession session)&#123;</span><br><span class="line">        //service--&gt;mybatis--&gt;dao</span><br><span class="line">        ServerResponse&lt;User&gt; response = iUserService.login(username,password);</span><br><span class="line">        if(response.isSuccess())&#123;</span><br><span class="line">            session.setAttribute(Const.CURRENT_USER,response.getData());</span><br><span class="line">        &#125;</span><br><span class="line">        return response;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>接着在service这个包里面创建一个IUserService的java文件（为什么取这个名字，是为了一眼知道这个是接口）:</p>
+<p>IUserService 代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">package top.store.service;</span><br><span class="line"></span><br><span class="line">import top.store.common.ServerResponse;</span><br><span class="line">import top.store.pojo.User;</span><br><span class="line"></span><br><span class="line">/**@author lenovo</span><br><span class="line"> * */</span><br><span class="line">public interface IUserService &#123;</span><br><span class="line">    ServerResponse&lt;User&gt; login(String username, String password);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>然后继续在service这个包里面创建一个包impl（顾名思义这个就是实现接口的类的包，同样名字随意）存放它的实现类，接着在该impl文件下新建UserServiceImpl.java文件，让它去实现我们刚才定义的IUserService接口，里面的代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">package top.store.service.impl;</span><br><span class="line"></span><br><span class="line">import org.apache.commons.lang3.StringUtils;</span><br><span class="line">import org.springframework.beans.factory.annotation.Autowired;</span><br><span class="line">import org.springframework.stereotype.Service;</span><br><span class="line">import top.store.common.ServerResponse;</span><br><span class="line">import top.store.dao.UserMapper;</span><br><span class="line">import top.store.pojo.User;</span><br><span class="line">import top.store.service.IUserService;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@Service(&quot;iUserService&quot;)</span><br><span class="line">public class UserServiceImpl implements IUserService &#123;</span><br><span class="line"></span><br><span class="line">    @Autowired</span><br><span class="line">    private UserMapper userMapper;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public ServerResponse&lt;User&gt; login(String username, String password) &#123;   //必须要实现接口的方法，否则该类就变成了一个抽象类</span><br><span class="line">        int resultCount = userMapper.checkUsername(username);  //检查登录时的用户名是否存在</span><br><span class="line">        if(resultCount ==0)&#123;</span><br><span class="line">            return ServerResponse.createByErrorMessage(&quot;用户名不存在&quot;);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        //todo  用户名登录MD5</span><br><span class="line">        User user =userMapper.selectLogin(username,password);</span><br><span class="line">        if(user==null)&#123;</span><br><span class="line">            return ServerResponse.createByErrorMessage(&quot;密码错误&quot;);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        user.setPassword(StringUtils.EMPTY);</span><br><span class="line">        return ServerResponse.createBySuccess(&quot;登录成功&quot;,user);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>接下来为了完成一个通用的响应对象，我们需要在common这个包里面里新建一个类 ServerResponse（顾名思义就是处理响应的类），里面的代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br></pre></td><td class="code"><pre><span class="line">package top.store.common;</span><br><span class="line"></span><br><span class="line">import org.codehaus.jackson.annotate.JsonIgnore;</span><br><span class="line">import org.codehaus.jackson.map.annotate.JsonSerialize;</span><br><span class="line"></span><br><span class="line">import java.io.Serializable;</span><br><span class="line"></span><br><span class="line">//保证序列化 JSon 的时候，如果是 null 的对象，可以也会消失</span><br><span class="line">@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)   //使用这个的作用就是有的时候返回只有状态而没有其他的data和msg也是可以的，就是Key存在但是value为null</span><br><span class="line">public class ServerResponse&lt;T&gt; implements Serializable &#123;   //使用泛型来声明这个类，代表这个类需要封装的数据的类型，并且我们是使用它来进行序列化的</span><br><span class="line"></span><br><span class="line">    //这里序列化的对象的确定是根据接口来的</span><br><span class="line">    private int status;</span><br><span class="line">    private String msg;</span><br><span class="line">    private T data;  //使用泛型的最大好处就是，我们可以指定泛型的类型，也可以不指定，而且可以结合具体的场景进行使用，但是我们声明的时候就只能使用一种</span><br><span class="line"></span><br><span class="line">    //一般封装的都是设置私有化的构造方法，然后提供一个公共的访问方法就可以，很类似于单例模式的思想</span><br><span class="line">    //下面的这些构造方法适用于不同的业务场景，具体的看情况再使用</span><br><span class="line"></span><br><span class="line">    //适用于只有状态的情况</span><br><span class="line">    private ServerResponse(int status)&#123;</span><br><span class="line">        this.status=status;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //适用于有状态和消息的情况</span><br><span class="line">    public ServerResponse(int status, String msg)&#123;</span><br><span class="line">        this.status=status;</span><br><span class="line">        this.msg=msg;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //适用于有状态和数据的情况</span><br><span class="line">    public ServerResponse(int status, T data)&#123;</span><br><span class="line">        this.status=status;</span><br><span class="line">        this.data=data;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //适用于有状态，消息和数据的情况</span><br><span class="line">    private ServerResponse(int status, String msg,T data)&#123;</span><br><span class="line">        this.status=status;</span><br><span class="line">        this.msg=msg;</span><br><span class="line">        this.data=data;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //根据responseCode这个枚举类里面设定的状态码进行状态判断</span><br><span class="line"></span><br><span class="line">    //使之不在 json 序列化结果当中</span><br><span class="line">    @JsonIgnore    //这里添加了json的忽略序列化，就使得它不会出现在json里面</span><br><span class="line">    public boolean isSuccess()&#123;</span><br><span class="line">        return this.status ==ResponseCode.SUCCESS.getCode();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //根据私有字段提供的公共访问方法</span><br><span class="line">    public int getStatus()&#123;</span><br><span class="line">        return status;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String getMsg()&#123;</span><br><span class="line">        return msg;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public T getData()&#123;</span><br><span class="line">        return data;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //根据前面的构造方法来返回成功的代码</span><br><span class="line"></span><br><span class="line">    public static &lt;T&gt; ServerResponse&lt;T&gt; createBySuccess()&#123;</span><br><span class="line">        return new ServerResponse&lt;T&gt;(ResponseCode.SUCCESS.getCode());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static &lt;T&gt; ServerResponse&lt;T&gt; createBySuccessMassage(String msg)&#123;</span><br><span class="line">        return new ServerResponse&lt;T&gt;(ResponseCode.SUCCESS.getCode(),msg);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static &lt;T&gt; ServerResponse&lt;T&gt; createBySuccess(T data)&#123;</span><br><span class="line">        return new ServerResponse&lt;T&gt;(ResponseCode.SUCCESS.getCode(),data);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    public static &lt;T&gt; ServerResponse&lt;T&gt; createBySuccess(String msg,T data)&#123;</span><br><span class="line">        return new ServerResponse&lt;T&gt;(ResponseCode.SUCCESS.getCode(),msg,data);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    //根据前面的构造方法来返回失败的代码</span><br><span class="line">    public static &lt;T&gt; ServerResponse&lt;T&gt; createByError()&#123;</span><br><span class="line">        return new ServerResponse&lt;T&gt;(ResponseCode.ERROR.getCode(),ResponseCode.ERROR.getDesc());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static &lt;T&gt; ServerResponse&lt;T&gt; createByErrorMessage(String errorMessage)&#123;</span><br><span class="line">        return new ServerResponse&lt;T&gt;(ResponseCode.ERROR.getCode(),errorMessage);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static &lt;T&gt; ServerResponse&lt;T&gt; createByErrorCodeMessage(int errorCode,String errorMessage)&#123;</span><br><span class="line">        return new ServerResponse&lt;T&gt;(errorCode,errorMessage);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>为了更好的对响应的状态进行判断，我们在common包下面新建一个ResponseCode.java文件（这是一个枚举类），里面的代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">package top.store.common;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * @author lenovo</span><br><span class="line"> * */</span><br><span class="line">public enum ResponseCode &#123;  //响应编码的枚举类</span><br><span class="line">    SUCCESS(0,&quot;success&quot;),   //成功</span><br><span class="line">    ERROR(1,&quot;error&quot;),   //失败</span><br><span class="line">    NEED_LOGIN(10,&quot;NEED_LOGIN&quot;),  //需要登录</span><br><span class="line">    ILLEGAL_ARGUMENT(2,&quot;ILLEGAL_ARGUMENT&quot;);   //参数错误</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    private final int code;</span><br><span class="line">    private final String desc;</span><br><span class="line"></span><br><span class="line">    ResponseCode(int code,String desc)&#123;</span><br><span class="line">        this.code = code;</span><br><span class="line">        this.desc = desc;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public int getCode()&#123;</span><br><span class="line">        return code;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String getDesc()&#123;</span><br><span class="line">        return desc;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>接着我们在common包里面新建一个Const.java文件，里面存放一些公共的信息，里面的代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">package top.store.common;</span><br><span class="line"></span><br><span class="line">public class Const &#123;</span><br><span class="line">    public static final String CURRENT_USER = &quot;currentUser&quot;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>在前面我们用到了checkUsername这个方法，因此我们需要在UserMapper.xml里面进行配置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;select id=&quot;checkUsername&quot; resultType=&quot;int&quot; parameterType=&quot;string&quot;&gt;</span><br><span class="line">    select count(1) from store_user</span><br><span class="line">    where username = #&#123;username&#125;</span><br><span class="line">   &lt;/select&gt;</span><br><span class="line"></span><br><span class="line">   &lt;select id=&quot;selectLogin&quot; resultMap=&quot;BaseResultMap&quot; parameterType=&quot;map&quot;&gt;</span><br><span class="line">       SELECT</span><br><span class="line">       --     *???//这里最好不要使用*，因为会查到很多你不需要的东西</span><br><span class="line">       &lt;include refid=&quot;Base_Column_List&quot; /&gt;</span><br><span class="line">       from store_user</span><br><span class="line">       where username = #&#123;username&#125;</span><br><span class="line">       and password = #&#123;password&#125;</span><br><span class="line">   &lt;/select&gt;</span><br></pre></td></tr></table></figure></p>
+<p>注意格式：一般就是里面的id就是下面的方法名称，resultType就是方法的返回类型，parameterType就是里面参数的数据类型。对于多个参数的方法，依旧还是那样的。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">int checkUsername(String username);    //这里找不到对应的实现类，所以应该去UserMapper.xml里面进行配置</span><br><span class="line"></span><br><span class="line"> //这里找不到对应的实现类，所以应该去UserMapper.xml里面进行配置</span><br><span class="line">User selectLogin(@Param(&quot;username&quot;) String username, @Param(&quot;password&quot;) String password);   //注意mybatis传递多个参数时，需要使用param注解</span><br></pre></td></tr></table></figure></p>
+<p>这样我们的用户登录模块就实现了，感谢你的赏阅！</p>
+
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="https://upload-images.jianshu.io/upload_images/8964398-58d04ffa926103d9.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">觉得不错，赏包辣条吃呗！</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href target="_blank">编程思录</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2018/08/16/SSM搭建二手市场交易平台（七）：用户登出，注册，校验功能实现/" class="pre-post btn btn-default" title="SSM搭建二手市场交易平台（七）：用户登出，注册，校验功能实现">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">SSM搭建二手市场交易平台（七）：用户登出，注册，校验功能实现</span>
+        </a>
+    
+    
+        <a href="/2018/08/14/SSM搭建二手市场交易平台（五）：spring、springmvc配置/" class="next-post btn btn-default" title="SSM搭建二手市场交易平台（五）：spring、springmvc配置">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">SSM搭建二手市场交易平台（五）：spring、springmvc配置</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+    <div id="vcomments" class="valine"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+
+    <script>
+        new Valine({
+            av: AV,
+            el: '#vcomments',
+            appId: '8zvHFFu5l2ah8lh0DEPH393B-gzGzoHsz',
+            appKey: 'UNmB24200qMtyyrun5z99nOE',
+            placeholder: '听说长得好看的，都已经留言了！',
+            notify: false,
+            verify: false,
+            avatar: 'mm',
+            meta: 'nick,mail'.split(','),
+            pageSize: '10',
+            path: window.location.pathname,
+            lang: 'zh-CN'.toLowerCase()
+        })
+    </script>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#写在前面"><span class="toc-text">写在前面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#学到的技术"><span class="toc-text">学到的技术</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#横向越权、纵向越权安全漏洞介绍"><span class="toc-text">横向越权、纵向越权安全漏洞介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#高复用服务响应对象的设计思想及抽象分装"><span class="toc-text">高复用服务响应对象的设计思想及抽象分装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#用户登录功能实现"><span class="toc-text">用户登录功能实现</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2017-2019
+                </span> |
+                <span>
+				编程思录,保留所有权利
+                    <!--Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>-->
+                </span> |
+                <span>
+				<a style="color: #black" href="http://www.miitbeian.gov.cn">赣ICP备18013455号-5</a>
+                    <!--Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>-->
+                </span>
+            </div>
+			
+			<div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+			
+			<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1277113902'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s96.cnzz.com/z_stat.php%3Fid%3D1277113902%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));</script>
+        </div>
+    </div>
+</div>
+
+
+
+
+    <script src="/assets/tagcanvas.min.js?rev=2.9"></script>
+    <script>
+        var tagOption = {
+            textColour: 'red', // 字体颜色
+            outlineMethod: 'block', // 选中模式
+            outlineColour: '#FFDAB9', // 选中模式的颜色
+            interval: 30 || 30, // 动画帧之间的时间间隔，值越大，转动幅度越大
+            textHeight: 13,
+            outlineRadius: 3,
+            freezeActive: true || '', // 选中的标签是否继续滚动
+            frontSelect: true || '', // 不选标签云后部的标签
+            initial: [0.1, -0.1],
+            depth: 0.5,
+            decel: 0.95,
+            maxSpeed: 0.03,
+            reverse: true || '', // 是否反向触发
+            fadeIn: 500, // 进入动画时间
+            wheelZoom: false || '' // 是否启用鼠标滚轮
+        }
+        TagCanvas.Start('tag-cloud-3d','',tagOption);
+    </script>
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+</body>
+</html>

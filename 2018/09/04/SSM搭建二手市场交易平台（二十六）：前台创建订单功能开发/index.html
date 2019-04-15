@@ -1,0 +1,429 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="编程思录，记录思考">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://blog.licheetools.top">
+    <!--SEO-->
+
+    <meta name="keywords" content="SSM框架,JAVA后端">
+
+
+    <meta name="description" content="写在前面本篇我们来完成订单模模块功能的开发，包括前台和后台开发，里面涉及到的知识点挺多的，需要好好理解。
+模块说明本模块具体包括前台和后台开发：前台功能包括：创建订单；商品信息；订单列表；订单详...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+
+    <!--Title-->
+
+
+<title>SSM搭建二手市场交易平台（二十六）：前台创建订单功能开发 | 编程思录，记录思考</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="编程思录，记录思考" type="application/atom+xml">
+
+
+    <link rel="icon" href="./favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+	<div class="hide">
+		<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+	</div>
+
+
+
+
+
+
+    
+
+    <script>
+        (function(){
+            var bp = document.createElement('script');
+            var curProtocol = window.location.protocol.split(':')[0];
+            if (curProtocol === 'https') {
+                bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+            }
+            else {
+                bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+            }
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(bp, s);
+        })();
+    </script>
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header" style="background-image:url(https://upload-images.jianshu.io/upload_images/8964398-b1ba9582ea8b69ba.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)">
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title="Envy">
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 点滴进步，都是收获 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://blog.licheetools.top">编程思录，记录思考</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>首页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/font/"><i class="fa "></i>前端</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/java/"><i class="fa "></i>Java</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/django/"><i class="fa "></i>Django</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/flask/"><i class="fa "></i>Flask</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/spider/"><i class="fa "></i>爬虫</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/data/"><i class="fa "></i>数据分析</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/money/"><i class="fa "></i>付费教程</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/life/"><i class="fa "></i>生活记录</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives"><i class="fa "></i>时间轴</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/about/"><i class="fa "></i>关于博主</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/liuyan/"><i class="fa "></i>留言板</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="SSM搭建二手市场交易平台（二十六）：前台创建订单功能开发">
+            
+	            SSM搭建二手市场交易平台（二十六）：前台创建订单功能开发
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/java/">java</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/JAVA后端/">JAVA后端</a> <a class="tag-link" href="/tags/SSM框架/">SSM框架</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2018/09/04</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>本篇我们来完成订单模模块功能的开发，包括前台和后台开发，里面涉及到的知识点挺多的，需要好好理解。</p>
+<h2 id="模块说明"><a href="#模块说明" class="headerlink" title="模块说明"></a>模块说明</h2><p>本模块具体包括前台和后台开发：前台功能包括：创建订单；商品信息；订单列表；订单详情和取消订单这5个部分，而后台功能则包括：订单列表；订单搜索；订单详情和订单发货这4个部分。</p>
+<h2 id="学会技能"><a href="#学会技能" class="headerlink" title="学会技能"></a>学会技能</h2><p>在本模块中，你将会学到避免业务逻辑中横向越权和纵向越权等安全漏洞；设计实用、安全、扩展性强大的常量、枚举类；订单号生成规则、订单严谨性判断；PJO 和 VO 之间的实际操练以及Mybatis的批量插入等知识。</p>
+<h2 id="数据表的设计"><a href="#数据表的设计" class="headerlink" title="数据表的设计"></a>数据表的设计</h2><p>这里我们会使用到两个数据表，因为订单需要和订单信息绑定在一块：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-5005acc7eee29980.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="store_order这个数据表（总订单也就是用于最后付款的订单）"></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-e5977cd52dad8c63.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="store_order_item这个数据表（子订单）"></p>
+<h2 id="前台创建订单"><a href="#前台创建订单" class="headerlink" title="前台创建订单"></a>前台创建订单</h2><p>首先我们打开controller这个包下面的portal包，打开之前的那个OrderController，里面写入以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">/***</span><br><span class="line"> * 前台创建订单</span><br><span class="line"> * @author lenovo</span><br><span class="line"> * */</span><br><span class="line">@RequestMapping(value = &quot;create.do&quot;)  //这里就是具体的每个方法的url链接</span><br><span class="line">@ResponseBody   //自动序列化json功能</span><br><span class="line">public ServerResponse create(HttpSession session,Integer shippingId)&#123;</span><br><span class="line">    //验证用户是否登录</span><br><span class="line">    User user =(User) session.getAttribute(Const.CURRENT_USER);</span><br><span class="line">    //未登录需要用户强制登录</span><br><span class="line">    if(user ==null)&#123;</span><br><span class="line">        return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());</span><br><span class="line">    &#125;</span><br><span class="line">    //实现我们前台创建订单的逻辑</span><br><span class="line">    return iOrderService.createOrder(user.getId(),shippingId);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>接着打开sevcice包下面的IOrderService.Java文件，里面新增以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ServerResponse createOrder(Integer userId,Integer shippingId);   //前台创建订单</span><br></pre></td></tr></table></figure></p>
+<p>接着打开sevcice包下面的Impl包，我们找到OrderServiceImpl.java文件，里面的新增代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br></pre></td><td class="code"><pre><span class="line">    /***</span><br><span class="line">     *</span><br><span class="line">     * 前台订单功能开发(代码是从下往上读)</span><br><span class="line">     *</span><br><span class="line">     */</span><br><span class="line"></span><br><span class="line">    public ServerResponse createOrder(Integer userId,Integer shippingId)&#123;</span><br><span class="line">        //根据用户id从购物车中获取已经选中的数据（返回结果是Cart类型的list）</span><br><span class="line">        List&lt;Cart&gt; cartList =cartMapper.selectCheckedCartByUserId(userId);</span><br><span class="line"></span><br><span class="line">        //计算这个订单的总价</span><br><span class="line">        //1、判断返回值是否成功</span><br><span class="line">        ServerResponse serverResponse =this.getCartOrderItem(userId,cartList);</span><br><span class="line">        if(!serverResponse.isSuccess())&#123;</span><br><span class="line">            return serverResponse;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        //2、开始计算总价</span><br><span class="line">        List&lt;OrderItem&gt; orderItemList =(List&lt;OrderItem&gt;)serverResponse.getData();  //这里得到的是所有的子订单</span><br><span class="line"></span><br><span class="line">        BigDecimal payment =this.getOrderTotalPrice(orderItemList);  //这里得到的是所有的子订单的总价，也就是订单的总价</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        //生成订单(将前面的store_order_item表的信息进行汇总，生成store_order表)</span><br><span class="line">        Order order = this.assembleOrder(userId,shippingId,payment);</span><br><span class="line"></span><br><span class="line">        //判断订单是否为空</span><br><span class="line">        if(order==null)&#123;</span><br><span class="line">            return ServerResponse.createByErrorMessage(&quot;生成订单错误&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">        //判断子订单是否为空</span><br><span class="line">        if(CollectionUtils.isEmpty(orderItemList))&#123;</span><br><span class="line">            return ServerResponse.createByErrorMessage(&quot;购物车为空&quot;);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        //在前面我们getCartOrderItem这个函数里面，我们就没有对order_no进行配置，现在需要配置了</span><br><span class="line">        for(OrderItem orderItem:orderItemList)&#123;</span><br><span class="line">            orderItem.setOrderNo(order.getOrderNo());</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        //mybatis的批量插入(将所有的子订单进行插入,从而生成订单)</span><br><span class="line">        orderItemMapper.batchInsert(orderItemList);</span><br><span class="line"></span><br><span class="line">        //订单生成成功，我们需要减少商品的库存</span><br><span class="line">        this.produceProductStock(orderItemList);</span><br><span class="line"></span><br><span class="line">        //订单生成成功，接着我们需要清空购物车</span><br><span class="line">        this.cleanCart(cartList);</span><br><span class="line"></span><br><span class="line">        //然后需要将数据返回给前端</span><br><span class="line">        OrderVo orderVo =assembleOrderVo(order,orderItemList);</span><br><span class="line">        return ServerResponse.createBySuccess(orderVo);</span><br><span class="line">    &#125;</span><br><span class="line">    //组装新的付款订单，并返回给前端(记得新建3个Vo对象便于后面进行付款订单的组装，这个付款的订单包含订单信息，子订单信息，收货地址信息)</span><br><span class="line">    private OrderVo assembleOrderVo(Order order,List&lt;OrderItem&gt; orderItemList)&#123;</span><br><span class="line">        //下面的信息是订单数据表里面有的信息</span><br><span class="line">        OrderVo orderVo =new OrderVo();</span><br><span class="line">        orderVo.setOrderNo(order.getOrderNo());</span><br><span class="line">        orderVo.setPayment(order.getPayment());</span><br><span class="line">        orderVo.setPaymentType(order.getPaymentType());</span><br><span class="line">        orderVo.setPaymentTypeDesc(Const.PaymentTypeEnum.codeOf(order.getPaymentType()).getValue());</span><br><span class="line"></span><br><span class="line">        orderVo.setPostage(order.getPostage());</span><br><span class="line">        orderVo.setStatus(order.getStatus());</span><br><span class="line">        orderVo.setStatusDesc(Const.OrderStatusEnum.codeOf(order.getStatus()).getValue());</span><br><span class="line"></span><br><span class="line">        orderVo.setShippingId(order.getShippingId());</span><br><span class="line"></span><br><span class="line">        //下面的信息是订单数据表里没有的信息，我们需要从之前的收货地址表中获取(记住此订单不是数据库中的store_order这个表)</span><br><span class="line">        Shipping shipping =shippingMapper.selectByPrimaryKey(order.getShippingId());</span><br><span class="line">        if(shipping !=null)&#123;</span><br><span class="line">            orderVo.setReceiverName(shipping.getReceiverName());  //这里就是说如果新的订单存在，显示它的姓名及信息</span><br><span class="line">            orderVo.setShippingVo(assembleShippingVo(shipping));</span><br><span class="line">        &#125;</span><br><span class="line">        //以下是各种时间的转换</span><br><span class="line">        orderVo.setPaymentTime(DateTimeUtil.dateToStr(order.getPaymentTime()));</span><br><span class="line">        orderVo.setEndTime(DateTimeUtil.dateToStr(order.getEndTime()));</span><br><span class="line">        orderVo.setCreateTime(DateTimeUtil.dateToStr(order.getCreateTime()));</span><br><span class="line">        orderVo.setCloseTime(DateTimeUtil.dateToStr(order.getCloseTime()));</span><br><span class="line"></span><br><span class="line">        orderVo.setImageHost(PropertiesUtil.getProperty(&quot;ftp.server.http.prefix&quot;));</span><br><span class="line"></span><br><span class="line">        //下面的信息是订单数据表里没有的信息，我们需要从之前的子订单表中获取(记住此订单不是数据库中的store_order这个表)</span><br><span class="line">        List&lt;OrderItemVo&gt; orderItemVoList =Lists.newArrayList();</span><br><span class="line"></span><br><span class="line">        for(OrderItem orderItem:orderItemList)&#123;</span><br><span class="line">            OrderItemVo orderItemVo =assembleOrderItemVo(orderItem);</span><br><span class="line">            orderItemVoList.add(orderItemVo);</span><br><span class="line">        &#125;</span><br><span class="line">        orderVo.setOrderItemVoList(orderItemVoList);</span><br><span class="line">        return orderVo;</span><br><span class="line">    &#125;</span><br><span class="line">    //</span><br><span class="line">    private OrderItemVo assembleOrderItemVo(OrderItem orderItem)&#123;</span><br><span class="line">        OrderItemVo orderItemVo =new OrderItemVo();</span><br><span class="line">        orderItemVo.setOrderNo(orderItem.getOrderNo());</span><br><span class="line">        orderItemVo.setProductId(orderItem.getProductId());</span><br><span class="line">        orderItemVo.setProductName(orderItem.getProductName());</span><br><span class="line">        orderItemVo.setProductImage(orderItem.getProductImage());</span><br><span class="line">        orderItemVo .setCurrentUnitPrice(orderItem.getCurrentUnitPrice());</span><br><span class="line">        orderItemVo.setTotalPrice(orderItem.getTotalPrice());</span><br><span class="line">        orderItemVo.setQuantity(orderItem.getQuantity());</span><br><span class="line"></span><br><span class="line">        orderItemVo.setCreateTime(DateTimeUtil.dateToStr(orderItem.getCreateTime()));</span><br><span class="line"></span><br><span class="line">        return orderItemVo;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    //通过组装成新的收货地址对象，以便后面的生成新的支付订单使用</span><br><span class="line">    private ShippingVo assembleShippingVo(Shipping shipping)&#123;</span><br><span class="line">       ShippingVo shippingVo =new ShippingVo();</span><br><span class="line">       shippingVo.setReceiverAddress(shipping.getReceiverAddress());</span><br><span class="line">       shippingVo.setReceiverCity(shipping.getReceiverCity());</span><br><span class="line">       shippingVo.setReceiverDistrict(shipping.getReceiverDistrict());</span><br><span class="line">       shippingVo.setReceiverMobile(shipping.getReceiverMobile());</span><br><span class="line">       shippingVo.setReceiverPhone(shipping.getReceiverPhone());</span><br><span class="line">       shippingVo.setReceiverName(shipping.getReceiverName());</span><br><span class="line">       shippingVo.setReceiverProvince(shipping.getReceiverProvince());</span><br><span class="line">       shippingVo.setReceiverZip(shipping.getReceiverZip());</span><br><span class="line">       return shippingVo;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    //订单生成成功，接着我们需要清空购物车</span><br><span class="line">    private void cleanCart( List&lt;Cart&gt; cartList)&#123;</span><br><span class="line">        for(Cart cart:cartList)&#123;</span><br><span class="line">            cartMapper.deleteByPrimaryKey(cart.getId());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //订单生成成功，我们需要减少商品的库存</span><br><span class="line">    private void produceProductStock(List&lt;OrderItem&gt; orderItemList)&#123;</span><br><span class="line">        for(OrderItem orderItem:orderItemList)&#123;</span><br><span class="line">            Product product =productMapper.selectByPrimaryKey(orderItem.getProductId());</span><br><span class="line">            product.setStock(product.getStock()-orderItem.getQuantity());</span><br><span class="line">            productMapper.updateByPrimaryKeySelective(product);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    //组装订单表（将前面的store_order_item表的信息进行汇总，生成store_order表）</span><br><span class="line">    private Order assembleOrder(Integer userId,Integer shippingId,BigDecimal payment)&#123;</span><br><span class="line">        //这里面有三个参数：userId用户id, shippingId收货地址id, payment订单总价</span><br><span class="line"></span><br><span class="line">        //这个是我们组装成的新的订单</span><br><span class="line">       Order order =new Order();</span><br><span class="line"></span><br><span class="line">        long order_no =this.generateOrderNo();</span><br><span class="line"></span><br><span class="line">        //这里面的字段请依据store_order进行设置</span><br><span class="line">        order.setOrderNo(order_no);</span><br><span class="line">        order.setStatus(Const.OrderStatusEnum.PAID.getCode());</span><br><span class="line">        order.setPostage(0);</span><br><span class="line">        order.setPaymentType(Const.PaymentTypeEnum.ONLINE_PAY.getCode());</span><br><span class="line">        order.setUserId(userId);</span><br><span class="line">        order.setShippingId(shippingId);</span><br><span class="line">        order.setPayment(payment);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">         //发货时间：send_time</span><br><span class="line">         //交易完成时间：end_time</span><br><span class="line">         //交易关闭时间：close_time</span><br><span class="line">         // 上面的时间目前先不进行，后面会进行配置</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        //将新的订单插入到数据库中</span><br><span class="line">       int rowCount =  orderMapper.insert(order);</span><br><span class="line">       if(rowCount&gt;0)&#123;</span><br><span class="line">           return order;</span><br><span class="line">       &#125;</span><br><span class="line">       return null;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 订单号order_no的生成</span><br><span class="line">    //订单号的生成是非常重要的，这个设计的好坏关系到以后做分布式，高并发的情况非常有效，这里采用时间戳取余的方式</span><br><span class="line">    private long generateOrderNo()&#123;</span><br><span class="line">        long currentTime =System.currentTimeMillis();</span><br><span class="line">//        return currentTime+currentTime%10;  这种方法是可以的，但是在高并发的时候，可能是同时进行的，因此时间有可能一样,那样我们对orderNum进行唯一索引的时候就会失败</span><br><span class="line">        return currentTime+new Random().nextInt(100);  //加上一个100以内的随机数</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    //用于计算订单总价</span><br><span class="line">    private BigDecimal getOrderTotalPrice(List&lt;OrderItem&gt; orderItemList)&#123;</span><br><span class="line">        //将各个子订单进行求和，获取订单总价</span><br><span class="line">        BigDecimal payment =new BigDecimal(&quot;0&quot;);</span><br><span class="line">        for(OrderItem orderItem:orderItemList)&#123;</span><br><span class="line">           payment= BigDecimalUtil.add(payment.doubleValue(),orderItem.getTotalPrice().doubleValue());  //这里默认就是0+一个订单</span><br><span class="line">        &#125;</span><br><span class="line">        return payment;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //用于返回新的子订单明细（其实就是返回一个store_order_item子订单对象）</span><br><span class="line">    private ServerResponse getCartOrderItem(Integer userId,List&lt;Cart&gt; cartList)&#123;</span><br><span class="line"></span><br><span class="line">        //这个是我们组装成的新的子订单</span><br><span class="line">        List&lt;OrderItem&gt; orderItemList =Lists.newArrayList();</span><br><span class="line"></span><br><span class="line">        if(CollectionUtils.isEmpty(cartList))&#123;</span><br><span class="line">            return ServerResponse.createByErrorMessage(&quot;购物车为空&quot;);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        //校验购物车的数据，包括产品的状态和数量</span><br><span class="line">        for(Cart cartItem:cartList)&#123;</span><br><span class="line">            //校验产品的状态是否是在售状态</span><br><span class="line"></span><br><span class="line">            Product product =productMapper.selectByPrimaryKey(cartItem.getProductId());</span><br><span class="line">            if(Const.ProductStatusEnum.ON_SALE.getCode() != product.getStatus() )&#123;</span><br><span class="line">                return ServerResponse.createByErrorMessage(&quot;产品&quot;+product.getName()+&quot;不是在线售卖状态&quot;);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            //校验产品的库存</span><br><span class="line">            if(cartItem.getQuantity()&gt;product.getStock())&#123;</span><br><span class="line">                return ServerResponse.createByErrorMessage(&quot;产品&quot;+product.getName()+&quot;库存不足&quot;);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">            //开始组装成我们的订单对象(除了order_no这个字段需要我们后面设置以外，其余需要我们在这里进行组装也就是order_item表中的信息)</span><br><span class="line">            OrderItem orderItem =new OrderItem();</span><br><span class="line"></span><br><span class="line">            //order_no这个字段需要我们后面设置</span><br><span class="line"></span><br><span class="line">            orderItem.setUserId(userId);</span><br><span class="line">            orderItem.setProductId(product.getId());</span><br><span class="line">            orderItem.setProductName(product.getName());</span><br><span class="line">            orderItem.setProductImage(product.getMainImage());</span><br><span class="line">            orderItem.setCurrentUnitPrice(product.getPrice());</span><br><span class="line">            orderItem.setQuantity(cartItem.getQuantity());</span><br><span class="line">            orderItem.setTotalPrice(BigDecimalUtil.mut(product.getPrice().doubleValue(),cartItem.getQuantity()));</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">            orderItemList.add(orderItem);</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">        return ServerResponse.createBySuccess(orderItemList);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>上面的代码很多，但是都是为了后面的调用方便而进行了封装。下面分别解释上面代码的含义（记住上面代码你必须是从下往上读，因为我们是随着开发的需要而逐渐增加代码的）<br><strong>1、</strong>首先我们是要创建订单，因此必须根据传入的用户id来去购物车(store_cart)这个数据表中查找相应的购物车对象，其实就是很多种商品，你知道的一个用户可能存在多个购物车商品，因此返回的是一个购物车list：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Cart&gt; cartList =cartMapper.selectCheckedCartByUserId(userId);</span><br></pre></td></tr></table></figure></p>
+<p>我们需要打开CartMapper.java文件，里面新增代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Cart&gt; selectCheckedCartByUserId(Integer userId);</span><br></pre></td></tr></table></figure></p>
+<p>然后打开CartMapper.xml文件，里面新增代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;select id=&quot;selectCheckedCartByUserId&quot; parameterType=&quot;int&quot; resultMap=&quot;BaseResultMap&quot;&gt;</span><br><span class="line">   select</span><br><span class="line">   &lt;include refid=&quot;Base_Column_List&quot;/&gt;</span><br><span class="line">   from store_cart</span><br><span class="line">   where user_id =#&#123;userId&#125;</span><br><span class="line">   and checked =1</span><br><span class="line"> &lt;/select&gt;</span><br></pre></td></tr></table></figure></p>
+<p><strong>2、</strong>然后就计算刚才那些购物车商品的总价，而这个过程比较复杂，需要创建一个getCartOrderItem函数，用于返回新的子订单明细（其实就是返回一个store_order_item子订单对象），当然在这个函数里面，你需要校验购物车的数据，包括产品的状态和库存数量。<br><strong>3、</strong>通过第二步，我们得到了所有的子订单，现在去定义一个getOrderTotalPrice函数，去计算所有的子订单的总价，也就是订单的总价，具体的代码参看上面。<br><strong>4、</strong>接着我们需要生成订单号，订单号的生成是非常重要的，这个设计的好坏关系到以后做分布式，高并发的情况非常有效，这里采用时间戳+随机函数的方式：新建一个用于生成订单号的generateOrderNo函数，我们的核心就是：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">currentTime+new Random().nextInt(100);</span><br></pre></td></tr></table></figure></p>
+<p><strong>5、</strong>将第3步中的所有子订单进行合并，生成新的支付订单，你知道的支付订单里面包含用户信息，商品信息以及收货地址。首先我们需要判断判断订单是否为空以及子订单是否为空:我们新建一个assembleOrder函数，用于组装订单表，这里面有三个参数：userId用户id, shippingId收货地址id, payment订单总价。<br>在<code>order.setStatus(Const.OrderStatusEnum.PAID.getCode());</code>和<code>order.setPaymentType(Const.PaymentTypeEnum.ONLINE_PAY.getCode());</code>的时候，我们需要打开Const.java文件，在OrderStatusEnum这个枚举类添加codeOf方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public static OrderStatusEnum codeOf(int code)&#123;</span><br><span class="line">      for(OrderStatusEnum orderStatusEnum:values())&#123;</span><br><span class="line">          if(orderStatusEnum.getCode() ==code)&#123;</span><br><span class="line">              return orderStatusEnum;</span><br><span class="line">          &#125;</span><br><span class="line">      &#125;</span><br><span class="line">      throw new RuntimeException(&quot;没有找到对应的枚举&quot;);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
+<p>以及新建一个枚举类PaymentTypeEnum：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">//支付类型（目前暂支持线上支付，后面会进行扩展）</span><br><span class="line">    public enum PaymentTypeEnum&#123;</span><br><span class="line">        ONLINE_PAY(1,&quot;在线支付&quot;)</span><br><span class="line">        ;</span><br><span class="line"></span><br><span class="line">        private String value;</span><br><span class="line">        private int code;</span><br><span class="line"></span><br><span class="line">        PaymentTypeEnum(int code,String value)&#123;</span><br><span class="line">            this.code =code;</span><br><span class="line">            this.value=value;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public String getValue() &#123;</span><br><span class="line">            return value;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public void setValue(String value) &#123;</span><br><span class="line">            this.value = value;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public int getCode() &#123;</span><br><span class="line">            return code;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public void setCode(int code) &#123;</span><br><span class="line">            this.code = code;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        public static PaymentTypeEnum codeOf(int code)&#123;</span><br><span class="line">            for(PaymentTypeEnum paymentTypeEnum:values())&#123;</span><br><span class="line">                if(paymentTypeEnum.getCode() ==code)&#123;</span><br><span class="line">                    return paymentTypeEnum;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            throw new RuntimeException(&quot;没有找到对应的枚举&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>这里在注意一下时间字段，我们这里没有进行配置，我们后面会进行配置。</p>
+<p><strong>6、</strong>然后就是将新的订单插入到数据库中。mybatis的批量插入(将所有的子订单进行插入,从而生成订单)，我们需要打开OrderItemMapper.java文件，里面新增代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">void batchInsert(@Param(value = &quot;orderItemList&quot;) List&lt;OrderItem&gt; orderItemList);</span><br></pre></td></tr></table></figure></p>
+<p>记住在mybatis里面使用多个参数时，需要使用Param注解。</p>
+<p>紧接着，打开OrderItemMapper.xml文件，里面新增代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">   &lt;insert id=&quot;batchInsert&quot; parameterType=&quot;list&quot;&gt;</span><br><span class="line">  insert into store_order_item (id, order_no,user_id, product_id,</span><br><span class="line">  product_name, product_image, current_unit_price,</span><br><span class="line">  quantity, total_price, create_time,</span><br><span class="line">  update_time)</span><br><span class="line">  values</span><br><span class="line">  &lt;foreach collection=&quot;orderItemList&quot; index=&quot;index&quot; item=&quot;item&quot; separator=&quot;,&quot;&gt;</span><br><span class="line">    (</span><br><span class="line">    #&#123;item.id&#125;,#&#123;item.orderNo&#125;,#&#123;item.userId&#125;,#&#123;item.productId&#125;,#&#123;item.productName&#125;,#&#123;item.productImage&#125;,#&#123;item.currentUnitPrice&#125;,#&#123;item.quantity&#125;,#&#123;item.totalPrice&#125;,now(),now()</span><br><span class="line">    )</span><br><span class="line">  &lt;/foreach&gt;</span><br><span class="line">&lt;/insert&gt;</span><br></pre></td></tr></table></figure></p>
+<p>这里面采用了foreach 进行循环遍历进行插入。<br><strong>6、</strong>订单生成以后，我们需要清空购物车和减少商品的库存。分别去定义cleanCart和produceProductStock这两个函数，去实现相关的逻辑。<br><strong>7、</strong>接下来我们要做的就是将数据以Json形式返回给前端，为了更好的实现这个功能，我们需要新建三个Vo文件，我们打开Vo这个包，新建OrderVo.java文件，里面的代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br></pre></td><td class="code"><pre><span class="line">package top.store.vo;</span><br><span class="line"></span><br><span class="line">import top.store.pojo.Shipping;</span><br><span class="line">import top.store.service.ShippingVo;</span><br><span class="line"></span><br><span class="line">import java.math.BigDecimal;</span><br><span class="line">import java.util.Date;</span><br><span class="line">import java.util.List;</span><br><span class="line"></span><br><span class="line">public class OrderVo &#123;</span><br><span class="line"></span><br><span class="line">    private Long orderNo;</span><br><span class="line"></span><br><span class="line">    private BigDecimal payment;</span><br><span class="line"></span><br><span class="line">    private Integer paymentType;</span><br><span class="line"></span><br><span class="line">    private String paymentTypeDesc;</span><br><span class="line"></span><br><span class="line">    private Integer postage;</span><br><span class="line"></span><br><span class="line">    private Integer status;</span><br><span class="line"></span><br><span class="line">    private String statusDesc;</span><br><span class="line"></span><br><span class="line">    //各种时间，都采用String类型</span><br><span class="line"></span><br><span class="line">    private String paymentTime;</span><br><span class="line"></span><br><span class="line">    private String sendTime;</span><br><span class="line"></span><br><span class="line">    private String endTime;</span><br><span class="line"></span><br><span class="line">    private String closeTime;</span><br><span class="line"></span><br><span class="line">    private String createTime;</span><br><span class="line"></span><br><span class="line">    private String updateTime;</span><br><span class="line"></span><br><span class="line">    //子订单的明细（另外新建一个OrderItemVo用于组装需要显示的信息）</span><br><span class="line"></span><br><span class="line">    private List&lt;OrderItemVo&gt; orderItemVoList;</span><br><span class="line"></span><br><span class="line">    private String imageHost;</span><br><span class="line">    private Integer shippingId;</span><br><span class="line">    private String receiverName;</span><br><span class="line"></span><br><span class="line">    //购物车明细（另外新建一个ShippingVo用于组装需要显示的信息）</span><br><span class="line">    private ShippingVo shippingVo;</span><br><span class="line"></span><br><span class="line">    public Long getOrderNo() &#123;</span><br><span class="line">        return orderNo;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setOrderNo(Long orderNo) &#123;</span><br><span class="line">        this.orderNo = orderNo;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public BigDecimal getPayment() &#123;</span><br><span class="line">        return payment;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setPayment(BigDecimal payment) &#123;</span><br><span class="line">        this.payment = payment;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public Integer getPaymentType() &#123;</span><br><span class="line">        return paymentType;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setPaymentType(Integer paymentType) &#123;</span><br><span class="line">        this.paymentType = paymentType;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String getPaymentTypeDesc() &#123;</span><br><span class="line">        return paymentTypeDesc;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setPaymentTypeDesc(String paymentTypeDesc) &#123;</span><br><span class="line">        this.paymentTypeDesc = paymentTypeDesc;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public Integer getPostage() &#123;</span><br><span class="line">        return postage;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setPostage(Integer postage) &#123;</span><br><span class="line">        this.postage = postage;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public Integer getStatus() &#123;</span><br><span class="line">        return status;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setStatus(Integer status) &#123;</span><br><span class="line">        this.status = status;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String getStatusDesc() &#123;</span><br><span class="line">        return statusDesc;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setStatusDesc(String statusDesc) &#123;</span><br><span class="line">        this.statusDesc = statusDesc;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String getPaymentTime() &#123;</span><br><span class="line">        return paymentTime;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setPaymentTime(String paymentTime) &#123;</span><br><span class="line">        this.paymentTime = paymentTime;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String getSendTime() &#123;</span><br><span class="line">        return sendTime;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setSendTime(String sendTime) &#123;</span><br><span class="line">        this.sendTime = sendTime;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String getEndTime() &#123;</span><br><span class="line">        return endTime;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setEndTime(String endTime) &#123;</span><br><span class="line">        this.endTime = endTime;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String getCloseTime() &#123;</span><br><span class="line">        return closeTime;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setCloseTime(String closeTime) &#123;</span><br><span class="line">        this.closeTime = closeTime;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String getCreateTime() &#123;</span><br><span class="line">        return createTime;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setCreateTime(String createTime) &#123;</span><br><span class="line">        this.createTime = createTime;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String getUpdateTime() &#123;</span><br><span class="line">        return updateTime;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setUpdateTime(String updateTime) &#123;</span><br><span class="line">        this.updateTime = updateTime;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public List&lt;OrderItemVo&gt; getOrderItemVoList() &#123;</span><br><span class="line">        return orderItemVoList;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setOrderItemVoList(List&lt;OrderItemVo&gt; orderItemVoList) &#123;</span><br><span class="line">        this.orderItemVoList = orderItemVoList;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String getImageHost() &#123;</span><br><span class="line">        return imageHost;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setImageHost(String imageHost) &#123;</span><br><span class="line">        this.imageHost = imageHost;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public Integer getShippingId() &#123;</span><br><span class="line">        return shippingId;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setShippingId(Integer shippingId) &#123;</span><br><span class="line">        this.shippingId = shippingId;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String getReceiverName() &#123;</span><br><span class="line">        return receiverName;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setReceiverName(String receiverName) &#123;</span><br><span class="line">        this.receiverName = receiverName;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public ShippingVo getShippingVo() &#123;</span><br><span class="line">        return shippingVo;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setShippingVo(ShippingVo shippingVo) &#123;</span><br><span class="line">        this.shippingVo = shippingVo;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>接着新建OrderItemVo.java文件，里面的代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><span class="line">package top.store.vo;</span><br><span class="line"></span><br><span class="line">import java.math.BigDecimal;</span><br><span class="line">import java.util.Date;</span><br><span class="line"></span><br><span class="line">public class OrderItemVo &#123;</span><br><span class="line">    //从store_order_item表里面选择我们将要在订单中显示的字段</span><br><span class="line"></span><br><span class="line">    private Long orderNo;</span><br><span class="line"></span><br><span class="line">    private Integer productId;</span><br><span class="line"></span><br><span class="line">    private String productName;</span><br><span class="line"></span><br><span class="line">    private String productImage;</span><br><span class="line"></span><br><span class="line">    private BigDecimal currentUnitPrice;</span><br><span class="line"></span><br><span class="line">    private Integer quantity;</span><br><span class="line"></span><br><span class="line">    private BigDecimal totalPrice;</span><br><span class="line"></span><br><span class="line">    private String createTime;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    public Long getOrderNo() &#123;</span><br><span class="line">        return orderNo;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setOrderNo(Long orderNo) &#123;</span><br><span class="line">        this.orderNo = orderNo;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public Integer getProductId() &#123;</span><br><span class="line">        return productId;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setProductId(Integer productId) &#123;</span><br><span class="line">        this.productId = productId;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String getProductName() &#123;</span><br><span class="line">        return productName;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setProductName(String productName) &#123;</span><br><span class="line">        this.productName = productName;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String getProductImage() &#123;</span><br><span class="line">        return productImage;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setProductImage(String productImage) &#123;</span><br><span class="line">        this.productImage = productImage;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public BigDecimal getCurrentUnitPrice() &#123;</span><br><span class="line">        return currentUnitPrice;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setCurrentUnitPrice(BigDecimal currentUnitPrice) &#123;</span><br><span class="line">        this.currentUnitPrice = currentUnitPrice;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public Integer getQuantity() &#123;</span><br><span class="line">        return quantity;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setQuantity(Integer quantity) &#123;</span><br><span class="line">        this.quantity = quantity;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public BigDecimal getTotalPrice() &#123;</span><br><span class="line">        return totalPrice;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setTotalPrice(BigDecimal totalPrice) &#123;</span><br><span class="line">        this.totalPrice = totalPrice;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String getCreateTime() &#123;</span><br><span class="line">        return createTime;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setCreateTime(String createTime) &#123;</span><br><span class="line">        this.createTime = createTime;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>最后新建ShippingVo.java文件，里面的代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><span class="line">package top.store.vo;</span><br><span class="line"></span><br><span class="line">public class ShippingVo &#123;</span><br><span class="line">    //从store_shipping表里面选择我们将要在订单中显示的字段</span><br><span class="line">    private String receiverName;</span><br><span class="line"></span><br><span class="line">    private String receiverPhone;</span><br><span class="line"></span><br><span class="line">    private String receiverMobile;</span><br><span class="line"></span><br><span class="line">    private String receiverProvince;</span><br><span class="line"></span><br><span class="line">    private String receiverCity;</span><br><span class="line"></span><br><span class="line">    private String receiverDistrict;</span><br><span class="line"></span><br><span class="line">    private String receiverAddress;</span><br><span class="line"></span><br><span class="line">    private String receiverZip;</span><br><span class="line"></span><br><span class="line">    public String getReceiverName() &#123;</span><br><span class="line">        return receiverName;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setReceiverName(String receiverName) &#123;</span><br><span class="line">        this.receiverName = receiverName;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String getReceiverPhone() &#123;</span><br><span class="line">        return receiverPhone;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setReceiverPhone(String receiverPhone) &#123;</span><br><span class="line">        this.receiverPhone = receiverPhone;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String getReceiverMobile() &#123;</span><br><span class="line">        return receiverMobile;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setReceiverMobile(String receiverMobile) &#123;</span><br><span class="line">        this.receiverMobile = receiverMobile;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String getReceiverProvince() &#123;</span><br><span class="line">        return receiverProvince;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setReceiverProvince(String receiverProvince) &#123;</span><br><span class="line">        this.receiverProvince = receiverProvince;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String getReceiverCity() &#123;</span><br><span class="line">        return receiverCity;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setReceiverCity(String receiverCity) &#123;</span><br><span class="line">        this.receiverCity = receiverCity;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String getReceiverDistrict() &#123;</span><br><span class="line">        return receiverDistrict;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setReceiverDistrict(String receiverDistrict) &#123;</span><br><span class="line">        this.receiverDistrict = receiverDistrict;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String getReceiverAddress() &#123;</span><br><span class="line">        return receiverAddress;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setReceiverAddress(String receiverAddress) &#123;</span><br><span class="line">        this.receiverAddress = receiverAddress;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String getReceiverZip() &#123;</span><br><span class="line">        return receiverZip;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setReceiverZip(String receiverZip) &#123;</span><br><span class="line">        this.receiverZip = receiverZip;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>接着我们需要定义三个函数分别用于组装我们在支付订单里面的信息，为什么这么做？那是因为我们的支付订单里面包含的只是订单表，子订单表（订单明细表）和收货地址表中的部分信息，因此我们需要进行抽离封装成一个我们用在支付订单里面的信息。</p>
+<p>这个很好理解，assembleShippingVo函数传入shipping对象进行组装；assembleOrderItemVo函数传入orderItem对象进行组装；assembleOrderVo函数传入order和orderItemList对象进行组装。</p>
+<p>这样最后将组装成的新的支付订单对象返回给前端，就完成了我们创建订单的逻辑。</p>
+
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="https://upload-images.jianshu.io/upload_images/8964398-58d04ffa926103d9.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">觉得不错，赏包辣条吃呗！</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href target="_blank">编程思录</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2018/09/05/SSM搭建二手市场交易平台（二十七）：取消订单和获取商品信息功能开发/" class="pre-post btn btn-default" title="SSM搭建二手市场交易平台（二十七）：取消订单和获取商品信息功能开发">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">SSM搭建二手市场交易平台（二十七）：取消订单和获取商品信息功能开发</span>
+        </a>
+    
+    
+        <a href="/2018/09/03/SSM搭建二手市场交易平台（二十五）：支付宝支付回调功能开发/" class="next-post btn btn-default" title="SSM搭建二手市场交易平台（二十五）：支付宝支付回调功能开发">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">SSM搭建二手市场交易平台（二十五）：支付宝支付回调功能开发</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+    <div id="vcomments" class="valine"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+
+    <script>
+        new Valine({
+            av: AV,
+            el: '#vcomments',
+            appId: '8zvHFFu5l2ah8lh0DEPH393B-gzGzoHsz',
+            appKey: 'UNmB24200qMtyyrun5z99nOE',
+            placeholder: '听说长得好看的，都已经留言了！',
+            notify: false,
+            verify: false,
+            avatar: 'mm',
+            meta: 'nick,mail'.split(','),
+            pageSize: '10',
+            path: window.location.pathname,
+            lang: 'zh-CN'.toLowerCase()
+        })
+    </script>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#写在前面"><span class="toc-text">写在前面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#模块说明"><span class="toc-text">模块说明</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#学会技能"><span class="toc-text">学会技能</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#数据表的设计"><span class="toc-text">数据表的设计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#前台创建订单"><span class="toc-text">前台创建订单</span></a></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2017-2019
+                </span> |
+                <span>
+				编程思录,保留所有权利
+                    <!--Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>-->
+                </span> |
+                <span>
+				<a style="color: #black" href="http://www.miitbeian.gov.cn">赣ICP备18013455号-5</a>
+                    <!--Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>-->
+                </span>
+            </div>
+			
+			<div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+			
+			<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1277113902'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s96.cnzz.com/z_stat.php%3Fid%3D1277113902%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));</script>
+        </div>
+    </div>
+</div>
+
+
+
+
+    <script src="/assets/tagcanvas.min.js?rev=2.9"></script>
+    <script>
+        var tagOption = {
+            textColour: 'red', // 字体颜色
+            outlineMethod: 'block', // 选中模式
+            outlineColour: '#FFDAB9', // 选中模式的颜色
+            interval: 30 || 30, // 动画帧之间的时间间隔，值越大，转动幅度越大
+            textHeight: 13,
+            outlineRadius: 3,
+            freezeActive: true || '', // 选中的标签是否继续滚动
+            frontSelect: true || '', // 不选标签云后部的标签
+            initial: [0.1, -0.1],
+            depth: 0.5,
+            decel: 0.95,
+            maxSpeed: 0.03,
+            reverse: true || '', // 是否反向触发
+            fadeIn: 500, // 进入动画时间
+            wheelZoom: false || '' // 是否启用鼠标滚轮
+        }
+        TagCanvas.Start('tag-cloud-3d','',tagOption);
+    </script>
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+</body>
+</html>

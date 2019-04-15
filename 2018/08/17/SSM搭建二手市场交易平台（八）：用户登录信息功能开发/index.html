@@ -1,0 +1,435 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="编程思录，记录思考">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://blog.licheetools.top">
+    <!--SEO-->
+
+    <meta name="keywords" content="SSM框架,JAVA后端">
+
+
+    <meta name="description" content="写在前面本篇我们介绍用户登录获取信息，忘记密码，提示问题与答案，重置密码功能开发这四者的实现，里面的内容很多，希望大家对此有一个提前的认识。
+还记得我们上一篇的UserController—&g...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+
+    <!--Title-->
+
+
+<title>SSM搭建二手市场交易平台（八）：用户登录信息功能开发 | 编程思录，记录思考</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="编程思录，记录思考" type="application/atom+xml">
+
+
+    <link rel="icon" href="./favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+	<div class="hide">
+		<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+	</div>
+
+
+
+
+
+
+    
+
+    <script>
+        (function(){
+            var bp = document.createElement('script');
+            var curProtocol = window.location.protocol.split(':')[0];
+            if (curProtocol === 'https') {
+                bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+            }
+            else {
+                bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+            }
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(bp, s);
+        })();
+    </script>
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header" style="background-image:url(https://upload-images.jianshu.io/upload_images/8964398-b1ba9582ea8b69ba.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)">
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title="Envy">
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 点滴进步，都是收获 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://blog.licheetools.top">编程思录，记录思考</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>首页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/font/"><i class="fa "></i>前端</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/java/"><i class="fa "></i>Java</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/django/"><i class="fa "></i>Django</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/flask/"><i class="fa "></i>Flask</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/spider/"><i class="fa "></i>爬虫</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/data/"><i class="fa "></i>数据分析</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/money/"><i class="fa "></i>付费教程</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/life/"><i class="fa "></i>生活记录</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives"><i class="fa "></i>时间轴</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/about/"><i class="fa "></i>关于博主</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/liuyan/"><i class="fa "></i>留言板</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="SSM搭建二手市场交易平台（八）：用户登录信息功能开发">
+            
+	            SSM搭建二手市场交易平台（八）：用户登录信息功能开发
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/java/">java</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/JAVA后端/">JAVA后端</a> <a class="tag-link" href="/tags/SSM框架/">SSM框架</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2018/08/17</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>本篇我们介绍用户登录获取信息，忘记密码，提示问题与答案，重置密码功能开发这四者的实现，里面的内容很多，希望大家对此有一个提前的认识。</p>
+<p>还记得我们上一篇的UserController—&gt;IUserService–&gt;UserServiceImpl模式么，我们继续进行开发，把这个放在这里是让大家更清楚的知道我们的开发流程，不至于晕。</p>
+<h2 id="用户登录获取信息"><a href="#用户登录获取信息" class="headerlink" title="用户登录获取信息"></a>用户登录获取信息</h2><p>打开UserController.java文件，写入以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">/***</span><br><span class="line"> * 用户登录信息的获取</span><br><span class="line"> * */</span><br><span class="line">@RequestMapping(value = &quot;get_user_info.do&quot;,method = RequestMethod.GET)  //这里就是具体的每个方法的url链接</span><br><span class="line">@ResponseBody   //自动序列化json功能</span><br><span class="line">public ServerResponse&lt;User&gt; getUserInfo(HttpSession session)&#123;</span><br><span class="line">    User user =(User) session.getAttribute(Const.CURRENT_USER);</span><br><span class="line">    if(user != null)&#123;</span><br><span class="line">        return ServerResponse.createBySuccess(user);</span><br><span class="line">    &#125;</span><br><span class="line">    return ServerResponse.createByErrorMessage(&quot;用户未登录，无法获取当前用户的信息&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这样我们那就完成了用户登录信息的获取操作，你可能会问后面那两个过程哪去了，这里需要说明的是，不涉及到数据库的访问操作就不需要后面两个过程，这一点你需要注意一下。</p>
+<h2 id="忘记密码"><a href="#忘记密码" class="headerlink" title="忘记密码"></a>忘记密码</h2><p>打开UserController.java文件，写入以下代码：<strong>(注意我这里就是直接把这个功能的完整实现代码贴这里了，没有一步一步的写，毕竟太浪费时间了，也没有必要，你们懂我的意思吧)</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">/***</span><br><span class="line"> * 忘记密码</span><br><span class="line"> * */</span><br><span class="line">@RequestMapping(value = &quot;forget_get_question.do&quot;,method = RequestMethod.GET)  //这里就是具体的每个方法的url链接</span><br><span class="line">@ResponseBody   //自动序列化json功能</span><br><span class="line">public ServerResponse&lt;String&gt; forgetGetQuestion(String username)&#123;</span><br><span class="line">    return iUserService.forgetGetQuestion(username);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>接着打开IUserService.java文件：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ServerResponse&lt;String&gt; forgetGetQuestion(String username);   //忘记密码</span><br></pre></td></tr></table></figure></p>
+<p>继续打开UserServiceImpl.java文件：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">    /***</span><br><span class="line">     *</span><br><span class="line">     *忘记密码时的接口类</span><br><span class="line">     * */</span><br><span class="line">    public ServerResponse&lt;String&gt; forgetGetQuestion(String username)&#123;</span><br><span class="line">        //判断用户名是否存在</span><br><span class="line">        ServerResponse validResponse =this.checkValid(username,Const.USERNAME);</span><br><span class="line">        if(validResponse.isSuccess())&#123;  //用户名不存在</span><br><span class="line">            return ServerResponse.createByErrorMessage(&quot;该用户不存在&quot;);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        String question =userMapper.forgetgetQuestionByUsername(username);</span><br><span class="line">        if(StringUtils.isNoneBlank(question))&#123;</span><br><span class="line">            //开始进行校验，如果找回密码的问题不为空，那么</span><br><span class="line">            return ServerResponse.createBySuccess(question);</span><br><span class="line">        &#125;</span><br><span class="line">        return ServerResponse.createByErrorMessage(&quot;找回密码的问题是空的&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><code>String question =userMapper.forgetgetQuestionByUsername(username);</code>这行代码我需要说明一下。大家都知道我们这个UserMapper(里面的userMapper是它的实例化对象)就是DAO层，它需要提供一个接口(IUserService)和该接口的实现类(UserServiceImpl)用于访问数据库，但是我们获取数据库里面的信息是通过sql语句来实现的，于是UserMapper.xml负责sql语句的执行，UserMapper.java就负责接收查询的结果。因此就知道我们接下来要干嘛了：<br>打开UserMapper.java文件，里面新增代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">String forgetgetQuestionByUsername(String username);  //这里找不到对应的实现类，所以应该去UserMapper.xml里面进行配置</span><br></pre></td></tr></table></figure></p>
+<p>然后去UserMapper.xml里面新增代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"> &lt;select id=&quot;forgetgetQuestionByUsername&quot; resultType=&quot;String&quot; parameterType=&quot;String&quot;&gt;</span><br><span class="line">     select question from store_user</span><br><span class="line">     where username = #&#123;username&#125;</span><br><span class="line">&lt;/select&gt;</span><br></pre></td></tr></table></figure>
+<p>也就是说实际上我们的开发顺序与上面所说的顺序是相反的，只是为了更好的理解。接下来完成提示问题与答案这个功能。</p>
+<h2 id="提示问题与答案"><a href="#提示问题与答案" class="headerlink" title="提示问题与答案"></a>提示问题与答案</h2><p>打开UserController.java文件，写入以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">/***</span><br><span class="line">  * 提示问题与答案</span><br><span class="line">  * */</span><br><span class="line"> @RequestMapping(value = &quot;forget_check_answer.do&quot;,method = RequestMethod.GET)  //这里就是具体的每个方法的url链接</span><br><span class="line"> @ResponseBody   //自动序列化json功能</span><br><span class="line"> public ServerResponse&lt;String&gt; checkAnswer(String username,String question,String answer)&#123;</span><br><span class="line">     return iUserService.checkAnswer(username,question,answer);</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></p>
+<p>接着打开IUserService.java文件：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ServerResponse&lt;String&gt; checkAnswer(String username,String question,String answer);   //提示问题与答案</span><br></pre></td></tr></table></figure></p>
+<p>继续打开UserServiceImpl.java文件：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">/***</span><br><span class="line"> *</span><br><span class="line"> *提示问题与答案时的接口类</span><br><span class="line"> * */</span><br><span class="line">public ServerResponse&lt;String&gt; checkAnswer(String username,String question,String answer)&#123;</span><br><span class="line">    int resultCount = userMapper.checkAnswer(username,question,answer);  //根据用户名来检查用户设置的问题与答案是否存在</span><br><span class="line">    if(resultCount &gt;0)&#123;</span><br><span class="line">        //说明提示问题及问题答案是这个用户的，并且是正确的</span><br><span class="line">        String forgetToken = UUID.randomUUID().toString();</span><br><span class="line">        TockenCache.setKey(&quot;token_&quot;+username,forgetToken);</span><br><span class="line">        return ServerResponse.createBySuccess(forgetToken);</span><br><span class="line">    &#125;</span><br><span class="line">    return ServerResponse.createByErrorMessage(&quot;问题的答案错误！&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>同样checkAnswer这个方法需要定义，打开UserMapper.java文件，里面新增代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//这里找不到对应的实现类，所以应该去UserMapper.xml里面进行配置</span><br><span class="line">  int checkAnswer(@Param(&quot;username&quot;)String username,@Param(&quot;question&quot;)String question,@Param(&quot;answer&quot;)String answer);   //注意mybatis传递多个参数时，需要使用param注解</span><br></pre></td></tr></table></figure></p>
+<p>然后去UserMapper.xml里面新增代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;select id=&quot;checkAnswer&quot; resultType=&quot;int&quot; parameterType=&quot;map&quot;&gt;  &lt;!--注意使用多个参数是是需要使用map的--&gt;</span><br><span class="line">     select count(1) from store_user</span><br><span class="line">     where username = #&#123;username&#125;</span><br><span class="line">      and question = #&#123;question&#125;</span><br><span class="line">      and answer = #&#123;answer&#125;</span><br><span class="line">&lt;/select&gt;</span><br></pre></td></tr></table></figure></p>
+<p>还有因为我们这个提示问题与答案是需要写入cache的，因此我们需要在common包下面新建一个类，里面写入如下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">package top.store.common;</span><br><span class="line"></span><br><span class="line">import com.google.common.cache.CacheBuilder;</span><br><span class="line">import com.google.common.cache.CacheLoader;</span><br><span class="line">import com.google.common.cache.LoadingCache;</span><br><span class="line">import org.slf4j.Logger;</span><br><span class="line">import org.slf4j.LoggerFactory;</span><br><span class="line"></span><br><span class="line">import java.util.concurrent.TimeUnit;</span><br><span class="line"></span><br><span class="line">public class TockenCache &#123;</span><br><span class="line">    private static Logger logger = LoggerFactory.getLogger(TockenCache.class);</span><br><span class="line"></span><br><span class="line">    //本地缓存</span><br><span class="line">    //这里采用了LRU算法，初始值是1000，最大值是10000，如果超过最大值就会使用LRU算法进行消除，其实就是删除使用频率低的值，它的有效时间为12个小时</span><br><span class="line">    private static LoadingCache&lt;String,String&gt; localCache = CacheBuilder.newBuilder().initialCapacity(1000).maximumSize(10000).expireAfterAccess(12, TimeUnit.HOURS).build(new CacheLoader&lt;String, String&gt;()&#123;</span><br><span class="line">        @Override</span><br><span class="line">        public String load(String s) throws Exception &#123;</span><br><span class="line">            return &quot;null&quot;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    public static void setKey(String key,String value)&#123;</span><br><span class="line">        localCache.put(key,value);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static String getKey(String key)&#123;</span><br><span class="line">        String value = null;</span><br><span class="line">        try&#123;</span><br><span class="line">            value = localCache.get(key);</span><br><span class="line">            if(&quot;null&quot;.equals(value))&#123;</span><br><span class="line">                return null;</span><br><span class="line">            &#125;</span><br><span class="line">            return value;</span><br><span class="line">        &#125;catch (Exception e)&#123;</span><br><span class="line">            logger.error(&quot;localCache get error&quot;,e);</span><br><span class="line">        &#125;</span><br><span class="line">        return null;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>接下来便是忘记密码中的重置密码的开发了，我们知道这个必须在忘记密码实现以后才能开始。</p>
+<h2 id="重置密码"><a href="#重置密码" class="headerlink" title="重置密码"></a>重置密码</h2><p>打开UserController.java文件，写入以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">/***</span><br><span class="line"> *</span><br><span class="line"> * 忘记密码中的重置密码</span><br><span class="line"> */</span><br><span class="line">@RequestMapping(value = &quot;forget_reset_password.do&quot;,method = RequestMethod.GET)  //这里就是具体的每个方法的url链接</span><br><span class="line">@ResponseBody   //自动序列化json功能</span><br><span class="line">public ServerResponse&lt;String&gt;  forgetResetPassword(String username,String passwordNew, String forgetToken)&#123;</span><br><span class="line">    return iUserService.forgetResetPassword(username,passwordNew,forgetToken);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>接着打开IUserService.java文件：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ServerResponse&lt;String&gt;  forgetResetPassword(String username,String passwordNew, String forgetToken);  //忘记密码中的重置密码</span><br></pre></td></tr></table></figure></p>
+<p>继续打开UserServiceImpl.java文件：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">/***</span><br><span class="line">     *</span><br><span class="line">     * 忘记密码中的重置密码的接口类</span><br><span class="line">     */</span><br><span class="line">    public ServerResponse&lt;String&gt;  forgetResetPassword(String username,String passwordNew, String forgetToken)&#123;</span><br><span class="line">        //首先进行token的校验</span><br><span class="line">        if(StringUtils.isBlank(forgetToken))&#123;  //如果token是空的话</span><br><span class="line">            return ServerResponse.createByErrorMessage(&quot;参数错误，token还没有被传递呢&quot;);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        //这里我们需要校验username，因为forgetToken是通过token_与username进行拼接的，上面是验证了forgetToken不为空，但这并不代表username就不为空</span><br><span class="line">        ServerResponse validResponse =this.checkValid(username,Const.USERNAME);</span><br><span class="line">        if(validResponse.isSuccess())&#123;  //用户名不存在</span><br><span class="line">            return ServerResponse.createByErrorMessage(&quot;该用户不存在&quot;);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        String token = TockenCache.getKey(TockenCache.TOKEN_PREFIX+username); //可以参看第146行代码</span><br><span class="line">        //对caChe里的token进行校验</span><br><span class="line">        if(StringUtils.isBlank(token))&#123;</span><br><span class="line">            return ServerResponse.createByErrorMessage(&quot;token无效或者过期&quot;);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        /***</span><br><span class="line">        String a = null;</span><br><span class="line">        if(&quot;abc&quot;.equals(a))&#123;&#125;   //总是错误</span><br><span class="line">        if(a.equals(&quot;abc&quot;))&#123;&#125;   //引发空指针异常</span><br><span class="line">         */</span><br><span class="line">        //这里使用.equals方法，可以避免出现Null值在前的空指针，在后总是错误的问题</span><br><span class="line">        if(StringUtils.equals(forgetToken,token))&#123;</span><br><span class="line">            //修改密码成功，我们需要更新旧的密码了</span><br><span class="line">            String md5Password = MD5Util.MD5EncodeUtf8(passwordNew);</span><br><span class="line">            int rowCount = userMapper.updatePasswordByUsername(username,md5Password);</span><br><span class="line">            if(rowCount&gt;0)&#123;</span><br><span class="line">                return ServerResponse.createBySuccessMassage(&quot;密码修改成功！&quot;);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125;else&#123;</span><br><span class="line">            return ServerResponse.createByErrorMessage(&quot;token错误，请重新获取重置密码的token&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">        return ServerResponse.createByErrorMessage(&quot;密码修改失败！&quot;);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>这里面有几个注意的事项：</strong><br><strong>1、</strong><code>&quot;token_&quot;</code>这个之前在写提示问题与答案时的接口类时，没有将其设定为一个常量，实际上它是一个常量，为了以后便于调用它，我们将其设定为一个常量：<br>打开TockenCache.java文件，我们新增一行代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public static final String TOKEN_PREFIX = &quot;token_&quot;; //这里把token_作为一个常量。因为需要多次使用</span><br></pre></td></tr></table></figure></p>
+<p>然后你将checkAnswer方法里面的这行代码:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ockenCache.setKey(&quot;token_&quot;+username,forgetToken);  //这里没有把token_当做一个全局的常量进行引用</span><br></pre></td></tr></table></figure></p>
+<p>替换为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">TockenCache.setKey(TockenCache.TOKEN_PREFIX+username,forgetToken);   // 这里把token_当做一个全局的常量进行引用(在TockenCache.TOKEN_PREFIX里面)</span><br></pre></td></tr></table></figure></p>
+<p><strong>2、</strong><code>StringUtils.equals(forgetToken,token)</code>注意这里我们使用了StringUtils.equals方法，它最大的好处就是可以避免null值在前在后的问题：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">public static boolean equals(CharSequence cs1, CharSequence cs2) &#123;</span><br><span class="line">       if (cs1 == cs2) &#123;</span><br><span class="line">           return true;</span><br><span class="line">       &#125; else if (cs1 != null &amp;&amp; cs2 != null) &#123;</span><br><span class="line">           if (cs1.length() != cs2.length()) &#123;</span><br><span class="line">               return false;</span><br><span class="line">           &#125; else &#123;</span><br><span class="line">               return cs1 instanceof String &amp;&amp; cs2 instanceof String ? cs1.equals(cs2) : CharSequenceUtils.regionMatches(cs1, false, 0, cs2, 0, cs1.length());</span><br><span class="line">           &#125;</span><br><span class="line">       &#125; else &#123;</span><br><span class="line">           return false;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p>
+<p>那么什么是null值在前在后的问题呢？很简单我举个例子你就知道了：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">String a = null;</span><br><span class="line">if(&quot;abc&quot;.equals(a))&#123;&#125;   //总是错误</span><br><span class="line">if(a.equals(&quot;abc&quot;))&#123;&#125;   //引发空指针异常</span><br></pre></td></tr></table></figure></p>
+<p>所以这个问题我们就可以不用考虑了。<br><strong>3、</strong><code>int rowCount = userMapper.updatePasswordByUsername(username,md5Password);</code>这行代码中的updatePasswordByUsername方法，老规矩还是需要定义这个方法，打开UserMapper.java文件，里面新增代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//这里找不到对应的实现类，所以应该去UserMapper.xml里面进行配置</span><br><span class="line">int updatePasswordByUsername(@Param(&quot;username&quot;)String username,@Param(&quot;passwordNew&quot;)String passwordNew);   //注意mybatis传递多个参数时，需要使用param注解</span><br></pre></td></tr></table></figure></p>
+<p>然后去UserMapper.xml里面新增代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;update id=&quot;updatePasswordByUsername&quot;  parameterType=&quot;map&quot;&gt;  &lt;!--注意使用多个参数是是需要使用map的，而且这里因为是更新操作，因此需要使用update--&gt;</span><br><span class="line">        update store_user</span><br><span class="line">        set password =#&#123;passwordNew&#125;,update_time =now()</span><br><span class="line">        where username = #&#123;username&#125;</span><br><span class="line">&lt;/update&gt;</span><br></pre></td></tr></table></figure></p>
+<p>这段代码因为是执行更新操作的，因此需要使用update，而且别忘记使用update_time =now()这个时间戳，否则你不知道具体什么时候修改了密码。</p>
+<p><strong>4、</strong>至于为什么我们每次判断的时候总是看它大于0或者等于0，那是因为我们使用的方法最后我们都是让它返回修改的行数（其实就是受影响的行数），如果为0就说明没有修改，否则就进行了修改，这个应该很好理解的吧。</p>
+<p>这样，我们本篇关于用户登录获取信息，忘记密码，提示问题与答案，重置密码功能开发这四者的介绍就到此为止了，感谢你的赏阅！</p>
+
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="https://upload-images.jianshu.io/upload_images/8964398-58d04ffa926103d9.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">觉得不错，赏包辣条吃呗！</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href target="_blank">编程思录</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2018/08/18/SSM搭建二手市场交易平台（九）：更新用户信息功能开发/" class="pre-post btn btn-default" title="SSM搭建二手市场交易平台（九）：更新用户信息功能开发">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">SSM搭建二手市场交易平台（九）：更新用户信息功能开发</span>
+        </a>
+    
+    
+        <a href="/2018/08/16/SSM搭建二手市场交易平台（七）：用户登出，注册，校验功能实现/" class="next-post btn btn-default" title="SSM搭建二手市场交易平台（七）：用户登出，注册，校验功能实现">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">SSM搭建二手市场交易平台（七）：用户登出，注册，校验功能实现</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+    <div id="vcomments" class="valine"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+
+    <script>
+        new Valine({
+            av: AV,
+            el: '#vcomments',
+            appId: '8zvHFFu5l2ah8lh0DEPH393B-gzGzoHsz',
+            appKey: 'UNmB24200qMtyyrun5z99nOE',
+            placeholder: '听说长得好看的，都已经留言了！',
+            notify: false,
+            verify: false,
+            avatar: 'mm',
+            meta: 'nick,mail'.split(','),
+            pageSize: '10',
+            path: window.location.pathname,
+            lang: 'zh-CN'.toLowerCase()
+        })
+    </script>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#写在前面"><span class="toc-text">写在前面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#用户登录获取信息"><span class="toc-text">用户登录获取信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#忘记密码"><span class="toc-text">忘记密码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#提示问题与答案"><span class="toc-text">提示问题与答案</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#重置密码"><span class="toc-text">重置密码</span></a></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2017-2019
+                </span> |
+                <span>
+				编程思录,保留所有权利
+                    <!--Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>-->
+                </span> |
+                <span>
+				<a style="color: #black" href="http://www.miitbeian.gov.cn">赣ICP备18013455号-5</a>
+                    <!--Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>-->
+                </span>
+            </div>
+			
+			<div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+			
+			<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1277113902'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s96.cnzz.com/z_stat.php%3Fid%3D1277113902%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));</script>
+        </div>
+    </div>
+</div>
+
+
+
+
+    <script src="/assets/tagcanvas.min.js?rev=2.9"></script>
+    <script>
+        var tagOption = {
+            textColour: 'red', // 字体颜色
+            outlineMethod: 'block', // 选中模式
+            outlineColour: '#FFDAB9', // 选中模式的颜色
+            interval: 30 || 30, // 动画帧之间的时间间隔，值越大，转动幅度越大
+            textHeight: 13,
+            outlineRadius: 3,
+            freezeActive: true || '', // 选中的标签是否继续滚动
+            frontSelect: true || '', // 不选标签云后部的标签
+            initial: [0.1, -0.1],
+            depth: 0.5,
+            decel: 0.95,
+            maxSpeed: 0.03,
+            reverse: true || '', // 是否反向触发
+            fadeIn: 500, // 进入动画时间
+            wheelZoom: false || '' // 是否启用鼠标滚轮
+        }
+        TagCanvas.Start('tag-cloud-3d','',tagOption);
+    </script>
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+</body>
+</html>

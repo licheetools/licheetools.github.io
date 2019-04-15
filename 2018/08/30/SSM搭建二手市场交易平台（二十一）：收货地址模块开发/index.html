@@ -1,0 +1,439 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="编程思录，记录思考">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://blog.licheetools.top">
+    <!--SEO-->
+
+    <meta name="keywords" content="SSM框架,JAVA后端">
+
+
+    <meta name="description" content="写在前面本篇我们来完成收货地址模块功能的开发，具体包括收货地址的增删改查操作，分页列表以及地址详情等功能的开发，里面涉及到的知识点挺多的，需要好好理解。
+模块说明本模块具体包括以下几个功能：添加...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+
+    <!--Title-->
+
+
+<title>SSM搭建二手市场交易平台（二十一）：收货地址模块开发 | 编程思录，记录思考</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="编程思录，记录思考" type="application/atom+xml">
+
+
+    <link rel="icon" href="./favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+	<div class="hide">
+		<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+	</div>
+
+
+
+
+
+
+    
+
+    <script>
+        (function(){
+            var bp = document.createElement('script');
+            var curProtocol = window.location.protocol.split(':')[0];
+            if (curProtocol === 'https') {
+                bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+            }
+            else {
+                bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+            }
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(bp, s);
+        })();
+    </script>
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header" style="background-image:url(https://upload-images.jianshu.io/upload_images/8964398-b1ba9582ea8b69ba.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)">
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title="Envy">
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 点滴进步，都是收获 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://blog.licheetools.top">编程思录，记录思考</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>首页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/font/"><i class="fa "></i>前端</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/java/"><i class="fa "></i>Java</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/django/"><i class="fa "></i>Django</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/flask/"><i class="fa "></i>Flask</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/spider/"><i class="fa "></i>爬虫</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/data/"><i class="fa "></i>数据分析</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/money/"><i class="fa "></i>付费教程</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/life/"><i class="fa "></i>生活记录</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives"><i class="fa "></i>时间轴</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/about/"><i class="fa "></i>关于博主</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/liuyan/"><i class="fa "></i>留言板</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="SSM搭建二手市场交易平台（二十一）：收货地址模块开发">
+            
+	            SSM搭建二手市场交易平台（二十一）：收货地址模块开发
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/java/">java</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/JAVA后端/">JAVA后端</a> <a class="tag-link" href="/tags/SSM框架/">SSM框架</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2018/08/30</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>本篇我们来完成收货地址模块功能的开发，具体包括收货地址的增删改查操作，分页列表以及地址详情等功能的开发，里面涉及到的知识点挺多的，需要好好理解。</p>
+<h2 id="模块说明"><a href="#模块说明" class="headerlink" title="模块说明"></a>模块说明</h2><p>本模块具体包括以下几个功能：添加地址；删除地址；更新地址；地址列表；地址分页和地址详情等。</p>
+<h2 id="学会技能"><a href="#学会技能" class="headerlink" title="学会技能"></a>学会技能</h2><p>在本模块中，你将会学到SpringMVC数据绑定中对象绑定；Mybatis 自动生成主键、配置和使用；如何避免横向越权漏洞的巩固。</p>
+<h2 id="数据表的设计"><a href="#数据表的设计" class="headerlink" title="数据表的设计"></a>数据表的设计</h2><p><img src="https://upload-images.jianshu.io/upload_images/8964398-97a8dd7b5126731e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<h2 id="收货地址增加"><a href="#收货地址增加" class="headerlink" title="收货地址增加"></a>收货地址增加</h2><p>首先我们打开controller这个包下面的portal包，在里面新建一个ShippingController.java文件，里面写入以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">package top.store.controller.portal;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">import org.springframework.beans.factory.annotation.Autowired;</span><br><span class="line">import org.springframework.stereotype.Controller;</span><br><span class="line">import org.springframework.web.bind.annotation.RequestMapping;</span><br><span class="line">import org.springframework.web.bind.annotation.ResponseBody;</span><br><span class="line">import top.store.common.Const;</span><br><span class="line">import top.store.common.ResponseCode;</span><br><span class="line">import top.store.common.ServerResponse;</span><br><span class="line">import top.store.pojo.Shipping;</span><br><span class="line">import top.store.pojo.User;</span><br><span class="line">import top.store.service.IShippingService;</span><br><span class="line"></span><br><span class="line">import javax.servlet.http.HttpSession;</span><br><span class="line"></span><br><span class="line">@Controller</span><br><span class="line">@RequestMapping(&quot;/shipping/&quot;)  //这是我们对整个前台商品功能配置的一个类似于namespace的东西</span><br><span class="line">public class ShippingController &#123;</span><br><span class="line"></span><br><span class="line">    @Autowired</span><br><span class="line">    private IShippingService iShippingService;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    /***</span><br><span class="line">     * 前台--收货地址的增加</span><br><span class="line">     * @author lenovo</span><br><span class="line">     * */</span><br><span class="line">    @RequestMapping(value = &quot;add.do&quot;)  //这里就是具体的每个方法的url链接</span><br><span class="line">    @ResponseBody   //自动序列化json功能</span><br><span class="line">    public ServerResponse add(HttpSession session, Shipping shipping)&#123;   //这里是SpringMVC数据绑定中对象绑定</span><br><span class="line">        //验证用户是否登录</span><br><span class="line">        User user =(User) session.getAttribute(Const.CURRENT_USER);</span><br><span class="line">        //未登录需要用户强制登录</span><br><span class="line">        if(user ==null)&#123;</span><br><span class="line">            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());</span><br><span class="line">        &#125;</span><br><span class="line">        //实现我们前台收货地址增加的逻辑</span><br><span class="line">        return iShippingService.add(user.getId(),shipping);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>接着打开sevcice包，新建IShippingService.Java文件，里面新增以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">package top.store.service;</span><br><span class="line"></span><br><span class="line">import top.store.common.ServerResponse;</span><br><span class="line">import top.store.pojo.Shipping;</span><br><span class="line"></span><br><span class="line">public interface IShippingService &#123;</span><br><span class="line">    ServerResponse add(Integer userId, Shipping shipping);    //前台--收货地址的增加</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>接着打开sevcice包下面的Impl包，我们新建一个接口的实现类ShippingServiceImpl.java文件，里面的代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">package top.store.service.impl;</span><br><span class="line"></span><br><span class="line">import com.google.common.collect.Maps;</span><br><span class="line">import org.springframework.beans.factory.annotation.Autowired;</span><br><span class="line">import org.springframework.stereotype.Service;</span><br><span class="line">import top.store.common.ServerResponse;</span><br><span class="line">import top.store.dao.ShippingMapper;</span><br><span class="line">import top.store.pojo.Shipping;</span><br><span class="line">import top.store.service.IShippingService;</span><br><span class="line"></span><br><span class="line">import java.util.Map;</span><br><span class="line"></span><br><span class="line">@Service(&quot;iShippingService&quot;)</span><br><span class="line">public class ShippingServiceImpl implements IShippingService &#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    @Autowired</span><br><span class="line">    private ShippingMapper shippingMapper;</span><br><span class="line"></span><br><span class="line">    /***</span><br><span class="line">     * 前台--收货地址的增加</span><br><span class="line">     * @author lenovo</span><br><span class="line">     * */</span><br><span class="line">    public ServerResponse add(Integer userId,Shipping shipping)&#123;</span><br><span class="line">        shipping.setUserId(userId);   //shipping对象中的userId，我们直接从前台登录中的session中获取</span><br><span class="line">        int rowCount =shippingMapper.insert(shipping);   //这样我们刚才获取到的userId就能直接使用了</span><br><span class="line">        if(rowCount&gt;0)&#123;</span><br><span class="line">            //我们和前端约定，增加后返回shippingId，而且这个key就是shippingId，这样我们就能直接利用map来获取相关信息了</span><br><span class="line">            Map resultMap = Maps.newHashMap();</span><br><span class="line">            resultMap.put(&quot;shippingId&quot;,shipping.getId());</span><br><span class="line">            return ServerResponse.createBySuccess(&quot;创建新地址成功！&quot;,resultMap);</span><br><span class="line">        &#125;</span><br><span class="line">        return ServerResponse.createByErrorMessage(&quot;创建新地址失败&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>注意，我们这里shipping对象中的userId，是直接从前台登录中的session中获取的。我们希望使用map来完成添加收货地址的功能，但是数据库中的<code>shippingMapper.insert(shipping);</code>里面主键id不能立即获取并使用，因此我们需要将主键赋值到自己定义的keyProperty中，这样就能立即获取了。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- useGeneratedKeys=&quot;true&quot;把新增加的主键赋值到自己定义的keyProperty（id）中 --&gt;</span><br><span class="line">&lt;insert id=&quot;insert&quot; parameterType=&quot;top.store.pojo.Shipping&quot; useGeneratedKeys=&quot;true&quot; keyProperty=&quot;id&quot;&gt;</span><br><span class="line">  insert into store_shipping (id, user_id, receiver_name, </span><br><span class="line">    receiver_phone, receiver_mobile, receiver_province, </span><br><span class="line">    receiver_city, receiver_district, receiver_address, </span><br><span class="line">    receiver_zip, create_time, update_time</span><br><span class="line">    )</span><br><span class="line">  values (#&#123;id,jdbcType=INTEGER&#125;, #&#123;userId,jdbcType=INTEGER&#125;, #&#123;receiverName,jdbcType=VARCHAR&#125;, </span><br><span class="line">    #&#123;receiverPhone,jdbcType=VARCHAR&#125;, #&#123;receiverMobile,jdbcType=VARCHAR&#125;, #&#123;receiverProvince,jdbcType=VARCHAR&#125;, </span><br><span class="line">    #&#123;receiverCity,jdbcType=VARCHAR&#125;, #&#123;receiverDistrict,jdbcType=VARCHAR&#125;, #&#123;receiverAddress,jdbcType=VARCHAR&#125;, </span><br><span class="line">    #&#123;receiverZip,jdbcType=VARCHAR&#125;, now(), now()</span><br><span class="line">    )</span><br><span class="line">&lt;/insert&gt;</span><br><span class="line">&lt;!--useGeneratedKeys 取值范围true|false 默认值是：false。 含义：设置是否使用JDBC的getGenereatedKeys方法获取主键并赋值到keyProperty设置的领域模型属性中。--&gt;</span><br></pre></td></tr></table></figure></p>
+<p>也就是第二行代码变成上面的样子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;insert id=&quot;insert&quot; parameterType=&quot;top.store.pojo.Shipping&quot; useGeneratedKeys=&quot;true&quot; keyProperty=&quot;id&quot;&gt;</span><br></pre></td></tr></table></figure></p>
+<p>这样我们收货地址增加的功能就实现了，接下来完成收货地址删除的功能。</p>
+<h2 id="收货地址删除"><a href="#收货地址删除" class="headerlink" title="收货地址删除"></a>收货地址删除</h2><p>老规矩，打开ShippingController.java文件，里面写入以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">/***</span><br><span class="line"> * 前台--收货地址的删除</span><br><span class="line"> * @author lenovo</span><br><span class="line"> * */</span><br><span class="line">@RequestMapping(value = &quot;del.do&quot;)  //这里就是具体的每个方法的url链接</span><br><span class="line">@ResponseBody   //自动序列化json功能</span><br><span class="line">public ServerResponse del(HttpSession session,Integer shippingId)&#123;   //这里是SpringMVC数据绑定中对象绑定</span><br><span class="line">    //验证用户是否登录</span><br><span class="line">    User user =(User) session.getAttribute(Const.CURRENT_USER);</span><br><span class="line">    //未登录需要用户强制登录</span><br><span class="line">    if(user ==null)&#123;</span><br><span class="line">        return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());</span><br><span class="line">    &#125;</span><br><span class="line">    //实现我们前台收货地址删除的逻辑</span><br><span class="line">    return iShippingService.del(user.getId(),shippingId);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>接着打开ShippingServiceImpl.java文件，里面新增代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">    /***</span><br><span class="line">     * 前台--收货地址的删除</span><br><span class="line">     * @author lenovo</span><br><span class="line">     * */</span><br><span class="line">    public ServerResponse&lt;String&gt; del(Integer userId,Integer shippingId)&#123;</span><br><span class="line">        //注意这里会产生横向越权问题，因为这个delete语句里面没有与用户进行绑定，因此是不可以使用的</span><br><span class="line">//       int rowCount = shippingMapper.deleteByPrimaryKey(shippingId);</span><br><span class="line">        int rowCount = shippingMapper.deleteShippingByUserIdAndShippingId(userId,shippingId);</span><br><span class="line">        if(rowCount&gt;0)&#123;</span><br><span class="line">            return ServerResponse.createBySuccess(&quot;删除收货地址成功！&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">        return ServerResponse.createByErrorMessage(&quot;删除收货地址失败&quot;);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>注意如果你使用<code>int rowCount = shippingMapper.deleteByPrimaryKey(shippingId);</code>就会产生横向越权问题，因为这个delete语句里面没有与用户进行绑定，因此是不可以使用的，你需要自己定义一个查询的方法。打开ShippingMapper.java文件，里面写入一行代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//注意在mybatis中使用多个参数时，需要使用param注解</span><br><span class="line">int deleteShippingByUserIdAndShippingId(@Param(value = &quot;userId&quot;)Integer userId,@Param(value = &quot;shippingId&quot;) Integer shippingId);</span><br></pre></td></tr></table></figure></p>
+<p>接着打开ShippingMapper.xml文件，里面写入以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;delete id=&quot;deleteShippingByUserIdAndShippingId&quot;  parameterType=&quot;map&quot;&gt;</span><br><span class="line">  delete from store_shipping</span><br><span class="line">  where user_id =#&#123;userId&#125;</span><br><span class="line">  and id =#&#123;shippingId&#125;</span><br><span class="line">&lt;/delete&gt;</span><br></pre></td></tr></table></figure></p>
+<p>最后打开IShippingService.Java文件，里面新增以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ServerResponse&lt;String&gt; del(Integer userId,Integer shippingId);    //前台--收货地址的删除</span><br></pre></td></tr></table></figure></p>
+<p>这样我们收货地址删除的功能就实现了，接下来完成收货地址修改的功能。</p>
+<h2 id="收货地址修改"><a href="#收货地址修改" class="headerlink" title="收货地址修改"></a>收货地址修改</h2><p>老规矩，打开ShippingController.java文件，里面写入以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">/***</span><br><span class="line"> * 前台--收货地址的更新</span><br><span class="line"> * @author lenovo</span><br><span class="line"> * */</span><br><span class="line">@RequestMapping(value = &quot;update.do&quot;)  //这里就是具体的每个方法的url链接</span><br><span class="line">@ResponseBody   //自动序列化json功能</span><br><span class="line">public ServerResponse update(HttpSession session,Shipping shipping)&#123;   //这里是SpringMVC数据绑定中对象绑定</span><br><span class="line">    //验证用户是否登录</span><br><span class="line">    User user =(User) session.getAttribute(Const.CURRENT_USER);</span><br><span class="line">    //未登录需要用户强制登录</span><br><span class="line">    if(user ==null)&#123;</span><br><span class="line">        return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());</span><br><span class="line">    &#125;</span><br><span class="line">    //实现我们前台收货地址更新的逻辑</span><br><span class="line">    return iShippingService.update(user.getId(),shipping);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>接着打开ShippingServiceImpl.java文件，里面新增代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">    /***</span><br><span class="line">     * 前台--收货地址的更新</span><br><span class="line">     * @author lenovo</span><br><span class="line">     * */</span><br><span class="line">    public ServerResponse update(Integer userId,Shipping shipping)&#123;</span><br><span class="line">        shipping.setUserId(userId);   //shipping对象中的userId，我们直接从前台登录中的session中获取</span><br><span class="line">        //注意这里会产生横向越权问题，因为这个delete语句里面没有与用户进行绑定，因此是不可以使用的</span><br><span class="line">//        int rowCount =shippingMapper.insert(shipping);   //这样我们刚才获取到的userId就能直接使用了</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        //自己定义的sql语句方法</span><br><span class="line">        int rowCount =shippingMapper.updateByShipping(shipping);</span><br><span class="line">        if(rowCount&gt;0)&#123;</span><br><span class="line">            //注意这里不需要将id进行返回给前端，因为前面已经获取到了</span><br><span class="line">            return ServerResponse.createBySuccess(&quot;更新新地址成功！&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">        return ServerResponse.createByErrorMessage(&quot;更新新地址失败&quot;);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>注意如果你使用<code>int rowCount =shippingMapper.insert(shipping);</code>就会产生横向越权问题，因为这个update语句里面没有与用户进行绑定，因此是不可以使用的，你需要自己定义一个查询的方法。打开ShippingMapper.java文件，里面写入一行代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">int updateByShipping(Shipping record);</span><br></pre></td></tr></table></figure></p>
+<p>接着打开ShippingMapper.xml文件，里面写入以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--注意这里面的userId是不可以更改的，所以一定要从set里面去掉，而且and语句最后的括号一定要去掉--&gt;</span><br><span class="line">&lt;update id=&quot;updateByShipping&quot; parameterType=&quot;top.store.pojo.Shipping&quot;&gt;</span><br><span class="line">  update store_shipping</span><br><span class="line">  set</span><br><span class="line">    receiver_name = #&#123;receiverName,jdbcType=VARCHAR&#125;,</span><br><span class="line">    receiver_phone = #&#123;receiverPhone,jdbcType=VARCHAR&#125;,</span><br><span class="line">    receiver_mobile = #&#123;receiverMobile,jdbcType=VARCHAR&#125;,</span><br><span class="line">    receiver_province = #&#123;receiverProvince,jdbcType=VARCHAR&#125;,</span><br><span class="line">    receiver_city = #&#123;receiverCity,jdbcType=VARCHAR&#125;,</span><br><span class="line">    receiver_district = #&#123;receiverDistrict,jdbcType=VARCHAR&#125;,</span><br><span class="line">    receiver_address = #&#123;receiverAddress,jdbcType=VARCHAR&#125;,</span><br><span class="line">    receiver_zip = #&#123;receiverZip,jdbcType=VARCHAR&#125;,</span><br><span class="line">    create_time = #&#123;createTime,jdbcType=TIMESTAMP&#125;,</span><br><span class="line">    update_time = now()</span><br><span class="line">  where id = #&#123;id,jdbcType=INTEGER&#125;</span><br><span class="line">  and user_id = #&#123;userId,jdbcType=INTEGER&#125;</span><br><span class="line">&lt;/update&gt;</span><br></pre></td></tr></table></figure></p>
+<p>看到没有，这里的update语句和里面提供sql语句非常相似，但是记住里面的userId是不可以更改的，所以一定要从set里面去掉，而且and语句最后的括号一定要去掉。关于第一行代码的来源，大家可以自行查看原生的sql语句。</p>
+<p>最后打开IShippingService.Java文件，里面新增以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ServerResponse update(Integer userId,Shipping shipping);   //前台--收货地址的更新</span><br></pre></td></tr></table></figure></p>
+<p>这样我们收货地址修改的功能就实现了，接下来完成收货地址查询的功能。</p>
+<h2 id="收货地址查询"><a href="#收货地址查询" class="headerlink" title="收货地址查询"></a>收货地址查询</h2><p>老规矩，打开ShippingController.java文件，里面写入以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">/***</span><br><span class="line"> * 前台--收货地址的查询</span><br><span class="line"> * @author lenovo</span><br><span class="line"> * */</span><br><span class="line">@RequestMapping(value = &quot;select.do&quot;)  //这里就是具体的每个方法的url链接</span><br><span class="line">@ResponseBody   //自动序列化json功能</span><br><span class="line">public ServerResponse&lt;Shipping&gt; select(HttpSession session,Integer shippingId)&#123;   //这里是SpringMVC数据绑定中对象绑定</span><br><span class="line">    //验证用户是否登录</span><br><span class="line">    User user =(User) session.getAttribute(Const.CURRENT_USER);</span><br><span class="line">    //未登录需要用户强制登录</span><br><span class="line">    if(user ==null)&#123;</span><br><span class="line">        return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());</span><br><span class="line">    &#125;</span><br><span class="line">    //实现我们前台收货地址查询的逻辑</span><br><span class="line">    return iShippingService.select(user.getId(),shippingId);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>接着打开ShippingServiceImpl.java文件，里面新增代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">    /***</span><br><span class="line">     * 前台--收货地址的查询</span><br><span class="line">     * @author lenovo</span><br><span class="line">     * */</span><br><span class="line">    public ServerResponse&lt;Shipping&gt; select(Integer userId,Integer shippingId)&#123;</span><br><span class="line">        //注意这里会产生横向越权问题，因为这个select语句里面没有与用户进行绑定，因此是不可以使用的</span><br><span class="line">//        int rowCount =shippingMapper.selectByPrimaryKey(shippingId);</span><br><span class="line">        Shipping shipping =shippingMapper.selectByUserIdAndShippingId(userId,shippingId);</span><br><span class="line">        if(shipping == null)&#123;</span><br><span class="line">            return ServerResponse.createByErrorMessage(&quot;无法查询到该地址&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">        return ServerResponse.createBySuccess(&quot;该地址查询到了！&quot;,shipping);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>注意如果你使用<code>int rowCount =shippingMapper.selectByPrimaryKey(shippingId);</code>就会产生横向越权问题，因为这个select语句里面没有与用户进行绑定，因此是不可以使用的，你需要自己定义一个查询的方法。打开ShippingMapper.java文件，里面写入一行代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//注意在mybatis中使用多个参数时，需要使用param注解</span><br><span class="line">Shipping selectByUserIdAndShippingId(@Param(value = &quot;userId&quot;)Integer userId,@Param(value = &quot;shippingId&quot;) Integer shippingId);</span><br></pre></td></tr></table></figure></p>
+<p>接着打开ShippingMapper.xml文件，里面写入以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;select id=&quot;selectByUserIdAndShippingId&quot; resultMap=&quot;BaseResultMap&quot; parameterType=&quot;map&quot;&gt;</span><br><span class="line">        SELECT</span><br><span class="line">        &lt;include refid=&quot;Base_Column_List&quot;/&gt;</span><br><span class="line">        from store_shipping</span><br><span class="line">        where id = #&#123;shippingId&#125;</span><br><span class="line">        and user_id = #&#123;userId&#125;</span><br><span class="line">&lt;/select&gt;</span><br></pre></td></tr></table></figure></p>
+<p>最后打开IShippingService.Java文件，里面新增以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ServerResponse&lt;Shipping&gt; select(Integer userId,Integer shippingId);   //前台--收货地址的查询</span><br></pre></td></tr></table></figure></p>
+<p>这样我们收货地址查询的功能就实现了，接下来完成收货地址详情分页的功能。</p>
+<h2 id="收货地址详情分页"><a href="#收货地址详情分页" class="headerlink" title="收货地址详情分页"></a>收货地址详情分页</h2><p>老规矩，打开ShippingController.java文件，里面写入以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">/***</span><br><span class="line"> * 前台--收货地址的列表分页</span><br><span class="line"> * @author envy</span><br><span class="line"> * */</span><br><span class="line">@RequestMapping(value = &quot;list.do&quot;)  //这里就是具体的每个方法的url链接</span><br><span class="line">@ResponseBody   //自动序列化json功能</span><br><span class="line">public ServerResponse&lt;PageInfo&gt; list(HttpSession session, @RequestParam(value = &quot;pageNum&quot; ,defaultValue = &quot;1&quot;)int pageNum, @RequestParam(value = &quot;pageSize&quot; ,defaultValue = &quot;10&quot;)int pageSize)&#123;</span><br><span class="line">    //验证用户是否登录</span><br><span class="line">    User user =(User) session.getAttribute(Const.CURRENT_USER);</span><br><span class="line">    //未登录需要用户强制登录</span><br><span class="line">    if(user ==null)&#123;</span><br><span class="line">        return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());</span><br><span class="line">    &#125;</span><br><span class="line">    //实现我们前台收货地址的列表分页的逻辑</span><br><span class="line">  return iShippingService.list(user.getId(),pageNum,pageSize);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>接着打开ShippingServiceImpl.java文件，里面新增代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">/***</span><br><span class="line"> * 前台--收货地址的列表分页</span><br><span class="line"> * @author envy</span><br><span class="line"> * */</span><br><span class="line">public ServerResponse&lt;PageInfo&gt; list(Integer userId,int pageNum,int pageSize)&#123;</span><br><span class="line">    //开始分页</span><br><span class="line">    PageHelper.startPage(pageNum,pageSize);</span><br><span class="line">    //根据用户id来查询shipping对象</span><br><span class="line">    List&lt;Shipping&gt; shippingList =shippingMapper.selectShippingByUserId(userId);</span><br><span class="line"></span><br><span class="line">    //构造PageInfo对象</span><br><span class="line">    PageInfo pageInfo =new PageInfo(shippingList);</span><br><span class="line"></span><br><span class="line">    //返回PageInfo对象</span><br><span class="line">    return ServerResponse.createBySuccess(pageInfo);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>注意如看到<code>shippingMapper.selectShippingByUserId(userId);</code>就知道应该打开ShippingMapper.java文件，里面写入一行代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Shipping&gt; selectShippingByUserId(Integer userId);</span><br></pre></td></tr></table></figure></p>
+<p>接着打开ShippingMapper.xml文件，里面写入以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--注意一个参数使用int或者map都是可以的--&gt;</span><br><span class="line">&lt;select id=&quot;selectShippingByUserId&quot; resultMap=&quot;BaseResultMap&quot; parameterType=&quot;map&quot;&gt;</span><br><span class="line">    select</span><br><span class="line">    &lt;include refid=&quot;Base_Column_List&quot;/&gt;</span><br><span class="line">    from store_shipping</span><br><span class="line">    where user_id =#&#123;userId&#125;</span><br><span class="line">&lt;/select&gt;</span><br></pre></td></tr></table></figure></p>
+<p>最后打开IShippingService.Java文件，里面新增以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ServerResponse&lt;PageInfo&gt; list(Integer userId, int pageNum, int pageSize);     //前台--收货地址的列表分页</span><br></pre></td></tr></table></figure></p>
+<p>这样我们收货地址详情分页的功能就实现了，至此所有关于购物车的模块功能就全部实现了。接下来是模块测试，很简单，大家可以参看我提供的接口文档自行进行测试，这里就不进行了，感谢你的赏阅！</p>
+
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="https://upload-images.jianshu.io/upload_images/8964398-58d04ffa926103d9.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">觉得不错，赏包辣条吃呗！</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href target="_blank">编程思录</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2018/08/31/SSM搭建二手市场交易平台（二十二）：支付宝支付功能对接要点介绍/" class="pre-post btn btn-default" title="SSM搭建二手市场交易平台（二十二）：支付宝支付功能对接要点介绍">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">SSM搭建二手市场交易平台（二十二）：支付宝支付功能对接要点介绍</span>
+        </a>
+    
+    
+        <a href="/2018/08/29/SSM搭建二手市场交易平台（二十）：购物车商品的状态设置/" class="next-post btn btn-default" title="SSM搭建二手市场交易平台（二十）：购物车商品的状态设置">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">SSM搭建二手市场交易平台（二十）：购物车商品的状态设置</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+    <div id="vcomments" class="valine"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+
+    <script>
+        new Valine({
+            av: AV,
+            el: '#vcomments',
+            appId: '8zvHFFu5l2ah8lh0DEPH393B-gzGzoHsz',
+            appKey: 'UNmB24200qMtyyrun5z99nOE',
+            placeholder: '听说长得好看的，都已经留言了！',
+            notify: false,
+            verify: false,
+            avatar: 'mm',
+            meta: 'nick,mail'.split(','),
+            pageSize: '10',
+            path: window.location.pathname,
+            lang: 'zh-CN'.toLowerCase()
+        })
+    </script>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#写在前面"><span class="toc-text">写在前面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#模块说明"><span class="toc-text">模块说明</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#学会技能"><span class="toc-text">学会技能</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#数据表的设计"><span class="toc-text">数据表的设计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#收货地址增加"><span class="toc-text">收货地址增加</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#收货地址删除"><span class="toc-text">收货地址删除</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#收货地址修改"><span class="toc-text">收货地址修改</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#收货地址查询"><span class="toc-text">收货地址查询</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#收货地址详情分页"><span class="toc-text">收货地址详情分页</span></a></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2017-2019
+                </span> |
+                <span>
+				编程思录,保留所有权利
+                    <!--Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>-->
+                </span> |
+                <span>
+				<a style="color: #black" href="http://www.miitbeian.gov.cn">赣ICP备18013455号-5</a>
+                    <!--Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>-->
+                </span>
+            </div>
+			
+			<div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+			
+			<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1277113902'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s96.cnzz.com/z_stat.php%3Fid%3D1277113902%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));</script>
+        </div>
+    </div>
+</div>
+
+
+
+
+    <script src="/assets/tagcanvas.min.js?rev=2.9"></script>
+    <script>
+        var tagOption = {
+            textColour: 'red', // 字体颜色
+            outlineMethod: 'block', // 选中模式
+            outlineColour: '#FFDAB9', // 选中模式的颜色
+            interval: 30 || 30, // 动画帧之间的时间间隔，值越大，转动幅度越大
+            textHeight: 13,
+            outlineRadius: 3,
+            freezeActive: true || '', // 选中的标签是否继续滚动
+            frontSelect: true || '', // 不选标签云后部的标签
+            initial: [0.1, -0.1],
+            depth: 0.5,
+            decel: 0.95,
+            maxSpeed: 0.03,
+            reverse: true || '', // 是否反向触发
+            fadeIn: 500, // 进入动画时间
+            wheelZoom: false || '' // 是否启用鼠标滚轮
+        }
+        TagCanvas.Start('tag-cloud-3d','',tagOption);
+    </script>
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+</body>
+</html>

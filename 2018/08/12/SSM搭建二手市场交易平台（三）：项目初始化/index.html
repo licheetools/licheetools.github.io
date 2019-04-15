@@ -1,0 +1,495 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="编程思录，记录思考">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://blog.licheetools.top">
+    <!--SEO-->
+
+    <meta name="keywords" content="SSM框架,JAVA后端">
+
+
+    <meta name="description" content="写在前面本篇介绍数据库的初始化，jdk、tomcat、maven的配置及初始化web空白项目，git的初始化以及pom文件配置和项目包结构初始化
+数据库的初始化首先新建数据库store:
+
+然后...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+
+    <!--Title-->
+
+
+<title>SSM搭建二手市场交易平台（三）：项目初始化 | 编程思录，记录思考</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="编程思录，记录思考" type="application/atom+xml">
+
+
+    <link rel="icon" href="./favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+	<div class="hide">
+		<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+	</div>
+
+
+
+
+
+
+    
+
+    <script>
+        (function(){
+            var bp = document.createElement('script');
+            var curProtocol = window.location.protocol.split(':')[0];
+            if (curProtocol === 'https') {
+                bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+            }
+            else {
+                bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+            }
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(bp, s);
+        })();
+    </script>
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header" style="background-image:url(https://upload-images.jianshu.io/upload_images/8964398-b1ba9582ea8b69ba.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)">
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title="Envy">
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 点滴进步，都是收获 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://blog.licheetools.top">编程思录，记录思考</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>首页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/font/"><i class="fa "></i>前端</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/java/"><i class="fa "></i>Java</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/django/"><i class="fa "></i>Django</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/flask/"><i class="fa "></i>Flask</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/spider/"><i class="fa "></i>爬虫</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/data/"><i class="fa "></i>数据分析</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/money/"><i class="fa "></i>付费教程</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/life/"><i class="fa "></i>生活记录</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives"><i class="fa "></i>时间轴</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/about/"><i class="fa "></i>关于博主</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/liuyan/"><i class="fa "></i>留言板</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="SSM搭建二手市场交易平台（三）：项目初始化">
+            
+	            SSM搭建二手市场交易平台（三）：项目初始化
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/java/">java</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/JAVA后端/">JAVA后端</a> <a class="tag-link" href="/tags/SSM框架/">SSM框架</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2018/08/12</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>本篇介绍数据库的初始化，jdk、tomcat、maven的配置及初始化web空白项目，git的初始化以及pom文件配置和项目包结构初始化</p>
+<h3 id="数据库的初始化"><a href="#数据库的初始化" class="headerlink" title="数据库的初始化"></a>数据库的初始化</h3><p>首先新建数据库store:</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-ef3fc615f33f4e2a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>然后新建一个查询，执行第二篇笔记里面的SQL 语句，就可以创建本项目的数据库表了。如果你觉得麻烦可以去我的github上查找一个名为store.sql的文件，然后创建完数据局以后，点击新建查询，把里面的sql语句全都插入进去，然后点击运行即可：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-b3e663af34a594b7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<h2 id="idea的安装"><a href="#idea的安装" class="headerlink" title="idea的安装"></a>idea的安装</h2><p>关于idea的安装我这里就不介绍了，我之前介绍Pycharm的时候就顺带介绍了，你看一下就可以了（说明我这里使用的idea的版本是2018.2.3）：<a href="https://www.jianshu.com/p/f0f88776629f" target="_blank" rel="noopener">手把手教你破解Pycharm2018.2（JetBrains全家桶）</a></p>
+<h2 id="jdk、tomcat、maven配置及初始化web空白项目"><a href="#jdk、tomcat、maven配置及初始化web空白项目" class="headerlink" title="jdk、tomcat、maven配置及初始化web空白项目"></a>jdk、tomcat、maven配置及初始化web空白项目</h2><h3 id="jdk的配置"><a href="#jdk的配置" class="headerlink" title="jdk的配置"></a>jdk的配置</h3><p><img src="https://upload-images.jianshu.io/upload_images/8964398-bb48ad87940e5c91.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>点击上面的新建图片的首页，点击Configure–&gt;Project Defaults–&gt;project Structure:</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-48d68789c0fc79ad.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>按照图上所示进行配置，然后单击ok就好。</p>
+<h3 id="maven的配置"><a href="#maven的配置" class="headerlink" title="maven的配置"></a>maven的配置</h3><p><img src="https://upload-images.jianshu.io/upload_images/8964398-bb48ad87940e5c91.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>点击上面的新建图片的首页，点击Configure–&gt;Settings：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-c4f0efb292ebac18.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>注意这里的maven的解压路径，还有如果你的maven都是默认安装，那么你4步骤使用默认的就可以了。按照图上所示进行配置，然后单击ok就好。</p>
+<h3 id="快捷键的配置"><a href="#快捷键的配置" class="headerlink" title="快捷键的配置"></a>快捷键的配置</h3><p><img src="https://upload-images.jianshu.io/upload_images/8964398-bb48ad87940e5c91.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>点击上面的新建图片的首页，点击Configure–&gt;Settings：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-0830054c36fe526c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>这里我之前使用过一段时间的eclipse，所以快捷键就默认使用eclipse的，你可以根据自己的需要进行设置。</p>
+<h2 id="Maven空白项目的创建"><a href="#Maven空白项目的创建" class="headerlink" title="Maven空白项目的创建"></a>Maven空白项目的创建</h2><p><img src="https://upload-images.jianshu.io/upload_images/8964398-890670696c9cd532.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-e7c63d433d644892.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-2ef2466b63fd6fbf.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-406d05b1bf3edcec.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-cee85d3fe42cfc33.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>然后一直next就可以了，然后系统会自动创建项目，创建完成如图所示：（第一次使用maven可能会花一点时间，因为maven的中央仓库里面还没有文件，你需要去下载）</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-fa17b0fe002ac6b3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>看到上面这张图片说明项目已经搭建完成了。</p>
+<p>接下来便是项目文件和测试文件目录的创建：在 main 文件下面创建一个java文件夹 ，然后按照如下操作：光标移到java文件夹上面，然后右键拉到底部，找到Make Directory AS ，再单击出现的Sources Root即可，会发现该文件变成了蓝色。</p>
+<p>紧接着在src文件下，创建mian文件的测试文件夹，名称为test，然后再在test文件夹下面新建java文件夹 ，然后按照如下操作：光标移到java文件夹上面，然后右键拉到底部，找到Make Directory AS ，再单击出现的Test Sources Root即可，会发现该文件变成了绿色。</p>
+<h3 id="tomcat的配置"><a href="#tomcat的配置" class="headerlink" title="tomcat的配置"></a>tomcat的配置</h3><p><img src="https://upload-images.jianshu.io/upload_images/8964398-c87be57bf23b06d8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>然后选择出现的Edit Configuration，点击左上角的绿色+号，拉到底部选择Tomcat Server，再选择local服务就可以：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-7a72d7585da5aaaf.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-5c188cec09c3a2b5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>1处的是你的tomcat server服务的名称，这个你自己随意命名可以不和项目名称保持一致，然后就是2,3,4步骤，最后点击apply和ok就可以了。<br><img src="https://upload-images.jianshu.io/upload_images/8964398-de3619e19d3d67f1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>想知道你上述配置有没有成功呢？你可以点击运行一下，注意这里必须是运行tomcat服务器，不是jsp页面：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-94fe9c57bfcfb1a6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>等项目运行起来后，等20秒左右，idea会自动打开浏览器并出现<code>localhost:8080</code>如果出现下面的页面代表配置成功了：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-12afdcf3a219efdf.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<h3 id="git的初始化"><a href="#git的初始化" class="headerlink" title="git的初始化"></a>git的初始化</h3><p>这里我使用的是github，当然你可以使用gitee或者其他的代码分享平台。</p>
+<p>关于github的安装，我就不介绍了，你可以参考这篇文章：<a href="https://blog.csdn.net/p10010/article/details/51336332" target="_blank" rel="noopener">GitHub的注册与使用（详细图解）</a></p>
+<p>然后新建一个repository，名称为store，紧接着开始git的初始化：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-e6c3f739649019a5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>现在开始进行git的初始化，首先在idea的terminal下面运行<code>touch README.md</code>创建该文件。如果无法执行git命令：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-450425fca5fcea50.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>那么很抱歉你需要进行相关信息的配置，具体的参考这里：<a href="https://blog.csdn.net/xingxiupaioxue/article/details/76855193" target="_blank" rel="noopener">idea中Terminal终端无法执行GIT命令： touch README.md问题解决</a></p>
+<p>我这里推荐使用第二种方法，不过此后bash已经内嵌到idea里面了，就不再是执行以前的cmd命令了，这一点你需要清楚。接下来重新运行代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ touch README.md  #创建一个 README 文件</span><br><span class="line"></span><br><span class="line">$ touch .gitignore   #创建一个忽略配置文件（gitignore前面的.号必须有）</span><br></pre></td></tr></table></figure></p>
+<p>.gitignore文件的作用是把我们的配置文件匹配上的信息进行忽略，不会推送到我们的Git仓库里面去，也不会检测到我们本地的一些变化，（否则的话你每次修改一个字母都会进行自动上传，这是很费时间的事情）</p>
+<p>接下来就是.gitignore文件的配置，我们忽略什么就在里面配置什么：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"># Compiled class file</span><br><span class="line">*.class   #我们编译出来的文件不需要推送</span><br><span class="line"> </span><br><span class="line"># temp file   临时文件</span><br><span class="line">*.log</span><br><span class="line">*.cache</span><br><span class="line">*.diff</span><br><span class="line">*.patch</span><br><span class="line">*.tmp</span><br><span class="line"> </span><br><span class="line"># BlueJ files</span><br><span class="line">*.ctxt</span><br><span class="line"> </span><br><span class="line"># Mobile Tools for Java (J2ME)</span><br><span class="line">.mtj.tmp/</span><br><span class="line"> </span><br><span class="line"># Package Files #包文件不进行推送</span><br><span class="line">*.war</span><br><span class="line">*.ear</span><br><span class="line">*.zip</span><br><span class="line">*.tar.gz</span><br><span class="line">*.rar</span><br><span class="line"> </span><br><span class="line"># virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml</span><br><span class="line">hs_err_pid*</span><br><span class="line"> </span><br><span class="line">#kdiff3 ignore</span><br><span class="line">*.orig</span><br><span class="line"> </span><br><span class="line">#maven ignore</span><br><span class="line">target/</span><br><span class="line"> </span><br><span class="line">#eclipse ignore</span><br><span class="line">.settings/</span><br><span class="line">.project</span><br><span class="line">.classpatch</span><br><span class="line"> </span><br><span class="line">#idea</span><br><span class="line">.idea/</span><br><span class="line">/idea/</span><br><span class="line">*.ipr</span><br><span class="line">*.iml</span><br><span class="line">*.iws</span><br><span class="line"> </span><br><span class="line"># system ignore  忽略系统文件</span><br><span class="line">.DS_Store</span><br><span class="line">Thumbs.db</span><br><span class="line">src/main/resources/store.properties</span><br><span class="line">src/main/resources/datasource.properties</span><br></pre></td></tr></table></figure></p>
+<p>在上面的文件中，我们没有对.jar文件进行忽略，那是因为后面支付宝提供的jar包我们需要提交到git仓库里面。</p>
+<p>接下来执行git的初始化：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git init  #初始化后会生成一个隐藏的.git文件</span><br></pre></td></tr></table></figure></p>
+<p>继续执行下面的代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git status   #可以知道有哪些文件发生了变化</span><br></pre></td></tr></table></figure></p>
+<p>执行下面的代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git add .  #添加所有文件</span><br></pre></td></tr></table></figure></p>
+<p>接着执行下面的代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git status</span><br></pre></td></tr></table></figure></p>
+<p>你会发现此时之前的那些都new file了 :</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-6f752235bf52de7d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>接着执行下面的代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git commit -am &apos;first commit init project&apos;</span><br></pre></td></tr></table></figure></p>
+<p>-am代表加注释的意思，操作完此时我们所有文件就提交完了，不过只是提交到本地仓库里，还没有提交到git仓库里面。</p>
+<p>接下来便是把其提交到我们远程的仓库里面了：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git remote add origin git@github.com:licheetools/store.git</span><br></pre></td></tr></table></figure></p>
+<p>@后面是你的github项目的地址。</p>
+<p>紧接着查看一下我们的分支：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git branch  #查看一下分支，发现目前我们在master上，我们后面进行修改</span><br></pre></td></tr></table></figure></p>
+<p>现在执行最重要的一步，把项目推送到github仓库上面：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git push -u origin master</span><br></pre></td></tr></table></figure></p>
+<p>如果运行出现下面的情况，请不要慌，按照我说的操作继续走：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-c512569afce3f81f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>首先拉取一下资源：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git pull</span><br></pre></td></tr></table></figure></p>
+<p>接着就重新执行刚才的代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git push -u origin master</span><br></pre></td></tr></table></figure></p>
+<p>你会发现又出了一个错误：（这可真是命途多舛啊。。。）</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-24926ffd1a348050.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt><br>（说你的分支太靠后了，没有远程分支线）</p>
+<p>现在只能强制推送了，如何强制呢？可以使用下面的命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git push -u -f origin master</span><br></pre></td></tr></table></figure></p>
+<p>现在你发现没有报错了，刷新一下你的github，可以看到你的本地项目已经发送到github上面了：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-55e3653e4b91332e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p><strong>我们这个项目采用分支开发，主干发布(master)的模式，所以git仓库是必须要有的。</strong></p>
+<p>你可以使用下面的命令查看一下分支情况：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git branch -r</span><br></pre></td></tr></table></figure></p>
+<p>我们新建一个分支：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout -b v0.1 origin/master</span><br></pre></td></tr></table></figure></p>
+<p>(checkout是检查，v0.1是名称，origin/master是当前的分支树节点)<br>你同样可以使用下面的命令查看分支：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ git branch</span><br><span class="line">#运行结果：</span><br><span class="line">#  master</span><br><span class="line">#* v0.1</span><br></pre></td></tr></table></figure></p>
+<p>最后我们使用下面的命令将分支推送到远程：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git push origin HEAD -u</span><br></pre></td></tr></table></figure></p>
+<p>就出现：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-8e8c3aaf06e7ffd1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>最后去刷新一下github，会发现远程仓库里面已经有了：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-df3274be97fcd6a1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>是不是觉得很麻烦？其实idea里面已经集成了git，因此你可以不下载git就能连接到github了（但是连接gitee目前还不支持）由于idea和pycharm非常类似，因此我这里就不介绍如何直接使用idea把代码上传到github仓库里面了，有兴趣的同学可以参考我之前的这篇文章：<a href="https://www.jianshu.com/p/3cc5f0fe6168" target="_blank" rel="noopener">利用Pycharm把代码直接上传到github 仓库</a></p>
+<h2 id="pom文件配置"><a href="#pom文件配置" class="headerlink" title="pom文件配置"></a>pom文件配置</h2><p>找到图示的pom.xml文件，然后去我的github仓库找到一个名为store.xml的文件，将里面的内容复制替换到pom.xml文件里面：（由于里面的代码很多，这里就不贴出来了，注意一下里面相关包的版本）</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-411d9843327c06a4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>然后点击：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-69e14fd4335723f3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>需要注意的是pom.xml文件里面jdk的版本，我用的是10，你们自己注意一下：<br><a href="https://blog.csdn.net/blueboz/article/details/81270242" target="_blank" rel="noopener">Maven 教程：IDEA开发环境中maven 项目配置JDK9，JDK10，JDK11，JDK12..等EA版本的配置方法 系列教程一</a></p>
+<p>左侧就会出现已经安装的包：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-2e7caee17db5a3f9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<h2 id="项目包结构初始化"><a href="#项目包结构初始化" class="headerlink" title="项目包结构初始化"></a>项目包结构初始化</h2><p>现在我们需要创建几个包，具体过程我就不详细说明了，直接附上最后的结果：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-9574cc730f7d878e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt><br>简单的说一下各个包的作用：controller，dao，service这三个关系密切：dao在最下层与数据库进行交互，controller是控制层，util是各个工具的存放，vo你可以理解为ViewObject或者ValueObject，正常的这两层就够了，如果是一些比较复杂的项目，还会多一层BusinessObject。pojo是简单的数据库对象，上一层通过VO进行封装，再传递给controller让前端负责展示。我们当然可以在pojo的上层使用bo，然后再在上层使用vo。其实在这里你可以把vo当做一个值对象（ValueObject），然后传递给controller让前端负责展示。common包就是存放我们项目中使用到的常量，或者是公共类等。</p>
+<p>至此，我们本篇关于项目的初始化的介绍就到此为止了，感谢你的赏阅！</p>
+
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="https://upload-images.jianshu.io/upload_images/8964398-58d04ffa926103d9.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">觉得不错，赏包辣条吃呗！</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href target="_blank">编程思录</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2018/08/13/SSM搭建二手市场交易平台（四）：mybatis介绍与使用/" class="pre-post btn btn-default" title="SSM搭建二手市场交易平台（四）：mybatis介绍与使用">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">SSM搭建二手市场交易平台（四）：mybatis介绍与使用</span>
+        </a>
+    
+    
+        <a href="/2018/08/11/SSM搭建二手市场交易平台（二）：数据表设计/" class="next-post btn btn-default" title="SSM搭建二手市场交易平台（二）：数据表设计">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">SSM搭建二手市场交易平台（二）：数据表设计</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+    <div id="vcomments" class="valine"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+
+    <script>
+        new Valine({
+            av: AV,
+            el: '#vcomments',
+            appId: '8zvHFFu5l2ah8lh0DEPH393B-gzGzoHsz',
+            appKey: 'UNmB24200qMtyyrun5z99nOE',
+            placeholder: '听说长得好看的，都已经留言了！',
+            notify: false,
+            verify: false,
+            avatar: 'mm',
+            meta: 'nick,mail'.split(','),
+            pageSize: '10',
+            path: window.location.pathname,
+            lang: 'zh-CN'.toLowerCase()
+        })
+    </script>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#写在前面"><span class="toc-text">写在前面</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#数据库的初始化"><span class="toc-text">数据库的初始化</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#idea的安装"><span class="toc-text">idea的安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#jdk、tomcat、maven配置及初始化web空白项目"><span class="toc-text">jdk、tomcat、maven配置及初始化web空白项目</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#jdk的配置"><span class="toc-text">jdk的配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#maven的配置"><span class="toc-text">maven的配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#快捷键的配置"><span class="toc-text">快捷键的配置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Maven空白项目的创建"><span class="toc-text">Maven空白项目的创建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#tomcat的配置"><span class="toc-text">tomcat的配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#git的初始化"><span class="toc-text">git的初始化</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pom文件配置"><span class="toc-text">pom文件配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#项目包结构初始化"><span class="toc-text">项目包结构初始化</span></a></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2017-2019
+                </span> |
+                <span>
+				编程思录,保留所有权利
+                    <!--Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>-->
+                </span> |
+                <span>
+				<a style="color: #black" href="http://www.miitbeian.gov.cn">赣ICP备18013455号-5</a>
+                    <!--Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>-->
+                </span>
+            </div>
+			
+			<div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+			
+			<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1277113902'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s96.cnzz.com/z_stat.php%3Fid%3D1277113902%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));</script>
+        </div>
+    </div>
+</div>
+
+
+
+
+    <script src="/assets/tagcanvas.min.js?rev=2.9"></script>
+    <script>
+        var tagOption = {
+            textColour: 'red', // 字体颜色
+            outlineMethod: 'block', // 选中模式
+            outlineColour: '#FFDAB9', // 选中模式的颜色
+            interval: 30 || 30, // 动画帧之间的时间间隔，值越大，转动幅度越大
+            textHeight: 13,
+            outlineRadius: 3,
+            freezeActive: true || '', // 选中的标签是否继续滚动
+            frontSelect: true || '', // 不选标签云后部的标签
+            initial: [0.1, -0.1],
+            depth: 0.5,
+            decel: 0.95,
+            maxSpeed: 0.03,
+            reverse: true || '', // 是否反向触发
+            fadeIn: 500, // 进入动画时间
+            wheelZoom: false || '' // 是否启用鼠标滚轮
+        }
+        TagCanvas.Start('tag-cloud-3d','',tagOption);
+    </script>
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+</body>
+</html>

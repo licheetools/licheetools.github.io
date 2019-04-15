@@ -1,0 +1,435 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="编程思录，记录思考">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://blog.licheetools.top">
+    <!--SEO-->
+
+    <meta name="keywords" content="SSM框架,JAVA后端">
+
+
+    <meta name="description" content="写在前面本篇我们来完成前台获取订单详情，用户个人中心查看订单以及后台管理员订单管理等功能的开发，里面涉及到的知识点挺多的，需要好好理解。
+前台获取订单详情首先我们打开OrderControlle...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+
+    <!--Title-->
+
+
+<title>SSM搭建二手市场交易平台（二十八）：前台订单获取以及后台管理员订单管理功能开发 | 编程思录，记录思考</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="编程思录，记录思考" type="application/atom+xml">
+
+
+    <link rel="icon" href="./favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+	<div class="hide">
+		<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+	</div>
+
+
+
+
+
+
+    
+
+    <script>
+        (function(){
+            var bp = document.createElement('script');
+            var curProtocol = window.location.protocol.split(':')[0];
+            if (curProtocol === 'https') {
+                bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+            }
+            else {
+                bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+            }
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(bp, s);
+        })();
+    </script>
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header" style="background-image:url(https://upload-images.jianshu.io/upload_images/8964398-b1ba9582ea8b69ba.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)">
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title="Envy">
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 点滴进步，都是收获 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://blog.licheetools.top">编程思录，记录思考</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>首页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/font/"><i class="fa "></i>前端</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/java/"><i class="fa "></i>Java</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/django/"><i class="fa "></i>Django</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/flask/"><i class="fa "></i>Flask</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/spider/"><i class="fa "></i>爬虫</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/data/"><i class="fa "></i>数据分析</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/money/"><i class="fa "></i>付费教程</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/life/"><i class="fa "></i>生活记录</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives"><i class="fa "></i>时间轴</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/about/"><i class="fa "></i>关于博主</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/liuyan/"><i class="fa "></i>留言板</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="SSM搭建二手市场交易平台（二十八）：前台订单获取以及后台管理员订单管理功能开发">
+            
+	            SSM搭建二手市场交易平台（二十八）：前台订单获取以及后台管理员订单管理功能开发
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/java/">java</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/JAVA后端/">JAVA后端</a> <a class="tag-link" href="/tags/SSM框架/">SSM框架</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2018/09/05</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>本篇我们来完成前台获取订单详情，用户个人中心查看订单以及后台管理员订单管理等功能的开发，里面涉及到的知识点挺多的，需要好好理解。</p>
+<h2 id="前台获取订单详情"><a href="#前台获取订单详情" class="headerlink" title="前台获取订单详情"></a>前台获取订单详情</h2><p>首先我们打开OrderController.java这个文件，里面写入代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">/***</span><br><span class="line">     * 前台获取订单详情</span><br><span class="line">     * @author lenovo</span><br><span class="line">     * */</span><br><span class="line">    @RequestMapping(value = &quot;detail.do&quot;)  //这里就是具体的每个方法的url链接</span><br><span class="line">    @ResponseBody   //自动序列化json功能</span><br><span class="line">    public ServerResponse detail(HttpSession session,Long orderNo)&#123;</span><br><span class="line">        //验证用户是否登录</span><br><span class="line">        User user =(User) session.getAttribute(Const.CURRENT_USER);</span><br><span class="line">        //未登录需要用户强制登录</span><br><span class="line">        if(user ==null)&#123;</span><br><span class="line">            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());</span><br><span class="line">        &#125;</span><br><span class="line">        //实现我们前台获取订单详情的逻辑</span><br><span class="line">        return iOrderService.getOrderDetail(user.getId(),orderNo);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>接着打开IOrderService.Java文件，里面新增以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ServerResponse&lt;OrderVo&gt; getOrderDetail(Integer userId, Long orderNo);  //前台获取订单详情</span><br></pre></td></tr></table></figure></p>
+<p>最后我们打开OrderServiceImpl.java文件，里面的新增代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">/***</span><br><span class="line">     * 前台获取订单详情</span><br><span class="line">     * @author lenovo</span><br><span class="line">     * */</span><br><span class="line">    public ServerResponse&lt;OrderVo&gt; getOrderDetail(Integer userId,Long orderNo)&#123;</span><br><span class="line">        Order order =orderMapper.selectOrderByUserIdAndOrderNo(userId,orderNo);</span><br><span class="line">        if(order !=null)&#123;</span><br><span class="line">            List&lt;OrderItem&gt; orderItemList =orderItemMapper.getOrderItemByUserIdAndOrderNo(userId,orderNo);</span><br><span class="line">            OrderVo orderVo =assembleOrderVo(order,orderItemList);</span><br><span class="line">            return ServerResponse.createBySuccess(orderVo);</span><br><span class="line">        &#125;</span><br><span class="line">        return ServerResponse.createByErrorMessage(&quot;没有找到该订单&quot;);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>这样我们前台获取订单详情功能开发就完成了，接下来我们来开发用户个人中心查看订单这个功能。</p>
+<h2 id="用户个人中心查看订单"><a href="#用户个人中心查看订单" class="headerlink" title="用户个人中心查看订单"></a>用户个人中心查看订单</h2><p>首先我们打开OrderController.java这个文件，里面写入代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">/***</span><br><span class="line"> * 用户个人中心查看订单（需要分页）</span><br><span class="line"> * @author lenovo</span><br><span class="line"> * */</span><br><span class="line">@RequestMapping(value = &quot;list.do&quot;)  //这里就是具体的每个方法的url链接</span><br><span class="line">@ResponseBody   //自动序列化json功能</span><br><span class="line">public ServerResponse list(HttpSession session,@RequestParam(value = &quot;pageNum&quot; ,defaultValue = &quot;1&quot;)int pageNum,</span><br><span class="line">                           @RequestParam(value = &quot;pageSize&quot; ,defaultValue = &quot;10&quot;)int pageSize)&#123;</span><br><span class="line">    //验证用户是否登录</span><br><span class="line">    User user =(User) session.getAttribute(Const.CURRENT_USER);</span><br><span class="line">    //未登录需要用户强制登录</span><br><span class="line">    if(user ==null)&#123;</span><br><span class="line">        return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());</span><br><span class="line">    &#125;</span><br><span class="line">    //实现我们用户个人中心查看订单的逻辑</span><br><span class="line">    return iOrderService.getOrderList(user.getId(),pageNum,pageSize);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>接着打开IOrderService.Java文件，里面新增以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ServerResponse&lt;PageInfo&gt; getOrderList(Integer userId, int pageNum, int pageSize);   //前台用户个人中心查看订单（需要分页）</span><br></pre></td></tr></table></figure></p>
+<p>最后我们打开OrderServiceImpl.java文件，里面的新增代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">/***</span><br><span class="line"> * 前台用户个人中心查看订单（需要分页）</span><br><span class="line"> * @author lenovo</span><br><span class="line"> * */</span><br><span class="line">public ServerResponse&lt;PageInfo&gt; getOrderList(Integer userId,int pageNum,int pageSize)&#123;</span><br><span class="line">    PageHelper.startPage(pageNum,pageSize);</span><br><span class="line"></span><br><span class="line">    List&lt;Order&gt; orderList =orderMapper.selectOrderByUserId(userId);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    List&lt;OrderVo&gt; orderVoList =assembleOrderVoList(orderList,userId);</span><br><span class="line">    PageInfo pageResult =new PageInfo(orderList);</span><br><span class="line">    pageResult.setList(orderVoList);</span><br><span class="line">    return ServerResponse.createBySuccess(pageResult);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">private List&lt;OrderVo&gt; assembleOrderVoList(List&lt;Order&gt; orderList,Integer userId)&#123;</span><br><span class="line">    //将List&lt;Order&gt; 对象转换为List&lt;OrderVo&gt;对象</span><br><span class="line">    List&lt;OrderVo&gt; orderVoList =Lists.newArrayList();</span><br><span class="line">    for(Order order:orderList)&#123;</span><br><span class="line">        List&lt;OrderItem&gt; orderItemList =Lists.newArrayList();</span><br><span class="line">        //判断一下是不是管理员，管理员查询时不需要传入参数userId</span><br><span class="line">        if(userId ==null)&#123;</span><br><span class="line">            //todo 管理员查询时不需要传入参数userId</span><br><span class="line">            orderItemList =orderItemMapper.getOrderItemByOrderNo(order.getOrderNo());</span><br><span class="line">        &#125;else&#123;</span><br><span class="line">            orderItemList =orderItemMapper.getOrderItemByUserIdAndOrderNo(userId,order.getOrderNo());</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        OrderVo orderVo =assembleOrderVo(order,orderItemList);</span><br><span class="line">        orderVoList.add(orderVo);</span><br><span class="line">    &#125;</span><br><span class="line">    return orderVoList;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>注意一下，这里我们管理员查询订单的时候是可以不用userId的，因此需要自己去配置一个查询语句：<code>orderItemList =orderItemMapper.getOrderItemByOrderNo(order.getOrderNo());</code>我们打开OrderItemMapper.java文件，里面新增代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">List&lt;OrderItem&gt; getOrderItemByOrderNo(@Param(value = &quot;orderNo&quot;)Long orderNo);</span><br></pre></td></tr></table></figure></p>
+<p>然后打开OrderItemMapper.xml文件，里面新增代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;select id=&quot;getOrderItemByOrderNo&quot; resultMap=&quot;BaseResultMap&quot; parameterType=&quot;long&quot;&gt;</span><br><span class="line">  select</span><br><span class="line">  &lt;include refid=&quot;Base_Column_List&quot;/&gt;</span><br><span class="line">  from store_order_item</span><br><span class="line">  where order_no =#&#123;orderNo&#125;</span><br><span class="line">&lt;/select&gt;</span><br></pre></td></tr></table></figure></p>
+<p>这样我们前台用户个人中心查看订单的功能就实现了，那么也就意味着我们前台关于订单的功能开发也就完成了。接下来我们需要去完成后台管理员关于订单模块的功能。</p>
+<h2 id="后台管理员查询订单"><a href="#后台管理员查询订单" class="headerlink" title="后台管理员查询订单"></a>后台管理员查询订单</h2><p>首先我们打开controller这个包，在backend这个包里面新建OrderManageController.java这个文件，里面写入代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">package top.store.controller.backend;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">import com.github.pagehelper.PageInfo;</span><br><span class="line">import org.springframework.beans.factory.annotation.Autowired;</span><br><span class="line">import org.springframework.stereotype.Controller;</span><br><span class="line">import org.springframework.web.bind.annotation.RequestMapping;</span><br><span class="line">import org.springframework.web.bind.annotation.RequestParam;</span><br><span class="line">import org.springframework.web.bind.annotation.ResponseBody;</span><br><span class="line">import top.store.common.Const;</span><br><span class="line">import top.store.common.ResponseCode;</span><br><span class="line">import top.store.common.ServerResponse;</span><br><span class="line">import top.store.pojo.User;</span><br><span class="line">import top.store.service.IOrderService;</span><br><span class="line">import top.store.service.IUserService;</span><br><span class="line"></span><br><span class="line">import javax.servlet.http.HttpSession;</span><br><span class="line"></span><br><span class="line">@Controller</span><br><span class="line">@RequestMapping(&quot;/manage/order&quot;)</span><br><span class="line">public class OrderManageController &#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    @Autowired</span><br><span class="line">    private IUserService iUserService;</span><br><span class="line"></span><br><span class="line">    @Autowired</span><br><span class="line">    private IOrderService iOrderService;</span><br><span class="line"></span><br><span class="line">    /****</span><br><span class="line">     *</span><br><span class="line">     * 后台管理员查看订单（需要分页）</span><br><span class="line">     * */</span><br><span class="line">    @RequestMapping(&quot;list.do&quot;)</span><br><span class="line">    @ResponseBody   //自动序列化json功能</span><br><span class="line">    public ServerResponse&lt;PageInfo&gt; orderList(HttpSession session,@RequestParam(value = &quot;pageNum&quot; ,defaultValue = &quot;1&quot;)int pageNum,</span><br><span class="line">                                              @RequestParam(value = &quot;pageSize&quot; ,defaultValue = &quot;10&quot;)int pageSize)&#123;</span><br><span class="line">        //判断一下登录情况</span><br><span class="line">        User user=(User) session.getAttribute(Const.CURRENT_USER);</span><br><span class="line">        if(user ==null)&#123;</span><br><span class="line">            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),&quot;用户未登录，请登录&quot;);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        //判断一下是不是管理员身份</span><br><span class="line">        if(iUserService.checkAdminRole(user).isSuccess())&#123;</span><br><span class="line">            //如果是管理员就增加查看订单（需要分页）的逻辑</span><br><span class="line">            return iOrderService.manageList(pageNum,pageSize);</span><br><span class="line">        &#125;else&#123;</span><br><span class="line">            return ServerResponse.createByErrorMessage(&quot;无权限操作，需要管理员权限&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>接着打开IOrderService.Java文件，里面新增以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ServerResponse&lt;PageInfo&gt; manageList(int pageNum,int pageSize);    //后台管理员查看订单（需要分页）</span><br></pre></td></tr></table></figure></p>
+<p>最后我们打开OrderServiceImpl.java文件，里面的新增代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> *</span><br><span class="line"> * 后台管理员查询订单(不需要userId)</span><br><span class="line"> * */</span><br><span class="line">public ServerResponse&lt;PageInfo&gt; manageList(int pageNum,int pageSize)&#123;</span><br><span class="line">    PageHelper.startPage(pageNum,pageSize);</span><br><span class="line">    List&lt;Order&gt; orderList =orderMapper.selectAllOrder();</span><br><span class="line"></span><br><span class="line">    List&lt;OrderVo&gt; orderVoList =this.assembleOrderVoList(orderList,null);</span><br><span class="line">    PageInfo pageResult =new PageInfo(orderList);</span><br><span class="line">    pageResult.setList(orderVoList);</span><br><span class="line">    return ServerResponse.createBySuccess(pageResult);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这样后台管理员查询订单的功能就实现了，接下来我们就去实现后台管理员获取订单详情的功能了。</p>
+<h2 id="后台管理员获取订单详情"><a href="#后台管理员获取订单详情" class="headerlink" title="后台管理员获取订单详情"></a>后台管理员获取订单详情</h2><p>首先我们打开OrderManageController.java这个文件，里面写入代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">/****</span><br><span class="line"> *</span><br><span class="line"> * 后台管理员获取订单详情</span><br><span class="line"> * */</span><br><span class="line">@RequestMapping(&quot;detail.do&quot;)</span><br><span class="line">@ResponseBody   //自动序列化json功能</span><br><span class="line">public ServerResponse&lt;OrderVo&gt; orderDetail(HttpSession session, Long orderNo)&#123;</span><br><span class="line">    //判断一下登录情况</span><br><span class="line">    User user=(User) session.getAttribute(Const.CURRENT_USER);</span><br><span class="line">    if(user ==null)&#123;</span><br><span class="line">        return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),&quot;用户未登录，请登录&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //判断一下是不是管理员身份</span><br><span class="line">    if(iUserService.checkAdminRole(user).isSuccess())&#123;</span><br><span class="line">        //如果是管理员就增加获取订单详情的逻辑</span><br><span class="line">        return iOrderService.manageDetail(orderNo);</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">        return ServerResponse.createByErrorMessage(&quot;无权限操作，需要管理员权限&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>接着打开IOrderService.Java文件，里面新增以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ServerResponse&lt;OrderVo&gt; manageDetail(Long orderNo);  //后台管理员获取订单详情</span><br></pre></td></tr></table></figure></p>
+<p>最后我们打开OrderServiceImpl.java文件，里面的新增代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> *</span><br><span class="line"> * 后台管理员获取订单详情</span><br><span class="line"> * */</span><br><span class="line">public ServerResponse&lt;OrderVo&gt; manageDetail(Long orderNo)&#123;</span><br><span class="line">    Order order =orderMapper.selectOrderByOrderNo(orderNo);</span><br><span class="line">    if(order !=null)&#123;</span><br><span class="line">        List&lt;OrderItem&gt; orderItemList =orderItemMapper.getOrderItemByOrderNo(orderNo);</span><br><span class="line">        OrderVo orderVo =assembleOrderVo(order,orderItemList);</span><br><span class="line">        return ServerResponse.createBySuccess(orderVo);</span><br><span class="line">    &#125;</span><br><span class="line">    return ServerResponse.createByErrorMessage(&quot;对不起，该订单并不存在&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这样后台管理员获取订单详情的功能就实现了，接下来我们就去实现后台管理员搜索订单的功能。</p>
+<h2 id="后台管理员搜索订单"><a href="#后台管理员搜索订单" class="headerlink" title="后台管理员搜索订单"></a>后台管理员搜索订单</h2><p>首先我们打开OrderManageController.java这个文件，里面写入代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">/****</span><br><span class="line">     *</span><br><span class="line">     * 后台管理员搜索订单(有分页)</span><br><span class="line">     * */</span><br><span class="line">    @RequestMapping(&quot;search.do&quot;)</span><br><span class="line">    @ResponseBody   //自动序列化json功能</span><br><span class="line">    public ServerResponse&lt;PageInfo&gt; orderSearch(HttpSession session, Long orderNo,@RequestParam(value = &quot;pageNum&quot; ,defaultValue = &quot;1&quot;)int pageNum,</span><br><span class="line">                                               @RequestParam(value = &quot;pageSize&quot; ,defaultValue = &quot;10&quot;)int pageSize)&#123;</span><br><span class="line">        //判断一下登录情况</span><br><span class="line">        User user=(User) session.getAttribute(Const.CURRENT_USER);</span><br><span class="line">        if(user ==null)&#123;</span><br><span class="line">            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),&quot;用户未登录，请登录&quot;);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        //判断一下是不是管理员身份</span><br><span class="line">        if(iUserService.checkAdminRole(user).isSuccess())&#123;</span><br><span class="line">            //如果是管理员就增加搜索订单的逻辑</span><br><span class="line">            return iOrderService.manageSearch(orderNo,pageNum,pageSize);</span><br><span class="line">        &#125;else&#123;</span><br><span class="line">            return ServerResponse.createByErrorMessage(&quot;无权限操作，需要管理员权限&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>接着打开IOrderService.Java文件，里面新增以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ServerResponse&lt;PageInfo&gt; manageSearch(Long orderNo,int pageNum,int pageSize);  //后台管理员搜索订单(有分页)</span><br></pre></td></tr></table></figure></p>
+<p>最后我们打开OrderServiceImpl.java文件，里面的新增代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">/****</span><br><span class="line">     *</span><br><span class="line">     * 后台管理员搜索订单(有分页)</span><br><span class="line">     * */</span><br><span class="line">    public ServerResponse&lt;PageInfo&gt; manageSearch(Long orderNo,int pageNum,int pageSize)&#123;</span><br><span class="line">        PageHelper.startPage(pageNum,pageSize);</span><br><span class="line">        Order order =orderMapper.selectOrderByOrderNo(orderNo);</span><br><span class="line"></span><br><span class="line">        if(order !=null)&#123;</span><br><span class="line">            List&lt;OrderItem&gt; orderItemList =orderItemMapper.getOrderItemByOrderNo(orderNo);</span><br><span class="line">            OrderVo orderVo =assembleOrderVo(order,orderItemList);</span><br><span class="line"></span><br><span class="line">            PageInfo pageResult =new PageInfo(Lists.newArrayList(order));</span><br><span class="line">            pageResult.setList(Lists.newArrayList(orderVo));</span><br><span class="line">            return ServerResponse.createBySuccess(pageResult);</span><br><span class="line">        &#125;</span><br><span class="line">        return ServerResponse.createByErrorMessage(&quot;对不起，该订单并不存在&quot;);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>这样后台管理员搜索订单的功能就实现了，接下来我们就去实现后台管理员订单发货的功能。</p>
+<h2 id="后台管理员订单发货"><a href="#后台管理员订单发货" class="headerlink" title="后台管理员订单发货"></a>后台管理员订单发货</h2><p>首先我们打开OrderManageController.java这个文件，里面写入代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">/****</span><br><span class="line"> *</span><br><span class="line"> * 后台管理员订单发货</span><br><span class="line"> * */</span><br><span class="line">@RequestMapping(&quot;send_goods.do&quot;)</span><br><span class="line">@ResponseBody   //自动序列化json功能</span><br><span class="line">public ServerResponse&lt;String&gt; OrderSendGoods(HttpSession session, Long orderNo)&#123;</span><br><span class="line">    //判断一下登录情况</span><br><span class="line">    User user=(User) session.getAttribute(Const.CURRENT_USER);</span><br><span class="line">    if(user ==null)&#123;</span><br><span class="line">        return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),&quot;用户未登录，请登录&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //判断一下是不是管理员身份</span><br><span class="line">    if(iUserService.checkAdminRole(user).isSuccess())&#123;</span><br><span class="line">        //如果是管理员就增加获取订单发货的逻辑</span><br><span class="line">        return iOrderService.manageSendGoods(orderNo);</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">        return ServerResponse.createByErrorMessage(&quot;无权限操作，需要管理员权限&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>接着打开IOrderService.Java文件，里面新增以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ServerResponse&lt;String&gt; manageSendGoods(Long orderNo);   //后台管理员订单发货</span><br></pre></td></tr></table></figure></p>
+<p>最后我们打开OrderServiceImpl.java文件，里面的新增代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">/****</span><br><span class="line"> *</span><br><span class="line"> * 后台管理员订单发货</span><br><span class="line"> * */</span><br><span class="line">public ServerResponse&lt;String&gt; manageSendGoods(Long orderNo)&#123;</span><br><span class="line">    Order order =orderMapper.selectOrderByOrderNo(orderNo);</span><br><span class="line"></span><br><span class="line">    //判断订单状态是否是已支付，然后进行发货</span><br><span class="line">    if(order !=null)&#123;</span><br><span class="line">        if(order.getStatus()==Const.OrderStatusEnum.PAID.getCode())&#123;</span><br><span class="line">            order.setStatus(Const.OrderStatusEnum.SHIPPED.getCode());  //修改状态为发货</span><br><span class="line">            order.setSendTime(new Date());  //修改发货时间为现在</span><br><span class="line">            orderMapper.updateByPrimaryKeySelective(order);  //更新该订单信息</span><br><span class="line">            return ServerResponse.createBySuccessMassage(&quot;发货成功&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return ServerResponse.createByErrorMessage(&quot;对不起，该订单并不存在&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这样本篇我们关于前台获取订单详情，用户个人中心查看订单以及后台管理员订单管理等功能的开发介绍就到此为止了，接下来是进行各个相关接口的测试。</p>
+<p> 由于测试比较简单，这里直接附上几张测试截图即可，不作过多说明：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-2c3d8f93afb2823a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-e2fdca568796a672.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>那么到此为止，我们所有的功能都开发完毕，后面就是服务器的配置与部署了。</p>
+
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="https://upload-images.jianshu.io/upload_images/8964398-58d04ffa926103d9.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">觉得不错，赏包辣条吃呗！</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href target="_blank">编程思录</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2018/09/06/SSM搭建二手市场交易平台（二十九）：项目部署上线/" class="pre-post btn btn-default" title="SSM搭建二手市场交易平台（二十九）：项目部署上线">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">SSM搭建二手市场交易平台（二十九）：项目部署上线</span>
+        </a>
+    
+    
+        <a href="/2018/09/05/SSM搭建二手市场交易平台（二十七）：取消订单和获取商品信息功能开发/" class="next-post btn btn-default" title="SSM搭建二手市场交易平台（二十七）：取消订单和获取商品信息功能开发">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">SSM搭建二手市场交易平台（二十七）：取消订单和获取商品信息功能开发</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+    <div id="vcomments" class="valine"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+
+    <script>
+        new Valine({
+            av: AV,
+            el: '#vcomments',
+            appId: '8zvHFFu5l2ah8lh0DEPH393B-gzGzoHsz',
+            appKey: 'UNmB24200qMtyyrun5z99nOE',
+            placeholder: '听说长得好看的，都已经留言了！',
+            notify: false,
+            verify: false,
+            avatar: 'mm',
+            meta: 'nick,mail'.split(','),
+            pageSize: '10',
+            path: window.location.pathname,
+            lang: 'zh-CN'.toLowerCase()
+        })
+    </script>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#写在前面"><span class="toc-text">写在前面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#前台获取订单详情"><span class="toc-text">前台获取订单详情</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#用户个人中心查看订单"><span class="toc-text">用户个人中心查看订单</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#后台管理员查询订单"><span class="toc-text">后台管理员查询订单</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#后台管理员获取订单详情"><span class="toc-text">后台管理员获取订单详情</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#后台管理员搜索订单"><span class="toc-text">后台管理员搜索订单</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#后台管理员订单发货"><span class="toc-text">后台管理员订单发货</span></a></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2017-2019
+                </span> |
+                <span>
+				编程思录,保留所有权利
+                    <!--Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>-->
+                </span> |
+                <span>
+				<a style="color: #black" href="http://www.miitbeian.gov.cn">赣ICP备18013455号-5</a>
+                    <!--Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>-->
+                </span>
+            </div>
+			
+			<div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+			
+			<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1277113902'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s96.cnzz.com/z_stat.php%3Fid%3D1277113902%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));</script>
+        </div>
+    </div>
+</div>
+
+
+
+
+    <script src="/assets/tagcanvas.min.js?rev=2.9"></script>
+    <script>
+        var tagOption = {
+            textColour: 'red', // 字体颜色
+            outlineMethod: 'block', // 选中模式
+            outlineColour: '#FFDAB9', // 选中模式的颜色
+            interval: 30 || 30, // 动画帧之间的时间间隔，值越大，转动幅度越大
+            textHeight: 13,
+            outlineRadius: 3,
+            freezeActive: true || '', // 选中的标签是否继续滚动
+            frontSelect: true || '', // 不选标签云后部的标签
+            initial: [0.1, -0.1],
+            depth: 0.5,
+            decel: 0.95,
+            maxSpeed: 0.03,
+            reverse: true || '', // 是否反向触发
+            fadeIn: 500, // 进入动画时间
+            wheelZoom: false || '' // 是否启用鼠标滚轮
+        }
+        TagCanvas.Start('tag-cloud-3d','',tagOption);
+    </script>
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+</body>
+</html>
