@@ -1,0 +1,422 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="编程思录，记录思考">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://licheetools.github.io">
+    <!--SEO-->
+
+    <meta name="keywords" content="django建站,Vue前端">
+
+
+    <meta name="description" content="写在前面嘿，小伙伴们你们好，很高兴你能看到这套教程，这是我在学习Vue+Django Restful framework构建生鲜电商项目时的一些笔记，希望对即将学习Django和Vue的你们，能...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+
+    <!--Title-->
+
+
+<title>采用Vue+Django Restful framework构建生鲜电商项目（一）：项目介绍 | 编程思录，记录思考</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="编程思录，记录思考" type="application/atom+xml">
+
+
+    <link rel="icon" href="./favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+	<div class="hide">
+		<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+	</div>
+
+
+
+
+
+
+    
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header" style="background-image:url(https://upload-images.jianshu.io/upload_images/8964398-b1ba9582ea8b69ba.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)">
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title="Envy">
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 点滴进步，都是收获 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://licheetools.github.io">编程思录，记录思考</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>首页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/font/"><i class="fa "></i>前端</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/java/"><i class="fa "></i>Java</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/django/"><i class="fa "></i>Django</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/flask/"><i class="fa "></i>Flask</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/spider/"><i class="fa "></i>爬虫</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/data/"><i class="fa "></i>数据分析</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/money/"><i class="fa "></i>付费教程</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/life/"><i class="fa "></i>生活记录</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives"><i class="fa "></i>时间轴</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/about/"><i class="fa "></i>关于博主</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/liuyan/"><i class="fa "></i>留言板</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="采用Vue+Django Restful framework构建生鲜电商项目（一）：项目介绍">
+            
+	            采用Vue+Django Restful framework构建生鲜电商项目（一）：项目介绍
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/django/">django</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/Vue前端/">Vue前端</a> <a class="tag-link" href="/tags/django建站/">django建站</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2018/04/18</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>嘿，小伙伴们你们好，很高兴你能看到这套教程，这是我在学习Vue+Django Restful framework构建生鲜电商项目时的一些笔记，希望对即将学习Django和Vue的你们，能提供一些帮助。在每篇文章的后面，我会把我在这部分出现的BUG以及解决方法附上，以供大家参考，大家有什么问题可以在评论下方留言。</p>
+<h2 id="项目介绍"><a href="#项目介绍" class="headerlink" title="项目介绍"></a>项目介绍</h2><h3 id="必备技术"><a href="#必备技术" class="headerlink" title="必备技术"></a>必备技术</h3><p><strong>1、Vue + Django Rest Framework 前后端分离技术</strong><br><strong>2、restful api 开发流程</strong><br><strong>3、Django Rest Framework 的功能实现和核心源码分析</strong><br><strong>4、Sentry 完成线上系统的错误日志的监控和告警</strong><br><strong>5、第三方登录和支付宝支付的集成</strong><br><strong>6、本地调试远程服务器代码的技巧</strong></p>
+<h3 id="系统构成"><a href="#系统构成" class="headerlink" title="系统构成"></a>系统构成</h3><p><strong>1、vue前端项目</strong><br><strong>2、django rest framework 系统实现前台功能</strong><br><strong>3、xadmin后台管理系统</strong></p>
+<h3 id="Vue介绍部分"><a href="#Vue介绍部分" class="headerlink" title="Vue介绍部分"></a>Vue介绍部分</h3><p><strong>1、API 接口</strong><br><strong>2、Vue 组件 与api的交互</strong><br><strong>3、vue的项目组织结构分析</strong><br><img src="https://upload-images.jianshu.io/upload_images/8964398-f0cfa648c5a3fb5c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>Django rest framework 专注于 restful API的开发，所以下面我们来介绍Django Rest Framework这方面的技术。</p>
+<h2 id="Django-Rest-Framework技术"><a href="#Django-Rest-Framework技术" class="headerlink" title="Django Rest Framework技术"></a>Django Rest Framework技术</h2><h3 id="A、通用view实现-rest-api接口"><a href="#A、通用view实现-rest-api接口" class="headerlink" title="A、通用view实现 rest api接口"></a>A、通用view实现 rest api接口</h3><p><strong>1、ApiView方式实现api</strong><br><strong>2、GenericView方式实现api接口</strong><br><strong>3、Viewset和router方式实现api接口和url配置</strong><br><strong>4、Django_filter、SearchFilter、 OrderFilter 、分页</strong><br><strong>5、通用mixins</strong></p>
+<h3 id="B、权限和认证"><a href="#B、权限和认证" class="headerlink" title="B、权限和认证"></a>B、权限和认证</h3><p><strong>1、Authentication用户认证设置</strong><br><strong>2、动态设置permission、authentication</strong><br><strong>3、Validators实现字段验证</strong></p>
+<h3 id="C、序列化和表单验证"><a href="#C、序列化和表单验证" class="headerlink" title="C、序列化和表单验证"></a>C、序列化和表单验证</h3><p><strong>1、Serializer</strong><br><strong>2、ModelSerializer</strong><br><strong>3、动态设置Serializer</strong></p>
+<h3 id="D、支付登录注册"><a href="#D、支付登录注册" class="headerlink" title="D、支付登录注册"></a>D、支付登录注册</h3><p><strong>1、json web token 实现登录</strong><br><strong>2、手机注册</strong><br><strong>3、支付宝支付</strong><br><strong>4、第三方登录</strong></p>
+<h3 id="E、进阶开发"><a href="#E、进阶开发" class="headerlink" title="E、进阶开发"></a>E、进阶开发</h3><p><strong>1、django rest framework 部分核心源码解读</strong><br><strong>2、文档自动化管理</strong><br><strong>3、django rest framework的缓存</strong><br><strong>4、Throttling 对用户和ip进行限速</strong></p>
+<h2 id="开发中常见的问题"><a href="#开发中常见的问题" class="headerlink" title="开发中常见的问题"></a>开发中常见的问题</h2><p><strong>1、本地系统不能重现的bug</strong></p>
+<p><strong>2、api接口出错不能及时的发现或难以找到错误栈</strong></p>
+<p><strong>3、api文档管理问题：html 或者markdown的文本交互技术</strong></p>
+<p><strong>4、大量的url配置造成url配置越来越多难以维护</strong></p>
+<p><strong>5、接口不及时去更新文档，对方不知道如何去测试接口，但写文档会花费大量的时间去维护</strong></p>
+<p><strong>6、为了防止爬虫，我们需要针对api的访问频率进行限制，比如一分钟，一小时，或者一天用户的访问频率限制问题</strong></p>
+<p><strong>7、某些页面将数据放入缓存，加速某些api的访问速度（商品分类的数据一般变动比较小，所以可以放入缓存中）</strong></p>
+<h2 id="开发中常见问题的解决办法"><a href="#开发中常见问题的解决办法" class="headerlink" title="开发中常见问题的解决办法"></a>开发中常见问题的解决办法</h2><p><strong>1、通过介绍pycharm 的远程服务器代码调试技巧让大家不仅可以调试支付，第三方登录，还可以远程服务器代码来重现服务器上的bug</strong></p>
+<p><strong>2、通过docker 搭建 sentry 来体验错误日志监控系统，让我们不仅可以得到线上的错误栈还能及时在发生系统错误时收到邮件通知</strong></p>
+<p><strong>3、通过django rest framework 的文档自动化管理以及url的注册管理功能会让我们省去写文档的时间</strong></p>
+<p><strong>4、django rest framework 的文档管理功能不仅可以让我们省去写文档的时间，还能直接在文档里面测试接口，自动生成js接口代码，shell测试代码和python测试代码</strong></p>
+<p><strong>5、django rest framework 提供的throttle 对于api进行访问频率的限制</strong></p>
+<p><strong>6、引入第三方框架来设置某些api的缓存</strong></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-a6fe7e1ed4775d62.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<h3 id="Django进阶知识点"><a href="#Django进阶知识点" class="headerlink" title="Django进阶知识点"></a>Django进阶知识点</h3><p><strong>1、Django mirgrations原理</strong><br><strong>2、Django 信号量</strong><br><strong>3、Django从请求到响应的完整过程</strong><br><strong>4、独立使用Django的Model</strong></p>
+<h3 id="Vue知识点"><a href="#Vue知识点" class="headerlink" title="Vue知识点"></a>Vue知识点</h3><p><strong>1、Vue技术选型分析</strong><br><strong>2、API后端数据填充到Vue组件模板</strong><br><strong>3、Vue代码结构分析</strong></p>
+<h2 id="项目流程"><a href="#项目流程" class="headerlink" title="项目流程"></a>项目流程</h2><p>1、开发环境的搭建<br>2、设计数据库以及导入原始数据<br>3、restful api基础以及vue项目结构介绍<br>4、商品列表页功能<br>5、商品类别功能<br>6、手机注册和用户登录<br>7、商品详情页和收藏功能<br>8、个人中心功能<br>9、购物车、订单和支付宝支付功能<br>10、首页，商品相关数量，缓存，访问限速功能<br>11、第三方登录(微博 、QQ、 微信)<br>12、sentry系统错误日志监控</p>
+<h2 id="技术要求"><a href="#技术要求" class="headerlink" title="技术要求"></a>技术要求</h2><p>由于这里主要是介绍Django的restful framework，所以我们就不介绍Django的基础知识了，大家可以去订阅我的另一个专题<strong>《零基础使用Django2.0.1打造在线教育网站》</strong>，通过这个专题的学习，你就会对Django的基础知识有一个比较深刻的认识。然后再来学习本套笔记吧。当然Python的基础语法还是要有的，对于小白我觉得还是不要一上来就接触这些比较深奥的技术。除此之外呢，你最好还有一些Vue和MySQL的基础知识。关于Vue这块，我准备下个月出一套实战教程，而MySQL呢，我已经出了2个专题<strong>《SQL数据库学习笔记》</strong>，<strong>《Python3操作三大数据库》</strong>，哪天有时间我继续更新一下（原谅我记忆力比较差。。。）。</p>
+<h2 id="系统功能"><a href="#系统功能" class="headerlink" title="系统功能"></a>系统功能</h2><p><img src="https://upload-images.jianshu.io/upload_images/8964398-d8f774afb753530c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-c9c0f193cd490d6b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>上面是我们项目的一个运行截图，这里面包含的内容很多，例如：搜索关键词，第三方登录，支付宝结算，商品收藏……..这里就不一一说明了。看到这里，是不是有点想快速学习的念头呢？那么话不多说，上车吧，走你~~~</p>
+<p><strong>特别说明：由于版权的问题，我这个项目的全部代码不会上传到github上了，如果你需要代码请到慕课网购买该课程。</strong></p>
+<p>到此，项目的所有介绍结束，但为了你对后面的开发有一个提前的认识，这里传送一些资料。</p>
+<h2 id="补充资料"><a href="#补充资料" class="headerlink" title="补充资料"></a>补充资料</h2><p>1、<strong>[入门]</strong> <a href="http://www.runoob.com/django/django-tutorial.html" target="_blank" rel="noopener">菜鸟Django 教程</a>，非常简短的教程，可以快速让你有一个清楚的认识。<br>2、<strong>[基础]</strong> <a href="https://code.ziqiangxuetang.com/django/django-tutorial.html" target="_blank" rel="noopener">自强学堂Django</a>，非常不错的教程，可以没事看一看。<br>3、<strong>[基础]</strong> <a href="http://www.liujiangblog.com/course/django/2" target="_blank" rel="noopener">刘江的Django教程</a>，非常适合入门的小白阅读，还有2个例子供你练习。<br>4、<strong>[入门]</strong> <a href="http://dwz.cn/VHRVxWfC" target="_blank" rel="noopener">1元学习《Django零基础到项目实战》</a>，非常不错的基础入门<strong>视频</strong>教程。<br>5、<strong>[基础]</strong><a href="http://edu.51cto.com/course/2787.html" target="_blank" rel="noopener">用Python Django快速做出高大上的BBS论坛网站</a>，这是免费的<strong>视频</strong>教程，大家可以试着去练手。<br>6、<strong>[进阶]</strong><a href="https://www.jianshu.com/c/559ad89c808a" target="_blank" rel="noopener">零基础使用Django2.0.1打造在线教育网站</a>，本人一套关于Django学习的实战笔记。</p>
+
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="https://upload-images.jianshu.io/upload_images/8964398-58d04ffa926103d9.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">觉得不错，赏包辣条吃呗！</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href target="_blank">编程思录</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2018/04/18/采用Vue-Django-Restful-framework构建生鲜电商项目（二）：环境搭建/" class="pre-post btn btn-default" title="采用Vue+Django Restful framework构建生鲜电商项目（二）：环境搭建">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">采用Vue+Django Restful framework构建生鲜电商项目（二）：环境搭建</span>
+        </a>
+    
+    
+        <a href="/2018/04/16/零基础使用Django2-0-1打造在线教育网站（提示）：错误贴/" class="next-post btn btn-default" title="零基础使用Django2.0.1打造在线教育网站（提示）：错误贴">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">零基础使用Django2.0.1打造在线教育网站（提示）：错误贴</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+    <div id="vcomments" class="valine"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+
+    <script>
+        new Valine({
+            av: AV,
+            el: '#vcomments',
+            appId: '8zvHFFu5l2ah8lh0DEPH393B-gzGzoHsz',
+            appKey: 'UNmB24200qMtyyrun5z99nOE',
+            placeholder: '听说长得好看的，都已经留言了！',
+            notify: false,
+            verify: false,
+            avatar: 'mm',
+            meta: 'nick,mail'.split(','),
+            pageSize: '10',
+            path: window.location.pathname,
+            lang: 'zh-CN'.toLowerCase()
+        })
+    </script>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#写在前面"><span class="toc-text">写在前面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#项目介绍"><span class="toc-text">项目介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#必备技术"><span class="toc-text">必备技术</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#系统构成"><span class="toc-text">系统构成</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Vue介绍部分"><span class="toc-text">Vue介绍部分</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Django-Rest-Framework技术"><span class="toc-text">Django Rest Framework技术</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#A、通用view实现-rest-api接口"><span class="toc-text">A、通用view实现 rest api接口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#B、权限和认证"><span class="toc-text">B、权限和认证</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#C、序列化和表单验证"><span class="toc-text">C、序列化和表单验证</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#D、支付登录注册"><span class="toc-text">D、支付登录注册</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#E、进阶开发"><span class="toc-text">E、进阶开发</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#开发中常见的问题"><span class="toc-text">开发中常见的问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#开发中常见问题的解决办法"><span class="toc-text">开发中常见问题的解决办法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Django进阶知识点"><span class="toc-text">Django进阶知识点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Vue知识点"><span class="toc-text">Vue知识点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#项目流程"><span class="toc-text">项目流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#技术要求"><span class="toc-text">技术要求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#系统功能"><span class="toc-text">系统功能</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#补充资料"><span class="toc-text">补充资料</span></a></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2017-2019
+                </span> |
+                <span>
+				编程思录,保留所有权利
+                    <!--Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>-->
+                </span> |
+                <span>
+				<a style="color: #black" href="http://www.miitbeian.gov.cn">赣ICP备18013455号-5</a>
+                    <!--Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>-->
+                </span>
+            </div>
+			
+			<div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+			
+			<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1277113902'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s96.cnzz.com/z_stat.php%3Fid%3D1277113902%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));</script>
+        </div>
+    </div>
+</div>
+
+
+
+
+    <script src="/assets/tagcanvas.min.js?rev=2.9"></script>
+    <script>
+        var tagOption = {
+            textColour: 'red', // 字体颜色
+            outlineMethod: 'block', // 选中模式
+            outlineColour: '#FFDAB9', // 选中模式的颜色
+            interval: 30 || 30, // 动画帧之间的时间间隔，值越大，转动幅度越大
+            textHeight: 13,
+            outlineRadius: 3,
+            freezeActive: true || '', // 选中的标签是否继续滚动
+            frontSelect: true || '', // 不选标签云后部的标签
+            initial: [0.1, -0.1],
+            depth: 0.5,
+            decel: 0.95,
+            maxSpeed: 0.03,
+            reverse: true || '', // 是否反向触发
+            fadeIn: 500, // 进入动画时间
+            wheelZoom: false || '' // 是否启用鼠标滚轮
+        }
+        TagCanvas.Start('tag-cloud-3d','',tagOption);
+    </script>
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+</body>
+</html>

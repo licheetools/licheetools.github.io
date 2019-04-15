@@ -1,0 +1,452 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="编程思录，记录思考">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://licheetools.github.io">
+    <!--SEO-->
+
+    <meta name="keywords" content="django建站,Vue前端">
+
+
+    <meta name="description" content="写在前面本篇我们完成商品列表页面的剩余配置，里面包含的知识比较多，所以分成3篇文章进行介绍。
+drf中的request和response说明drf中的request我们知道drf对于django...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+
+    <!--Title-->
+
+
+<title>采用Vue+Django Restful framework构建生鲜电商项目（九）：商品列表页的配置（下） | 编程思录，记录思考</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="编程思录，记录思考" type="application/atom+xml">
+
+
+    <link rel="icon" href="./favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+	<div class="hide">
+		<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+	</div>
+
+
+
+
+
+
+    
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header" style="background-image:url(https://upload-images.jianshu.io/upload_images/8964398-b1ba9582ea8b69ba.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)">
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title="Envy">
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 点滴进步，都是收获 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://licheetools.github.io">编程思录，记录思考</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>首页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/font/"><i class="fa "></i>前端</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/java/"><i class="fa "></i>Java</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/django/"><i class="fa "></i>Django</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/flask/"><i class="fa "></i>Flask</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/spider/"><i class="fa "></i>爬虫</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/data/"><i class="fa "></i>数据分析</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/money/"><i class="fa "></i>付费教程</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/life/"><i class="fa "></i>生活记录</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives"><i class="fa "></i>时间轴</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/about/"><i class="fa "></i>关于博主</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/liuyan/"><i class="fa "></i>留言板</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="采用Vue+Django Restful framework构建生鲜电商项目（九）：商品列表页的配置（下）">
+            
+	            采用Vue+Django Restful framework构建生鲜电商项目（九）：商品列表页的配置（下）
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/django/">django</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/Vue前端/">Vue前端</a> <a class="tag-link" href="/tags/django建站/">django建站</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2018/05/02</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>本篇我们完成商品列表页面的剩余配置，里面包含的知识比较多，所以分成3篇文章进行介绍。</p>
+<h2 id="drf中的request和response说明"><a href="#drf中的request和response说明" class="headerlink" title="drf中的request和response说明"></a>drf中的request和response说明</h2><h3 id="drf中的request"><a href="#drf中的request" class="headerlink" title="drf中的request"></a>drf中的request</h3><p>我们知道drf对于django的request和response进行了一层封装，所以我们使用起来会更加方便。<br><code>REST framework&#39;s Request class extends the standard HttpRequest, adding support for REST framework&#39;s flexible request parsing and request authentication.</code>这句话的意思是说：drf在标准的HttpRequest上进行了扩展，增加了对rest框架的灵活请求解析和请求认证的支持。</p>
+<p>下面简要说明一下：request。我们可以点击这里<a href="https://www.django-rest-framework.org/api-guide/requests/" target="_blank" rel="noopener">drf中的request</a>。<br> <a href="https://www.django-rest-framework.org/api-guide/requests/#data" target="_blank" rel="noopener">.data</a>：<br> data ,返回用户获取的信息（包括所有的解析内容，文件和非文件），而且不仅能解析通过post方法过来的信息，其他的方法如put ，patch也能进行解析。</p>
+<p><a href="https://www.django-rest-framework.org/api-guide/requests/#query_params" target="_blank" rel="noopener">.query_params</a>：<br>query_params,里面有通过get请求传递过来的参数，自己可以配置。</p>
+<p><a href="https://www.django-rest-framework.org/api-guide/requests/#parsers" target="_blank" rel="noopener">.parsers</a>：<br>parsers，因为用户提交过来的数据有很多种类型，所以它就是负责接收各种信息，并提供各种解析器进行解析。</p>
+<p><a href="https://www.django-rest-framework.org/api-guide/requests/#authentication" target="_blank" rel="noopener">Authentication</a>包括：<a href="https://www.django-rest-framework.org/api-guide/requests/#user" target="_blank" rel="noopener">.user</a>和<a href="https://www.django-rest-framework.org/api-guide/requests/#auth" target="_blank" rel="noopener">.auth</a><br>.use就是说只有通过验证才能获取到当前的用户，而这个.auth返回一些额外的验证信息。</p>
+<h3 id="drf中的response"><a href="#drf中的response" class="headerlink" title="drf中的response"></a>drf中的response</h3><p> <a href="https://www.django-rest-framework.org/api-guide/responses/#responses" target="_blank" rel="noopener">Responses</a></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-3b664746855c5e23.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>response就是根据你发起的请求然后返回响应，对于我们爬虫人员来说最熟悉不过的了，所以我就不细说了。这些就是英文文档的内容，全都有，你点上面那些蓝色的<strong>xx</strong>就知道了，我就不一句句翻译了，可能我翻译的还没你理解的印象深刻呢。</p>
+<h2 id="drf过滤器"><a href="#drf过滤器" class="headerlink" title="drf过滤器"></a>drf过滤器</h2><p>我们打开goods\views.py文件，开始书写代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">class GoodsListViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):    # 注意这里不需要mixins.CreateModelMixin,因为我们数据在数据库里面已经添加了</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    商品列表页</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    # good_viewset是实例化对象，这里的queryset是属性 ，使用good_viewset.queryset就可以进行访问</span><br><span class="line">    # 而下面的get_queryset是方法，需要使用使用good_viewset.get_queryset()才能进行访问,要么通过属性，要么通过方法，二选一即可</span><br><span class="line">    # 有c或者java经验的童鞋很好理解这个问题。</span><br><span class="line">    serializer_class = GoodsSerializer</span><br><span class="line">    pagination_class = GoodsPagination</span><br><span class="line"></span><br><span class="line">    def get_queryset(self):</span><br><span class="line">        query_set = Goods.objects.all()</span><br><span class="line">        price_min = self.request.query_params.get(&apos;price_min&apos;, 0)</span><br><span class="line">        if price_min:</span><br><span class="line">            query_set = query_set.filter(shop_price__gt=price_min)</span><br><span class="line">        return query_set</span><br></pre></td></tr></table></figure></p>
+<p>不过运行项目，在浏览器地址栏输入：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1:8000/goods/%EF%BC%9Fprice_min=100</span><br></pre></td></tr></table></figure></p>
+<p>，发现会错：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"> assert queryset is not None, &apos;`base_name` argument not specified, and could &apos; \</span><br><span class="line">AssertionError: `base_name` argument not specified, and could not automatically determine the name from the viewset, as it does not have a `.queryset` attribute.</span><br></pre></td></tr></table></figure></p>
+<p>提示我们缺少一个queryset属性，我们尝试修改一下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">class GoodsListViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):    # 注意这里不需要mixins.CreateModelMixin,因为我们数据在数据库里面已经添加了</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    商品列表页</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    # good_viewset是实例化对象，这里的queryset是属性 ，使用good_viewset.queryset就可以进行访问</span><br><span class="line">    # 而下面的get_queryset是方法，需要使用使用good_viewset.get_queryset()才能进行访问,要么通过属性，要么通过方法，二选一即可</span><br><span class="line">    # 有java经验的童鞋很好理解这个问题。</span><br><span class="line">    serializer_class = GoodsSerializer</span><br><span class="line">    pagination_class = GoodsPagination</span><br><span class="line">    query_set = Goods.objects.all()</span><br><span class="line"></span><br><span class="line">    def get_queryset(self):</span><br><span class="line">        price_min = self.request.query_params.get(&apos;price_min&apos;, 0)</span><br><span class="line">        if price_min:</span><br><span class="line">            self.query_set = Goods.objects.filter(shop_price__gt=int(price_min))</span><br><span class="line">        return self.query_set</span><br></pre></td></tr></table></figure></p>
+<p>运行还是会报同样的错误。找了很久才发现，原来是query_set 这个名字错了，需要修改为queryset:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">class GoodsListViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):    # 注意这里不需要mixins.CreateModelMixin,因为我们数据在数据库里面已经添加了</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    商品列表页</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    # good_viewset是实例化对象，这里的queryset是属性 ，使用good_viewset.queryset就可以进行访问</span><br><span class="line">    # 而下面的get_queryset是方法，需要使用使用good_viewset.get_queryset()才能进行访问,要么通过属性，要么通过方法，二选一即可</span><br><span class="line">    # 有java经验的童鞋很好理解这个问题。</span><br><span class="line">    serializer_class = GoodsSerializer</span><br><span class="line">    pagination_class = GoodsPagination</span><br><span class="line">    queryset = Goods.objects.all()</span><br><span class="line"></span><br><span class="line">    def get_queryset(self):</span><br><span class="line">        price_min = self.request.query_params.get(&apos;price_min&apos;, 0)</span><br><span class="line">        if price_min:</span><br><span class="line">            self.queryset = Goods.objects.filter(shop_price__gt=int(price_min))</span><br><span class="line">        return self.queryset</span><br></pre></td></tr></table></figure></p>
+<p>然后运行我们的项目，在浏览器地址栏输入：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1:8000/goods/?page=1&amp;price_min=100</span><br></pre></td></tr></table></figure></p>
+<p>回车发现，问题解决了：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-d001e1c807a61785.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>你有没有觉得这种过滤很麻烦，既要获取参数，又要判断参数是否存在，存在之后又要进行int类型转化。有没有简单的方法呢，答案是有的：<a href="https://www.django-rest-framework.org/api-guide/filtering/#filtering" target="_blank" rel="noopener">Filtering</a>。这个drf提供的filter是非常强大的：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-c0b323c74a42f364.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p><a href="https://www.django-rest-framework.org/api-guide/filtering/#djangofilterbackend" target="_blank" rel="noopener">DjangoFilterBackend</a>：传统的Django过滤器，类似于xadmin的后台管理器。</p>
+<p><a href="https://www.django-rest-framework.org/api-guide/filtering/#searchfilter" target="_blank" rel="noopener">SearchFilter</a>：通过搜索关键词进行过滤。</p>
+<p><a href="https://www.django-rest-framework.org/api-guide/filtering/#orderingfilter" target="_blank" rel="noopener">OrderingFilter</a>：通过某个顺序来进行过滤。</p>
+<p><a href="https://www.django-rest-framework.org/api-guide/filtering/#djangoobjectpermissionsfilter" target="_blank" rel="noopener">DjangoObjectPermissionsFilter</a>：通过权限进行过滤。</p>
+<p>前面三种是比较常见的过滤，它们可以实现列表页面的普通字段精确过滤，搜索过滤，以及排序等功能，下面分别进行介绍。</p>
+<h3 id="DjangoFilterBackend"><a href="#DjangoFilterBackend" class="headerlink" title="DjangoFilterBackend"></a>DjangoFilterBackend</h3><p>1、安装<code>django-filter</code>（前面已经安装过了）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install django-filter</span><br></pre></td></tr></table></figure></p>
+<p>2、注册进入app<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&apos;django_filters&apos;,</span><br></pre></td></tr></table></figure></p>
+<p>3、添加设置（默认设置好了，不用管）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">REST_FRAMEWORK = &#123;</span><br><span class="line">    &apos;DEFAULT_FILTER_BACKENDS&apos;: (&apos;django_filters.rest_framework.DjangoFilterBackend&apos;,)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>4、开始使用,打开goods\vieews.py文件：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">from django_filters.rest_framework import DjangoFilterBackend</span><br></pre></td></tr></table></figure></p>
+<p>5、删除原来定义的过滤方法：<code>def get_queryset(self)</code>代码全部去掉。<br>6、仿照官方案例进行代码书写：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">class GoodsListViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):    # 注意这里不需要mixins.CreateModelMixin,因为我们数据在数据库里面已经添加了</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    商品列表页</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    # good_viewset是实例化对象，这里的queryset是属性 ，使用good_viewset.queryset就可以进行访问</span><br><span class="line">    # 而下面的get_queryset是方法，需要使用使用good_viewset.get_queryset()才能进行访问,要么通过属性，要么通过方法，二选一即可</span><br><span class="line">    # 有java经验的童鞋很好理解这个问题。</span><br><span class="line">    serializer_class = GoodsSerializer</span><br><span class="line">    pagination_class = GoodsPagination</span><br><span class="line">    queryset = Goods.objects.all()</span><br><span class="line">    filter_backends = (DjangoFilterBackend,)</span><br><span class="line">    filter_fields = (&apos;name&apos;, &apos;shop_price&apos;)</span><br></pre></td></tr></table></figure></p>
+<p>然后运行一下我们项目，发现页面多了一个过滤器按钮，我们可以进行过滤：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-5085aae67da6835b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-aa5147ea18a50359.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>我们测试一下，价格输入123，名称不输入,然后回车，发现浏览器地址栏变成了这样：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1:8000/goods/?name=&amp;shop_price=123</span><br></pre></td></tr></table></figure></p>
+<p><strong>注意一下，过滤和搜索是不一样的，过滤是精确的，字段必须保持一模一样，但是搜索却不是。</strong></p>
+<p>但是我们如果想要模糊查询，而且价格在某个区间里面，这该怎么办呢？</p>
+<h2 id="区间搜索和模糊查询"><a href="#区间搜索和模糊查询" class="headerlink" title="区间搜索和模糊查询"></a>区间搜索和模糊查询</h2><p>点击这里查看<a href="https://django-filter.readthedocs.io/en/master/" target="_blank" rel="noopener">django-filter</a>，注意一下，这个django-filter不仅可以用在drf上面，还可以用于Django上面，它允许我们自定义filter类。</p>
+<p>我们在goods app下面新建一个filters.py：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"># /user/bin/python</span><br><span class="line"># -*- coding:utf-8 -*-</span><br><span class="line"># @author: Envse</span><br><span class="line"># @file: filters.py</span><br><span class="line"># @time: 2018/10/4 17:47</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">from django_filters import rest_framework as filters</span><br><span class="line">from goods.models import Goods</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class GoodsFilter(filters.FilterSet):</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    商品的过滤类</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    price_min = filters.NumberFilter(name=&quot;shop_price&quot;, lookup_expr=&apos;gte&apos;)      # 指定字段及字段的行为，我们这里指定shop_price的区间</span><br><span class="line">    price_max = filters.NumberFilter(name=&quot;shop_price&quot;, lookup_expr=&apos;lte&apos;)</span><br><span class="line"></span><br><span class="line">    class Meta:</span><br><span class="line">        model = Goods</span><br><span class="line">        fields = [&apos;price_min&apos;, &apos;price_max&apos;]</span><br></pre></td></tr></table></figure></p>
+<p>接着回到我们的views.py文件：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">from goods.filters import GoodsFilter</span><br><span class="line"></span><br><span class="line"> filter_backends = (DjangoFilterBackend,)  # # DjangoFilterBackend 过滤器</span><br><span class="line"> # filter_fields = (&apos;name&apos;, &apos;shop_price&apos;)   # 设置我们需要过滤的字段 </span><br><span class="line"> filter_class = GoodsFilter   # filter_class 等于我们自定义的类</span><br></pre></td></tr></table></figure></p>
+<p>然后运行我们的项目，发现出了这样的错误：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">super().__init__(**kwargs)</span><br><span class="line">TypeError: __init__() got an unexpected keyword argument &apos;name&apos;</span><br></pre></td></tr></table></figure></p>
+<p>解决办法，修改 <code>price_max = filters.NumberFilter(name=&quot;shop_price&quot;, lookup_expr=&#39;lte&#39;)</code>里面的<code>name</code>字段为<code>field_name</code>即可。</p>
+<p>刷新一下就成了这个样子：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-44886e282c1114bd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>注意一下，这里如果出现过滤器没有确定按钮的话，检查一下看你有没有继承错误，应该继承的是<code>from django_filters import rest_framework as filters</code>这个语句。</p>
+<p>还有出现了这个错误：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">UnorderedObjectListWarning: Pagination may yield inconsistent results with an unordered object_list: &lt;class &apos;goods.models.Goods&apos;&gt; QuerySet.</span><br><span class="line">  paginator = self.django_paginator_class(queryset, page_size)</span><br></pre></td></tr></table></figure></p>
+<p>因为对于无序的数据，分页器生成的分页数据可能不一致，才导致这种情况，解决办法（打开goods\views.py文件，修改一下queryset代码）：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">queryset = Goods.objects.all().order_by(&apos;add_time&apos;)</span><br></pre></td></tr></table></figure></p>
+<p>然后问题就解决了。接下来完成我们的迷糊查询（搜索）。采用Django QuerySetAPI来完成我们的要求，这里推荐自强学堂的一篇文章<a href="https://code.ziqiangxuetang.com/django/django-queryset-api.html" target="_blank" rel="noopener">Django QuerySetAPI</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">name = filters.CharFilter(field_name=&quot;name&quot;, lookup_expr=&quot;icontains&quot;)  # 模糊查询: 名称中包含某字符，且字符不区分大小写,不加lookup_expr=&quot;icontains&quot;则是等值匹配</span><br><span class="line"></span><br><span class="line">class Meta:</span><br><span class="line">    model = Goods</span><br><span class="line">    fields = [&apos;price_min&apos;, &apos;price_max&apos;, &apos;name&apos;]</span><br></pre></td></tr></table></figure></p>
+<p>接下来我们进行搜索的配置，在这之前去掉前面的模糊查询代码，两行哈，就上面的。</p>
+<h2 id="SearchFilter"><a href="#SearchFilter" class="headerlink" title="SearchFilter"></a>SearchFilter</h2><p>点击这里查看官方文档：<a href="https://www.django-rest-framework.org/api-guide/filtering/#searchfilter" target="_blank" rel="noopener">SearchFilter</a>，我们仿照官方的实例来测试一下：（打开goods\views.py文件）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">from rest_framework import filters</span><br><span class="line"></span><br><span class="line">  filter_backends = (DjangoFilterBackend, filters.SearchFilter)   # DjangoFilterBackend,以及SearchFilter过滤器（SearchFilter）</span><br><span class="line">  search_fields = (&apos;name&apos;, &apos;goods_brief&apos;, &apos;goods_desc&apos;)</span><br></pre></td></tr></table></figure></p>
+<p>然后运行一下：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-eb445f4ff8d72e55.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>下面多了一个搜索框，<code>DjangoFilterBackend</code>和<code>SearchFilter</code>可以分开使用，也可以合起来使用，想让谁显示就配置谁，也可以同时显示。</p>
+<p>如果出现下面的错误,说明你的filter导错了，我们这里要用到的是<code>from rest_framework import filters</code>而不是<code>from django_filters import filters</code>注意一下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">filter_backends = (DjangoFilterBackend, filters.SearchFilter)</span><br><span class="line">AttributeError: module &apos;django_filters.rest_framework.filters&apos; has no attribute &apos;SearchFilter&apos;</span><br></pre></td></tr></table></figure></p>
+<p>然后搜索还支持多种过滤方式：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-d82f808707fbcf03.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">search_fields = (&apos;name&apos;, &apos;goods_brief&apos;, &apos;goods_desc&apos;)</span><br></pre></td></tr></table></figure>
+<p>需要说明的一点是，这三个字段不是统一的，也就是说可以单独使用。例如对name进行等值搜索：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">search_fields = (&apos;=name&apos;)</span><br></pre></td></tr></table></figure></p>
+<p>去掉其他的字段，返回结果为0个。而我们在里面加一个字段：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">search_fields = (&apos;=name&apos;, &apos;goods_brief&apos;)</span><br></pre></td></tr></table></figure></p>
+<p>返回结果就不是了，而是有一个。如果你把第三个字段都加上，发现全部结果了，因为他们里面只要满足一个条件就能返回。也就是说是或的关系，而不是与的关系，这一点要注意一下。同时我们这里不进行全文的搜索，因为一般模糊查询最好是使用elasticSearch来做，那样更方便。接下来是OrderingFilter排序了。</p>
+<h2 id="OrderingFilter"><a href="#OrderingFilter" class="headerlink" title="OrderingFilter"></a>OrderingFilter</h2><p>老规矩还是先看官方文档：<a href="https://www.django-rest-framework.org/api-guide/filtering/#orderingfilter" target="_blank" rel="noopener">OrderingFilter</a>，然后按照官方的例子来测试一下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># DjangoFilterBackend,,SearchFilter,OrderingFilter</span><br><span class="line">filter_backends = (DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter)</span><br><span class="line">ordering_fields = (&apos;sold_num&apos;, &apos;add_time&apos;)</span><br></pre></td></tr></table></figure></p>
+<p>我们按照商品的销量，添加时间进行排序，分正排序与负排序：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-b4493ed9f5882265.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>这样我们通过简单的几行代码，完成了商品列表页的分页，过滤，搜索，排序功能。</p>
+<p>至此，我们本篇关于商品列表页面的配置下篇的介绍就到此为止了，感谢你的赏阅！</p>
+
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="https://upload-images.jianshu.io/upload_images/8964398-58d04ffa926103d9.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">觉得不错，赏包辣条吃呗！</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href target="_blank">编程思录</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2018/05/03/采用Vue-Django-Restful-framework构建生鲜电商项目（十）：商品类别数据显示（上）/" class="pre-post btn btn-default" title="采用Vue+Django Restful framework构建生鲜电商项目（十）：商品类别数据显示（上）">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">采用Vue+Django Restful framework构建生鲜电商项目（十）：商品类别数据显示（上）</span>
+        </a>
+    
+    
+        <a href="/2018/05/01/采用Vue-Django-Restful-framework构建生鲜电商项目（八）：商品列表页的配置（中）/" class="next-post btn btn-default" title="采用Vue+Django Restful framework构建生鲜电商项目（八）：商品列表页的配置（中）">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">采用Vue+Django Restful framework构建生鲜电商项目（八）：商品列表页的配置（中）</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+    <div id="vcomments" class="valine"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+
+    <script>
+        new Valine({
+            av: AV,
+            el: '#vcomments',
+            appId: '8zvHFFu5l2ah8lh0DEPH393B-gzGzoHsz',
+            appKey: 'UNmB24200qMtyyrun5z99nOE',
+            placeholder: '听说长得好看的，都已经留言了！',
+            notify: false,
+            verify: false,
+            avatar: 'mm',
+            meta: 'nick,mail'.split(','),
+            pageSize: '10',
+            path: window.location.pathname,
+            lang: 'zh-CN'.toLowerCase()
+        })
+    </script>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#写在前面"><span class="toc-text">写在前面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#drf中的request和response说明"><span class="toc-text">drf中的request和response说明</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#drf中的request"><span class="toc-text">drf中的request</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#drf中的response"><span class="toc-text">drf中的response</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#drf过滤器"><span class="toc-text">drf过滤器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#DjangoFilterBackend"><span class="toc-text">DjangoFilterBackend</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#区间搜索和模糊查询"><span class="toc-text">区间搜索和模糊查询</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SearchFilter"><span class="toc-text">SearchFilter</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#OrderingFilter"><span class="toc-text">OrderingFilter</span></a></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2017-2019
+                </span> |
+                <span>
+				编程思录,保留所有权利
+                    <!--Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>-->
+                </span> |
+                <span>
+				<a style="color: #black" href="http://www.miitbeian.gov.cn">赣ICP备18013455号-5</a>
+                    <!--Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>-->
+                </span>
+            </div>
+			
+			<div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+			
+			<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1277113902'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s96.cnzz.com/z_stat.php%3Fid%3D1277113902%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));</script>
+        </div>
+    </div>
+</div>
+
+
+
+
+    <script src="/assets/tagcanvas.min.js?rev=2.9"></script>
+    <script>
+        var tagOption = {
+            textColour: 'red', // 字体颜色
+            outlineMethod: 'block', // 选中模式
+            outlineColour: '#FFDAB9', // 选中模式的颜色
+            interval: 30 || 30, // 动画帧之间的时间间隔，值越大，转动幅度越大
+            textHeight: 13,
+            outlineRadius: 3,
+            freezeActive: true || '', // 选中的标签是否继续滚动
+            frontSelect: true || '', // 不选标签云后部的标签
+            initial: [0.1, -0.1],
+            depth: 0.5,
+            decel: 0.95,
+            maxSpeed: 0.03,
+            reverse: true || '', // 是否反向触发
+            fadeIn: 500, // 进入动画时间
+            wheelZoom: false || '' // 是否启用鼠标滚轮
+        }
+        TagCanvas.Start('tag-cloud-3d','',tagOption);
+    </script>
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+</body>
+</html>

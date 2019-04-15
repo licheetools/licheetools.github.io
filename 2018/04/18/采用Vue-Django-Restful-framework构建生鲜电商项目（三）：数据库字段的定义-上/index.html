@@ -1,0 +1,462 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="编程思录，记录思考">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://licheetools.github.io">
+    <!--SEO-->
+
+    <meta name="keywords" content="django建站,Vue前端">
+
+
+    <meta name="description" content="写在前面本篇笔记我们来学习如何安装各种依赖库以及数据库字段的设计，其中数据库字段的定义我们分两篇进行。
+新建虚拟环境关于虚拟环境的搭建，前面已经讲得很清楚，这里就直接开始安装了：1mkvirtu...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+
+    <!--Title-->
+
+
+<title>采用Vue+Django Restful framework构建生鲜电商项目（三）：数据库字段的定义(上) | 编程思录，记录思考</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="编程思录，记录思考" type="application/atom+xml">
+
+
+    <link rel="icon" href="./favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+	<div class="hide">
+		<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+	</div>
+
+
+
+
+
+
+    
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header" style="background-image:url(https://upload-images.jianshu.io/upload_images/8964398-b1ba9582ea8b69ba.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)">
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title="Envy">
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 点滴进步，都是收获 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://licheetools.github.io">编程思录，记录思考</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>首页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/font/"><i class="fa "></i>前端</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/java/"><i class="fa "></i>Java</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/django/"><i class="fa "></i>Django</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/flask/"><i class="fa "></i>Flask</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/spider/"><i class="fa "></i>爬虫</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/data/"><i class="fa "></i>数据分析</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/money/"><i class="fa "></i>付费教程</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/life/"><i class="fa "></i>生活记录</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives"><i class="fa "></i>时间轴</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/about/"><i class="fa "></i>关于博主</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/liuyan/"><i class="fa "></i>留言板</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="采用Vue+Django Restful framework构建生鲜电商项目（三）：数据库字段的定义(上)">
+            
+	            采用Vue+Django Restful framework构建生鲜电商项目（三）：数据库字段的定义(上)
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/django/">django</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/Vue前端/">Vue前端</a> <a class="tag-link" href="/tags/django建站/">django建站</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2018/04/18</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>本篇笔记我们来学习如何安装各种依赖库以及数据库字段的设计，其中数据库字段的定义我们分两篇进行。</p>
+<h2 id="新建虚拟环境"><a href="#新建虚拟环境" class="headerlink" title="新建虚拟环境"></a>新建虚拟环境</h2><p>关于虚拟环境的搭建，前面已经讲得很清楚，这里就直接开始安装了：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkvirtualenv vueshop</span><br></pre></td></tr></table></figure></p>
+<p>这样就在<code>F:Envs</code>下面新建了一个名为vueshop的虚拟环境，而且是Python3.6的版本。然后使用<code>pip list</code>查看一下当前的安装列表，如果出现pip的版本是9.x，我们建议你升级一下pip的版本。可以使用<code>pip install --upgrade pip</code>，如果安装不了建议把pip下载到本地，然后进入你的pip里面，执行<code>python setup.py install</code>命令即可。然后再次运行pip list：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">(vueshop) C:\Users\lenovo&gt;pip list</span><br><span class="line">Package    Version</span><br><span class="line">---------- -------</span><br><span class="line">pip        18.0</span><br><span class="line">setuptools 39.0.1</span><br><span class="line">wheel      0.30.0</span><br><span class="line"></span><br><span class="line">(vueshop) C:\Users\lenovo&gt;</span><br></pre></td></tr></table></figure></p>
+<h3 id="安装django-和-django-rest-framework"><a href="#安装django-和-django-rest-framework" class="headerlink" title="安装django 和 django rest framework"></a>安装django 和 django rest framework</h3><p>点击这里查看<a href="http://www.django-rest-framework.org/" target="_blank" rel="noopener">django rest framework官网</a>，我们看到已经支持Django2.0了，所以我们就安装2.0的版本：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-d70081c3c064d36d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt><br>使用下面的命令安装djangorestframework:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install djangorestframework</span><br></pre></td></tr></table></figure></p>
+<p>如果在安装过程中出现这种情况：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Retrying (Retry(total=4, connect=None, read=None, redirect=None)) </span><br><span class="line">after connection broken</span><br><span class="line">by &apos;ConnectTimeoutError(&lt;pip._vendor.requests.packages.urllib3.connection.</span><br><span class="line">VerifiedHTTPSConnection object at 0x10b058850&gt;, </span><br><span class="line">&apos;Connection to pypi.python.org timed out. (connect timeout=15)&apos;)&apos;:</span><br></pre></td></tr></table></figure></p>
+<p>说明你采用了默认的pypi源(国外的pypi源)，这个很容易出现这种连接超时的问题，所以应当采用国内的镜像源：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install djangorestframework -i http://pypi.douban.com/simple/</span><br></pre></td></tr></table></figure></p>
+<p>如果还有问题，请阅读我的另一篇文章《使用默认pypi源出现连接超时的解决办法》一文，寻求解决的办法。</p>
+<p>然后使用<code>pip list</code>查看，发现里面没有Django,我们需要自己安装Django，注意要指定Django的版本，因为博主在写这套教程的时候，Django2.1已经发布了，你不指定Django的版本就默认安装了最新版的Django2.1，而djangorestframework目前暂不支持Django2.1。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">(vueshop) F:\Envs&gt;pip list</span><br><span class="line">Package             Version</span><br><span class="line">------------------- -------</span><br><span class="line">djangorestframework 3.8.2</span><br><span class="line">pip                 18.0</span><br><span class="line">setuptools          40.4.3</span><br><span class="line">wheel               0.32.0</span><br><span class="line"></span><br><span class="line">(vueshop) F:\Envs&gt;</span><br></pre></td></tr></table></figure></p>
+<p>我们使用下面的命令进行安装Django2.0：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install django==2.0.1 -i http://pypi.douban.com/simple --trusted-host pypi.douban.com</span><br></pre></td></tr></table></figure></p>
+<p>然后安装markdown，django-filter：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pip install markdown       # Markdown support for the browsable API.</span><br><span class="line">pip install django-filter  # Filtering support</span><br></pre></td></tr></table></figure></p>
+<p>如果安装不了，请使用下面的命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pip install markdown -i http://pypi.douban.com/simple --trusted-host pypi.douban.com</span><br><span class="line"></span><br><span class="line">pip install django-filter -i http://pypi.douban.com/simple --trusted-host pypi.douban.com</span><br></pre></td></tr></table></figure></p>
+<p>然后查看list:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">(vueshop) F:\Envs&gt;pip list</span><br><span class="line">Package             Version</span><br><span class="line">------------------- -------</span><br><span class="line">Django              2.0.1</span><br><span class="line">django-filter       2.0.0</span><br><span class="line">djangorestframework 3.8.2</span><br><span class="line">Markdown            3.0.1</span><br><span class="line">pip                 18.0</span><br><span class="line">pytz                2018.5</span><br><span class="line">setuptools          40.4.3</span><br><span class="line">wheel               0.32.0</span><br></pre></td></tr></table></figure></p>
+<p>好了，现在我们开始新建Django项目了，记得在用Pycharm新建Django项目的时候，必须要在之前安装Django，否则就新建不了Django项目。</p>
+<h2 id="新建Django项目"><a href="#新建Django项目" class="headerlink" title="新建Django项目"></a>新建Django项目</h2><h3 id="已有虚拟环境"><a href="#已有虚拟环境" class="headerlink" title="已有虚拟环境"></a>已有虚拟环境</h3><p>因为我们之前已经在<code>F:Envs</code>下面创建了一个名为vueshop的虚拟环境，所以这里就选用<code>Existing interpreter</code>即可，不要选用上面那个<strong>New environment</strong>。那个2是项目的存放路径，那个<strong>interpreter</strong>也就是3，用虚拟环境下面的Scripts\python.exe。</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-9842030d1626ec60.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<h3 id="没有虚拟环境"><a href="#没有虚拟环境" class="headerlink" title="没有虚拟环境"></a>没有虚拟环境</h3><p>在你没有创建自己的虚拟环境的时候，你才使用上面的那个<code>New environment</code>，也要说明一下，那个2是项目的存放路径，3是你利用Pycharm新建的虚拟环境的路径，4则是你使用哪个Python来创建你的虚拟环境（就是说你在这个虚拟环境里面的Python版本将会和这个一模一样，其实就是安装了指定Python版本的虚拟环境而已。）</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-1399888fc8766697.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>这两种情况，小白很容易搞混淆，所以需要特别注意。点击确定，就成了这个样子：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-49bed352d52dc521.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>关于上面Django项目的介绍我这里不说了，大家去阅读我的另外一个专题：<strong>《零基础使用Django2.0.1打造在线教育网站》</strong>，下面就是你的虚拟环境。我们后面会查看源码，所以虚拟环境里面的包比较重要：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-3aa02165e1ad4e36.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>运行一下我们的项目，发现没有问题：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-9f3b752f5b4ececc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<h3 id="数据库配置"><a href="#数据库配置" class="headerlink" title="数据库配置"></a>数据库配置</h3><p>我们不使用默认的sqlite数据库，采用MySQL数据库，打开settings.py文件，找到第77行代码：将：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">DATABASES = &#123;</span><br><span class="line">    &apos;default&apos;: &#123;</span><br><span class="line">        &apos;ENGINE&apos;: &apos;django.db.backends.sqlite3&apos;,</span><br><span class="line">        &apos;NAME&apos;: os.path.join(BASE_DIR, &apos;db.sqlite3&apos;),</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>修改为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">DATABASES = &#123;</span><br><span class="line">    &apos;default&apos;: &#123;</span><br><span class="line">        &apos;ENGINE&apos;: &apos;django.db.backends.mysql&apos;,</span><br><span class="line">        &apos;NAME&apos;: &apos;vueshop&apos;,</span><br><span class="line">        &apos;USER&apos;: &apos;root&apos;,</span><br><span class="line">        &apos;PASSWORD&apos;: &apos;xxxx&apos;,  # 密码可以随意设置，我使用xxxx</span><br><span class="line">        &apos;HOST&apos;: &apos;127.0.0.1&apos;,</span><br><span class="line">        &apos;OPTIONS&apos;: &#123;&apos;init_command&apos;: &apos;SET storage_engine=INNODB&apos;&#125;,</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>注意一下这里的storage_engine必须是InnoDB。尽管mysql的数据库引擎有InnoDB 和Myisam这两种，但是后面用到的第三方登录，它所支持的库只支持innodb ，否则在使用migration时，会出错。关于这两种数据库引擎，大家可以看这篇文章：<a href="https://blog.csdn.net/xifeijian/article/details/20316775" target="_blank" rel="noopener">MySQL存储引擎－－MyISAM与InnoDB区别</a>。</p>
+<h3 id="新建数据库vueshop"><a href="#新建数据库vueshop" class="headerlink" title="新建数据库vueshop"></a>新建数据库vueshop</h3><p>打开Navicat，新建数据库vueshop:</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-da4f4885247e7cdb.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<h3 id="安装-mysqlclient和配置seeting文件"><a href="#安装-mysqlclient和配置seeting文件" class="headerlink" title="安装 mysqlclient和配置seeting文件"></a>安装 mysqlclient和配置seeting文件</h3><p>点击主页面Tools 菜单下的 Run manage.py Task，我们会发现系统报了下面的错误：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">django.core.exceptions.ImproperlyConfigured: Error loading MySQLdb module.</span><br><span class="line">Did you install mysqlclient?</span><br></pre></td></tr></table></figure></p>
+<p>上面的错误提示我们没有安装MySQLdb模块，既然出了问题，我们就解决问题。</p>
+<p>你可以在Pycharm里面进行安装，但这种很容易出错。最好的方法是去其官方网站下载包，然后在本地安装即可。这里开启传送大门：<a href="https://www.lfd.uci.edu/~gohlke/pythonlibs/#mysql-python" target="_blank" rel="noopener">mysql-python</a>，点击这个网站，然后按住<code>Ctrl+F</code>键，调出搜索框，在里面输入mysqlclient，然后回车即可，因为我的电脑是64位，所以下载64位的。</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-5feb1fccdd1cf004.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>上面的cp36代表Python3.6的版本，cp37代表Python3.7 的版本！<br>然后把mysqlclient放在我们的虚拟环境下面：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-589b580e1d9e8ee0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>在虚拟环境中安装mysqlclient，如图所示：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">(vueshop) F:\Envs\vueshop&gt;pip install mysqlclient-1.3.13-cp36-cp36m-win_amd64.whl</span><br><span class="line">Processing f:\envs\vueshop\mysqlclient-1.3.13-cp36-cp36m-win_amd64.whl</span><br><span class="line">Installing collected packages: mysqlclient</span><br><span class="line">Successfully installed mysqlclient-1.3.13</span><br><span class="line"></span><br><span class="line">(vueshop) F:\Envs\vueshop&gt;</span><br></pre></td></tr></table></figure></p>
+<p>注意需要进入到vueshop这个目录下进行安装，安装的命令是：<code>pip install mysqlclient-1.3.13-cp36-cp36m-win_amd64.whl</code>（后面的是你刚才下载的版本名称，带whl）。</p>
+<p>接下来我们再次运行项目，发现出了一个问题：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"> super(Connection, self).__init__(*args, **kwargs2)</span><br><span class="line">django.db.utils.OperationalError: (1193, &quot;Unknown system variable &apos;storage_engine&apos;&quot;)</span><br></pre></td></tr></table></figure></p>
+<p>看样子是我们的数据库引擎变量名配置出了问题，我们修改一下，把：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&apos;OPTIONS&apos;: &#123;&apos;init_command&apos;: &apos;SET storage_engine=INNODB&apos;&#125;,</span><br></pre></td></tr></table></figure></p>
+<p>修改为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&apos;OPTIONS&apos;: &#123;&apos;init_command&apos;: &apos;SET default_storage_engine=INNODB;&apos;&#125;,</span><br></pre></td></tr></table></figure></p>
+<p>再次运行，发现正常了。</p>
+<p>接下来安装用于图片处理的库：<code>pillow</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install pillow -i http://pypi.douban.com/simple --trusted-host pypi.douban.com</span><br></pre></td></tr></table></figure></p>
+<h3 id="新建包和文件夹"><a href="#新建包和文件夹" class="headerlink" title="新建包和文件夹"></a>新建包和文件夹</h3><p>新建两个python package，分别命名为apps和extra_apps。然后新建两个directory,分别命名为media和db_tools。注意一下包和文件夹的区别，包可以折叠，里面含有–init–.py文件，而文件夹不可以折叠，里面啥也没有。最后将两个python package:apps和extra_apps给Mark为source root。（前面教育网站有介绍操作）</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-88771b8df7cfb1e1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>其实这个方法不是很靠谱，因为你这样做只是让Pycharm知道文件放在哪了，要的时候去哪里找，但是如果你用dos命令去运行，还是因为找不到文件地址而报错的，因为它是根据settings.py来查找文件的。下面介绍另一种更完善的方法。在settings.py文件里面，我们新增路径代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">import sys</span><br><span class="line"></span><br><span class="line">sys.path.insert(0, BASE_DIR)</span><br><span class="line">sys.path.insert(0, os.path.join(BASE_DIR, &apos;apps&apos;))</span><br><span class="line">sys.path.insert(0, os.path.join(BASE_DIR, &apos;extra_apps&apos;))</span><br></pre></td></tr></table></figure></p>
+<p>然后运行发现没有问题，接下来进行数据库字段的定义。</p>
+<h2 id="数据库字段的定义"><a href="#数据库字段的定义" class="headerlink" title="数据库字段的定义"></a>数据库字段的定义</h2><p>首先进行需求分析从而设计数据字段，我们发现里面有一个导航栏，左边是商品全部信息，后面则是商品的部分信息：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-b5ae9e3ea149c7d7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>那个全部商品分类，里面又分几个小类，小类又可以分类，所以说这是一个三级导航栏。右边上面则是搜索框，网站主体部分则是商品的缩略图，最底下是排序和分页。<br>进入商品详情页，就能看到商品的详细信息，商品轮播图，原价，促销价格，以及富文本显示的信息。最右边则是热卖商品的信息，这个非常详细，可以看到详情信息。</p>
+<p>现在就是数据库字段的设计了，我们采用归类的思想，肯定有一个商品信息，一个交易信息，一个用户信息，以及一个用于记录用户操作的信息。（教育网站里面有说过，避免引用的死循环）不过这种没有一个明确的分类，一般是根据程序员自己的经验来划分的。</p>
+<p>所以我们的app一共有4个，用于分别实现不同的功能，具体如下：</p>
+<blockquote>
+<p>(user)用户版块：负责记录用户的个人信息相关的内容,</p>
+</blockquote>
+<blockquote>
+<p>(goods)商品版块：用于记录商品信息相关的内容,</p>
+</blockquote>
+<blockquote>
+<p>(trade)交易板块：用于记录交易相关的内容,</p>
+</blockquote>
+<blockquote>
+<p>(user_operation)用户操作板块：用于记录用户操作的相关的内容。</p>
+</blockquote>
+<h2 id="创建app"><a href="#创建app" class="headerlink" title="创建app"></a>创建app</h2><p>先点击菜单下的Tools按钮 ，然后点击下拉的 Run manage.py Task按钮，在命令行中依次输入：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">startapp user</span><br><span class="line">startapp goods</span><br><span class="line">startapp trade</span><br><span class="line">startapp user_operation</span><br></pre></td></tr></table></figure></p>
+<p>然后拖到app这个包里面：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-9a637b993764fee6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>好了，现在开始进行各个app的models.py的配置了。记住一般都是先进行用户（user）这个app的配置。</p>
+<h3 id="user-app的配置"><a href="#user-app的配置" class="headerlink" title="user app的配置"></a>user app的配置</h3><p>在前面的一篇文章里面：<a href="https://www.jianshu.com/p/460724e1c668" target="_blank" rel="noopener">零基础使用Django2.0.1打造在线教育网站（七）：数据库字段的定义(上)</a>，说过user自带的用户表是无法满足我们的需求，我们是希望既可以保留原来的字段，又可以新增我们的自定义字段，所以我们需要引入继承我们的AbstractUser这个类。</p>
+<p>打开我们的user/models.py文件，添加并修改如下代码:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">from datetime import datetime</span><br><span class="line"></span><br><span class="line">from django.db import models</span><br><span class="line">from django.contrib.auth.models import AbstractUser</span><br><span class="line"># Create your models here.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class UserProfile(AbstractUser):</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    用户信息</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    name = models.CharField(max_length=30, null=True, blank=True, verbose_name=&quot;姓名&quot;)</span><br><span class="line">    birthday = models.DateField(verbose_name=&apos;生日&apos;, null=True, blank=True)</span><br><span class="line">    mobile = models.CharField(max_length=11, verbose_name=&quot;电话&quot;)</span><br><span class="line">    gender = models.CharField(max_length=6, choices=((&apos;male&apos;, &apos;男&apos;), (&apos;female&apos;, &apos;女&apos;)), default=&apos;female&apos;, verbose_name=&apos;性别&apos;)</span><br><span class="line">    email = models.CharField(max_length=100, null=True, blank=True, verbose_name=&quot;邮箱&quot;)</span><br><span class="line"></span><br><span class="line">    class Meta:</span><br><span class="line">        verbose_name = &quot;用户信息&quot;</span><br><span class="line">        verbose_name_plural = verbose_name</span><br><span class="line"></span><br><span class="line">    def __str__(self):</span><br><span class="line">        return self.name</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class VerifyCode(models.Model):</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    短信验证码</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    code = models.CharField(max_length=20, verbose_name=&quot;验证码&quot;)</span><br><span class="line">    mobile = models.CharField(max_length=11, verbose_name=&quot;电话&quot;)</span><br><span class="line">    add_time = models.DateTimeField(default=datetime.now, verbose_name=&quot;添加时间&quot;)</span><br><span class="line"></span><br><span class="line">    class Meta:</span><br><span class="line">        verbose_name = &quot;短信验证码&quot;</span><br><span class="line">        verbose_name_plural = verbose_name</span><br><span class="line"></span><br><span class="line">    def __str__(self):</span><br><span class="line">        return self.code</span><br></pre></td></tr></table></figure></p>
+<p>记住：CharField必须有max_length！！！<br>这里还没完，就是我们这里定义的<code>UserProfile</code>其实并没有覆盖掉原本的<code>User</code>表，所以我们需要重载AUTH_USER_MODEL，打开settings.py,在<strong>INSTALLED_APPS</strong>的下面我们新增一行代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 重载UserProfile使其生效</span><br><span class="line">AUTH_USER_MODEL = &apos;users.UserProfile&apos;</span><br></pre></td></tr></table></figure></p>
+<h3 id="注意一下"><a href="#注意一下" class="headerlink" title="注意一下"></a>注意一下</h3><p>我们不要在初始化的时候就执行makemigrations &amp; migrate操作，应当在我们设计完userProfile（自定义字段）之后再执行该操作，那样就不会报错。</p>
+<p>至此我们完成了第一个app的配置及其自定义字段的设计！</p>
+<p>至此，本篇关于如何安装各种依赖库以及部分数据库字段的设计的介绍就到此为止了，感谢你的赏阅！！！</p>
+
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="https://upload-images.jianshu.io/upload_images/8964398-58d04ffa926103d9.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">觉得不错，赏包辣条吃呗！</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href target="_blank">编程思录</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2018/04/18/采用Vue-Django-Restful-framework构建生鲜电商项目（四）：数据库字段的定义-下/" class="pre-post btn btn-default" title="采用Vue+Django Restful framework构建生鲜电商项目（四）：数据库字段的定义(下)">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">采用Vue+Django Restful framework构建生鲜电商项目（四）：数据库字段的定义(下)</span>
+        </a>
+    
+    
+        <a href="/2018/04/18/采用Vue-Django-Restful-framework构建生鲜电商项目（二）：环境搭建/" class="next-post btn btn-default" title="采用Vue+Django Restful framework构建生鲜电商项目（二）：环境搭建">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">采用Vue+Django Restful framework构建生鲜电商项目（二）：环境搭建</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+    <div id="vcomments" class="valine"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+
+    <script>
+        new Valine({
+            av: AV,
+            el: '#vcomments',
+            appId: '8zvHFFu5l2ah8lh0DEPH393B-gzGzoHsz',
+            appKey: 'UNmB24200qMtyyrun5z99nOE',
+            placeholder: '听说长得好看的，都已经留言了！',
+            notify: false,
+            verify: false,
+            avatar: 'mm',
+            meta: 'nick,mail'.split(','),
+            pageSize: '10',
+            path: window.location.pathname,
+            lang: 'zh-CN'.toLowerCase()
+        })
+    </script>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#写在前面"><span class="toc-text">写在前面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#新建虚拟环境"><span class="toc-text">新建虚拟环境</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装django-和-django-rest-framework"><span class="toc-text">安装django 和 django rest framework</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#新建Django项目"><span class="toc-text">新建Django项目</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#已有虚拟环境"><span class="toc-text">已有虚拟环境</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#没有虚拟环境"><span class="toc-text">没有虚拟环境</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数据库配置"><span class="toc-text">数据库配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#新建数据库vueshop"><span class="toc-text">新建数据库vueshop</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装-mysqlclient和配置seeting文件"><span class="toc-text">安装 mysqlclient和配置seeting文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#新建包和文件夹"><span class="toc-text">新建包和文件夹</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#数据库字段的定义"><span class="toc-text">数据库字段的定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建app"><span class="toc-text">创建app</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#user-app的配置"><span class="toc-text">user app的配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#注意一下"><span class="toc-text">注意一下</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2017-2019
+                </span> |
+                <span>
+				编程思录,保留所有权利
+                    <!--Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>-->
+                </span> |
+                <span>
+				<a style="color: #black" href="http://www.miitbeian.gov.cn">赣ICP备18013455号-5</a>
+                    <!--Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>-->
+                </span>
+            </div>
+			
+			<div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+			
+			<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1277113902'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s96.cnzz.com/z_stat.php%3Fid%3D1277113902%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));</script>
+        </div>
+    </div>
+</div>
+
+
+
+
+    <script src="/assets/tagcanvas.min.js?rev=2.9"></script>
+    <script>
+        var tagOption = {
+            textColour: 'red', // 字体颜色
+            outlineMethod: 'block', // 选中模式
+            outlineColour: '#FFDAB9', // 选中模式的颜色
+            interval: 30 || 30, // 动画帧之间的时间间隔，值越大，转动幅度越大
+            textHeight: 13,
+            outlineRadius: 3,
+            freezeActive: true || '', // 选中的标签是否继续滚动
+            frontSelect: true || '', // 不选标签云后部的标签
+            initial: [0.1, -0.1],
+            depth: 0.5,
+            decel: 0.95,
+            maxSpeed: 0.03,
+            reverse: true || '', // 是否反向触发
+            fadeIn: 500, // 进入动画时间
+            wheelZoom: false || '' // 是否启用鼠标滚轮
+        }
+        TagCanvas.Start('tag-cloud-3d','',tagOption);
+    </script>
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+</body>
+</html>

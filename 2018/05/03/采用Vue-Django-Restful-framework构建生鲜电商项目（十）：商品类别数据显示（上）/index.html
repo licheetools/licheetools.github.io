@@ -1,0 +1,445 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="编程思录，记录思考">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://licheetools.github.io">
+    <!--SEO-->
+
+    <meta name="keywords" content="django建站,Vue前端">
+
+
+    <meta name="description" content="写在前面本篇我们来介绍如何把我们的商品类别数据进行显示，由于涉及的知识较多，会分成2篇进行说明。
+商品的分类
+
+我们前面说过，这里面配置了2个组件，其实就和我们两个目录相关联。一个是全部数据的接...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+
+    <!--Title-->
+
+
+<title>采用Vue+Django Restful framework构建生鲜电商项目（十）：商品类别数据显示（上） | 编程思录，记录思考</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="编程思录，记录思考" type="application/atom+xml">
+
+
+    <link rel="icon" href="./favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+	<div class="hide">
+		<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+	</div>
+
+
+
+
+
+
+    
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header" style="background-image:url(https://upload-images.jianshu.io/upload_images/8964398-b1ba9582ea8b69ba.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)">
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title="Envy">
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 点滴进步，都是收获 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://licheetools.github.io">编程思录，记录思考</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>首页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/font/"><i class="fa "></i>前端</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/java/"><i class="fa "></i>Java</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/django/"><i class="fa "></i>Django</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/flask/"><i class="fa "></i>Flask</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/spider/"><i class="fa "></i>爬虫</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/data/"><i class="fa "></i>数据分析</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/money/"><i class="fa "></i>付费教程</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/life/"><i class="fa "></i>生活记录</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives"><i class="fa "></i>时间轴</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/about/"><i class="fa "></i>关于博主</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/liuyan/"><i class="fa "></i>留言板</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="采用Vue+Django Restful framework构建生鲜电商项目（十）：商品类别数据显示（上）">
+            
+	            采用Vue+Django Restful framework构建生鲜电商项目（十）：商品类别数据显示（上）
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/django/">django</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/Vue前端/">Vue前端</a> <a class="tag-link" href="/tags/django建站/">django建站</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2018/05/03</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>本篇我们来介绍如何把我们的商品类别数据进行显示，由于涉及的知识较多，会分成2篇进行说明。</p>
+<h2 id="商品的分类"><a href="#商品的分类" class="headerlink" title="商品的分类"></a>商品的分类</h2><p><img src="https://upload-images.jianshu.io/upload_images/8964398-5919ff3da8e45111.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-13f796433757ebea.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>我们前面说过，这里面配置了2个组件，其实就和我们两个目录相关联。一个是全部数据的接口，用于首页的全部商品分类：一级-二级-三级就是上面的那样；另一个就是获取某一大类的二级分类以及对应的商品数量，就是下面的图片：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-0ccf04239cbd93cf.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>当商品被大类进行过滤时，我们需要设置过滤的条件，如价格区间，以及按照价格，销量的排序，还有商品页面的分页功能。</p>
+<p>通过vue提供的工具，我们可以很容易的知道组件的结构：<br><img src="https://upload-images.jianshu.io/upload_images/8964398-6d6633628551ed5d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>在产品列表中是一堆的<code>router link</code>，你点击它会跳转到详情页，这个详情页其实就是vue 的router路由：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-34a82b7a57dcf39e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>好了，分析到这里我们现在开始进行开发。打开goods\views.py文件，我们新增代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">from .serializers import  CategorySerializer</span><br><span class="line"></span><br><span class="line">class CategoryViewset(mixins.ListModelMixin, viewsets.GenericViewSet):</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    list:</span><br><span class="line">        商品分类列表数据</span><br><span class="line">    retrieve:</span><br><span class="line">        获取商品分类详情</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    queryset = GoodsCategory.objects.filter(category_type=1)</span><br><span class="line">    serializer_class = CategorySerializer</span><br></pre></td></tr></table></figure></p>
+<p><strong>注意一下，我们因为是进行商品类别数据的显示，但是数量不是很多，所以不需要进行分页处理。同时因为后面需要生成文档，所以我们需要规范化我们的注释语言。</strong>当然我们还需要进行序列化，打开goods\serializers.py文件：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">from goods.models import GoodsCategory</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class GoodsCategorySerializer(serializers.ModelSerializer):</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    商品类别序列化</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    class Meta:</span><br><span class="line">        model = GoodsCategory</span><br><span class="line">        fields = &quot;__all__&quot;  # 取出所有的字段</span><br></pre></td></tr></table></figure></p>
+<p>接着打开urls.py文件，我们配置路由：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">from goods.views import CategoryViewset</span><br><span class="line"></span><br><span class="line"># 配置goods的url</span><br><span class="line">router.register(r&apos;goods&apos;, GoodsListViewSet, base_name=&apos;goods&apos;)  # 这里前面加r可以进行转义</span><br><span class="line"></span><br><span class="line"># 配置categorys的url</span><br><span class="line">router.register(r&apos;categorys&apos;, CategoryViewset, base_name=&apos;categorys&apos;)  # 这里前面加r可以进行转义</span><br></pre></td></tr></table></figure></p>
+<p>这里的register有三要素：(prefix, viewset, base_name)，各个参数含义如下：<br>prefix ：该视图集的路由前缀；<br>viewset： 视图集；<br>base_name ：路由名称的前缀；<br>详细的可以点击这里了解一下：<a href="https://blog.csdn.net/weixin_40226313/article/details/80842832" target="_blank" rel="noopener">DRF路由Routers</a>。然后浏览器地址栏访问一下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1:8000/categorys/</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-90f590a97831740e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>我们发现这里没有出现我们想要的嵌套显示，也就是一类显示下面的二类，二类显示下面的三类，我们修改serializers.py文件：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">class CategorySerializer3(serializers.ModelSerializer):</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    商品三级类别序列化</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    class Meta:</span><br><span class="line">        model = GoodsCategory</span><br><span class="line">        fields = &quot;__all__&quot;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class CategorySerializer2(serializers.ModelSerializer):</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    商品二级类别序列化</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    sub_cat = CategorySerializer3(many=True)</span><br><span class="line"></span><br><span class="line">    class Meta:</span><br><span class="line">        model = GoodsCategory</span><br><span class="line">        fields = &quot;__all__&quot;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class CategorySerializer(serializers.ModelSerializer):</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    商品一级类别序列化</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    sub_cat = CategorySerializer2(many=True)</span><br><span class="line"></span><br><span class="line">    class Meta:</span><br><span class="line">        model = GoodsCategory</span><br><span class="line">        fields = &quot;__all__&quot;</span><br></pre></td></tr></table></figure></p>
+<p>这里我们用到了<code>sub_cat</code>，因为我们在model里面将自身的继承关系进行了命名：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-f36b6fa63e268f07.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>然后就可以通过一级分类(parents)得到二级分类（直接调用一级对象的sub_cat),此时就得到了二级对象的数据，但是对于此时得到的二级对象数据，我们依然可以对其进行序列化然后作为父本去获取三级分类对象的数据。</p>
+<p>然后运行我们的项目，发现出了这样的错误：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">AttributeError at /categories/</span><br><span class="line">Got AttributeError when attempting to get a value for field `sub_cat` on serializer `CategorySerializer2`.he serializer field might be named incorrectly and not match any attribute or key on the `RelatedManager` instance.Original exception text was: &apos;RelatedManager&apos; object has no attribute &apos;sub_cat&apos;.</span><br></pre></td></tr></table></figure></p>
+<p>那么你需要检查是否缺少<strong>many = True</strong>这个参数，然后运行就没问题了。</p>
+<p>我们思考这么一个问题， 我们现在获取的是所有的category，但是如何获取具体某一类别下面的信息呢。举个例子，我们点击生鲜食品这一栏，那么左侧出现的应该就是生鲜食品这一栏下面对应的具体信息，而不是依然得全部信息。</p>
+<p>打开goods\views.py文件，我们可以多继承另外一个函数<code>mixins.RetrieveModelMixin</code>就可以了：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">class CategoryViewset(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):</span><br></pre></td></tr></table></figure></p>
+<p>在前面的文章里面我们获取某个具体的数据，是不是都在后面添加了id。假设我们这里需要获取书店里面的某本书（假设该书店只有不到100本书），我们通过get加id的方式就能直接获取取来：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GET /book/10：获取编号为10的那本书</span><br></pre></td></tr></table></figure></p>
+<p><strong>注意这样方式是严格按照restful api 的规范来进行配置的</strong>。按照这样的逻辑，我们需要哪个商品的信息，就要传入对应的id，没错就是这样（这是在线教育网站的一个path的配置）：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 密码重置url</span><br><span class="line">    re_path(&apos;reset/(?P&lt;active_code&gt;.*)/&apos;, ResetView.as_view(), name=&quot;reset_pwd&quot;),</span><br></pre></td></tr></table></figure></p>
+<p>但是强大的drf已经通过刚才那个函数给我们这样配置了，我们只需刚才那一步即可，都不需要在url里面进行相应的配置,只要我们继承了<code>mixins.RetrieveModelMixin</code>就可以直接通过id来进行具体数据的获取了，是不是很赞。运行你的项目，然后在浏览器地址栏输入:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1:8000/categorys/1/</span><br></pre></td></tr></table></figure></p>
+<p>回车，进行访问吧，可以看到此时返回的是一个字典。</p>
+<h2 id="Vue展示商品分类的数据"><a href="#Vue展示商品分类的数据" class="headerlink" title="Vue展示商品分类的数据"></a>Vue展示商品分类的数据</h2><p>现在我们准备将category的数据和vue进行联调，不过在此之前我们我们需要解决跨域访问的问题。跨域问题在前后端分离的项目中是非常常见的，你不用大惊小怪。我们现在查看一下这个category是如何将数据映射进来的：<code>F:\cnpmtest\online-store\src\views\head\head.vue</code>文件里面，可以看到里面的getMenu函数调用了getCategory函数，那么问题来了getCatgory函数到底在哪里呢：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-be80e233790c059b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>在这里<code>import { getHotSearch, getCategory ,deleteShopCart } from  &#39;../../api/api&#39;</code>看到文里面的导入说明了么，这个文件对应我的位置在<code>F:\cnpmtest\online-store\src\api\api.js</code>，我们打开看一下：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-d0bdd89352df75f9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>看到里面的getCategory 函数了么，这种写法是ES6的写法，可以点击这里了解一下：<a href="http://es6.ruanyifeng.com" target="_blank" rel="noopener">ECMAScript 6 入门</a>。ES6中的箭头函数params =&gt;传递一个params，如果params中有id那么，通过axios获取接口，并返回指定的具体信息：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">return axios.get(`$&#123;host&#125;/categorys/`+params.id+&apos;/&apos;);</span><br></pre></td></tr></table></figure></p>
+<p>如果没有id就返回全部的信息:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">return axios.get(`$&#123;host&#125;/categorys/`, params);</span><br></pre></td></tr></table></figure></p>
+<p>其中这里面的${host}是我们获取信息的域名，也就是bobby老师的网站：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let host = &apos;http://shop.projectsedu.com&apos;;  # 线上环境</span><br></pre></td></tr></table></figure></p>
+<p>这个函数是一个公共的函数，export是导出数据： <a href="https://www.cnblogs.com/dupd/p/5951311.html" target="_blank" rel="noopener">ES6模块的import和export用法总结</a>。这样就解决了获取详情信息或通用性问题。那么问题来了，我们如何来调试接口呢？可以注意到，我们在很多地方都用到了host，而我们调试只是一个接口一个调试，该如何解决呢？办法就是新建一个自己的<code>local_host</code>，然后用这个来进行替换，调试谁就替换谁：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let local_host = &apos;http://127.0.0.1:8000&apos;</span><br></pre></td></tr></table></figure></p>
+<p>我们现在因为是调试category，所以需要替换它：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">//获取商品类别信息</span><br><span class="line">export const getCategory = params =&gt; &#123;</span><br><span class="line">  if(&apos;id&apos; in params)&#123;</span><br><span class="line">    return axios.get(`$&#123;local_host&#125;/categorys/`+params.id+&apos;/&apos;);</span><br><span class="line">  &#125;</span><br><span class="line">  else &#123;</span><br><span class="line">    return axios.get(`$&#123;local_host&#125;/categorys/`, params);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>然后启动我们的前端项目：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm run dev</span><br></pre></td></tr></table></figure></p>
+<p>发现出了这样的错误：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-5c6fffbc1b2ad38d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Failed to load resource: net::ERR_CONNECTION_REFUSED</span><br></pre></td></tr></table></figure></p>
+<p>说明我们的本地vueshop项目没有启动，我们运行我们的项目，然后发现还是有问题：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-aac22dc8bdf70523.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt><br>这条信息告诉不允许跨域访问，因为我们跨了端口访问，一个是8080，一个是8000，所以才会出错，解决的办法很多。前端的npm也是可以完成跨域访问的，一般是通过proxy代理来完成的。不过这里我们主要说明如何利用服务器来完成跨域访问的。</p>
+<h3 id="服务器跨域访问"><a href="#服务器跨域访问" class="headerlink" title="服务器跨域访问"></a>服务器跨域访问</h3><p>在GitHub上面搜索<code>django-cors-headers</code>，然后按照要求进行配置：<code>Django app for handling the server headers required for Cross-Origin Resource Sharing (CORS)</code>。<br>1、安装django-cors-headers（记得是在虚拟环境下面进行安装）：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install django-cors-headers -i http://pypi.douban.com/simple --trusted-host pypi.douban.com</span><br></pre></td></tr></table></figure></p>
+<p>2、注册进入apps(settings.py文件):<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">INSTALLED_APPS = (</span><br><span class="line">    ...</span><br><span class="line">    &apos;corsheaders&apos;,</span><br><span class="line">    ...</span><br><span class="line">)</span><br></pre></td></tr></table></figure></p>
+<p>3、配置MIDDLEWARE(settings.py文件，最好放在第一个位置)：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">MIDDLEWARE = [</span><br><span class="line">    &apos;corsheaders.middleware.CorsMiddleware&apos;,</span><br><span class="line">    &apos;django.middleware.security.SecurityMiddleware&apos;,</span><br><span class="line">    &apos;django.contrib.sessions.middleware.SessionMiddleware&apos;,</span><br><span class="line">    &apos;django.middleware.common.CommonMiddleware&apos;,</span><br><span class="line">    &apos;django.middleware.csrf.CsrfViewMiddleware&apos;,</span><br><span class="line">    &apos;django.contrib.auth.middleware.AuthenticationMiddleware&apos;,</span><br><span class="line">    &apos;django.contrib.messages.middleware.MessageMiddleware&apos;,</span><br><span class="line">    &apos;django.middleware.clickjacking.XFrameOptionsMiddleware&apos;,</span><br><span class="line">]</span><br></pre></td></tr></table></figure></p>
+<p>4、添加参数并设置为true以及白名单的配置（settings.py文件）：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">CORS_ORIGIN_ALLOW_ALL = True</span><br><span class="line">CORS_ORIGIN_WHITELIST = (</span><br><span class="line">    &apos;127.0.0.1:3000&apos;</span><br><span class="line">)</span><br></pre></td></tr></table></figure></p>
+<p>然后刷新一下，发现数据就出来了，那么这个数据是如何出来的呢？继续回看我们的head.vue文件：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">getMenu()&#123;//获取菜单</span><br><span class="line">          getCategory(&#123;</span><br><span class="line">            params:&#123;&#125;</span><br><span class="line">          &#125;).then((response)=&gt; &#123;</span><br><span class="line">                    console.log(response)</span><br><span class="line">                    this.allMenuLabel = response.data</span><br><span class="line">                &#125;)</span><br><span class="line">                .catch(function (error) &#123;</span><br><span class="line">                  console.log(error);</span><br><span class="line">                &#125;);</span><br><span class="line">        &#125;,</span><br></pre></td></tr></table></figure></p>
+<p>看到没有，这里将response.data赋值给了<code>allMenuLabel</code>，我们在nodepad++里面搜索一下，看这个<code>allMenuLabel</code>，看它在哪个地方：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;li class=&quot;first&quot; v-for=&quot;(item,index) in allMenuLabel&quot; @mouseover=&quot;overChildrenmenu(index)&quot; @mouseout=&quot;outChildrenmenu(index)&quot;&gt;</span><br><span class="line">                              &lt;h3 style=&quot;background:url(../images/1449088788518670880.png) 20px center no-repeat;&quot;&gt;</span><br><span class="line">                                &lt;router-link :to=&quot;&apos;/app/home/list/&apos;+item.id&quot;&gt;&#123;&#123;item.name&#125;&#125;&lt;/router-link&gt; &lt;/h3&gt;</span><br></pre></td></tr></table></figure></p>
+<p>发现我们后面使用v-for对它的数据进行了遍历，而且这里有一个<code>router-link</code>，它是指向前端的vue_router路由，并不是我们后台的路径，这点要注意一下。其实我们这里就已经把数据的显示和路由交给了前端，后端只需要提供数据就可以了，我们的任务就已经完成了。</p>
+<p>现在又有一个问题，为什么我们前面的导航栏没有数据呢:</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-2b86d30a857873d6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>那是因为我们在后台管理的时候默认没有设置为允许导航，我们可以去后台添加几个导航栏试试.</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-8cd751e1f08fe167.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-57c15e350de1f2e8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>刷新一下，然后发现导航栏就出现了我们想要的数据。其实我们在前面对这个是否显示导航栏也进行了配置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;template v-for=&quot;(item,index) in allMenuLabel&quot;&gt;</span><br><span class="line">&lt;li&gt;</span><br><span class="line">&lt;div v-if=&quot;item.is_tab&quot;&gt;</span><br><span class="line">   &lt;router-link :to=&quot;&apos;/app/home/list/&apos;+item.id&quot; &gt;&#123;&#123;item.name&#125;&#125;&lt;/router-link&gt;</span><br><span class="line"> &lt;/div&gt;</span><br><span class="line">&lt;/li&gt;</span><br><span class="line"> &lt;/template&gt;</span><br></pre></td></tr></table></figure></p>
+<p>至此，我们本篇关于商品类别数据进行显示上篇的介绍就到此为止了，感谢你的赏阅！</p>
+
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="https://upload-images.jianshu.io/upload_images/8964398-58d04ffa926103d9.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">觉得不错，赏包辣条吃呗！</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href target="_blank">编程思录</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2018/05/15/采用Vue-Django-Restful-framework构建生鲜电商项目（十一）：商品类别数据显示（下）/" class="pre-post btn btn-default" title="采用Vue+Django Restful framework构建生鲜电商项目（十一）：商品类别数据显示（下）">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">采用Vue+Django Restful framework构建生鲜电商项目（十一）：商品类别数据显示（下）</span>
+        </a>
+    
+    
+        <a href="/2018/05/02/采用Vue-Django-Restful-framework构建生鲜电商项目（九）：商品列表页的配置（下）/" class="next-post btn btn-default" title="采用Vue+Django Restful framework构建生鲜电商项目（九）：商品列表页的配置（下）">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">采用Vue+Django Restful framework构建生鲜电商项目（九）：商品列表页的配置（下）</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+    <div id="vcomments" class="valine"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+
+    <script>
+        new Valine({
+            av: AV,
+            el: '#vcomments',
+            appId: '8zvHFFu5l2ah8lh0DEPH393B-gzGzoHsz',
+            appKey: 'UNmB24200qMtyyrun5z99nOE',
+            placeholder: '听说长得好看的，都已经留言了！',
+            notify: false,
+            verify: false,
+            avatar: 'mm',
+            meta: 'nick,mail'.split(','),
+            pageSize: '10',
+            path: window.location.pathname,
+            lang: 'zh-CN'.toLowerCase()
+        })
+    </script>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#写在前面"><span class="toc-text">写在前面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#商品的分类"><span class="toc-text">商品的分类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vue展示商品分类的数据"><span class="toc-text">Vue展示商品分类的数据</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#服务器跨域访问"><span class="toc-text">服务器跨域访问</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2017-2019
+                </span> |
+                <span>
+				编程思录,保留所有权利
+                    <!--Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>-->
+                </span> |
+                <span>
+				<a style="color: #black" href="http://www.miitbeian.gov.cn">赣ICP备18013455号-5</a>
+                    <!--Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>-->
+                </span>
+            </div>
+			
+			<div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+			
+			<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1277113902'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s96.cnzz.com/z_stat.php%3Fid%3D1277113902%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));</script>
+        </div>
+    </div>
+</div>
+
+
+
+
+    <script src="/assets/tagcanvas.min.js?rev=2.9"></script>
+    <script>
+        var tagOption = {
+            textColour: 'red', // 字体颜色
+            outlineMethod: 'block', // 选中模式
+            outlineColour: '#FFDAB9', // 选中模式的颜色
+            interval: 30 || 30, // 动画帧之间的时间间隔，值越大，转动幅度越大
+            textHeight: 13,
+            outlineRadius: 3,
+            freezeActive: true || '', // 选中的标签是否继续滚动
+            frontSelect: true || '', // 不选标签云后部的标签
+            initial: [0.1, -0.1],
+            depth: 0.5,
+            decel: 0.95,
+            maxSpeed: 0.03,
+            reverse: true || '', // 是否反向触发
+            fadeIn: 500, // 进入动画时间
+            wheelZoom: false || '' // 是否启用鼠标滚轮
+        }
+        TagCanvas.Start('tag-cloud-3d','',tagOption);
+    </script>
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+</body>
+</html>
