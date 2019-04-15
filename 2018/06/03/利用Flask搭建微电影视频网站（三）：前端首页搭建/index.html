@@ -1,0 +1,452 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="编程思录，记录思考">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://licheetools.github.io">
+    <!--SEO-->
+
+    <meta name="keywords" content="Flask建站,Pytohn后端">
+
+
+    <meta name="description" content="写在前面本篇笔记，我们来学习Flask网站前端首页面的搭建，这其实和Django搭建网页很类似，大家好好体会一下。
+获取更多教程，请点击注册啃饼网:http://www.licheetools....">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+
+    <!--Title-->
+
+
+<title>利用Flask搭建微电影视频网站（三）：前端首页搭建 | 编程思录，记录思考</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="编程思录，记录思考" type="application/atom+xml">
+
+
+    <link rel="icon" href="./favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+	<div class="hide">
+		<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+	</div>
+
+
+
+
+
+
+    
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header" style="background-image:url(https://upload-images.jianshu.io/upload_images/8964398-b1ba9582ea8b69ba.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)">
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title="Envy">
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 点滴进步，都是收获 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://licheetools.github.io">编程思录，记录思考</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>首页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/font/"><i class="fa "></i>前端</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/java/"><i class="fa "></i>Java</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/django/"><i class="fa "></i>Django</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/flask/"><i class="fa "></i>Flask</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/spider/"><i class="fa "></i>爬虫</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/data/"><i class="fa "></i>数据分析</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/money/"><i class="fa "></i>付费教程</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/life/"><i class="fa "></i>生活记录</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives"><i class="fa "></i>时间轴</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/about/"><i class="fa "></i>关于博主</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/liuyan/"><i class="fa "></i>留言板</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="利用Flask搭建微电影视频网站（三）：前端首页搭建">
+            
+	            利用Flask搭建微电影视频网站（三）：前端首页搭建
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/flask/">flask</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/Flask建站/">Flask建站</a> <a class="tag-link" href="/tags/Pytohn后端/">Pytohn后端</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2018/06/03</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>本篇笔记，我们来学习Flask网站前端首页面的搭建，这其实和Django搭建网页很类似，大家好好体会一下。</p>
+<p>获取更多教程，请点击注册啃饼网:<a href="http://www.licheetools.top/" target="_blank" rel="noopener">http://www.licheetools.top</a></p>
+<p>本篇笔记对应上传的仓库为:<a href="https://github.com/licheetools/movie对应第三篇。" target="_blank" rel="noopener">https://github.com/licheetools/movie对应第三篇。</a></p>
+<h2 id="前台布局搭建"><a href="#前台布局搭建" class="headerlink" title="前台布局搭建"></a>前台布局搭建</h2><p>第一步将所有static文件都放进指定的位置：<br><img src="https://upload-images.jianshu.io/upload_images/8964398-dae3b19af76a8a35.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt><br>然后在templates/home文件夹下面新建一个home.html文件，将tpl/2-movie/nav.html文件内容全部拷贝到我们刚才新建的home.html页面里面，然后修改我们静态文件的目录，可以按照下面的图片要求进行：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-8020177352e06aac.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt><br><strong>1、静态文件的引入</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123; url_for(&apos;static&apos;,filename=&apos;文件路径&apos;)&#125;&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>2、定义路由</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123; url_for(&apos;模块名.视图名&apos;,变量=参数)&#125;&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>3、定义数据块</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;%block 数据块名称%&#125; .....&#123;% endblock %&#125;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 原来代码为 &lt;link rel=&quot;stylesheet&quot; href=&quot;../static/base/css/bootstrap.min.css&quot;&gt;</span><br><span class="line"># 现在代码为   &lt;link rel=&quot;stylesheet&quot; href=&quot;&#123;&#123; url_for(&apos;static&apos;, filename=&apos;base/css/bootstrap.min.css&apos;) &#125;&#125;&quot;&gt;</span><br></pre></td></tr></table></figure>
+<p>其余所有的js, jpg,css均按照这样的要求进行，这里就不再一一提示了，直接附上代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">    &lt;link rel=&quot;shortcut icon&quot; href=&quot;&#123;&#123; url_for(&apos;static&apos;, filename=&apos;base/images/logo.png&apos;) &#125;&#125;&quot;&gt;</span><br><span class="line">    &lt;link rel=&quot;stylesheet&quot; href=&quot;&#123;&#123; url_for(&apos;static&apos;, filename=&apos;base/css/bootstrap.min.css&apos;) &#125;&#125;&quot;&gt;</span><br><span class="line">    &lt;link rel=&quot;stylesheet&quot; href=&quot;&#123;&#123; url_for(&apos;static&apos;, filename=&apos;base/css/bootstrap-movie.css&apos;) &#125;&#125;&quot;&gt;</span><br><span class="line">    &lt;link rel=&quot;stylesheet&quot; href=&quot;&#123;&#123; url_for(&apos;static&apos;, filename=&apos;base/css/animate.css&apos;) &#125;&#125;&quot;&gt;</span><br><span class="line"></span><br><span class="line">&lt;img src=&quot;&#123;&#123; url_for(&apos;static&apos;, filename=&apos;base/images/logo.png&apos;) &#125;&#125;&quot; style=&quot;height:30px;&quot;&gt;&amp;nbsp;微电影</span><br><span class="line"></span><br><span class="line">&lt;script src=&quot;&#123;&#123; url_for(&apos;static&apos;, filename=&apos;base/js/jquery.min.js&apos;) &#125;&#125;&quot;&gt;&lt;/script&gt;</span><br><span class="line">&lt;script src=&quot;&#123;&#123; url_for(&apos;static&apos;, filename=&apos;base/js/bootstrap.min.js&apos;) &#125;&#125;&quot;&gt;&lt;/script&gt;</span><br><span class="line">&lt;script src=&quot;&#123;&#123; url_for(&apos;static&apos;, filename=&apos;base/js/jquery.singlePageNav.min.js&apos;) &#125;&#125;&quot;&gt;&lt;/script&gt;</span><br><span class="line">&lt;script src=&quot;&#123;&#123; url_for(&apos;static&apos;, filename=&apos;base/js/wow.min.js&apos;) &#125;&#125;&quot;&gt;&lt;/script&gt;</span><br><span class="line">&lt;script src=&quot;&#123;&#123; url_for(&apos;static&apos;, filename=&apos;lazyload/jquery.lazyload.min.js&apos;) &#125;&#125;&quot;&gt;&lt;/script&gt;</span><br></pre></td></tr></table></figure></p>
+<p>接着在图示位置进行挖坑填坑操作：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;div class=&quot;container&quot; style=&quot;margin-top:76px&quot;&gt;</span><br><span class="line">    &#123;% block content %&#125;&#123;% endblock %&#125;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure></p>
+<p>然后打开home模块的视图处理器（home/views.py）：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">from . import home</span><br><span class="line">from flask import render_template</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@home.route(&apos;/&apos;)</span><br><span class="line">def index():</span><br><span class="line">    return render_template(&quot;home/index.html&quot;)i</span><br></pre></td></tr></table></figure></p>
+<p>你发现没有此刻我们在templates/home文件夹下面是没有index.html文件的，我们需要去创建一个index.html文件，在里面输入如下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;% extends &quot;home.html&quot; %&#125;</span><br><span class="line"></span><br><span class="line">&#123;% block %&#125;</span><br><span class="line">&lt;h1&gt;helloworld&lt;/h1&gt;</span><br><span class="line">&#123;% endblock %&#125;</span><br></pre></td></tr></table></figure></p>
+<p>然后运行一下我们的manage.py文件，在浏览器地址栏中输入<a href="http://127.0.0.1:5000/" target="_blank" rel="noopener">http://127.0.0.1:5000/</a> 出现了错误：<img src="https://upload-images.jianshu.io/upload_images/8964398-b9c6375a97a1fd18.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>错误提示我们block缺少一个名字，那我们就修改一下index.html文件：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;% extends &quot;home.html&quot; %&#125;</span><br><span class="line"></span><br><span class="line">&#123;% block content %&#125;</span><br><span class="line">    &lt;h1&gt;Helo,World!&lt;/h1&gt;</span><br><span class="line">&#123;% endblock %&#125;</span><br></pre></td></tr></table></figure></p>
+<p>然后再次刷新一下我们的页面，发现还是出了问题：<img src="https://upload-images.jianshu.io/upload_images/8964398-5b8c84d06ee45c38.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>错误提示我们没有找到home.html页面，那是因为我们的路径出了问题，我们继续修改一下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;% extends &quot;home/home.html&quot; %&#125;</span><br><span class="line"></span><br><span class="line">&#123;% block content %&#125;</span><br><span class="line">    &lt;h1&gt;Helo,World!&lt;/h1&gt;</span><br><span class="line">&#123;% endblock %&#125;</span><br></pre></td></tr></table></figure></p>
+<p>接着我们再次刷新一下，页面正常显示了：<img src="https://upload-images.jianshu.io/upload_images/8964398-372c157c1cf0ceb6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<h2 id="会员登录页面搭建"><a href="#会员登录页面搭建" class="headerlink" title="会员登录页面搭建"></a>会员登录页面搭建</h2><p>打开app/home/views.py文件，新建以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">from flask import  redirect, url_for</span><br><span class="line"></span><br><span class="line"># 登入</span><br><span class="line">@home.route(&apos;/login/&apos;)</span><br><span class="line">def login():</span><br><span class="line">    return render_template(&quot;home/login.html&quot;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 登出</span><br><span class="line">@home.route(&apos;/logout/&apos;)</span><br><span class="line">def logout():</span><br><span class="line">    return redirect(url_for(&apos;home.login&apos;))</span><br></pre></td></tr></table></figure></p>
+<p>然后在templates/home下面新建login.html文件，往里面新增如下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">&#123;% extends &apos;home/home.html&apos; %&#125;</span><br><span class="line">&#123;% block content %&#125;</span><br><span class="line">    &lt;div class=&quot;row&quot;&gt;</span><br><span class="line">        &lt;div class=&quot;col-md-4 col-md-offset-4&quot;&gt;</span><br><span class="line">            &lt;div class=&quot;panel panel-primary&quot;&gt;</span><br><span class="line">                &lt;div class=&quot;panel-heading&quot;&gt;</span><br><span class="line">                    &lt;h3 class=&quot;panel-title&quot;&gt;&lt;span class=&quot;glyphicon glyphicon-log-in&quot;&gt;&lt;/span&gt;&amp;nbsp;会员登录&lt;/h3&gt;</span><br><span class="line">                &lt;/div&gt;</span><br><span class="line">                &lt;div class=&quot;panel-body&quot;&gt;</span><br><span class="line">                    &lt;form role=&quot;form&quot;&gt;</span><br><span class="line">                        &lt;fieldset&gt;</span><br><span class="line">                            &lt;div class=&quot;form-group&quot;&gt;</span><br><span class="line">                                &lt;label for=&quot;input_contact&quot;&gt;&lt;span class=&quot;glyphicon glyphicon-user&quot;&gt;&lt;/span&gt;&amp;nbsp;账号&lt;/label&gt;</span><br><span class="line">                                &lt;input id=&quot;input_contact&quot; class=&quot;form-control input-lg&quot; placeholder=&quot;用户名/邮箱/手机号码&quot; name=&quot;contact&quot; type=&quot;text&quot; autofocus&gt;</span><br><span class="line">                            &lt;/div&gt;</span><br><span class="line">                            &lt;div class=&quot;col-md-12&quot; id=&quot;error_contact&quot;&gt;&lt;/div&gt;</span><br><span class="line">                            &lt;div class=&quot;form-group&quot;&gt;</span><br><span class="line">                                &lt;label for=&quot;input_password&quot;&gt;&lt;span class=&quot;glyphicon glyphicon-lock&quot;&gt;&lt;/span&gt;&amp;nbsp;密码&lt;/label&gt;</span><br><span class="line">                                &lt;input id=&quot;input_password&quot; class=&quot;form-control input-lg&quot; placeholder=&quot;密码&quot; name=&quot;password&quot; type=&quot;password&quot; value=&quot;&quot;&gt;</span><br><span class="line">                            &lt;/div&gt;</span><br><span class="line">                            &lt;div class=&quot;col-md-12&quot; id=&quot;error_password&quot;&gt;&lt;/div&gt;</span><br><span class="line">                            &lt;a href=&quot;user.html&quot; class=&quot;btn btn-lg btn-success btn-block&quot;&gt;登录&lt;/a&gt;</span><br><span class="line">                        &lt;/fieldset&gt;</span><br><span class="line">                    &lt;/form&gt;</span><br><span class="line">                &lt;/div&gt;</span><br><span class="line">            &lt;/div&gt;</span><br><span class="line">        &lt;/div&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">&#123;% endblock %&#125;</span><br></pre></td></tr></table></figure></p>
+<p>（这段代码来自tpl/2-movie/login.html里面<div class="container" style="margin-top:120px"> 内容</div>的内容部分）<br>然后打开home/home.html文件，修改我们的url跳转链接：<img src="https://upload-images.jianshu.io/upload_images/8964398-089318013909fb7d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<h2 id="会员注册"><a href="#会员注册" class="headerlink" title="会员注册"></a>会员注册</h2><p>打开app/home/views.py文件，新建以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"># 会员注册</span><br><span class="line">@home.route(&apos;/register/&apos;)</span><br><span class="line">def register():</span><br><span class="line">    return render_template(&quot;home/register.html&quot;)</span><br></pre></td></tr></table></figure></p>
+<p>然后在templates/home下面新建register.html文件，往里面新增如下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">&#123;% extends &apos;home/home.html&apos; %&#125;</span><br><span class="line">&#123;% block content %&#125;</span><br><span class="line">    &lt;div class=&quot;row&quot;&gt;</span><br><span class="line">        &lt;div class=&quot;col-md-4 col-md-offset-4&quot;&gt;</span><br><span class="line">            &lt;div class=&quot;panel panel-success&quot;&gt;</span><br><span class="line">                &lt;div class=&quot;panel-heading&quot;&gt;</span><br><span class="line">                    &lt;h3 class=&quot;panel-title&quot;&gt;&lt;span class=&quot;glyphicon glyphicon-plus&quot;&gt;&lt;/span&gt;&amp;nbsp;会员注册&lt;/h3&gt;</span><br><span class="line">                &lt;/div&gt;</span><br><span class="line">                &lt;div class=&quot;panel-body&quot;&gt;</span><br><span class="line">                    &lt;form role=&quot;form&quot;&gt;</span><br><span class="line">                        &lt;fieldset&gt;</span><br><span class="line">                            &lt;div class=&quot;form-group&quot;&gt;</span><br><span class="line">                                &lt;label for=&quot;input_name&quot;&gt;&lt;span class=&quot;glyphicon glyphicon-user&quot;&gt;&lt;/span&gt;&amp;nbsp;昵称&lt;/label&gt;</span><br><span class="line">                                &lt;input id=&quot;input_name&quot; class=&quot;form-control input-lg&quot; placeholder=&quot;昵称&quot; name=&quot;name&quot; type=&quot;text&quot; autofocus&gt;</span><br><span class="line">                            &lt;/div&gt;</span><br><span class="line">                            &lt;div class=&quot;col-md-12&quot; id=&quot;error_name&quot;&gt;&lt;/div&gt;</span><br><span class="line">                            &lt;div class=&quot;form-group&quot;&gt;</span><br><span class="line">                                &lt;label for=&quot;input_email&quot;&gt;&lt;span class=&quot;glyphicon glyphicon-envelope&quot;&gt;&lt;/span&gt;&amp;nbsp;邮箱&lt;/label&gt;</span><br><span class="line">                                &lt;input id=&quot;input_email&quot; class=&quot;form-control input-lg&quot; placeholder=&quot;邮箱&quot; name=&quot;email&quot; type=&quot;email&quot; autofocus&gt;</span><br><span class="line">                            &lt;/div&gt;</span><br><span class="line">                            &lt;div class=&quot;col-md-12&quot; id=&quot;error_email&quot;&gt;&lt;/div&gt;</span><br><span class="line">                            &lt;div class=&quot;form-group&quot;&gt;</span><br><span class="line">                                &lt;label for=&quot;input_phone&quot;&gt;&lt;span class=&quot;glyphicon glyphicon-phone&quot;&gt;&lt;/span&gt;&amp;nbsp;手机&lt;/label&gt;</span><br><span class="line">                                &lt;input id=&quot;input_phone&quot; class=&quot;form-control input-lg&quot; placeholder=&quot;手机&quot; name=&quot;phone&quot; type=&quot;text&quot; autofocus&gt;</span><br><span class="line">                            &lt;/div&gt;</span><br><span class="line">                            &lt;div class=&quot;col-md-12&quot; id=&quot;error_phone&quot;&gt;&lt;/div&gt;</span><br><span class="line">                            &lt;div class=&quot;form-group&quot;&gt;</span><br><span class="line">                                &lt;label for=&quot;input_password&quot;&gt;&lt;span class=&quot;glyphicon glyphicon-lock&quot;&gt;&lt;/span&gt;&amp;nbsp;密码&lt;/label&gt;</span><br><span class="line">                                &lt;input id=&quot;input_password&quot; class=&quot;form-control input-lg&quot; placeholder=&quot;密码&quot; name=&quot;password&quot; type=&quot;password&quot; value=&quot;&quot;&gt;</span><br><span class="line">                            &lt;/div&gt;</span><br><span class="line">                            &lt;div class=&quot;col-md-12&quot; id=&quot;error_password&quot;&gt;&lt;/div&gt;</span><br><span class="line">                            &lt;div class=&quot;form-group&quot;&gt;</span><br><span class="line">                                &lt;label for=&quot;input_repassword&quot;&gt;&lt;span class=&quot;glyphicon glyphicon-lock&quot;&gt;&lt;/span&gt;&amp;nbsp;确认密码&lt;/label&gt;</span><br><span class="line">                                &lt;input id=&quot;input_repassword&quot; class=&quot;form-control input-lg&quot; placeholder=&quot;确认密码&quot; name=&quot;repassword&quot; type=&quot;password&quot; value=&quot;&quot;&gt;</span><br><span class="line">                            &lt;/div&gt;</span><br><span class="line">                            &lt;div class=&quot;col-md-12&quot; id=&quot;error_repassword&quot;&gt;&lt;/div&gt;</span><br><span class="line">                            &lt;a href=&quot;user.html&quot; class=&quot;btn btn-lg btn-success btn-block&quot;&gt;注册&lt;/a&gt;</span><br><span class="line">                        &lt;/fieldset&gt;</span><br><span class="line">                    &lt;/form&gt;</span><br><span class="line">                &lt;/div&gt;</span><br><span class="line">            &lt;/div&gt;</span><br><span class="line">        &lt;/div&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">&#123;% endblock %&#125;</span><br></pre></td></tr></table></figure></p>
+<p>（这段代码来自tpl/2-movie/register.html里面<div class="container" style="margin-top:120px"> 内容</div>的内容部分）<br>然后打开home/home.html文件，修改我们的url跳转链接：<br><img src="https://upload-images.jianshu.io/upload_images/8964398-94beca17cc1bf19c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<h2 id="会员中心页面搭建"><a href="#会员中心页面搭建" class="headerlink" title="会员中心页面搭建"></a>会员中心页面搭建</h2><p><img src="https://upload-images.jianshu.io/upload_images/8964398-002ed5a8c1dd298a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt><br>由于前面已经有过2个页面搭建的例子，所以这里我们先定义完所以的路由，再在home文件夹里面新建对应的html文件！打开app/home/views.py文件，新建以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"># 会员中心</span><br><span class="line">@home.route(&apos;/user/&apos;)</span><br><span class="line">def user():</span><br><span class="line">    return render_template(&quot;home/user.html&quot;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 修改密码</span><br><span class="line">@home.route(&apos;/pwd/&apos;)</span><br><span class="line">def pwd():</span><br><span class="line">    return render_template(&quot;home/pwd.html&quot;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 评论记录</span><br><span class="line">@home.route(&apos;/comments/&apos;)</span><br><span class="line">def comments():</span><br><span class="line">    return render_template(&quot;home/comments.html&quot;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 登入日志</span><br><span class="line">@home.route(&apos;/loginlog/&apos;)</span><br><span class="line">def loginlog():</span><br><span class="line">    return render_template(&quot;home/loginlog.html&quot;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 收藏电影</span><br><span class="line">@home.route(&apos;/moviecol/&apos;)</span><br><span class="line">def moviecol():</span><br><span class="line">    return render_template(&quot;home/moviecol.html&quot;)</span><br></pre></td></tr></table></figure></p>
+<p>就是这个样子：<img src="https://upload-images.jianshu.io/upload_images/8964398-598c077d1cd48507.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt><br>接下来定义会员中心菜单栏页面,在home文件夹里面，新建menu.html文件，里面写入从tpl/2-movie/user.html页面中<div class="col-md-3"> </div>的部分,并且修改一下url的跳转问题：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&lt;div class=&quot;col-md-3&quot;&gt;</span><br><span class="line">    &lt;div class=&quot;list-group&quot;&gt;</span><br><span class="line">        &lt;a href=&quot;&#123;&#123; url_for(&apos;home.user&apos;) &#125;&#125;&quot; class=&quot;list-group-item active&quot;&gt;</span><br><span class="line">            &lt;span class=&quot;glyphicon glyphicon-user&quot;&gt;&lt;/span&gt;&amp;nbsp;会员中心</span><br><span class="line">        &lt;/a&gt;</span><br><span class="line">        &lt;a href=&quot;&#123;&#123; url_for(&apos;home.pwd&apos;) &#125;&#125;&quot; class=&quot;list-group-item&quot;&gt;</span><br><span class="line">            &lt;span class=&quot;glyphicon glyphicon-lock&quot;&gt;&lt;/span&gt;&amp;nbsp;修改密码</span><br><span class="line">        &lt;/a&gt;</span><br><span class="line">        &lt;a href=&quot;&#123;&#123; url_for(&apos;home.comments&apos;) &#125;&#125;&quot; class=&quot;list-group-item&quot;&gt;</span><br><span class="line">            &lt;span class=&quot;glyphicon glyphicon-comment&quot;&gt;&lt;/span&gt;&amp;nbsp;评论记录</span><br><span class="line">        &lt;/a&gt;</span><br><span class="line">        &lt;a href=&quot;&#123;&#123; url_for(&apos;home.loginlog&apos;) &#125;&#125;&quot; class=&quot;list-group-item&quot;&gt;</span><br><span class="line">            &lt;span class=&quot;glyphicon glyphicon-calendar&quot;&gt;&lt;/span&gt;&amp;nbsp;登录日志</span><br><span class="line">        &lt;/a&gt;</span><br><span class="line">        &lt;a href=&quot;&#123;&#123; url_for(&apos;home.moviecol&apos;) &#125;&#125;&quot; class=&quot;list-group-item&quot;&gt;</span><br><span class="line">            &lt;span class=&quot;glyphicon glyphicon-heart&quot;&gt;&lt;/span&gt;&amp;nbsp;收藏电影</span><br><span class="line">        &lt;/a&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure></p>
+<h3 id="user-html书写"><a href="#user-html书写" class="headerlink" title="user.html书写"></a>user.html书写</h3><p>现在开始书写我们的user.html文件，我们复制tpl/2-movie/user.html页面中<div class="col-md-9"> </div>的部分：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;% extends &quot;home/home.html&quot; %&#125;</span><br><span class="line"></span><br><span class="line">&#123;% block content %&#125;</span><br><span class="line">    &lt;div class=&quot;col-md-9&quot;&gt;</span><br><span class="line">     ......</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">&#123;% endblock %&#125;</span><br></pre></td></tr></table></figure></p>
+<p>然后运行一下我们的manage.py文件，发现我们的个人中心页面出来了，但是菜单栏没有出现：<img src="https://upload-images.jianshu.io/upload_images/8964398-1ee8f36699393cfb.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt><br>我们需要include我们之前定义的menu.html页面,修改我们的user.html文件：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;% extends &quot;home/home.html&quot; %&#125;</span><br><span class="line"></span><br><span class="line">&#123;% block content %&#125;</span><br><span class="line">&#123;% include &quot;home/menu.html&quot; %&#125;</span><br><span class="line">    &lt;div class=&quot;col-md-9&quot;&gt;</span><br><span class="line">     ......</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">&#123;% endblock %&#125;</span><br></pre></td></tr></table></figure></p>
+<p>再刷新一下我们的页面试试，发现菜单栏已经可以正常显示了：<img src="https://upload-images.jianshu.io/upload_images/8964398-7f124d87f57f0653.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt><br>接下来将home/home.html里面的style进行合并，再进行挖坑填坑操作：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;style&gt;</span><br><span class="line">       .navbar-brand &gt; img &#123;</span><br><span class="line">           display: inline;</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       .media &#123;</span><br><span class="line">           padding: 3px;</span><br><span class="line">           border: 1px solid #ccc</span><br><span class="line">       &#125;</span><br><span class="line">   &lt;/style&gt;</span><br><span class="line">   &#123;% block css %&#125;&#123;% endblock %&#125;</span><br></pre></td></tr></table></figure></p>
+<p>接着打开home/user.html页面，对原来页面的css样式进行挖坑填坑操作：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&#123;% block css %&#125;</span><br><span class="line">    &lt;style&gt;</span><br><span class="line">        .navbar-brand &gt; img &#123;</span><br><span class="line">            display: inline;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        .col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-xs-1, .col-xs-10, .col-xs-11, .col-xs-12, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9 &#123;</span><br><span class="line">            padding-right: 3px;</span><br><span class="line">            padding-left: 3px;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        .media &#123;</span><br><span class="line">            padding: 3px;</span><br><span class="line">            border: 1px solid #ccc</span><br><span class="line">        &#125;</span><br><span class="line">    &lt;/style&gt;</span><br><span class="line">&#123;% endblock %&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="pwd-html的书写"><a href="#pwd-html的书写" class="headerlink" title="pwd.html的书写"></a>pwd.html的书写</h3><p>现在开始书写我们的pwd.html文件，我们复制tpl/2-movie/pwd.html页面中<div class="col-md-9"> </div>的部分：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">&#123;% extends &quot;home/home.html&quot; %&#125;</span><br><span class="line"></span><br><span class="line">&#123;% block css %&#125;</span><br><span class="line">    &lt;style&gt;</span><br><span class="line">        .navbar-brand&gt;img &#123;</span><br><span class="line">            display: inline;</span><br><span class="line">        &#125;</span><br><span class="line">        .col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-xs-1, .col-xs-10, .col-xs-11, .col-xs-12, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9&#123;</span><br><span class="line">            padding-right: 3px;</span><br><span class="line">            padding-left: 3px;</span><br><span class="line">        &#125;</span><br><span class="line">        .media&#123;</span><br><span class="line">            padding:3px;</span><br><span class="line">            border:1px solid #ccc</span><br><span class="line">        &#125;</span><br><span class="line">    &lt;/style&gt;</span><br><span class="line">&#123;% endblock %&#125;</span><br><span class="line"></span><br><span class="line">&#123;% block content %&#125;</span><br><span class="line">&#123;% include &quot;home/menu.html&quot; %&#125;</span><br><span class="line">    &lt;div class=&quot;col-md-9&quot;&gt;</span><br><span class="line">     ......</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">&#123;% endblock %&#125;</span><br></pre></td></tr></table></figure></p>
+<p>我们发现我们还没有判断选中状态，我们给menu.html的类加上一个ID，然后采用jQuery来进行判断：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&lt;div class=&quot;col-md-3&quot;&gt;</span><br><span class="line">    &lt;div class=&quot;list-group&quot;&gt;</span><br><span class="line">        &lt;a id =&quot;m-1&quot; href=&quot;&#123;&#123; url_for(&apos;home.user&apos;) &#125;&#125;&quot; class=&quot;list-group-item&quot;&gt;</span><br><span class="line">            &lt;span class=&quot;glyphicon glyphicon-user&quot;&gt;&lt;/span&gt;&amp;nbsp;会员中心</span><br><span class="line">        &lt;/a&gt;</span><br><span class="line">        &lt;a id =&quot;m-2&quot; href=&quot;&#123;&#123; url_for(&apos;home.pwd&apos;) &#125;&#125;&quot; class=&quot;list-group-item&quot;&gt;</span><br><span class="line">            &lt;span class=&quot;glyphicon glyphicon-lock&quot;&gt;&lt;/span&gt;&amp;nbsp;修改密码</span><br><span class="line">        &lt;/a&gt;</span><br><span class="line">        &lt;a id =&quot;m-3&quot; href=&quot;&#123;&#123; url_for(&apos;home.comments&apos;) &#125;&#125;&quot; class=&quot;list-group-item&quot;&gt;</span><br><span class="line">            &lt;span class=&quot;glyphicon glyphicon-comment&quot;&gt;&lt;/span&gt;&amp;nbsp;评论记录</span><br><span class="line">        &lt;/a&gt;</span><br><span class="line">        &lt;a id =&quot;m-4&quot; href=&quot;&#123;&#123; url_for(&apos;home.loginlog&apos;) &#125;&#125;&quot; class=&quot;list-group-item&quot;&gt;</span><br><span class="line">            &lt;span class=&quot;glyphicon glyphicon-calendar&quot;&gt;&lt;/span&gt;&amp;nbsp;登录日志</span><br><span class="line">        &lt;/a&gt;</span><br><span class="line">        &lt;a id =&quot;m-5&quot; href=&quot;&#123;&#123; url_for(&apos;home.moviecol&apos;) &#125;&#125;&quot; class=&quot;list-group-item&quot;&gt;</span><br><span class="line">            &lt;span class=&quot;glyphicon glyphicon-heart&quot;&gt;&lt;/span&gt;&amp;nbsp;收藏电影</span><br><span class="line">        &lt;/a&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure></p>
+<p>打开home.html页面，在底部新增js的挖坑填坑代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% block js %&#125; &#123;% endblock %&#125;</span><br></pre></td></tr></table></figure></p>
+<p>然后打开user.html页面，在底部新增如下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;% block js %&#125;</span><br><span class="line">    &lt;script&gt;</span><br><span class="line">        $(document).ready(function () &#123;</span><br><span class="line">            $(&quot;#m-1&quot;).addClass(&quot;active&quot;);</span><br><span class="line">            &#125;);</span><br><span class="line">    &lt;/script&gt;</span><br><span class="line">&#123;% endblock %&#125;</span><br></pre></td></tr></table></figure></p>
+<p>我们顺便在pwd.html页面也加上类似的代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;% block js %&#125;</span><br><span class="line">    &lt;script&gt;</span><br><span class="line">        $(document).ready(function () &#123;</span><br><span class="line">            $(&quot;#m-2&quot;).addClass(&quot;active&quot;);</span><br><span class="line">            &#125;);</span><br><span class="line">    &lt;/script&gt;</span><br><span class="line">&#123;% endblock %&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="comments-html的书写"><a href="#comments-html的书写" class="headerlink" title="comments.html的书写"></a>comments.html的书写</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">&#123;% extends &quot;home/home.html&quot; %&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#123;% block css %&#125;</span><br><span class="line">    &lt;style&gt;</span><br><span class="line">        .navbar-brand &gt; img &#123;</span><br><span class="line">            display: inline;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        .col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-xs-1, .col-xs-10, .col-xs-11, .col-xs-12, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9 &#123;</span><br><span class="line">            padding-right: 3px;</span><br><span class="line">            padding-left: 3px;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        .media &#123;</span><br><span class="line">            padding: 3px;</span><br><span class="line">            border: 1px solid #ccc</span><br><span class="line">        &#125;</span><br><span class="line">    &lt;/style&gt;</span><br><span class="line">&#123;% endblock %&#125;</span><br><span class="line"></span><br><span class="line">&#123;% block content %&#125;</span><br><span class="line">    &#123;% include &quot;home/menu.html&quot; %&#125;</span><br><span class="line"></span><br><span class="line">    &lt;div class=&quot;col-md-9&quot;&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">&#123;% endblock %&#125;</span><br><span class="line">&#123;% block js %&#125;</span><br><span class="line">    &lt;script&gt;</span><br><span class="line">        $(document).ready(function () &#123;</span><br><span class="line">            $(&quot;#m-3&quot;).addClass(&quot;active&quot;);</span><br><span class="line">        &#125;);</span><br><span class="line">    &lt;/script&gt;</span><br><span class="line">&#123;% endblock %&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="loginlog-html的书写"><a href="#loginlog-html的书写" class="headerlink" title="loginlog.html的书写"></a>loginlog.html的书写</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">&#123;% extends &quot;home/home.html&quot; %&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#123;% block css %&#125;</span><br><span class="line">    &lt;style&gt;</span><br><span class="line">        .navbar-brand &gt; img &#123;</span><br><span class="line">            display: inline;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        .col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-xs-1, .col-xs-10, .col-xs-11, .col-xs-12, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9 &#123;</span><br><span class="line">            padding-right: 3px;</span><br><span class="line">            padding-left: 3px;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        .media &#123;</span><br><span class="line">            padding: 3px;</span><br><span class="line">            border: 1px solid #ccc</span><br><span class="line">        &#125;</span><br><span class="line">    &lt;/style&gt;</span><br><span class="line">&#123;% endblock %&#125;</span><br><span class="line"></span><br><span class="line">&#123;% block content %&#125;</span><br><span class="line">    &#123;% include &quot;home/menu.html&quot; %&#125;</span><br><span class="line"></span><br><span class="line">    &lt;div class=&quot;col-md-9&quot;&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">&#123;% endblock %&#125;</span><br><span class="line">&#123;% block js %&#125;</span><br><span class="line">    &lt;script&gt;</span><br><span class="line">        $(document).ready(function () &#123;</span><br><span class="line">            $(&quot;#m-4&quot;).addClass(&quot;active&quot;);</span><br><span class="line">        &#125;);</span><br><span class="line">    &lt;/script&gt;</span><br><span class="line">&#123;% endblock %&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="moviecol-html的书写"><a href="#moviecol-html的书写" class="headerlink" title="moviecol.html的书写"></a>moviecol.html的书写</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">&#123;% extends &quot;home/home.html&quot; %&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#123;% block css %&#125;</span><br><span class="line">    &lt;style&gt;</span><br><span class="line">        .navbar-brand &gt; img &#123;</span><br><span class="line">            display: inline;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        .col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-xs-1, .col-xs-10, .col-xs-11, .col-xs-12, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9 &#123;</span><br><span class="line">            padding-right: 3px;</span><br><span class="line">            padding-left: 3px;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        .media &#123;</span><br><span class="line">            padding: 3px;</span><br><span class="line">            border: 1px solid #ccc</span><br><span class="line">        &#125;</span><br><span class="line">    &lt;/style&gt;</span><br><span class="line">&#123;% endblock %&#125;</span><br><span class="line"></span><br><span class="line">&#123;% block content %&#125;</span><br><span class="line">    &#123;% include &quot;home/menu.html&quot; %&#125;</span><br><span class="line"></span><br><span class="line">    &lt;div class=&quot;col-md-9&quot;&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">&#123;% endblock %&#125;</span><br><span class="line">&#123;% block js %&#125;</span><br><span class="line">    &lt;script&gt;</span><br><span class="line">        $(document).ready(function () &#123;</span><br><span class="line">            $(&quot;#m-5&quot;).addClass(&quot;active&quot;);</span><br><span class="line">        &#125;);</span><br><span class="line">    &lt;/script&gt;</span><br><span class="line">&#123;% endblock %&#125;</span><br></pre></td></tr></table></figure>
+<p>现在再来运行我们的manage.py文件，我们在浏览器地址栏里面输入<a href="http://127.0.0.1:5000/user/，然后回车，然后点击左侧的菜单栏，发现页面显示没有问题。最后来完善一下url的跳转，我们打开home/home.html页面，修改如下：![](https://upload-images.jianshu.io/upload_images/8964398-26906216cdd4d18c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)" target="_blank" rel="noopener">http://127.0.0.1:5000/user/，然后回车，然后点击左侧的菜单栏，发现页面显示没有问题。最后来完善一下url的跳转，我们打开home/home.html页面，修改如下：![](https://upload-images.jianshu.io/upload_images/8964398-26906216cdd4d18c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)</a></p>
+<h2 id="电影列表页面搭建"><a href="#电影列表页面搭建" class="headerlink" title="电影列表页面搭建"></a>电影列表页面搭建</h2><p>继续在我们的home/views.py文件里面新增以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"># 首页</span><br><span class="line">@home.route(&apos;/&apos;)</span><br><span class="line">def index():</span><br><span class="line">    return render_template(&quot;home/index.html&quot;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 动画</span><br><span class="line">@home.route(&apos;/animation/&apos;)</span><br><span class="line">def animation():</span><br><span class="line">    return render_template(&quot;home/animation.html&quot;)</span><br></pre></td></tr></table></figure></p>
+<p><strong>注意：因为在前面我们已经创建了一个index函数，所以我们需要把它们去掉，或者重写一个</strong><br>做完这些自然就是在templates/home文件夹下面新建对应的index.html和animation.html页面。考虑到首页的独立性，我们也在templates/home文件夹下面新建一个layout.html页面，并同时将home/home.html文件里面的代码都拷贝进去，并且修改一下home/home.html，将内容部分进行挖坑填坑操作：<img src="https://upload-images.jianshu.io/upload_images/8964398-3b7f9d948e2d2dab.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>现在回到我们的templates/home/index.html页面，其block content部分来自我们的tpl/2-movie/index.html的热门电影和电影列表部分：<img src="https://upload-images.jianshu.io/upload_images/8964398-200ae6ee92d3d589.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>紧接着将我们templates/home/index.html页面的电影列表展开和收起，就是这个样子：<img src="https://upload-images.jianshu.io/upload_images/8964398-53c522e00a5640ab.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>我们只留下前四个col-md-3，其余的col-md-3就都删除！</p>
+<p>然后将tpl/1-index-animation/animation.html的代码复制到home/animation.html里面，接着在static文件下新建anim文件，把与animation有关的js,css,main-banner都复制进去，就是这个样子：<img src="https://upload-images.jianshu.io/upload_images/8964398-ad27ee276d2ed454.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>然后我们回到templates/animation.html页面，修改我们的静态样式加载地址：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;&#123;&#123; url_for(&apos;static&apos;, filename=&apos;anmi/css/style.css&apos;) &#125;&#125;&quot;&gt;</span><br><span class="line"></span><br><span class="line">&lt;img src=&quot;&#123;&#123; url_for(&apos;static&apos;, filename=&apos;anmi/main_banner/big0020150102211033.jpg&apos;) &#125;&#125;&quot; alt=&quot;&quot;&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&lt;script type=&quot;text/javascript&quot; src=&quot;&#123;&#123; url_for(&apos;static&apos;, filename=&apos;anmi/js/jquery.js&apos;) &#125;&#125;&quot;&gt;&lt;/script&gt;</span><br></pre></td></tr></table></figure></p>
+<p>接着回到我们的home/index.html页面，我们进行animation的跳转链接配置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;iframe class=&quot;wow fadeIn&quot; width=&quot;100%&quot; height=&quot;375px&quot; frameborder=0 scrolling=no src=&quot;&#123;&#123; url_for(&apos;home.animation&apos;) &#125;&#125;&quot;&gt;&lt;/iframe&gt;</span><br></pre></td></tr></table></figure></p>
+<p>还有对我们的列表进行for循环的读取：<img src="https://upload-images.jianshu.io/upload_images/8964398-5223402d8b9e7f33.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt><br>最后运行一下我们的manage.py文件，发现样式和页面都正常显示了：<img src="https://upload-images.jianshu.io/upload_images/8964398-32d77efc9c937a2e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<h2 id="电影搜索页面搭建"><a href="#电影搜索页面搭建" class="headerlink" title="电影搜索页面搭建"></a>电影搜索页面搭建</h2><p>老规矩，在home/views.py文件下面新增以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 搜索页面</span><br><span class="line">@home.route(&apos;/search/&apos;)</span><br><span class="line">def search():</span><br><span class="line">    return render_template(&quot;home/search.html&quot;)</span><br></pre></td></tr></table></figure></p>
+<p>自然你就需要在templates/home文件夹下面新建一个search.html页面。<br>打开home/search.html页面，我们新建以下代码：<img src="https://upload-images.jianshu.io/upload_images/8964398-62efe6da6b989438.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>然后展开和收起页面，利用for循环进行填充：<img src="https://upload-images.jianshu.io/upload_images/8964398-73fb0d7bc7eba951.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>接下来就是search相关的url跳转的配置，home.html和layout.html页面都需要配置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"> &lt;a class=&quot;btn btn-default&quot; href=&quot;&#123;&#123; url_for(&apos;home.search&apos;) &#125;&#125;&quot;&gt;&lt;span class=&quot;glyphicon glyphicon-search&quot;&gt;&lt;/span&gt;&amp;nbsp;搜索&lt;/a&gt;</span><br><span class="line"></span><br><span class="line">&lt;a class=&quot;btn btn-default&quot; href=&quot;&#123;&#123; url_for(&apos;home.search&apos;) &#125;&#125;&quot;&gt;&lt;span class=&quot;glyphicon glyphicon-search&quot;&gt;&lt;/span&gt;&amp;nbsp;搜索&lt;/a&gt;</span><br></pre></td></tr></table></figure></p>
+<h2 id="电影详情页面搭建"><a href="#电影详情页面搭建" class="headerlink" title="电影详情页面搭建"></a>电影详情页面搭建</h2><p>老规矩，在home/views.py文件下面新增以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 详情页面</span><br><span class="line">@home.route(&apos;/play/&apos;)</span><br><span class="line">def play():</span><br><span class="line">    return render_template(&quot;home/play.html&quot;)</span><br></pre></td></tr></table></figure></p>
+<p>自然你就需要在templates/home文件夹下面新建一个play.html页面。</p>
+<p>打开home/play.html页面，我们新建以下代码：<img src="https://upload-images.jianshu.io/upload_images/8964398-9187382ceb34be89.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>然后对所以的静态文件进行访问配置，由于太多，这里就不一一说明了。</p>
+<p>接下来对home/home.html页面所以的url进行跳转配置，还有搜索中的电影播放与收藏中的电影播放页面的跳转，这个很多，需要耐心一个个去查找，修改。<br>还有收藏页面的for循环：<img src="https://upload-images.jianshu.io/upload_images/8964398-6025357cb78a59fb.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt><br>之后运行一下manage.py文件，发现页面跳转没有问题。</p>
+<h2 id="404页面的搭建"><a href="#404页面的搭建" class="headerlink" title="404页面的搭建"></a>404页面的搭建</h2><p>因为404页面是一个全局页面，所以我们需要在初始化文件里面写入，而不是在home这个应用里面(app/–init–.py文件)：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">from flask import Flask, render_template</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line">app.debug = True</span><br><span class="line"></span><br><span class="line">from app.home import home as home_blueprint</span><br><span class="line">from app.admin import admin as admin_blueprint</span><br><span class="line"></span><br><span class="line">app.register_blueprint(home_blueprint)</span><br><span class="line">app.register_blueprint(admin_blueprint, url_prefix=&quot;/admin&quot;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 404页面</span><br><span class="line">@app.errorhandler(404)</span><br><span class="line">def page_not_found(error):</span><br><span class="line">    return render_template(&quot;home/404.html&quot;), 404</span><br></pre></td></tr></table></figure></p>
+<p>自然你就需要在templates/home文件夹下面新建一个404.html页面。</p>
+<p>然后把4-404.html页面的代码都拷贝进去，并修改页面的跳转和静态文件的加载样式：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&lt;!doctype html&gt;</span><br><span class="line">&lt;html lang=&quot;zh-cn&quot;&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">    &lt;meta charset=&quot;utf-8&quot;&gt;</span><br><span class="line">    &lt;title&gt;消失在宇宙星空中的404页面&lt;/title&gt;</span><br><span class="line">    &lt;link href=&quot;&#123;&#123; url_for(&apos;static&apos;, filename=&apos;404/404.css&apos;) &#125;&#125;&quot; rel=&quot;stylesheet&quot; type=&quot;text/css&quot;&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">&lt;!-- 代码 开始 --&gt;</span><br><span class="line">&lt;div class=&quot;fullScreen&quot; id=&quot;fullScreen&quot;&gt;</span><br><span class="line">    &lt;img class=&quot;rotating&quot; src=&quot;&#123;&#123; url_for(&apos;static&apos;, filename=&apos;404/spaceman.svg&apos;) &#125;&#125;&quot;&gt;</span><br><span class="line">    &lt;div class=&quot;pagenotfound-text&quot;&gt;</span><br><span class="line">        &lt;h1&gt;迷失在太空中！&lt;/h1&gt;</span><br><span class="line">        &lt;h2&gt;&lt;a href=&quot;&#123;&#123; url_for(&apos;home.index&apos;) &#125;&#125;&quot;&gt;返回首页&lt;/a&gt;&lt;/h2&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">    &lt;canvas id=&quot;canvas2d&quot;&gt;&lt;/canvas&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">&lt;script type=&quot;text/javascript&quot; src=&quot;&#123;&#123; url_for(&apos;static&apos;, filename=&apos;404/spaceman.svg&apos;) &#125;&#125;&quot;&gt;&lt;/script&gt;</span><br><span class="line">&lt;!-- 代码 结束 --&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure></p>
+<p>然后刷新一下我们的页面，发现404页面可以正常显示出来。</p>
+<p>至此，我们本篇关于前端首页搭建的介绍就到此为止了，感谢你的赏阅！</p>
+<p>本篇笔记对应上传的仓库为:<a href="https://github.com/licheetools/movie对应第三篇。" target="_blank" rel="noopener">https://github.com/licheetools/movie对应第三篇。</a></p>
+<p>获取更多教程，请点击注册啃饼网:<a href="http://www.licheetools.top/" target="_blank" rel="noopener">http://www.licheetools.top</a></p>
+
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="https://upload-images.jianshu.io/upload_images/8964398-58d04ffa926103d9.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">觉得不错，赏包辣条吃呗！</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href target="_blank">编程思录</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2018/06/04/利用Flask搭建微电影视频网站（四）：后台页面搭建/" class="pre-post btn btn-default" title="利用Flask搭建微电影视频网站（四）：后台页面搭建">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">利用Flask搭建微电影视频网站（四）：后台页面搭建</span>
+        </a>
+    
+    
+        <a href="/2018/06/02/利用Flask搭建微电影视频网站（二）：项目优化与模型设计/" class="next-post btn btn-default" title="利用Flask搭建微电影视频网站（二）：项目优化与模型设计">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">利用Flask搭建微电影视频网站（二）：项目优化与模型设计</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+    <div id="vcomments" class="valine"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+
+    <script>
+        new Valine({
+            av: AV,
+            el: '#vcomments',
+            appId: '8zvHFFu5l2ah8lh0DEPH393B-gzGzoHsz',
+            appKey: 'UNmB24200qMtyyrun5z99nOE',
+            placeholder: '听说长得好看的，都已经留言了！',
+            notify: false,
+            verify: false,
+            avatar: 'mm',
+            meta: 'nick,mail'.split(','),
+            pageSize: '10',
+            path: window.location.pathname,
+            lang: 'zh-CN'.toLowerCase()
+        })
+    </script>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#写在前面"><span class="toc-text">写在前面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#前台布局搭建"><span class="toc-text">前台布局搭建</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#会员登录页面搭建"><span class="toc-text">会员登录页面搭建</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#会员注册"><span class="toc-text">会员注册</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#会员中心页面搭建"><span class="toc-text">会员中心页面搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#user-html书写"><span class="toc-text">user.html书写</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pwd-html的书写"><span class="toc-text">pwd.html的书写</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#comments-html的书写"><span class="toc-text">comments.html的书写</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#loginlog-html的书写"><span class="toc-text">loginlog.html的书写</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#moviecol-html的书写"><span class="toc-text">moviecol.html的书写</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#电影列表页面搭建"><span class="toc-text">电影列表页面搭建</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#电影搜索页面搭建"><span class="toc-text">电影搜索页面搭建</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#电影详情页面搭建"><span class="toc-text">电影详情页面搭建</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#404页面的搭建"><span class="toc-text">404页面的搭建</span></a></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2017-2019
+                </span> |
+                <span>
+				编程思录,保留所有权利
+                    <!--Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>-->
+                </span> |
+                <span>
+				<a style="color: #black" href="http://www.miitbeian.gov.cn">赣ICP备18013455号-5</a>
+                    <!--Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>-->
+                </span>
+            </div>
+			
+			<div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+			
+			<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1277113902'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s96.cnzz.com/z_stat.php%3Fid%3D1277113902%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));</script>
+        </div>
+    </div>
+</div>
+
+
+
+
+    <script src="/assets/tagcanvas.min.js?rev=2.9"></script>
+    <script>
+        var tagOption = {
+            textColour: 'red', // 字体颜色
+            outlineMethod: 'block', // 选中模式
+            outlineColour: '#FFDAB9', // 选中模式的颜色
+            interval: 30 || 30, // 动画帧之间的时间间隔，值越大，转动幅度越大
+            textHeight: 13,
+            outlineRadius: 3,
+            freezeActive: true || '', // 选中的标签是否继续滚动
+            frontSelect: true || '', // 不选标签云后部的标签
+            initial: [0.1, -0.1],
+            depth: 0.5,
+            decel: 0.95,
+            maxSpeed: 0.03,
+            reverse: true || '', // 是否反向触发
+            fadeIn: 500, // 进入动画时间
+            wheelZoom: false || '' // 是否启用鼠标滚轮
+        }
+        TagCanvas.Start('tag-cloud-3d','',tagOption);
+    </script>
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+</body>
+</html>

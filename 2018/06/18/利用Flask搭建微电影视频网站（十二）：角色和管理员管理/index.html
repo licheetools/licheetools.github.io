@@ -1,0 +1,458 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="编程思录，记录思考">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://licheetools.github.io">
+    <!--SEO-->
+
+    <meta name="keywords" content="Flask建站,Pytohn后端">
+
+
+    <meta name="description" content="写在前面本篇笔记，我们介绍角色管理，管理员管理以及访问权限控制这是三个功能。角色管理，管理员管理这个和前面介绍的标签，电影，预告管理也是差不多的，所以我就加快速度，话不多说，开始学习吧。
+本篇笔...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+
+    <!--Title-->
+
+
+<title>利用Flask搭建微电影视频网站（十二）：角色和管理员管理 | 编程思录，记录思考</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="编程思录，记录思考" type="application/atom+xml">
+
+
+    <link rel="icon" href="./favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+	<div class="hide">
+		<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+	</div>
+
+
+
+
+
+
+    
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header" style="background-image:url(https://upload-images.jianshu.io/upload_images/8964398-b1ba9582ea8b69ba.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)">
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title="Envy">
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 点滴进步，都是收获 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://licheetools.github.io">编程思录，记录思考</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>首页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/font/"><i class="fa "></i>前端</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/java/"><i class="fa "></i>Java</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/django/"><i class="fa "></i>Django</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/flask/"><i class="fa "></i>Flask</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/spider/"><i class="fa "></i>爬虫</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/data/"><i class="fa "></i>数据分析</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/money/"><i class="fa "></i>付费教程</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/life/"><i class="fa "></i>生活记录</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives"><i class="fa "></i>时间轴</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/about/"><i class="fa "></i>关于博主</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/liuyan/"><i class="fa "></i>留言板</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="利用Flask搭建微电影视频网站（十二）：角色和管理员管理">
+            
+	            利用Flask搭建微电影视频网站（十二）：角色和管理员管理
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/flask/">flask</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/Flask建站/">Flask建站</a> <a class="tag-link" href="/tags/Pytohn后端/">Pytohn后端</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2018/06/18</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>本篇笔记，我们介绍角色管理，管理员管理以及访问权限控制这是三个功能。角色管理，管理员管理这个和前面介绍的标签，电影，预告管理也是差不多的，所以我就加快速度，话不多说，开始学习吧。</p>
+<p>本篇笔记对应上传的仓库为:<a href="https://github.com/licheetools/movie对应第十二篇。" target="_blank" rel="noopener">https://github.com/licheetools/movie对应第十二篇。</a></p>
+<h2 id="角色管理"><a href="#角色管理" class="headerlink" title="角色管理"></a>角色管理</h2><p>角色管理和上面的权限管理是非常相似的，所以有些操作就是复制粘贴和套用了！</p>
+<h3 id="使用到的内容"><a href="#使用到的内容" class="headerlink" title="使用到的内容"></a>使用到的内容</h3><p>我们将使用到的内容有：<br>模型：Role<br>表单: RoleForm<br>请求方法: GET ,POST<br>访问控制: @admin_login_req</p>
+<h3 id="1、添加表单验证字段"><a href="#1、添加表单验证字段" class="headerlink" title="1、添加表单验证字段"></a>1、添加表单验证字段</h3><p>打开forms.py，我们定义Form字段，注意因为是权限管理模块，所以对应的html页面就是role_add.html，而且我们在forms.py里面定义的字段必须与role_add.html里面的保持一致！（如果觉得不是很容易看出来，可以运行项目，直接访问role_add.html页面，这样明显多了！）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">from wtforms import  SelectMultipleField</span><br><span class="line">from app.models import  Auth</span><br><span class="line"></span><br><span class="line"># 添加角色</span><br><span class="line">class RoleFrom(FlaskForm):</span><br><span class="line">    name = StringField(</span><br><span class="line">        label=&quot;角色名称&quot;,</span><br><span class="line">        validators=[</span><br><span class="line">            DataRequired(&quot;角色名称不能为空&quot;)</span><br><span class="line">        ],</span><br><span class="line">        description=&quot;角色名称&quot;,</span><br><span class="line">        render_kw=&#123;</span><br><span class="line">            &quot;class&quot;: &quot;form-control&quot;,</span><br><span class="line">            &quot;id&quot;: &quot;input_name&quot;,</span><br><span class="line">            &quot;placeholder&quot;: &quot;请输入角色名称！&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    )</span><br><span class="line">    auths = SelectMultipleField(</span><br><span class="line">        label=&quot;权限列表&quot;,</span><br><span class="line">        validators=[</span><br><span class="line">            DataRequired(&quot;权限列表不能为空&quot;)</span><br><span class="line">        ],</span><br><span class="line">        coerce=int,</span><br><span class="line">        choices=[(v.id, v.name) for v in Auth.query.all()],   # 数据动态填充选择，采用列表生成式</span><br><span class="line">        description=&quot;权限列表&quot;,</span><br><span class="line">        render_kw=&#123;</span><br><span class="line">            &quot;class&quot;: &quot;form-control&quot;,</span><br><span class="line">            &quot;id&quot;: &quot;input_url&quot;,</span><br><span class="line">            &quot;placeholder&quot;: &quot;请选择角色列表！&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    )</span><br><span class="line">    submit = SubmitField(</span><br><span class="line">        &apos;修改&apos;,</span><br><span class="line">        render_kw=&#123;</span><br><span class="line">            &quot;class&quot;: &quot;btn btn-primary&quot;,</span><br><span class="line">        &#125;</span><br><span class="line">    )</span><br></pre></td></tr></table></figure></p>
+<h3 id="2、准备页面渲染字段"><a href="#2、准备页面渲染字段" class="headerlink" title="2、准备页面渲染字段"></a>2、准备页面渲染字段</h3><p>打开admin/views.py文件，我们修改role_add函数：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">from app.admin.forms import RoleForm</span><br><span class="line">from app.models import Role</span><br><span class="line"></span><br><span class="line"># 添加权限</span><br><span class="line">@admin.route(&apos;/role/add&apos;, methods=[&quot;GET&quot;, &quot;POST&quot;])</span><br><span class="line">@admin_login_req</span><br><span class="line">def role_add():</span><br><span class="line">    form = RoleForm()</span><br><span class="line">    return render_template(&quot;admin/role_add.html&quot;, form=form)</span><br></pre></td></tr></table></figure></p>
+<h3 id="3、后台页面传值显示以及操作信息提示"><a href="#3、后台页面传值显示以及操作信息提示" class="headerlink" title="3、后台页面传值显示以及操作信息提示"></a>3、后台页面传值显示以及操作信息提示</h3><p>可以仿照前面的auth_add.html来修改role_add.html:</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-c605f28e6785368e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>记得在submit的上面添加<code></code>，还有form提交的方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;form role=&quot;form&quot; method=&quot;post&quot; &gt;</span><br></pre></td></tr></table></figure></p>
+<h3 id="4、后台页面错误信息提示"><a href="#4、后台页面错误信息提示" class="headerlink" title="4、后台页面错误信息提示"></a>4、后台页面错误信息提示</h3><p>打开role_add.html页面，我们同样可以仿照auth_add.html来进行修改：（里面的title需要按照我们数据库里字段的要求进行修改）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;% for err in form.title.errors %&#125;</span><br><span class="line">&lt;div class=&quot;col-md-12&quot;&gt;</span><br><span class="line">&lt;p style=&quot;color:red&quot;&gt;&#123;&#123; err &#125;&#125;&lt;/p&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">&#123;% endfor %&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="5、修改角色添加函数"><a href="#5、修改角色添加函数" class="headerlink" title="5、修改角色添加函数"></a>5、修改角色添加函数</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"># 添加角色</span><br><span class="line">@admin.route(&apos;/role/add&apos;, methods=[&quot;GET&quot;, &quot;POST&quot;])</span><br><span class="line">@admin_login_req</span><br><span class="line">def role_add():</span><br><span class="line">    form = RoleFrom()</span><br><span class="line">    if form.validate_on_submit():</span><br><span class="line">        data = form.data</span><br><span class="line">        role = Role(</span><br><span class="line">            name=data[&quot;name&quot;],</span><br><span class="line">            auths=&apos;,&apos;.join(map(str, data[&quot;auths&quot;]))  # 采用高阶函数map来生成一个迭代器，然后用&apos;&apos;.join()来序列为一个字符串对象</span><br><span class="line">        )</span><br><span class="line">        db.session.add(role)</span><br><span class="line">        db.session.commit()</span><br><span class="line">        flash(&quot;添加角色成功！&quot;, &quot;ok&quot;)</span><br><span class="line">    return render_template(&quot;admin/role_add.html&quot;, form=form)</span><br></pre></td></tr></table></figure>
+<p>然后运行一下我们的manage.py文件，就可以去后台添加我们的角色了：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-20062bca3874a5f8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>查询一下数据库，发现这样的信息就说明权限添加成功了：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from role;</span><br><span class="line">+----+-------------+-------+---------------------+</span><br><span class="line">| id | name        | auths | addtime             |</span><br><span class="line">+----+-------------+-------+---------------------+</span><br><span class="line">|  1 | 超级管理员 | NULL  | 2018-08-17 16:11:06 |</span><br><span class="line">|  2 | 管理员      | 1235  | 2018-08-12 16:24:18 |</span><br><span class="line">|  3 | 管理员1     | 12    | 2018-08-12 16:24:26 |</span><br><span class="line">|  4 | 管理员2     | 123   | 2018-08-12 16:24:33 |</span><br><span class="line">+----+-------------+-------+---------------------+</span><br><span class="line">4 rows in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt;</span><br></pre></td></tr></table></figure></p>
+<h2 id="角色列表的配置"><a href="#角色列表的配置" class="headerlink" title="角色列表的配置"></a>角色列表的配置</h2><p>打开我们的views.py文件，我们参考之前的权限列表的配置，对角色列表进行配置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># 角色列表</span><br><span class="line">@admin.route(&apos;/role/list/&lt;int:page&gt;&apos;, methods=[&quot;GET&quot;])</span><br><span class="line">@admin_login_req</span><br><span class="line">def role_list(page=None):</span><br><span class="line">    if page is None:</span><br><span class="line">        page = 1</span><br><span class="line"># 查询的时候关联标签，采用join来加进去,多表关联用filter,过滤用filter_by</span><br><span class="line">    page_data = Role.query.order_by(</span><br><span class="line">        Role.addtime.desc()</span><br><span class="line">    ).paginate(page=page, per_page=10)</span><br><span class="line">    return render_template(&quot;admin/role_list.html&quot;, page_data=page_data)</span><br></pre></td></tr></table></figure></p>
+<p>接着去我们的grid.html页面添加page参数（page=1），记住所以的列表都要有一个初始页，也就是说肯定有一个页面去显示，就算没有数据也要有页面，否则就是404嘛，这既然不是404，就得有个页面，空的页面也是可以的：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-960ebdc861a7de76.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>然后我们打开role_list.html页面，进行for循环的填充：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-1023529d0a72b63e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>然后就是分页功能了，我们参考之前在标签列表页面的配置，打开auth_list.html,删除那个<ul class="pagination pagination-sm no-margin pull-right"> ……. </ul>标签里的内容，我们在开头导入刚才的admin_page.html文件，然后开始调用：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% import &quot;ui/admin_page.html&quot; as pg %&#125;</span><br></pre></td></tr></table></figure></p>
+<p>将下面的代码填充你刚才删除的那段的位置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123; pg.page(page_data, &quot;admin.role_list&quot;) &#125;&#125;</span><br></pre></td></tr></table></figure></p>
+<p>至此，关于角色列表的介绍就到此为止了！接下来是角色的删除！</p>
+<h2 id="角色的删除"><a href="#角色的删除" class="headerlink" title="角色的删除"></a>角色的删除</h2><p>打开views.py文件，我们新定义role_del函数：（仿照权限删除的函数）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># 角色删除</span><br><span class="line">@admin.route(&apos;/role/del/&lt;int:id&gt;&apos;, methods=[&quot;GET&quot;])</span><br><span class="line">@admin_login_req</span><br><span class="line">def role_del(id=None):</span><br><span class="line">    role = Role.query.filter_by(id=id).first_or_404()</span><br><span class="line">    db.session.delete(role)</span><br><span class="line">    db.session.commit()</span><br><span class="line">    flash(&quot;角色删除成功！&quot;, &quot;ok&quot;)</span><br><span class="line">    return redirect(url_for(&quot;admin.role_list&quot;, page=1))</span><br></pre></td></tr></table></figure></p>
+<p>然后打开role_list.html页面，我们添加删除成功的flash提示（同样可以复制我们的auth_list.html页面的那一部分）：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-e6c118ad75dd807f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>提示：有小伙伴们问我为啥需要添加这个操作成功的信息提示，那是因为我们的删除操作是在我们当前的列表页面进行的，所以自然我们的页面操作提示信息就应该放在列表页！！！</p>
+<p>最后别忘了在role_list.html页面添加删除跳转链接：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;a href=&quot;&#123;&#123; url_for(&apos;admin.role_del&apos;, id=v.id) &#125;&#125;&quot; class=&quot;label label-danger&quot;&gt;删除&lt;/a&gt;</span><br></pre></td></tr></table></figure></p>
+<p>然后去测试一下我们的项目，看一看角色删除功能是否已经实现了呢，接下来进行角色的编辑功能的实现！</p>
+<h2 id="角色的编辑"><a href="#角色的编辑" class="headerlink" title="角色的编辑"></a>角色的编辑</h2><p>打开views.py文件，我们在角色列表的下面新增以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"># 角色编辑</span><br><span class="line">@admin.route(&apos;/role/edit/&lt;int:id&gt;&apos;, methods=[&quot;GET&quot;, &quot;POST&quot;])</span><br><span class="line">@admin_login_req</span><br><span class="line">def role_edit(id=None):</span><br><span class="line">    form = RoleForm()   # 实例化一个TagForm，然后将form传递到前端页面去。</span><br><span class="line">    role = Role.query.get_or_404(id)</span><br><span class="line">    if request.method == &quot;GET&quot;:</span><br><span class="line">        form.auths.data = list(map(int, role.auths.split(&quot;,&quot;)))  # form.auths.data为整形数组，而role.auths为一个可变字符串</span><br><span class="line">    if form.validate_on_submit():</span><br><span class="line">        data = form.data</span><br><span class="line">        role.auths = &apos;,&apos;.join(map(str, data[&quot;auths&quot;]))</span><br><span class="line">        role.name = data[&quot;name&quot;]</span><br><span class="line">        db.session.add(role)</span><br><span class="line">        db.session.commit()</span><br><span class="line">        flash(&quot;修改角色成功！&quot;, &quot;ok&quot;)</span><br><span class="line">        return redirect(url_for(&quot;admin.role_edit&quot;, id=id))</span><br><span class="line">    return render_template(&quot;admin/role_edit.html&quot;, form=form, role=role)</span><br></pre></td></tr></table></figure></p>
+<p>接着在admin下面新建role_edit.html页面，将role_add.html页面全部添加进去，然后开始修改:将所有的添加字段改为编辑。并且给那些需要编辑的字段赋初值：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-bf9cec2c94067680.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>记住那个<code></code>是无法直接给它付初始值的，我们采用GET方法来请求！</p>
+<p>然后在role_list里面修改页面的跳转：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;a href=&quot;&#123;&#123; url_for(&apos;admin.role_edit&apos;, id =v.id) &#125;&#125;&quot; class=&quot;label label-success&quot;&gt;编辑&lt;/a&gt;</span><br></pre></td></tr></table></figure></p>
+<p>刷新一下，看看关于权限这一功能我们的项目是不是都能使用了！</p>
+<h2 id="错误修正"><a href="#错误修正" class="headerlink" title="错误修正"></a>错误修正</h2><p>近期有小伙伴反映页面跳转到<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1:5000/admin/role/edit/&lt;int:id&gt;</span><br></pre></td></tr></table></figure></p>
+<p>就出下面的错误：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">builtins.AttributeError</span><br><span class="line">AttributeError: &apos;NoneType&apos; object has no attribute &apos;split&apos;</span><br></pre></td></tr></table></figure></p>
+<p>然后我通过单点测试，发现原来这个<code>form.auths.data</code>是个空值：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-b9364156861e25b4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>但是呢，这个choices却不是，它是一个list，里面又有tuple。我们可以考虑取出每个tuple的第一个元素，它是Int类型，然后构造一个新的int类型的list:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">list(map(lambda x: x[0], form.auths.choices))</span><br></pre></td></tr></table></figure></p>
+<p>而且我们知道，我们这个role.auths它其实是一个varchar类型，所以我们也可以把它变为一个int类型的list：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">list(map(int, auths.split(&quot;,&quot;)))</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-274036b39fe2dde8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>然后就是这样：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">list(map(lambda x: x[0], form.auths.choices))==list(map(int, auths.split(&quot;,&quot;)))</span><br></pre></td></tr></table></figure></p>
+<p>把之前的：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">form.auths.data = list(map(int, role.auths.split(&quot;,&quot;)))  # form.auths.data为整形数组，而role.auths为一个可变字符串</span><br></pre></td></tr></table></figure></p>
+<p>替换掉！！！<strong>记住我们不可以修改超级管理员的角色名称和权限，因为超级管理员权力最大，如果某个权限连它都没有的话，那就没有人有了！！！</strong></p>
+<h2 id="管理员管理"><a href="#管理员管理" class="headerlink" title="管理员管理"></a>管理员管理</h2><h3 id="使用到的内容-1"><a href="#使用到的内容-1" class="headerlink" title="使用到的内容"></a>使用到的内容</h3><p>我们将使用到的内容有：<br>模型：Admin<br>表单: AdminForm<br>请求方法: GET ,POST<br>访问控制: @admin_login_req</p>
+<h3 id="1、添加表单验证字段-1"><a href="#1、添加表单验证字段-1" class="headerlink" title="1、添加表单验证字段"></a>1、添加表单验证字段</h3><p>打开forms.py，我们定义Form字段，注意因为是权限管理模块，所以对应的html页面就是<code>admin_add.html</code>，而且我们在forms.py里面定义的字段必须与<code>admin_add.html</code>里面的保持一致！（如果觉得不是很容易看出来，可以运行项目，直接访问admin_add.html页面，这样明显多了！）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line">from app.models import Role</span><br><span class="line">from wtforms.validators import  EqualTo  # EqualTo 用于比对两次密码是否一致！ </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 添加管理员</span><br><span class="line">class AdminForm(FlaskForm):</span><br><span class="line">    name = StringField(</span><br><span class="line">        label=&quot;管理员名称&quot;,</span><br><span class="line">        validators=[</span><br><span class="line">            DataRequired(&quot;管理员名称不能为空！&quot;)</span><br><span class="line">        ],</span><br><span class="line">        description=&quot;管理员名称&quot;,</span><br><span class="line">        render_kw=&#123;</span><br><span class="line">            &quot;class&quot;: &quot;form-control&quot;,</span><br><span class="line">            &quot;placeholder&quot;: &quot;请输入管理员名称!&quot;,</span><br><span class="line">            # &quot;required&quot;: &quot;required&quot;   # 注释此处显示forms报错errors信息</span><br><span class="line">        &#125;</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    pwd = PasswordField(</span><br><span class="line">        label=&quot;管理员密码&quot;,</span><br><span class="line">        validators=[</span><br><span class="line">            DataRequired(&quot;管理员密码不能为空！&quot;)</span><br><span class="line">        ],</span><br><span class="line">        description=&quot;管理员密码&quot;,</span><br><span class="line">        render_kw=&#123;</span><br><span class="line">            &quot;class&quot;: &quot;form-control&quot;,</span><br><span class="line">            &quot;placeholder&quot;: &quot;请输入管理员密码!&quot;,</span><br><span class="line">            # &quot;required&quot;: &quot;required&quot;   # 注释此处显示forms报错errors信息</span><br><span class="line">        &#125;</span><br><span class="line">    )</span><br><span class="line">    repwd = PasswordField(</span><br><span class="line">        label=&quot;管理员重复密码&quot;,</span><br><span class="line">        validators=[</span><br><span class="line">            DataRequired(&quot;管理员重复密码不能为空！&quot;),</span><br><span class="line">            EqualTo(&apos;pwd&apos;, message=&quot;两次密码不一致！&quot;)</span><br><span class="line">        ],</span><br><span class="line">        description=&quot;管理员重复密码&quot;,</span><br><span class="line">        render_kw=&#123;</span><br><span class="line">            &quot;class&quot;: &quot;form-control&quot;,</span><br><span class="line">            &quot;placeholder&quot;: &quot;请输入管理员重复密码!&quot;,</span><br><span class="line">            # &quot;required&quot;: &quot;required&quot;   # 注释此处显示forms报错errors信息</span><br><span class="line">        &#125;</span><br><span class="line">    )</span><br><span class="line">    role_id = SelectField(</span><br><span class="line">        label=&quot;所属角色&quot;,</span><br><span class="line">        validators=[</span><br><span class="line">            DataRequired(&quot;请选择所属角色！&quot;)</span><br><span class="line">        ],</span><br><span class="line">        # 所属角色是整数型</span><br><span class="line">        coerce=int,</span><br><span class="line">        # 采用下拉选择的方式进行所属角色的选择</span><br><span class="line">        choices=[(v.id, v.name) for v in Role.query.all()],</span><br><span class="line">        description=&quot;所属角色&quot;,</span><br><span class="line">        render_kw=&#123;</span><br><span class="line">            &quot;class&quot;: &quot;form-control&quot;,</span><br><span class="line">        &#125;</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    submit = SubmitField(</span><br><span class="line">        &apos;编辑&apos;,</span><br><span class="line">        render_kw=&#123;</span><br><span class="line">            &quot;class&quot;: &quot;btn btn-primary btn-block btn-flat&quot;,</span><br><span class="line">        &#125;</span><br><span class="line">    )</span><br></pre></td></tr></table></figure></p>
+<h3 id="2、准备页面渲染字段-1"><a href="#2、准备页面渲染字段-1" class="headerlink" title="2、准备页面渲染字段"></a>2、准备页面渲染字段</h3><p>打开admin/views.py文件，我们修改admin_add函数：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">from app.admin.forms import AdminForm</span><br><span class="line"></span><br><span class="line"># 添加管理员</span><br><span class="line">@admin.route(&apos;/admin/add&apos;, methods=[&quot;GET&quot;, &quot;POST&quot;])</span><br><span class="line">@admin_login_req</span><br><span class="line">def admin_add():</span><br><span class="line">    form = AdminForm()</span><br><span class="line">    from werkzeug.security import generate_password_hash</span><br><span class="line">    if form.validate_on_submit():</span><br><span class="line">        data = form.data</span><br><span class="line">        admin = Admin(</span><br><span class="line">            name=data[&quot;name&quot;],</span><br><span class="line">            pwd=generate_password_hash(data[&quot;pwd&quot;]),</span><br><span class="line">            role_id=data[&quot;role_id&quot;],</span><br><span class="line">            is_super=1  # 普通管理员为1</span><br><span class="line">        )</span><br><span class="line">        db.session.add(admin)</span><br><span class="line">        db.session.commit()</span><br><span class="line">        flash(&quot;添加管理员成功！&quot;, &quot;ok&quot;)</span><br><span class="line">    return render_template(&quot;admin/admin_add.html&quot;, form=form)</span><br></pre></td></tr></table></figure></p>
+<h3 id="3、后台页面传值显示以及操作信息提示-1"><a href="#3、后台页面传值显示以及操作信息提示-1" class="headerlink" title="3、后台页面传值显示以及操作信息提示"></a>3、后台页面传值显示以及操作信息提示</h3><p>可以仿照前面的role_add.html来修改admin_add.html:</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-23be1cbfd089a80f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>记得在submit的上面添加，还有form提交的方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;form role=&quot;form&quot; method=&quot;post&quot; &gt;</span><br></pre></td></tr></table></figure></p>
+<h3 id="4、后台页面错误信息提示-1"><a href="#4、后台页面错误信息提示-1" class="headerlink" title="4、后台页面错误信息提示"></a>4、后台页面错误信息提示</h3><p>打开admin_add.html页面，我们同样可以仿照admin_add.html来进行修改：（里面的title需要按照我们数据库里字段的要求进行修改）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;% for err in form.title.errors %&#125;</span><br><span class="line">&lt;div class=&quot;col-md-12&quot;&gt;</span><br><span class="line">&lt;p style=&quot;color:red&quot;&gt;&#123;&#123; err &#125;&#125;&lt;/p&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">&#123;% endfor %&#125;</span><br></pre></td></tr></table></figure></p>
+<p>然后运行一下我们的manage.py文件，就可以去后台添加我们的管理员了：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-99c0799429059300.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<h2 id="管理员列表的配置"><a href="#管理员列表的配置" class="headerlink" title="管理员列表的配置"></a>管理员列表的配置</h2><p>打开我们的views.py文件，我们参考之前的角色列表的配置，对管理员列表进行配置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"># 管理员列表</span><br><span class="line">@admin.route(&apos;/admin/list/&lt;int:page&gt;&apos;, methods=[&quot;GET&quot;])</span><br><span class="line">@admin_login_req</span><br><span class="line">def admin_list(page=None):</span><br><span class="line">    if page is None:</span><br><span class="line">        page = 1</span><br><span class="line">    page_data = Admin.query.join(</span><br><span class="line">        Role</span><br><span class="line">    ).filter(</span><br><span class="line">        Role.id == Admin.role_id</span><br><span class="line">    ).order_by(</span><br><span class="line">        Admin.addtime.desc()</span><br><span class="line">    ).paginate(page=page, per_page=10)</span><br><span class="line">    return render_template(&quot;admin/admin_list.html&quot;, page_data=page_data)</span><br></pre></td></tr></table></figure></p>
+<p>接着去我们的grid.html页面添加page参数（page=1），记住所以的列表都要有一个初始页，也就是说肯定有一个页面去显示，就算没有数据也要有页面，否则就是404嘛，这既然不是404，就得有个页面，空的页面也是可以的：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-a3a49afa5d3a5f0a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>然后我们打开admin_list.html页面，进行for循环的填充：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-8c1ac9bf0116a248.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>然后就是分页功能了，我们参考之前在标签列表页面的配置，打开admin_list.html,删除那个<code>&lt;ul class=&quot;pagination pagination-sm no-margin pull-right&quot;&gt; ....... &lt;/ul&gt;</code>标签里的内容，我们在开头导入刚才的admin_page.html文件，然后开始调用：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% import &quot;ui/admin_page.html&quot; as pg %&#125;</span><br></pre></td></tr></table></figure></p>
+<p>将下面的代码填充你刚才删除的那段的位置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123; pg.page(page_data, &quot;admin.admin_list&quot;) &#125;&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>错误提示：</strong>最近有小伙伴告诉我，一点击管理员列表就会出现这样的错误：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jinja2.exceptions.UndefinedError: &apos;app.models.Admin object&apos; has no attribute &apos;role&apos;</span><br></pre></td></tr></table></figure></p>
+<p>那么你需要检查我们的models.py文件，查看我们的Role函数里面是否有这个字段：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">admins = db.relationship(&quot;Admin&quot;, backref=&apos;role&apos;)  # 管理员外键关系关联</span><br></pre></td></tr></table></figure></p>
+<p>如果没有请添加，这样就应该不会出错了！</p>
+<p>至此，关于管理员列表的介绍就到此为止了，下面介绍访问权限控制的配置！</p>
+<h2 id="访问权限控制的配置"><a href="#访问权限控制的配置" class="headerlink" title="访问权限控制的配置"></a>访问权限控制的配置</h2><p>打开views.py文件，我们新定义一个访问权限控制装饰器：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">from flask import abort</span><br><span class="line"></span><br><span class="line"># 访问权限控制装饰器</span><br><span class="line">def admin_auth(f):</span><br><span class="line">    @wraps(f)</span><br><span class="line">    def decorated_function(*args, **kwargs):</span><br><span class="line">        admin = Admin.query.join(</span><br><span class="line">            Role</span><br><span class="line">        ).filter(</span><br><span class="line">            Role.id == Admin.role_id,</span><br><span class="line">            Admin.id == session[&quot;admin_id&quot;]</span><br><span class="line">        ).first()</span><br><span class="line">        auths = admin.role.auths</span><br><span class="line">        auths = list(map(int, auths.split(&quot;,&quot;)))</span><br><span class="line">        auth_list = Auth.query.all()</span><br><span class="line">        urls = [v.url for v in auth_list for val in auths if val == v.id]</span><br><span class="line">        rule = request.url_rule</span><br><span class="line">        if str(rule) not in urls:</span><br><span class="line">            abort(404)</span><br><span class="line">        return f(*args, **kwargs)</span><br><span class="line">    return decorated_function</span><br></pre></td></tr></table></figure></p>
+<p>接下来给除了登录和后台首页以外所有的函数都加上访问权限控制装饰器，然后运行manage.py测试一下我们的项目是否可以使用。</p>
+<p>不过这样在代码里面添加访问权限控制器挺累的，等有时间准备做一个后台权限分配页面，这样可视化操作就比较人性化了。</p>
+<p>至此，本篇关于角色管理，管理员管理以及访问权限控制的介绍就到此为止了。也就是说所有后台的管理配置都介绍完了，下一篇我们就开始进行前台页面的配置，感谢你的赏阅。</p>
+<p>本篇笔记对应上传的仓库为:<a href="https://github.com/licheetools/movie对应第十二篇。" target="_blank" rel="noopener">https://github.com/licheetools/movie对应第十二篇。</a></p>
+
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="https://upload-images.jianshu.io/upload_images/8964398-58d04ffa926103d9.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">觉得不错，赏包辣条吃呗！</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href target="_blank">编程思录</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2018/06/20/利用Flask搭建微电影视频网站（十三）：前台会员管理/" class="pre-post btn btn-default" title="利用Flask搭建微电影视频网站（十三）：前台会员管理">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">利用Flask搭建微电影视频网站（十三）：前台会员管理</span>
+        </a>
+    
+    
+        <a href="/2018/06/16/利用Flask搭建微电影视频网站（十一）：日志管理和权限管理/" class="next-post btn btn-default" title="利用Flask搭建微电影视频网站（十一）：日志管理和权限管理">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">利用Flask搭建微电影视频网站（十一）：日志管理和权限管理</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+    <div id="vcomments" class="valine"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+
+    <script>
+        new Valine({
+            av: AV,
+            el: '#vcomments',
+            appId: '8zvHFFu5l2ah8lh0DEPH393B-gzGzoHsz',
+            appKey: 'UNmB24200qMtyyrun5z99nOE',
+            placeholder: '听说长得好看的，都已经留言了！',
+            notify: false,
+            verify: false,
+            avatar: 'mm',
+            meta: 'nick,mail'.split(','),
+            pageSize: '10',
+            path: window.location.pathname,
+            lang: 'zh-CN'.toLowerCase()
+        })
+    </script>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#写在前面"><span class="toc-text">写在前面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#角色管理"><span class="toc-text">角色管理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#使用到的内容"><span class="toc-text">使用到的内容</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1、添加表单验证字段"><span class="toc-text">1、添加表单验证字段</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、准备页面渲染字段"><span class="toc-text">2、准备页面渲染字段</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、后台页面传值显示以及操作信息提示"><span class="toc-text">3、后台页面传值显示以及操作信息提示</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4、后台页面错误信息提示"><span class="toc-text">4、后台页面错误信息提示</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5、修改角色添加函数"><span class="toc-text">5、修改角色添加函数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#角色列表的配置"><span class="toc-text">角色列表的配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#角色的删除"><span class="toc-text">角色的删除</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#角色的编辑"><span class="toc-text">角色的编辑</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#错误修正"><span class="toc-text">错误修正</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#管理员管理"><span class="toc-text">管理员管理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#使用到的内容-1"><span class="toc-text">使用到的内容</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1、添加表单验证字段-1"><span class="toc-text">1、添加表单验证字段</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、准备页面渲染字段-1"><span class="toc-text">2、准备页面渲染字段</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、后台页面传值显示以及操作信息提示-1"><span class="toc-text">3、后台页面传值显示以及操作信息提示</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4、后台页面错误信息提示-1"><span class="toc-text">4、后台页面错误信息提示</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#管理员列表的配置"><span class="toc-text">管理员列表的配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#访问权限控制的配置"><span class="toc-text">访问权限控制的配置</span></a></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2017-2019
+                </span> |
+                <span>
+				编程思录,保留所有权利
+                    <!--Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>-->
+                </span> |
+                <span>
+				<a style="color: #black" href="http://www.miitbeian.gov.cn">赣ICP备18013455号-5</a>
+                    <!--Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>-->
+                </span>
+            </div>
+			
+			<div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+			
+			<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1277113902'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s96.cnzz.com/z_stat.php%3Fid%3D1277113902%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));</script>
+        </div>
+    </div>
+</div>
+
+
+
+
+    <script src="/assets/tagcanvas.min.js?rev=2.9"></script>
+    <script>
+        var tagOption = {
+            textColour: 'red', // 字体颜色
+            outlineMethod: 'block', // 选中模式
+            outlineColour: '#FFDAB9', // 选中模式的颜色
+            interval: 30 || 30, // 动画帧之间的时间间隔，值越大，转动幅度越大
+            textHeight: 13,
+            outlineRadius: 3,
+            freezeActive: true || '', // 选中的标签是否继续滚动
+            frontSelect: true || '', // 不选标签云后部的标签
+            initial: [0.1, -0.1],
+            depth: 0.5,
+            decel: 0.95,
+            maxSpeed: 0.03,
+            reverse: true || '', // 是否反向触发
+            fadeIn: 500, // 进入动画时间
+            wheelZoom: false || '' // 是否启用鼠标滚轮
+        }
+        TagCanvas.Start('tag-cloud-3d','',tagOption);
+    </script>
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+</body>
+</html>
