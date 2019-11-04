@@ -1,0 +1,577 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="编程思录，记录思考">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://blog.licheetools.top">
+    <!--SEO-->
+
+    <meta name="keywords" content="java基础">
+
+
+    <meta name="description" content="我们知道在Java中，数据类型分为基本数据类型和引用数据类型，而基本数据类型分为8种，分别是：byte,short,int,long,float,double,char,boolean。基本数据...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+
+    <!--Title-->
+
+
+<title>关于JAVA你必须知道的那些事（六）：包装类和多线程 | 编程思录，记录思考</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="编程思录，记录思考" type="application/atom+xml">
+
+
+    <link rel="icon" href="./favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+	<div class="hide">
+		<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+	</div>
+
+
+
+
+
+
+    
+
+    <script>
+        (function(){
+            var bp = document.createElement('script');
+            var curProtocol = window.location.protocol.split(':')[0];
+            if (curProtocol === 'https') {
+                bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+            }
+            else {
+                bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+            }
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(bp, s);
+        })();
+    </script>
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header" style="background-image:url(https://upload-images.jianshu.io/upload_images/8964398-b1ba9582ea8b69ba.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)">
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title="Envy">
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 点滴进步，都是收获 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://blog.licheetools.top">编程思录，记录思考</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>首页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/font/"><i class="fa "></i>前端</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/java/"><i class="fa "></i>Java</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/python/"><i class="fa "></i>Python</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/go/"><i class="fa "></i>Go</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/spider/"><i class="fa "></i>爬虫</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/data/"><i class="fa "></i>数据分析</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/money/"><i class="fa "></i>付费教程</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/life/"><i class="fa "></i>生活记录</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives"><i class="fa "></i>时间轴</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/about/"><i class="fa "></i>关于博主</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/liuyan/"><i class="fa "></i>留言板</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="关于JAVA你必须知道的那些事（六）：包装类和多线程">
+            
+	            关于JAVA你必须知道的那些事（六）：包装类和多线程
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/java/">java</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/java基础/">java基础</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2018/08/04</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <p>我们知道在Java中，数据类型分为基本数据类型和引用数据类型，而基本数据类型分为8种，分别是：byte,short,int,long,float,double,char,boolean。基本数据类型是没有属性和方法的，因此无法进行对象化交互。</p>
+<p>那么我们如何让它和我们的对象一样，具有属性和方法呢？这里你就要用到包装类了。</p>
+<p>包装类的产生就是为了解决基本数据类型存在的上述问题。通过包装类可以让基本数据类型获取对象一样的特征，拥有属性方法，行使对象一样的权益，从而完成对象化交互。</p>
+<p>包装类与基本数据类型之间的对应关系，见下面的表格：<br>基本数据类型| 对应的包装类| 说明</p>
+<ul>
+<li>| :-: |-:<br>byte|    Byte|原始大写<br>short    |Short|原始大写<br>int    |Integer|变形<br>long|    Long|原始大写<br>float    |Float|原始大写<br>double|    Double|原始大写<br>char    |Character|变形<br>boolean    |Boolean|原始大写<br>注意：只有int 和char其基本数据类型与对应的包装类有一个变形以外，其余的都是其首字母的大写而已。</li>
+</ul>
+<p>所有的包装类都存在于java.lang中，而且都是被final关键字所修饰，也就是说所有的包装类是没有子类的，不可以被继承的。</p>
+<p> 所有的数值型（byte,short,int,long,float,double,）都是继承自Number的：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-1d47a9ad1455103a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>余下的char 和 boolean是继承Object类的：<br><img src="https://upload-images.jianshu.io/upload_images/8964398-1f2a9cbdf0c10741.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-b10919e52363d087.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<h2 id="基本数据类型和包装型之间的转换"><a href="#基本数据类型和包装型之间的转换" class="headerlink" title="基本数据类型和包装型之间的转换"></a>基本数据类型和包装型之间的转换</h2><p>基本数据类型—–》包装型（装箱）；<br>包装型—–》基本数据类型（拆箱）；</p>
+<h3 id="装箱"><a href="#装箱" class="headerlink" title="装箱"></a>装箱</h3><p>装箱：把基本数据类型转换成包装类，有自动装箱和手动装箱两种，下面分别说明：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">// 自动装箱	</span><br><span class="line">int a1 =1;</span><br><span class="line">Integer a2=a1;</span><br><span class="line">		</span><br><span class="line">// 手动装箱</span><br><span class="line">Integer a3 =new Integer(a1);</span><br><span class="line"></span><br><span class="line">System.out.println(&quot;基本数据类型a1的值是：&quot;+a1);</span><br><span class="line">System.out.println(&quot;Integer类a2的值是：&quot;+a2);</span><br><span class="line">System.out.println(&quot;Integer类a3的值是：&quot;+a3);</span><br><span class="line"></span><br><span class="line">//输出结果：</span><br><span class="line">基本数据类型a1的值是：1</span><br><span class="line">Integer类a2的值是：1</span><br><span class="line">Integer类a3的值是：1</span><br></pre></td></tr></table></figure></p>
+<h3 id="拆箱"><a href="#拆箱" class="headerlink" title="拆箱"></a>拆箱</h3><p>拆箱：把包装类转换成基本数据类型，也有自动拆箱和手动拆箱两种，下面分别说明：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">// 自动拆箱	</span><br><span class="line"></span><br><span class="line">int a4 = a1;</span><br><span class="line"></span><br><span class="line">// 手动拆箱</span><br><span class="line">Integer a5 = a3.intValue();</span><br><span class="line">		</span><br><span class="line">// 测试</span><br><span class="line">System.out.println(&quot;Interger：&quot; + a1);</span><br><span class="line">System.out.println(&quot;基本数据类型a4是：&quot; + a4);</span><br><span class="line">System.out.println(&quot;手动intValue：&quot; + a5);</span><br><span class="line">		</span><br><span class="line">double a6 = a2.doubleValue();</span><br><span class="line">System.out.println(&quot;手动拆箱 double: &quot;+a6);</span><br><span class="line"></span><br><span class="line">//输出结果：</span><br><span class="line">Interger：1</span><br><span class="line">基本数据类型a4是：1</span><br><span class="line">手动intValue：1</span><br><span class="line">手动拆箱 double: 1.0</span><br></pre></td></tr></table></figure></p>
+<h3 id="基本数据类型和字符串之间的转换"><a href="#基本数据类型和字符串之间的转换" class="headerlink" title="基本数据类型和字符串之间的转换"></a>基本数据类型和字符串之间的转换</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">// 基本数据类型转换为字符串</span><br><span class="line">	</span><br><span class="line">// 将整型转换为字符串</span><br><span class="line">int a1 =9;</span><br><span class="line">String a2 =Integer.toString(a1);</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">//测试</span><br><span class="line">System.out.println(&quot;int类型转换为String类型对象a2的值：&quot;+a2);</span><br><span class="line">System.out.println(&quot;******************************&quot;);</span><br><span class="line">	</span><br><span class="line">//字符串转换为基本数据类型</span><br><span class="line">// 1、包装类的parse方法</span><br><span class="line">int a3 =Integer.parseInt(a2);</span><br><span class="line">	</span><br><span class="line">//2、包装类的valueOf方法，现将字符串转换为包装类，再通过自动拆箱完成基本数据类型的转换</span><br><span class="line">int a4 =Integer.valueOf(a2);</span><br><span class="line">System.out.println(&quot;String类型对象转换为int类型a3的值：&quot;+a3);</span><br><span class="line">System.out.println(&quot;String类型对象转换为int类型a4的值：&quot;+a4);</span><br></pre></td></tr></table></figure>
+<p>总结一下，你可以通过toString方法将基本数据类型转换为字符串。</p>
+<p>同样可以通过Parse和valueOf将字符串转换为基本数据类型。需要注意的是，valueOf是对Parse的封装。</p>
+<h3 id="包装类的几点说明"><a href="#包装类的几点说明" class="headerlink" title="包装类的几点说明"></a>包装类的几点说明</h3><p>我们前面好像有说过基本数据类型的默认值，这里重新贴一下：</p>
+<table>
+<thead>
+<tr>
+<th>基本数据类型</th>
+<th style="text-align:center">默认值</th>
+<th style="text-align:right">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>byte</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td>short</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td>int</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td>long</td>
+<td style="text-align:center">0L</td>
+</tr>
+<tr>
+<td>float</td>
+<td style="text-align:center">0.0f</td>
+</tr>
+<tr>
+<td>double</td>
+<td style="text-align:center">0.0d</td>
+</tr>
+<tr>
+<td>char</td>
+<td style="text-align:center">‘\u0000’</td>
+<td style="text-align:right">\u是指Unicode编码</td>
+</tr>
+<tr>
+<td>boolean</td>
+<td style="text-align:center">false</td>
+</tr>
+</tbody>
+</table>
+<p>那么现在问题来了，我们定义一个Integer类型的对象one ,它的初始值是不是也是0呢?答案不是0,而是null，因为此时Integer和String一样，都是类，其初始值为null。</p>
+<h3 id="包装类的对象信息"><a href="#包装类的对象信息" class="headerlink" title="包装类的对象信息"></a>包装类的对象信息</h3><p>我们先来看一段代码，你先试着猜一下它的运行结果，然后参看输出结果，看看有什么体会：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">public class ChangLiangTest &#123;</span><br><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">	Integer one =new Integer(100);</span><br><span class="line">	</span><br><span class="line">	Integer two =new Integer(100);</span><br><span class="line">	</span><br><span class="line">	System.out.println(&quot;one==two的结果：&quot;+(one==two));  //1</span><br><span class="line">	</span><br><span class="line">	Integer three =100;</span><br><span class="line">	System.out.println(&quot;three==100的结果：&quot;+(three==100));  //2</span><br><span class="line">	</span><br><span class="line">	Integer four =100;</span><br><span class="line">	System.out.println(&quot;three==four的结果：&quot;+(three==four));  //3</span><br><span class="line">	</span><br><span class="line">	Integer five =200;</span><br><span class="line">	System.out.println(&quot;five==200的结果：&quot;+(five==200));  //4</span><br><span class="line">	</span><br><span class="line">	Integer six =200;</span><br><span class="line">	System.out.println(&quot;five==six的结果：&quot;+(five==six));  //5</span><br><span class="line">	</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>我们在前面说过，使用new关键词就是直接在内存中开辟一个新的空间，one和two 只是值相等，内存中地址的引用并不相同，因此1输出的结果必然是false。</p>
+<p><code>Integer three =100</code>其实是自动装箱，而后面的<code>three =100</code>其实是自动拆箱，实际上执行的是<code>Integer three =Integer.valueOf(100)</code>，最后比较的则是2个int类型的值是否相等，因此结果必然为true。</p>
+<p>前面说过<code>Integer four =100</code>是自动装箱，但是它实际上执行的是<code>Integer four=nteger.valueOf(100);</code>。而valueOf会自动缓存值（在缓存区或者说对象池里面），也就是说当-128&lt;参数&lt;127的时候，该参数会直接从缓存区获取。因此两者比较的是来自缓存区的同一块地址。显然该结果是true。</p>
+<p>同样<code>Integer five =200</code>是自动装箱，后面<code>five==200</code>自动拆箱，因此这里比较的则是2个int类型的值是否相等。显然该结果是true。</p>
+<p>而最后一个则是因为参数200，它已经超出-128&lt;参数&lt;127这个范围，因此会直接实例化new 一个Integer，所以比较的是两个内存中的对象，显然结果是false。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// 输出结果：</span><br><span class="line">one==two的结果：false</span><br><span class="line">three==100的结果：true</span><br><span class="line">three==four的结果：true</span><br><span class="line">five==200的结果：true</span><br><span class="line">five==six的结果：false</span><br></pre></td></tr></table></figure>
+<p>也就是说，当参数在-128 到 128之间才能从对象池中进行获取，超出则是不可以的，需要new了。</p>
+<p>在java基本数据类型的包装类中除了 float 和 double都是可以应用对象常量池概念的。<br><img src="https://upload-images.jianshu.io/upload_images/8964398-df9c491910b88071.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>上面那样说你可能还不明白，我举个例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Double d1 =Double.valueOf(100);</span><br><span class="line">System.out.println(&quot;d1==100的结果是：&quot;+(d1==100));  //1</span><br><span class="line"></span><br><span class="line">Double d2 =Double.valueOf(100);</span><br><span class="line">System.out.println(&quot;d1==d2的结果是：&quot;+(d1==d2));  //2</span><br></pre></td></tr></table></figure></p>
+<p>1的输出结果为true这是没有任何问题的，但是2的输出结果是false，因为float 和 double是不适用于对象常量池的。</p>
+<h2 id="多线程"><a href="#多线程" class="headerlink" title="多线程"></a>多线程</h2><p>在说多线程之前，我么先来了解什么是进程？</p>
+<p>进程就是可执行程序并存放在计算机存储器的一个指令序列，它是一个动态执行的过程。</p>
+<p>线程是比进程还要小的运行单位，一个进程包含多个线程，你可以把线程看做一个子程序。</p>
+<p>我们知道程序的运行是靠CPU的，那么在只有一个CPU情况下，如何才能保证程序的正常运行呢？我们可以把CPU的运行时间进行分片，根据时间片来进行任务的轮转执行，但由于时间片的长度太短了，以至于我们认为所有任务都是同时进行的。</p>
+<h3 id="Thread和Runnable接口介绍"><a href="#Thread和Runnable接口介绍" class="headerlink" title="Thread和Runnable接口介绍"></a>Thread和Runnable接口介绍</h3><p>如何进行线程的创建呢？在Java里面，你可以通过创建一个Thread类或者一个Thread子类的对象来创建线程。也可以创建一个实现Runnable接口的类的对象。这两种都是可以的。</p>
+<p>Thread是-个线程类，位于java.lang包下面，你可以去api文档进行查看，这里列举部分构造方法：<br>构造方法    | 说明| 备注</p>
+<ul>
+<li>| :-: | -:<br>Thread()|    创建一个线程对象|<br>Thread(String name)    |创建一个具有指定名称的线程对象|<br>Thread(Runnable target)    |创建一个基于Runnable接口实现类的线程对象|<br>Thread(Runnable target,String name)|    创建一个基于Runnable接口实现类,并且具有指定名称的线程对象。|</li>
+</ul>
+<p>以及Thread类的常用方法：<br>方法    | 说明| 备注</p>
+<ul>
+<li>| :-: | -:<br>public void run()    |线程相关的代码写在该方法中，一般需要重写<br>public void start()    |启动线程的方法<br>public static void sleep(long m)    |线程休眠m毫秒的方法<br>public void join()    |优先执行调用join()方法的线程</li>
+</ul>
+<p>你只需要记住，我们所有线程实现的代码都必须放在run方法里面，自然run方法中的代码被称为线程体。</p>
+<p>还需要注意的是Runnable接口，它只有一个方法run()方法。你只需要记住Runnable是Java中用以实现线程的接口，任何实现线程功能的类都必须实现Runnable接口。</p>
+<p>你可以点击这里查看<a href="https://docs.oracle.com/javase/8/docs/api/" target="_blank" rel="noopener">Java8 api</a>，获取更多信息。</p>
+<h3 id="通过Thread类创建线程"><a href="#通过Thread类创建线程" class="headerlink" title="通过Thread类创建线程"></a>通过Thread类创建线程</h3><p>在api里面，我们知道通过Thread类是可以创建线程的。那么我们现在就来通过继承Thread类的方式创建线程类，并重写run()方法。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">public class ThreadTestDemo extends Thread &#123;</span><br><span class="line">public void run() &#123;</span><br><span class="line">	System.out.println(getName()+&quot;该线程正在执行！&quot;);</span><br><span class="line">&#125;;</span><br><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">//	System.out.println(&quot;主线程1正在执行&quot;);</span><br><span class="line">	ThreadTestDemo ttd =new ThreadTestDemo();</span><br><span class="line">//	ttd.start();  // 启动线程</span><br><span class="line">	ttd.start();   //线程只能启动一次，不能多次启动</span><br><span class="line">//	System.out.println(&quot;主线程2正在执行&quot;);</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>大家知道除了我们刚才自定义的线程，其实还有一个主线程。现在我们自己来定义两个线程：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">class MyThread extends Thread &#123;</span><br><span class="line">	public MyThread(String name) &#123;</span><br><span class="line">		super(name);</span><br><span class="line">	&#125;;</span><br><span class="line">	</span><br><span class="line">	public void run() &#123;</span><br><span class="line">		for(int i=0;i&lt;10;i++) &#123;</span><br><span class="line">			System.out.println(getName()+&quot;正在运行第&quot;+i+&quot;次&quot;);</span><br><span class="line">		&#125;;</span><br><span class="line">	&#125;;</span><br><span class="line">&#125;;</span><br><span class="line">public class ThreadTestTwo &#123;</span><br><span class="line"></span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		// TODO Auto-generated method stub</span><br><span class="line">		MyThread t1 =new MyThread(&quot;线程1&quot;);</span><br><span class="line">		MyThread t2 =new MyThread(&quot;线程2&quot;);</span><br><span class="line">		t1.start();</span><br><span class="line">		t2.start();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这个其实和我们上面的例子差别不是很大，只是现在我们定义了两个线程，但是主线程依然存在。运行一下，你会发现你每次的运行结果都是不相同的。对的，无论是线程还是进程，它们的运行顺序都是由系统来调度的，不是由程序员所能决定的（注意这是没有附加方法的情况，后面会说线程间的通信）</p>
+<h3 id="实现Runnable接口创建线程"><a href="#实现Runnable接口创建线程" class="headerlink" title="实现Runnable接口创建线程"></a>实现Runnable接口创建线程</h3><p>现在你可能有一个疑问，为什么要实现Runnable接口呢又或者说为什么要实现Runnable接口创建线程呢?</p>
+<p>答案你肯定知道，因为Java是单继承的，不支持多继承。现在问题来了，如果我现在定义的类已经继承了一个类，那么就不能通过继承Thread类来创建线程了？</p>
+<p>又或者说，我不想重写Thread类的其他方法，只想使用run方法，这时候怎么办呢？</p>
+<p>这时候Runnable接口就派上用场了。（前面说过Runnable接口只有一个run方法）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">class TestRunnable implements Runnable&#123;</span><br><span class="line">	@Override</span><br><span class="line">	public void run() &#123;</span><br><span class="line">		// TODO Auto-generated method stub</span><br><span class="line">		System.out.println(Thread.currentThread().getName()+&quot;正在运行&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">public class ThreadRunnableTest &#123;</span><br><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">	TestRunnable tr =new TestRunnable();</span><br><span class="line">//	tr.start();  // 前面也说过runnable只有一个run方法，所以它的启动必须依赖于Thread</span><br><span class="line">	Thread t1 =new Thread(tr);</span><br><span class="line">	t1.start();</span><br><span class="line">	</span><br><span class="line">	TestRunnable tr2 =new TestRunnable();</span><br><span class="line">//	tr.start();  // 前面也说过runnable只有一个run方法，所以它的启动必须依赖于Thread</span><br><span class="line">	Thread t2 =new Thread(tr2);</span><br><span class="line">	t2.start();</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个输出结果也是随机的，但都会输出打印20个线程。现在我们对其修改一下，我们看一下，是不是多个线程可以共享同一个变量（言外之意，是不是只能打印输出11个线程，还有主线程）：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">class TestRunnable implements Runnable&#123;</span><br><span class="line">	int i=0;</span><br><span class="line">	@Override</span><br><span class="line">	public void run() &#123;</span><br><span class="line">		// TODO Auto-generated method stub</span><br><span class="line">		for(;i&lt;10;i++) &#123;</span><br><span class="line">			System.out.println(Thread.currentThread().getName()+&quot;正在运行&quot;);</span><br><span class="line">		&#125;;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">public class ThreadRunnableTest &#123;</span><br><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">	TestRunnable tr =new TestRunnable();</span><br><span class="line">//	tr.start();  // 前面也说过runnable只有一个run方法，所以它的启动必须依赖于Thread</span><br><span class="line">	Thread t1 =new Thread(tr);</span><br><span class="line">	t1.start();</span><br><span class="line">	</span><br><span class="line">//	TestRunnable tr2 =new TestRunnable();</span><br><span class="line">//	tr.start();  // 前面也说过runnable只有一个run方法，所以它的启动必须依赖于Thread</span><br><span class="line">	Thread t2 =new Thread(tr);</span><br><span class="line">	t2.start();</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line">#输出结果</span><br><span class="line">Thread-0正在运行</span><br><span class="line">Thread-1正在运行</span><br><span class="line">Thread-0正在运行</span><br><span class="line">Thread-1正在运行</span><br><span class="line">Thread-1正在运行</span><br><span class="line">Thread-0正在运行</span><br><span class="line">Thread-0正在运行</span><br><span class="line">Thread-0正在运行</span><br><span class="line">Thread-1正在运行</span><br><span class="line">Thread-0正在运行</span><br><span class="line">Thread-1正在运行</span><br></pre></td></tr></table></figure></p>
+<p>结果是的，所以也就是说线程之间是可以共享成员变量的。</p>
+<h3 id="线程的状态和生命周期"><a href="#线程的状态和生命周期" class="headerlink" title="线程的状态和生命周期"></a>线程的状态和生命周期</h3><p>通常而言，线程是有五个状态的，分别是：</p>
+<p>新建(New)：创建一个Thread或Thread子类的对象时就会进入新建状态。</p>
+<p>可运行(Runnable)： 调用start方法是进入可运行状态（而不是立即执行），就绪状态</p>
+<p>正在运行(Running)： 一个Thread获取了cpu使用权就进入了正在运行状态。记住只有可运行状态才能进入到正在运行状态，其他的不可以。</p>
+<p>阻塞(Blocked): 不再执行，缺少资源。</p>
+<p>终止状态(Dead)：这个就是线程的停止运行了。</p>
+<p>所谓的线程的生命周期，说白了就是这五个过程的相互转换而已，不过有些过程是双向的，有些则是单向的。我找了一张图，便于大家的理解：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-d0aaaeef0cd473d2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>下面简单说一下这个图的意思：</p>
+<p>当你创建线程对象以后，该线程就变成了新建(New)状态，如果该线程调用start()方法，那么就变成了可运行(Runnable)状态；如果该线程调用stop()方法，那么就变成了终止状态(Dead)。</p>
+<p>现在线程处于可运行(Runnable)状态，如果此时该线程获取到了cpu的使用权，那么该线程就开心的进入到了正在运行(Running)状态；如果该线程调用了yield()方法，或者是时间片用完了，又回到了可运行(Runnable)状态。如果该线程调用stop()方法，那么就变成了终止状态(Dead)。</p>
+<p>现在线程处于正在运行(Running)状态，如果此时调用join()，wait()，sleep()或者I/O操作时，均会使该线程进入阻塞(Blocked)状态；如果此时该线程正常执行完毕或者异常终止，又或者调用stop()方法，那么就变成了终止状态(Dead)。</p>
+<p>现在线程处于阻塞(Blocked)状态，如果此时等待执行join()方法的线程执行完毕；或者调用notify()或notifyall()方法；sleep()超时；I/O请求完成时，线程就会进入可运行(Runnable)状态。如果该线程调用stop()方法，那么就变成了终止状态(Dead)。</p>
+<p>需要说明的是，stop方法已经过时了，并不提倡大家去用。</p>
+<p>下面简单介绍几个方法的使用。</p>
+<h3 id="sleep方法的使用"><a href="#sleep方法的使用" class="headerlink" title="sleep方法的使用"></a>sleep方法的使用</h3><p>这个sleep方法是Thread类的一个方法，同时也是一个静态方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public static void sleep(long millis)</span><br></pre></td></tr></table></figure></p>
+<p>sleep方法的作用是在指定的毫秒数内让正在执行的线程休眠(暂停执行)；其中的参数为休眠时间，单位是毫秒。</p>
+<p>也就是说等休眠时间过了以后，程序才会继续执行。当你需要页面刷新或者计时的时候，这时候sleep就派上用场了。</p>
+<h3 id="join方法的使用"><a href="#join方法的使用" class="headerlink" title="join方法的使用"></a>join方法的使用</h3><p>同样这个join方法也是Thread类的一个方法，但它是一个实例方法，因为有final的修饰，因此这个方法是不能被重写的：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public final void join()</span><br></pre></td></tr></table></figure></p>
+<p>join方法的作用是等待调用该方法的线程结束后才能执行，是用来抢占资源优先执行的。也就是说如果某个线程调用了这个join方法，那么后面的线程都必须等这个线程运行完成后才能运行。</p>
+<p>同时join方法还有一个带参数的同名方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public final void join(long millis)</span><br></pre></td></tr></table></figure></p>
+<p>带参数的join()方法的作用是等待该线程终止的最长时间为millis，这个参数的单位是毫秒。</p>
+<p>也就是说没有参数的join方法是谁调用了它，它就开始执行，而后面的程序就必须等它执行完毕以后才能继续进行；有参数的join方法就是谁调用了它，在规定的毫秒以内无论你有没有执行完毕，只要时间一过，后面的程序就会开始执行。说白了，这是固定时间等待和永久时间等待而已。</p>
+<h3 id="线程优先级"><a href="#线程优先级" class="headerlink" title="线程优先级"></a>线程优先级</h3><p>现在你有一个想法，就是是否可以通过设置让某个线程优先执行呢?使用前面的join()方法尽管能完成部分要求，但还是想追求更加简单的方法。</p>
+<p>这时候Java为线程类提供了10个优先级，优先级用整数1-10表示，超过该数字范围会抛出异常。</p>
+<p>我们的主线程默认优先级为5，数字越大表示的优先级越高，当然你还可以使用优先级常量来进行优先级的表示：</p>
+<ul>
+<li>MAX_PRIORITY :线程的最高优先级10</li>
+<li>MIN_PRIORITY :线程的最低优先级1</li>
+<li>NORM_PRIORITY :线程的默认优先级5</li>
+</ul>
+<p>我们可以使用下面提供的方法来对优先级进行操作：</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th style="text-align:center">说明</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>public int getPriority()</td>
+<td style="text-align:center">获取线程优先级的方法</td>
+</tr>
+<tr>
+<td>public void setPriority(int newPriority)</td>
+<td style="text-align:center">设置线程优先级的方法 </td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">class MyThreadTestTwo extends Thread&#123;</span><br><span class="line">	private String name;</span><br><span class="line">	public MyThreadTestTwo(String name) &#123;</span><br><span class="line">		this.name =name;</span><br><span class="line">	&#125;;</span><br><span class="line">	</span><br><span class="line">	public void run() &#123;</span><br><span class="line">		for(int i=0;i&lt;10;i++) &#123;</span><br><span class="line">			System.out.println(&quot;线程&quot;+name+&quot;正在运行第&quot;+i+&quot;次&quot;);</span><br><span class="line">		&#125;;</span><br><span class="line">	&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">public class ThreadTestFive &#123;</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		// 获取主线程的优先级</span><br><span class="line">		int mainPriority =Thread.currentThread().getPriority();</span><br><span class="line">		System.out.println(&quot;主线程的优先级为：&quot;+mainPriority);</span><br><span class="line">		</span><br><span class="line">		</span><br><span class="line">		MyThreadTestTwo tt1 =new MyThreadTestTwo(&quot;线程1&quot;);</span><br><span class="line">		MyThreadTestTwo tt2 =new MyThreadTestTwo(&quot;线程2&quot;);</span><br><span class="line">		tt1.setPriority(10);  //这与下面的代码的作用是一样的</span><br><span class="line">//		tt1.setPriority(Thread.MAX_PRIORITY);</span><br><span class="line">		tt2.setPriority(1);</span><br><span class="line">//		tt2.setPriority(Thread.MIN_PRIORITY);</span><br><span class="line">		</span><br><span class="line">		tt1.start();</span><br><span class="line">		tt2.start();</span><br><span class="line">//		System.out.println(&quot;主线程1的优先级为：&quot;+tt1.getPriority());</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果你多运行上面的代码，你会发现并不是优先级大的线程先启动和执行。线程的执行和启动顺序，除了和优先级大小有关，还与操作系统调度，当前资源等有很大关系，是具有很强的随机性。</p>
+<p><strong>总结一下：</strong></p>
+<ul>
+<li>各个线程是通过竞争CPU时间而获得运行机会的；</li>
+<li>各线程什么时候得到CPU时间，占用多久，都是不可预测的；</li>
+<li>一个正在运行的线程在什么地方被暂停是不确定的。</li>
+</ul>
+<p>也就是说到目前为止，我们还没有更好地办法来进行线程执行顺序的调度。</p>
+<h3 id="银行存取钱业务"><a href="#银行存取钱业务" class="headerlink" title="银行存取钱业务"></a>银行存取钱业务</h3><p>如果按照我们前面所说的线程执行顺序是随机的，而且运行的线程在什么地方被暂停是不确定的话（的确，这是真的情况），那么银行就会出现一个非常有意思的现象：你存钱和取钱的总金额会发生丢失的情况：假设你开始银行账户有2000块钱，你取了100，存进去200，余额是不是2100块，但是有可能你的余额是2000块，你的余额更新失败了。这是我们不想看到的情况，但实际上这种情况是存在的，但是银行通过一些方法，杜绝了这种事情的发送，现在我们就来看看这些方法。</p>
+<p>为了保证在存款或取款的时候，不允许其他线程对帐户余额进行操作，银行会将操作对象进行锁定，也就是同一时刻只允许一个线程进行运行。</p>
+<p>也其实就是使用了synchronized关键字，也就是线程同步。synchronized关键字可以用在：成员方法，静态方法和语句块里面。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public synchronized void Test()&#123;&#125;</span><br><span class="line">public static synchronized void Test()&#123;&#125;</span><br><span class="line">synchronized(obj)&#123;......&#125;</span><br></pre></td></tr></table></figure>
+<p>使用关键字synchronized可以确保共享对象在同一时刻只能被一个线程访问，这种机制称为线程同步或者线程互斥。</p>
+<h2 id="线程间的通信"><a href="#线程间的通信" class="headerlink" title="线程间的通信"></a>线程间的通信</h2><p>线程间通信的常用方法：</p>
+<ul>
+<li>wait方法：中断方法的执行，使线程等待。</li>
+<li>notify()方法: 唤醒处于等待的某一个线程,使其结束等待</li>
+<li>notifyAll()方法: 唤醒所有处于等待的线程,使它们结束等待</li>
+</ul>
+<p>建议使用notifyAll()，因为假如唤醒的单个线程还是我们刚休眠的生产线程，那么就会继续死锁，所以建议直接所有的等待线程。</p>
+<p><a href="https://www.cnblogs.com/IUbanana/p/7067362.html" target="_blank" rel="noopener">详细介绍Java虚拟机（JVM）</a></p>
+
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="https://upload-images.jianshu.io/upload_images/8964398-58d04ffa926103d9.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">觉得不错，赏包辣条吃呗！</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href target="_blank">编程思录</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2018/08/04/关于JAVA你必须知道的那些事（七）：输入输出流和集合/" class="pre-post btn btn-default" title="关于JAVA你必须知道的那些事（七）：输入输出流和集合">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">关于JAVA你必须知道的那些事（七）：输入输出流和集合</span>
+        </a>
+    
+    
+        <a href="/2018/08/03/关于JAVA你必须知道的那些事（五）：异常和字符串/" class="next-post btn btn-default" title="关于JAVA你必须知道的那些事（五）：异常和字符串">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">关于JAVA你必须知道的那些事（五）：异常和字符串</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+    <div id="vcomments" class="valine"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+
+    <script>
+        new Valine({
+            av: AV,
+            el: '#vcomments',
+            appId: '8zvHFFu5l2ah8lh0DEPH393B-gzGzoHsz',
+            appKey: 'UNmB24200qMtyyrun5z99nOE',
+            placeholder: '听说长得好看的，都已经留言了！',
+            notify: false,
+            verify: false,
+            avatar: 'mm',
+            meta: 'nick,mail'.split(','),
+            pageSize: '10',
+            path: window.location.pathname,
+            lang: 'zh-CN'.toLowerCase()
+        })
+    </script>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#基本数据类型和包装型之间的转换"><span class="toc-text">基本数据类型和包装型之间的转换</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#装箱"><span class="toc-text">装箱</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#拆箱"><span class="toc-text">拆箱</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#基本数据类型和字符串之间的转换"><span class="toc-text">基本数据类型和字符串之间的转换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#包装类的几点说明"><span class="toc-text">包装类的几点说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#包装类的对象信息"><span class="toc-text">包装类的对象信息</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#多线程"><span class="toc-text">多线程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Thread和Runnable接口介绍"><span class="toc-text">Thread和Runnable接口介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#通过Thread类创建线程"><span class="toc-text">通过Thread类创建线程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#实现Runnable接口创建线程"><span class="toc-text">实现Runnable接口创建线程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#线程的状态和生命周期"><span class="toc-text">线程的状态和生命周期</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#sleep方法的使用"><span class="toc-text">sleep方法的使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#join方法的使用"><span class="toc-text">join方法的使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#线程优先级"><span class="toc-text">线程优先级</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#银行存取钱业务"><span class="toc-text">银行存取钱业务</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#线程间的通信"><span class="toc-text">线程间的通信</span></a></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2017-2019
+                </span> |
+                <span>
+				编程思录,保留所有权利
+                    <!--Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>-->
+                </span> |
+                <span>
+				<a style="color: #black" href="http://www.miitbeian.gov.cn">赣ICP备18013455号-5</a>
+                    <!--Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>-->
+                </span>
+            </div>
+			
+			<div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+			
+			<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1277113902'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s96.cnzz.com/z_stat.php%3Fid%3D1277113902%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));</script>
+        </div>
+    </div>
+</div>
+
+
+
+
+    <script src="/assets/tagcanvas.min.js?rev=2.9"></script>
+    <script>
+        var tagOption = {
+            textColour: 'red', // 字体颜色
+            outlineMethod: 'block', // 选中模式
+            outlineColour: '#FFDAB9', // 选中模式的颜色
+            interval: 30 || 30, // 动画帧之间的时间间隔，值越大，转动幅度越大
+            textHeight: 13,
+            outlineRadius: 3,
+            freezeActive: true || '', // 选中的标签是否继续滚动
+            frontSelect: true || '', // 不选标签云后部的标签
+            initial: [0.1, -0.1],
+            depth: 0.5,
+            decel: 0.95,
+            maxSpeed: 0.03,
+            reverse: true || '', // 是否反向触发
+            fadeIn: 500, // 进入动画时间
+            wheelZoom: false || '' // 是否启用鼠标滚轮
+        }
+        TagCanvas.Start('tag-cloud-3d','',tagOption);
+    </script>
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+</body>
+</html>

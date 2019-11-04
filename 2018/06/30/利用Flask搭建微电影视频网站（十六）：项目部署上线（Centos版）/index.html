@@ -1,0 +1,447 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="编程思录，记录思考">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://blog.licheetools.top">
+    <!--SEO-->
+
+    <meta name="keywords" content="Flask建站,Pytohn后端">
+
+
+    <meta name="description" content="写在前面本篇笔记，我们将介绍如何把我们的微电影视频网站部署上线。
+安装LNMP环境首先我们需要在云服务器上安装LNMP，所谓的LNMP是指：Centos,Nginx,Mysql和Python：
+...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+
+    <!--Title-->
+
+
+<title>利用Flask搭建微电影视频网站（十六）：项目部署上线（Centos版） | 编程思录，记录思考</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="编程思录，记录思考" type="application/atom+xml">
+
+
+    <link rel="icon" href="./favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+	<div class="hide">
+		<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+	</div>
+
+
+
+
+
+
+    
+
+    <script>
+        (function(){
+            var bp = document.createElement('script');
+            var curProtocol = window.location.protocol.split(':')[0];
+            if (curProtocol === 'https') {
+                bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+            }
+            else {
+                bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+            }
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(bp, s);
+        })();
+    </script>
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header" style="background-image:url(https://upload-images.jianshu.io/upload_images/8964398-b1ba9582ea8b69ba.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)">
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title="Envy">
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 点滴进步，都是收获 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://blog.licheetools.top">编程思录，记录思考</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>首页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/font/"><i class="fa "></i>前端</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/java/"><i class="fa "></i>Java</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/python/"><i class="fa "></i>Python</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/go/"><i class="fa "></i>Go</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/spider/"><i class="fa "></i>爬虫</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/data/"><i class="fa "></i>数据分析</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/money/"><i class="fa "></i>付费教程</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/life/"><i class="fa "></i>生活记录</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives"><i class="fa "></i>时间轴</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/about/"><i class="fa "></i>关于博主</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/liuyan/"><i class="fa "></i>留言板</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="利用Flask搭建微电影视频网站（十六）：项目部署上线（Centos版）">
+            
+	            利用Flask搭建微电影视频网站（十六）：项目部署上线（Centos版）
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/python/">python</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/Flask建站/">Flask建站</a> <a class="tag-link" href="/tags/Pytohn后端/">Pytohn后端</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2018/06/30</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>本篇笔记，我们将介绍如何把我们的微电影视频网站部署上线。</p>
+<h2 id="安装LNMP环境"><a href="#安装LNMP环境" class="headerlink" title="安装LNMP环境"></a>安装LNMP环境</h2><p>首先我们需要在云服务器上安装LNMP，所谓的LNMP是指：Centos,Nginx,Mysql和Python：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-8a2a45e6955f15cd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p><strong>我们需要的配置：</strong><br>服务器系统：Centos7<br>数据库: Mysql<br>编程语言: Python3.6<br>队列缓存: Redis<br>web反向代理: Nginx<br>依赖环境: flask ，mysql-connector-python ，wtform ，sqlachemy ，redis<br><strong>整个部署流程：</strong><br><img src="https://upload-images.jianshu.io/upload_images/8964398-681f2b6ddc507495.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<h3 id="一些常用的Centos命令"><a href="#一些常用的Centos命令" class="headerlink" title="一些常用的Centos命令"></a>一些常用的Centos命令</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ssh root@ip  # 查看服务器配置</span><br><span class="line"></span><br><span class="line">cat /etc/redhat-release  # 查看内存剩余</span><br><span class="line"></span><br><span class="line">free -m   # 查看硬盘剩余</span><br><span class="line">df -h</span><br></pre></td></tr></table></figure>
+<h3 id="1、安装python3-6的依赖包"><a href="#1、安装python3-6的依赖包" class="headerlink" title="1、安装python3.6的依赖包"></a>1、安装python3.6的依赖包</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum -y install openssl-devel bzip2-devel expat-devel gdbm-devel readline-devel</span><br><span class="line">sqllite-devel</span><br></pre></td></tr></table></figure>
+<h3 id="2、下载并解压Python3-6-4"><a href="#2、下载并解压Python3-6-4" class="headerlink" title="2、下载并解压Python3.6.4"></a>2、下载并解压Python3.6.4</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">tar -zxf python-3.6.4.tgz</span><br><span class="line">cd python-3.6.4/</span><br><span class="line">./configure --prefix=/usr/local</span><br><span class="line"></span><br><span class="line">yum -y install gcc gcc-c++</span><br><span class="line"></span><br><span class="line">make altinstall</span><br></pre></td></tr></table></figure>
+<h3 id="3、采用软连接配置Python"><a href="#3、采用软连接配置Python" class="headerlink" title="3、采用软连接配置Python"></a>3、采用软连接配置Python</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/bin</span><br><span class="line"></span><br><span class="line">mv python python.backup</span><br><span class="line"></span><br><span class="line"># 创建软连接</span><br><span class="line">ln -s /usr/local/bin/python3.6 /usr/bin/python</span><br><span class="line">ln -s /usr/local/bin/python3.6 /usr/bin/python3</span><br><span class="line"></span><br><span class="line">cd /usr/bin/</span><br><span class="line">ls yum*</span><br><span class="line">vim yum</span><br></pre></td></tr></table></figure>
+<p>修改第一行尾python2:</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-d83a9c0da46eac23.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt><br>然后就是：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim yum-config-manager</span><br></pre></td></tr></table></figure></p>
+<p>修改第一行尾python2：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-e49564c4aae6f218.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>。。。。。。<br>运行下面所有的命令，把它们第一行尾的python都改成Python2：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">vim yum-debug-restore</span><br><span class="line">vim yum-group-manager</span><br><span class="line">vim yum-build-dep</span><br><span class="line">vim yum-debug-dump</span><br><span class="line">vim yumdownloader</span><br><span class="line">vim /usr/libexec/urlgrabber-ext-down</span><br></pre></td></tr></table></figure></p>
+<p>然后输入Python发现就是Python3.6.4的版本了。</p>
+<h2 id="安装MySQL"><a href="#安装MySQL" class="headerlink" title="安装MySQL"></a>安装MySQL</h2><p>直接利用命令进行安装：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">yum -y install mariadb-server  # 安装MySQL服务</span><br><span class="line"></span><br><span class="line">systemctl start mariadb.service  # 启动服务</span><br><span class="line"></span><br><span class="line">enable mariadb.service  # 设置开机自启</span><br></pre></td></tr></table></figure></p>
+<p>然后修改密码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysqladmin -uroot password &quot;root&quot;</span><br><span class="line">mysql -uroot -proot</span><br></pre></td></tr></table></figure></p>
+<p>接下来更改MySQL的字符集：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/my.cnf</span><br><span class="line"></span><br><span class="line">character--set-server=utf8   # 更改字符集</span><br></pre></td></tr></table></figure></p>
+<p>然后重启服务器：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart mariadb.service</span><br></pre></td></tr></table></figure></p>
+<h2 id="安装Nginx"><a href="#安装Nginx" class="headerlink" title="安装Nginx"></a>安装Nginx</h2><p>拷贝Nginx到我们的服务器上面：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp nginx.tar.gz root@192.168.x.x:/root/</span><br></pre></td></tr></table></figure></p>
+<p>然后安装它的依赖包：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install gcc gcc-c++ openssl-devel pcre-devel httpd-tools</span><br></pre></td></tr></table></figure></p>
+<p>接下来进行解压安装：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">tar -zxf nginx.tar.gz</span><br><span class="line">cd nginx/</span><br><span class="line"></span><br><span class="line">useradd nginx</span><br><span class="line">./configure --prefix=/usr/local/nginx --user=nginx --group=nginx --with-http_ssl_module --with-http_mp4_module --with-http_flv_moudle</span><br><span class="line"></span><br><span class="line">make &amp;&amp; make install  # 安装和编译</span><br><span class="line"></span><br><span class="line">ln -s /usr/local/nginx/sbin/nginx /usr/sbin/</span><br></pre></td></tr></table></figure></p>
+<p>最后启动我们的nginx服务器：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nginx</span><br><span class="line">netstat -anptu | grep nginx</span><br></pre></td></tr></table></figure></p>
+<h2 id="部署微电影视频网站"><a href="#部署微电影视频网站" class="headerlink" title="部署微电影视频网站"></a>部署微电影视频网站</h2><p>部署的整个流程就是这样：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-873fe3b45af67590.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<h3 id="1、引入Manager"><a href="#1、引入Manager" class="headerlink" title="1、引入Manager"></a>1、引入Manager</h3><p>首先安装Flask-Script，然后在manage.py中导入Manager：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">from app import app</span><br><span class="line">from flask_script import Manager</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">manage = Manager(app)</span><br><span class="line"></span><br><span class="line">if __name__ == &apos;__main__&apos;:</span><br><span class="line">    app.run()</span><br></pre></td></tr></table></figure></p>
+<h3 id="2、修改服务器端口"><a href="#2、修改服务器端口" class="headerlink" title="2、修改服务器端口"></a>2、修改服务器端口</h3><p><img src="https://upload-images.jianshu.io/upload_images/8964398-02c8bb4b7a0f99fb.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>端口需要和服务器保持一致，同时关闭调试模式。</p>
+<h3 id="3、拷贝依赖文件到服务器"><a href="#3、拷贝依赖文件到服务器" class="headerlink" title="3、拷贝依赖文件到服务器"></a>3、拷贝依赖文件到服务器</h3><p>首先导出项目依赖的各种包req.txt<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp req.txt movie.sql root@192.168.xx/root/</span><br></pre></td></tr></table></figure></p>
+<p>当然如果你不熟悉，那你可以使用xshell来上传文件。</p>
+<h3 id="4、新建虚拟环境"><a href="#4、新建虚拟环境" class="headerlink" title="4、新建虚拟环境"></a>4、新建虚拟环境</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkvirtualenv --python=python3 movie</span><br></pre></td></tr></table></figure>
+<h3 id="5、安装依赖的包"><a href="#5、安装依赖的包" class="headerlink" title="5、安装依赖的包"></a>5、安装依赖的包</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install -r req.txt</span><br></pre></td></tr></table></figure>
+<p>如果安装太慢就可以使用豆瓣源进行加速：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install -i http://pypi.douban.com/simple/ --trusted-host pypi.douban.com -r  req.txt</span><br></pre></td></tr></table></figure></p>
+<h3 id="6、创建数据库并导入数据"><a href="#6、创建数据库并导入数据" class="headerlink" title="6、创建数据库并导入数据"></a>6、创建数据库并导入数据</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">create database movie;</span><br><span class="line">use movie;</span><br><span class="line">source /root/movie.sql;</span><br></pre></td></tr></table></figure>
+<h3 id="7、将项目拷贝到nginx的html目录"><a href="#7、将项目拷贝到nginx的html目录" class="headerlink" title="7、将项目拷贝到nginx的html目录"></a>7、将项目拷贝到nginx的html目录</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp -r movie /usr/local/nginx/html   或者  cp -r movie /usr/share/nginx/html</span><br></pre></td></tr></table></figure>
+<h3 id="8、查看nginx的目录"><a href="#8、查看nginx的目录" class="headerlink" title="8、查看nginx的目录"></a>8、查看nginx的目录</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cp nginx.conf /usr/local/nginx/conf/</span><br><span class="line"></span><br><span class="line">ubuntu: cp nginx.conf /etc/nginx/conf.d</span><br></pre></td></tr></table></figure>
+<h3 id="9、运行项目"><a href="#9、运行项目" class="headerlink" title="9、运行项目"></a>9、运行项目</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local/nginx/html/movie_project</span><br><span class="line"></span><br><span class="line">python manage.py runserver</span><br></pre></td></tr></table></figure>
+<p>然后开启四个进程，修改端口：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nohup python manage.py runserver -h 192.168.x.x -p admin</span><br><span class="line">`</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-85539797185ec8d1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<h3 id="10、上传nginx的配置文件"><a href="#10、上传nginx的配置文件" class="headerlink" title="10、上传nginx的配置文件"></a>10、上传nginx的配置文件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">worker_processes 4;</span><br><span class="line">events &#123;</span><br><span class="line">    worker_connections 262180;</span><br><span class="line">&#125;</span><br><span class="line">http &#123;</span><br><span class="line">    include mime.types;</span><br><span class="line">    default_type application/octet-stream;</span><br><span class="line">    sendfile on;</span><br><span class="line">    keepalive_timeout 65;</span><br><span class="line">    limit_conn_zone $binary_remote_addr zone=addr:5m;</span><br><span class="line">    upstream movie &#123;</span><br><span class="line">        server 127.0.0.1:5001;</span><br><span class="line">        server 127.0.0.1:5002;</span><br><span class="line">        server 127.0.0.1:5003;</span><br><span class="line">        server 127.0.0.1:5004;</span><br><span class="line">    &#125;</span><br><span class="line">    server &#123;</span><br><span class="line">        listen 80;</span><br><span class="line">        server_name movie.licheetools.top;</span><br><span class="line">        location / &#123;</span><br><span class="line">            root html;</span><br><span class="line">            index index.html index.htm;</span><br><span class="line">            proxy_pass http://movie;</span><br><span class="line">        &#125;</span><br><span class="line">        location ~ \.flv$ &#123;</span><br><span class="line">            flv;</span><br><span class="line">            limit_conn addr 4;</span><br><span class="line">            limit_rate 1024k;</span><br><span class="line">            rewrite ^/static/uploads/(.+?).flv$ /movie/app/static/uploads/$1.flv permanent;</span><br><span class="line">        &#125;</span><br><span class="line">        location ~ \.mp4$ &#123;</span><br><span class="line">            mp4;</span><br><span class="line">            limit_conn addr 4;   # 同时允许在线观看4个页面</span><br><span class="line">            limit_rate 1024k;   # 最高下载速度1M/s</span><br><span class="line">            rewrite ^/static/uploads/(.+?).mp4$ /movie/app/static/uploads/$1.mp4 permanent;</span><br><span class="line">        &#125;</span><br><span class="line">        error_page 500 502 503 504 /50x.html;</span><br><span class="line">        location = /50x.html &#123;</span><br><span class="line">            root html;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="11、刷新Nginx"><a href="#11、刷新Nginx" class="headerlink" title="11、刷新Nginx"></a>11、刷新Nginx</h3><p>最后我们使用<code>nginx -s reload</code>来刷新我们的Nginx,然后你就可以在浏览器输入你的域名就可以访问你的微电影视频网站了。</p>
+<p>至此，微电影视频网站项目我们就完成了开发，回顾这一路，坎坷确实很多，但是我们还是坚持了下来，最后项目成功上线，这其中的喜悦之情真是难以言表啊。</p>
+<p>最后欢迎大家加我好友或者关注微信公众号，进行交流，我们一起进步！</p>
+
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="https://upload-images.jianshu.io/upload_images/8964398-58d04ffa926103d9.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">觉得不错，赏包辣条吃呗！</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href target="_blank">编程思录</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2018/08/01/关于JAVA你必须知道的那些事（一）：概述/" class="pre-post btn btn-default" title="关于JAVA你必须知道的那些事（一）：概述">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">关于JAVA你必须知道的那些事（一）：概述</span>
+        </a>
+    
+    
+        <a href="/2018/06/27/利用Flask搭建微电影视频网站（十五）：实现电影弹幕/" class="next-post btn btn-default" title="利用Flask搭建微电影视频网站（十五）：实现电影弹幕">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">利用Flask搭建微电影视频网站（十五）：实现电影弹幕</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+    <div id="vcomments" class="valine"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+
+    <script>
+        new Valine({
+            av: AV,
+            el: '#vcomments',
+            appId: '8zvHFFu5l2ah8lh0DEPH393B-gzGzoHsz',
+            appKey: 'UNmB24200qMtyyrun5z99nOE',
+            placeholder: '听说长得好看的，都已经留言了！',
+            notify: false,
+            verify: false,
+            avatar: 'mm',
+            meta: 'nick,mail'.split(','),
+            pageSize: '10',
+            path: window.location.pathname,
+            lang: 'zh-CN'.toLowerCase()
+        })
+    </script>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#写在前面"><span class="toc-text">写在前面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装LNMP环境"><span class="toc-text">安装LNMP环境</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一些常用的Centos命令"><span class="toc-text">一些常用的Centos命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1、安装python3-6的依赖包"><span class="toc-text">1、安装python3.6的依赖包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、下载并解压Python3-6-4"><span class="toc-text">2、下载并解压Python3.6.4</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、采用软连接配置Python"><span class="toc-text">3、采用软连接配置Python</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装MySQL"><span class="toc-text">安装MySQL</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装Nginx"><span class="toc-text">安装Nginx</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#部署微电影视频网站"><span class="toc-text">部署微电影视频网站</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、引入Manager"><span class="toc-text">1、引入Manager</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、修改服务器端口"><span class="toc-text">2、修改服务器端口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、拷贝依赖文件到服务器"><span class="toc-text">3、拷贝依赖文件到服务器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4、新建虚拟环境"><span class="toc-text">4、新建虚拟环境</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5、安装依赖的包"><span class="toc-text">5、安装依赖的包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6、创建数据库并导入数据"><span class="toc-text">6、创建数据库并导入数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7、将项目拷贝到nginx的html目录"><span class="toc-text">7、将项目拷贝到nginx的html目录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8、查看nginx的目录"><span class="toc-text">8、查看nginx的目录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9、运行项目"><span class="toc-text">9、运行项目</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10、上传nginx的配置文件"><span class="toc-text">10、上传nginx的配置文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#11、刷新Nginx"><span class="toc-text">11、刷新Nginx</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2017-2019
+                </span> |
+                <span>
+				编程思录,保留所有权利
+                    <!--Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>-->
+                </span> |
+                <span>
+				<a style="color: #black" href="http://www.miitbeian.gov.cn">赣ICP备18013455号-5</a>
+                    <!--Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>-->
+                </span>
+            </div>
+			
+			<div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+			
+			<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1277113902'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s96.cnzz.com/z_stat.php%3Fid%3D1277113902%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));</script>
+        </div>
+    </div>
+</div>
+
+
+
+
+    <script src="/assets/tagcanvas.min.js?rev=2.9"></script>
+    <script>
+        var tagOption = {
+            textColour: 'red', // 字体颜色
+            outlineMethod: 'block', // 选中模式
+            outlineColour: '#FFDAB9', // 选中模式的颜色
+            interval: 30 || 30, // 动画帧之间的时间间隔，值越大，转动幅度越大
+            textHeight: 13,
+            outlineRadius: 3,
+            freezeActive: true || '', // 选中的标签是否继续滚动
+            frontSelect: true || '', // 不选标签云后部的标签
+            initial: [0.1, -0.1],
+            depth: 0.5,
+            decel: 0.95,
+            maxSpeed: 0.03,
+            reverse: true || '', // 是否反向触发
+            fadeIn: 500, // 进入动画时间
+            wheelZoom: false || '' // 是否启用鼠标滚轮
+        }
+        TagCanvas.Start('tag-cloud-3d','',tagOption);
+    </script>
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+</body>
+</html>

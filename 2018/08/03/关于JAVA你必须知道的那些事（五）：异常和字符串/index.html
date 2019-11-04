@@ -1,0 +1,473 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="编程思录，记录思考">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://blog.licheetools.top">
+    <!--SEO-->
+
+    <meta name="keywords" content="java基础">
+
+
+    <meta name="description" content="异常是非常重要的，本来打算写完三大特性之后就不再写的，但是呢，我觉得还是把异常，字符串，包装类，集合，多线程，输入输出流给说完吧，这也会让我对这些知识有一个更加清楚的认识。
+异常异常:我们也称之...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+
+    <!--Title-->
+
+
+<title>关于JAVA你必须知道的那些事（五）：异常和字符串 | 编程思录，记录思考</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="编程思录，记录思考" type="application/atom+xml">
+
+
+    <link rel="icon" href="./favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+	<div class="hide">
+		<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+	</div>
+
+
+
+
+
+
+    
+
+    <script>
+        (function(){
+            var bp = document.createElement('script');
+            var curProtocol = window.location.protocol.split(':')[0];
+            if (curProtocol === 'https') {
+                bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+            }
+            else {
+                bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+            }
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(bp, s);
+        })();
+    </script>
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header" style="background-image:url(https://upload-images.jianshu.io/upload_images/8964398-b1ba9582ea8b69ba.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)">
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title="Envy">
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 点滴进步，都是收获 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://blog.licheetools.top">编程思录，记录思考</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>首页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/font/"><i class="fa "></i>前端</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/java/"><i class="fa "></i>Java</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/python/"><i class="fa "></i>Python</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/go/"><i class="fa "></i>Go</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/spider/"><i class="fa "></i>爬虫</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/data/"><i class="fa "></i>数据分析</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/money/"><i class="fa "></i>付费教程</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/life/"><i class="fa "></i>生活记录</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives"><i class="fa "></i>时间轴</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/about/"><i class="fa "></i>关于博主</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/liuyan/"><i class="fa "></i>留言板</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="关于JAVA你必须知道的那些事（五）：异常和字符串">
+            
+	            关于JAVA你必须知道的那些事（五）：异常和字符串
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/java/">java</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/java基础/">java基础</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2018/08/03</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <p>异常是非常重要的，本来打算写完三大特性之后就不再写的，但是呢，我觉得还是把异常，字符串，包装类，集合，多线程，输入输出流给说完吧，这也会让我对这些知识有一个更加清楚的认识。</p>
+<h2 id="异常"><a href="#异常" class="headerlink" title="异常"></a>异常</h2><p>异常:我们也称之为意外或者例外，它本质上就是程序上的错误。那么什么是错误呢？</p>
+<p>错误如果用定义来说，我可能说不清楚。但是在我们编写程序的过程中，错误是会经常发生的，通常会发生在编译期间和运行期间。（这也就是编译型语言和解释型语言的一个非常大的不同，编译型语言会多一个编译过程，所以出错误的概率就相对低很多）</p>
+<p>常见的编译错误包括：括号没有正常的配对; 语句结束后少写了分号;关键字拼写错误，通常这种错误编译器会帮助我们进行检查，但是运行期间的错误，编译器就无能为力了，只能靠程序员自己了。</p>
+<p>常见的运行时错误有：使用空的对象引用调用方法；数组访问时下标越界；算术运算时除数为0；类型转换时无法正常转换等。这些错误在编译时是没有错误提示的，只能靠自己把握了。</p>
+<p>在程序运行过程中，意外发生的情况，背离我们程序本身的意图的表现，都可以理解为异常。</p>
+<h2 id="异常的分类"><a href="#异常的分类" class="headerlink" title="异常的分类"></a>异常的分类</h2><p>异常可以理解为一种事件，它的发生会影响正常的程序运行流程。在Java中你可以通过Throwable来进行各种异常信息的描述。</p>
+<p>Throwable是根类，它具有2个子类：Error和Exception。</p>
+<p>Error：程序无法处理的错误，表示运行应用程序中较严重问题。通常是Java虚拟机问题(比如虚拟机错误：VirtualMachineError；内存溢出：OutOfMemoryError；线程死锁 ：ThreadDeath等)；它们在应用程序的控制和处理能力之外，而且绝大多数是程序运行时不允许出现的状况。</p>
+<p>对于设计合理的应用程序来说,即使确实发生了错误,本质上也不应该试图去处理它所引起的异常状况。</p>
+<p>Exception是程序本身可以处理的异常，我们通常所说的异常处理就是处理这种类型的异常。</p>
+<p>Exception又可以分为两大类:：非检查异常(Unchecked Exception)和检查异常(Checked Exception)</p>
+<p>非检查异常：它是编译器不要求强制处置的异常，通常包括：RuntimeException（运行时异常）以及它的子类:：NullPointerException（空指针异常）；ArrayIndexOutOfBoundsException（数组下标越界异常 ）；ArithmeticException（算数异常）和ClassCastException（类型转换异常）等。</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-bd8351144bfe45ff.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>java程序在编译阶段是不会去检查上面这些RuntimeException（运行时异常）异常的。</p>
+<p>而检查异常则是编译器要求必须处置的异常，比如: IO异常 IOException; SQL异常 SQLException等。</p>
+<h3 id="异常处理分类"><a href="#异常处理分类" class="headerlink" title="异常处理分类"></a>异常处理分类</h3><p>在Java应用程序中,异常处理机制为: 抛出异常和捕捉异常。异常必须要先被抛出，然后才能被捕获。</p>
+<p>所谓抛出异常，它是指当一个方法当中出现异常，方法会去创建异常对象，并去交付给运行时系统来进行处理。</p>
+<p>异常对象则是异常类型以及异常出现时的程序状态。</p>
+<p>当程序运行时系统捕捉到这个异常，此时会去寻找合适的处理器，如果找到了，就会执行处理器的相关逻辑；如果始终没找到，程序就会终止运行。</p>
+<p>对于运行时异常、错误或可查异常，Java技术所要求的异常处理方式有所不同。</p>
+<p>在Java中规定: 对于可查异常（检查异常(Checked Exception)）必须捕捉或者声明抛出；同时允许忽略不可查的RuntimeException(含子类)和Error(含子类)。</p>
+<p>那么在java中，如何抛出异常和捕获异常呢？可以通过5个关键字来实现:：try catch finally throw throws。</p>
+<p>try：将执行可能会产生异常的代码放在try里面；</p>
+<p>catch：用来捕获异常；</p>
+<p>finally：无论是否发生异常，finally里面的代码总能执行</p>
+<p>try…catch…finally是一组：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">public void test()&#123;</span><br><span class="line">    try &#123;</span><br><span class="line">          //代码段1</span><br><span class="line">          //产生异常的代码段2</span><br><span class="line">        &#125;catch (异常类型 ex) &#123;</span><br><span class="line">          //对异常进行处理的代码段3</span><br><span class="line">        &#125;finally&#123;</span><br><span class="line">          //代码段4</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>try代码块后可接零个或多个catch代码块，但是如果没有catch块，那么必须跟一个finally块。说白了就是try要和catch或finally组合使用，不能单独使用。你知道的，如果没产生异常的代码，你捕获什么？</p>
+<p>如果有多个catch，记住要使用Exception放在最后一个，因为这个里面包含所有的你目前还未发现的异常。多个catch异常捕获的范围要满足自上而下，逐次增大的原则，否则小范围的异常会被大范围的覆盖哦。</p>
+<p>一般情况下，finally里面的代码都会运行，但有时候你想提前停止代码运行，可以使用:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">System.exit(1);</span><br></pre></td></tr></table></figure></p>
+<p>里面的状态码0代表正常退出,非0代表非正常退出（这里用了1代表，终止当前虚拟机的运行，使得程序无条件停止运行）。</p>
+<p>也就是说，如果程序按照正常逻辑执行需要退出时，可以调用System.exit(0)。如果发生异常而退出，比如在catch块使用，那么会调用System.exit(1)。</p>
+<h3 id="return关键字在异常处理中的作用"><a href="#return关键字在异常处理中的作用" class="headerlink" title="return关键字在异常处理中的作用"></a>return关键字在异常处理中的作用</h3><p>我们只需要记住一点：不管前面有多少个return，只要finally中有return，那么最终返回的就是finally中return的返回值。（前面的return则是按照异常捕获的顺序来返回）</p>
+<h3 id="使用throws声明异常类型"><a href="#使用throws声明异常类型" class="headerlink" title="使用throws声明异常类型"></a>使用throws声明异常类型</h3><p><strong>throws：自动抛出异常类型，一次抛出很多个（多个之间用逗号隔开），在方法定义的时候被使用</strong>：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public void method() throws Exception1,Exception2,...,ExceptionN &#123;</span><br><span class="line">    //可能产生异常的代码</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>也就是说，如果一个方法可能会出现异常，但没有能力处理这种异常，那么我们就可以在方法声明的时候使用throws来声明抛出异常。</p>
+<p>举个例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">public static int test() throws ArithmeticException &#123;  //声明可能会引发的异常，这里只声明异常，不去处理，谁调用谁处理</span><br><span class="line">		System.out.println(&quot;====运算开始====&quot;);</span><br><span class="line">		Scanner scanner = new Scanner(System.in);</span><br><span class="line">		System.out.print(&quot;请输入第一个数字: &quot;);</span><br><span class="line">		int one = scanner.nextInt();</span><br><span class="line">		System.out.print(&quot;请输入第二个数字: &quot;);</span><br><span class="line">		int two = scanner.nextInt();</span><br><span class="line">		System.out.println(&quot;====运算结束====&quot;);</span><br><span class="line">		return one / two;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure></p>
+<p>然后我们调用的时候来进行异常处理：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">	try &#123;</span><br><span class="line">		int result = test();</span><br><span class="line">		System.out.println(&quot;one和two的商是：&quot; + result);</span><br><span class="line">	&#125; catch (ArithmeticException e) &#123;</span><br><span class="line">		// TODO Auto-generated catch block</span><br><span class="line">		System.out.println(&quot;除数不能为0&quot;);</span><br><span class="line">		e.printStackTrace();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>注意你可以在throws声明异常的时候，尽量多考虑一些情况，然后可以在调用的时候利用surround with来进行异常的快速生成处理，这里快速生成的异常类型和你在throws抛出的类型一致。</p>
+<p>当然，你完全可以直接抛出Exception，那样调用的时候处理就只需要直接处理Exception这个了。</p>
+<p>还需要注意的一点就是，当throws后面直接跟Exception的时候，编译器会提示你当前方法可能会产生异常，因为Exception这个父类包含了出现检查异常的情况。但是如果你不是Exception，而是前面所列举的非检查异常，那么编译器就不会给你报错的。</p>
+<p>说明白编译器只会对检查异常进行报错处理，但是对于非检查异常是不进行报错处理的。如果非要有一种对于非检查异常类似的报错处理，你可以使用文档注释来达到这个目的，但是报错处理不是编译器完成的，而是程序员自己发现的。</p>
+<h3 id="使用throw手动抛出异常"><a href="#使用throw手动抛出异常" class="headerlink" title="使用throw手动抛出异常"></a>使用throw手动抛出异常</h3><p><strong>throw：手动抛出异常，一次只能抛出一个异常，在方法体内被使用</strong>：<br>throw用来抛出一个异常，如: throw new IOException()；而且throw抛出的只能是可Throwable类或者其子类的实例对象，不能是自己定义的，如: throw new String(“出错啦”)，这种明显就是错误的：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">public void method()&#123;</span><br><span class="line">  try &#123;</span><br><span class="line">    //代码段1</span><br><span class="line">  throw new 异常类型();</span><br><span class="line">  &#125; catch(异常类型 e)&#123;</span><br><span class="line">    //对异常进行处理的代码段2</span><br><span class="line">  &#125;</span><br><span class="line">finally&#123;</span><br><span class="line">// 需要执行的代码段3</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>你还可以，在抛出异常的地方通过throws关键字来标明异常的类型：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">public void method() throws 异常类型&#123;</span><br><span class="line">  //代码段1</span><br><span class="line">    throw new 异常类型();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>总结一下就是：<br>1、通过try..catch包含throw语句，自己抛出异常，自己处理异常；<br>2.、通过throws在方法声明出抛出异常类型，谁调用谁处理，调用者可以自己处理，也可以继续上抛，此时可以抛出与throw对象相同的类型或者其父类（但是不能是其子类）。</p>
+<p>你可以通过throws声明将要抛出何种类型的异常，并通过throw将产生的异常进行抛出。</p>
+<h2 id="自定义异常"><a href="#自定义异常" class="headerlink" title="自定义异常"></a>自定义异常</h2><p>尽管我们使用Java内置的异常类可以描述在编程时出现的大部分异常情况，但是还是有一些情况我们难以处理，这时候我们可以自定义异常，用来描述特定情况下产生的异常类型。</p>
+<p>所谓自定义异常，说白了就是定义一个类，去继承Throwable类或者它的子类。然后其他的就和我们前面说过的一样。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">public class CarTest extends Exception &#123;</span><br><span class="line">public CarTest() &#123;</span><br><span class="line">	super(&quot;18岁以下，70岁以上的人不允许报考驾照&quot;);</span><br><span class="line">&#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">public static void testAge() throws CarTest&#123;</span><br><span class="line">			System.out.println(&quot;请输入你的年龄：&quot;);</span><br><span class="line">			Scanner input = new Scanner(System.in);</span><br><span class="line">			int age = input.nextInt();</span><br><span class="line">			if (age &lt; 18 || age &gt; 70) &#123;</span><br><span class="line">				throw new CarTest();</span><br><span class="line">			&#125; else &#123;</span><br><span class="line">				System.out.println(&quot;欢迎报考驾校&quot;);</span><br><span class="line">			&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">	try &#123;</span><br><span class="line">		testAge();</span><br><span class="line">	&#125; catch (CarTeste) &#123;</span><br><span class="line">		// TODO Auto-generated catch block</span><br><span class="line">		System.out.println(e.getMessage());</span><br><span class="line">		System.out.println(&quot;驾校前台人员不得办理相关业务&quot;);</span><br><span class="line">		e.printStackTrace();</span><br><span class="line">	&#125;catch(Exception e) &#123;</span><br><span class="line">		e.printStackTrace();</span><br><span class="line">	&#125;;</span><br></pre></td></tr></table></figure></p>
+<h2 id="异常链"><a href="#异常链" class="headerlink" title="异常链"></a>异常链</h2><p>这个顾名思义就是一系列的异常，前面捕获到了异常自己不处理而是向后面抛出，从而形成异常链。</p>
+<p>为了更好的说明，我找了一个例子，大家可以看：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">public class TryDemoFive &#123;</span><br><span class="line">	</span><br><span class="line"></span><br><span class="line">	public static void testone() throws HotelAgeTest &#123;</span><br><span class="line">		throw new HotelAgeTest();</span><br><span class="line">	&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	public static void testtwo() throws Exception &#123;</span><br><span class="line">		try &#123;</span><br><span class="line">			testone();</span><br><span class="line">		&#125; catch (HotelAgeTest e) &#123;</span><br><span class="line">			// TODO Auto-generated catch block</span><br><span class="line">			throw new Exception(&quot;我是新产生的异常1&quot;);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	public static void testthree() throws Exception &#123;</span><br><span class="line">		try &#123;</span><br><span class="line">			testtwo();</span><br><span class="line">		&#125; catch (Exception e) &#123;</span><br><span class="line">			// TODO Auto-generated catch block</span><br><span class="line">			throw new Exception(&quot;我是新产生的异常2&quot;);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;;</span><br><span class="line">	</span><br><span class="line"></span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		try &#123;</span><br><span class="line">			testthree();</span><br><span class="line">		&#125; catch (Exception e) &#123;</span><br><span class="line">			// TODO Auto-generated catch block</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>在上面的例子中，testone手动抛出了一个异常，但是没有处理，而是向后抛出，testtwo虽然进行了处理，但是又抛出了一个新的异常，testthree也是这样，之后最后的main方法里对testthree的异常进行了处理，并且进行了输出。</p>
+<p>所以这段代码的运行结果就是下面的结果，只打印输出了testthree的信息，其他却没有，实际上这就造成了前面异常信息的丢失：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">java.lang.Exception: 我是新产生的异常2</span><br><span class="line">	at JavaExceptionTest.TryDemoFive.testthree(TryDemoFive.java:23)</span><br><span class="line">	at JavaExceptionTest.TryDemoFive.main(TryDemoFive.java:29)</span><br></pre></td></tr></table></figure></p>
+<p>那么如何解决这种异常的丢失呢？从而让异常链的情况为我们所知呢，你可以在构造方法中添加上一层异常e或者使用initCause(e)就可以了。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">public static void testtwo() throws Exception &#123;</span><br><span class="line">		try &#123;</span><br><span class="line">			testone();</span><br><span class="line">		&#125; catch (HotelAgeTest e) &#123;</span><br><span class="line">			// TODO Auto-generated catch block</span><br><span class="line">			throw new Exception(&quot;我是新产生的异常1&quot;,e);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;;</span><br><span class="line"></span><br><span class="line">public static void testthree() throws Exception &#123;</span><br><span class="line">		try &#123;</span><br><span class="line">			testtwo();</span><br><span class="line">		&#125; catch (Exception e) &#123;</span><br><span class="line">			// TODO Auto-generated catch block</span><br><span class="line">//			throw new Exception(&quot;我是新产生的异常2&quot;,e);</span><br><span class="line">			Exception e1 =new Exception(&quot;我是新产生的异常2&quot;);</span><br><span class="line">			e1.initCause(e);</span><br><span class="line">			</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>也就是说，异常链将异常发生的原因一个传一个串起来，把底层的异常信息传给上层，这样逐层抛出。</p>
+<h2 id="异常总结"><a href="#异常总结" class="headerlink" title="异常总结"></a>异常总结</h2><p><img src="https://upload-images.jianshu.io/upload_images/8964398-7ec06da956208712.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>在Java中, 通过Throwable及其子类描述各种不同的异常类型。其中这个Error是我们无法预测的，但是Exception却是我们可以避免的。Exception又分为2类，一个是运行时异常（非检查异常），这种编译器是不会给你报错的，另一种异常是则是编译器强制你去处理的异常。</p>
+<p>几点建议：<br>1、处理运行时异常时,采用逻辑去合理规避同时辅助try-catch处理；<br>2、在多重catch块后面,可以加一个catch(Exception)来处理可能会被遗漏的异常；<br>3、对于不确定的代码,也可以加上try-catch ,处理潜在的异常；<br>4、尽量去处理异常,切忌只是简单的调用printStackTrace()去打印输出；<br>5、具体如何处理异常,要根据不同的业务需求和异常类型去决定；<br>6、尽量添加finally语句块去释放占用的资源，如关闭文件和数据库连接等。</p>
+<p><strong>最后一点：当子类重写父类抛出异常的方法时,声明的异常必须是父类方法所声明异常的同类或子类。</strong></p>
+<h2 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h2><p>创建字符串的3种方式：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">String str1 =&quot;hello world&quot;;</span><br><span class="line">String str2 =new String();</span><br><span class="line">String str3 =new String(&quot;hello world&quot;);</span><br></pre></td></tr></table></figure></p>
+<p>字符串的常用方法及说明：<br>返回类型| 方法| 说明</p>
+<ul>
+<li>| :-: | -:<br>int |  length() |     返回当前字符串的长度<br>int  | indexOf(int ch)     | 查找ch字符在该字符串中第一次出现的位置<br>int |  indexOf(String str)     | 查找str子字符串在该字符串中第一次出现的位置<br>int |  lastIndexOf(int ch)     | 查找ch字符在该字符串中最后一次出现的位置<br>int  | lastIndexOf(String str) |     查找str子字符串在该字符串中最后一次出现的位置<br>String  | substring(int beginIndex) | 获取从beginIndex位置开始到结束的子字符串<br>String  | substring(int beginIndex, int endIndex)     | 获取从beginIndex位置开始到endIndex位置的子字符串<br>String  | trim()     | 返回去除了前后空格的字符串<br>boolean  | equals(Object obj)     | 将该字符串与指定对象比较，返回true或false<br>String  | toLowerCase() |     将字符串转换为小写<br>String  | toUpperCase()     | 将字符串转换为大写<br>char |  charAt(int index) |     获取字符串中指定位置的字符<br>String [] |  split(String regex, int limit)     | 将字符串分割为子字符串，返回字符串数组<br>byte []  | getBytes()     | 将该字符串转换为byte数组</li>
+</ul>
+<h3 id="运算符与equals方法的区别"><a href="#运算符与equals方法的区别" class="headerlink" title="==运算符与equals方法的区别"></a>==运算符与equals方法的区别</h3><p>我们在前面也说过，==运算符比较的是对象在内存中的引用地址，而equals方法的用法就需要分情况了，如果子类没有重写Object类的equals方法，那么比较的是两个引用是否指向同一个地址；而String类则重写了Object类的equals方法，所以比较的是字符串的值是否相等。（言外之意，子类可以通过重写equals方法的形式，改变比较的内容）</p>
+<p>因为这里谈的是字符串，因此可以说equals比较的是字符串的值是否相等。</p>
+<p>内存空间：栈存放的是类的引用，常量池存放的是字符串常量，而堆里存放的则是通过new创建的字符串对象（在这里是这样的，我们这里只谈字符串）</p>
+<h2 id="StringBuilder"><a href="#StringBuilder" class="headerlink" title="StringBuilder"></a>StringBuilder</h2><p>String和StringBuilder的区别:：String是不可变的，而StringBuilder则是可变的，因此当频繁操作字符串时，建议使用StringBuilder。</p>
+<p>有人就要问了，不是还有一个StringBuffer么，那这个跟前面的有啥区别么？其实StringBuilder和StringBuffer二者基本上是一样的，但是StringBuffer是线程安全的,，而StringBuilder则不是，因此也正是因为这样，所以StringBuilder性能略高一点。因为字符串处理一般都是单线程，所以我们使用StringBulider就行了。</p>
+<p>StringBuilder常用方法<br>append()：在末尾增加内容；<br>delete()：删除内容；<br>insert()：插入内容；<br>length()：返回字符串长度；<br>replace()：替换内容。<br>这些方法和Python中的容器操作是很相似的，这里就不再举例说明了。</p>
+<p>后面的内容等我有空再更新了，这次就说到这里，感谢你的赏阅！</p>
+
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="https://upload-images.jianshu.io/upload_images/8964398-58d04ffa926103d9.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">觉得不错，赏包辣条吃呗！</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href target="_blank">编程思录</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2018/08/04/关于JAVA你必须知道的那些事（六）：包装类和多线程/" class="pre-post btn btn-default" title="关于JAVA你必须知道的那些事（六）：包装类和多线程">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">关于JAVA你必须知道的那些事（六）：包装类和多线程</span>
+        </a>
+    
+    
+        <a href="/2018/08/02/关于JAVA你必须知道的那些事（四）：单例模式和多态/" class="next-post btn btn-default" title="关于JAVA你必须知道的那些事（四）：单例模式和多态">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">关于JAVA你必须知道的那些事（四）：单例模式和多态</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+    <div id="vcomments" class="valine"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+
+    <script>
+        new Valine({
+            av: AV,
+            el: '#vcomments',
+            appId: '8zvHFFu5l2ah8lh0DEPH393B-gzGzoHsz',
+            appKey: 'UNmB24200qMtyyrun5z99nOE',
+            placeholder: '听说长得好看的，都已经留言了！',
+            notify: false,
+            verify: false,
+            avatar: 'mm',
+            meta: 'nick,mail'.split(','),
+            pageSize: '10',
+            path: window.location.pathname,
+            lang: 'zh-CN'.toLowerCase()
+        })
+    </script>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#异常"><span class="toc-text">异常</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#异常的分类"><span class="toc-text">异常的分类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#异常处理分类"><span class="toc-text">异常处理分类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#return关键字在异常处理中的作用"><span class="toc-text">return关键字在异常处理中的作用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用throws声明异常类型"><span class="toc-text">使用throws声明异常类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用throw手动抛出异常"><span class="toc-text">使用throw手动抛出异常</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#自定义异常"><span class="toc-text">自定义异常</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#异常链"><span class="toc-text">异常链</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#异常总结"><span class="toc-text">异常总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#字符串"><span class="toc-text">字符串</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#运算符与equals方法的区别"><span class="toc-text">==运算符与equals方法的区别</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#StringBuilder"><span class="toc-text">StringBuilder</span></a></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2017-2019
+                </span> |
+                <span>
+				编程思录,保留所有权利
+                    <!--Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>-->
+                </span> |
+                <span>
+				<a style="color: #black" href="http://www.miitbeian.gov.cn">赣ICP备18013455号-5</a>
+                    <!--Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>-->
+                </span>
+            </div>
+			
+			<div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+			
+			<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1277113902'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s96.cnzz.com/z_stat.php%3Fid%3D1277113902%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));</script>
+        </div>
+    </div>
+</div>
+
+
+
+
+    <script src="/assets/tagcanvas.min.js?rev=2.9"></script>
+    <script>
+        var tagOption = {
+            textColour: 'red', // 字体颜色
+            outlineMethod: 'block', // 选中模式
+            outlineColour: '#FFDAB9', // 选中模式的颜色
+            interval: 30 || 30, // 动画帧之间的时间间隔，值越大，转动幅度越大
+            textHeight: 13,
+            outlineRadius: 3,
+            freezeActive: true || '', // 选中的标签是否继续滚动
+            frontSelect: true || '', // 不选标签云后部的标签
+            initial: [0.1, -0.1],
+            depth: 0.5,
+            decel: 0.95,
+            maxSpeed: 0.03,
+            reverse: true || '', // 是否反向触发
+            fadeIn: 500, // 进入动画时间
+            wheelZoom: false || '' // 是否启用鼠标滚轮
+        }
+        TagCanvas.Start('tag-cloud-3d','',tagOption);
+    </script>
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+</body>
+</html>

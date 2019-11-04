@@ -1,0 +1,578 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="编程思录，记录思考">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://blog.licheetools.top">
+    <!--SEO-->
+
+    <meta name="keywords" content="java基础">
+
+
+    <meta name="description" content="输入输出流程序通过write（写操作），使字符从河流中依次通过，从而形成了字符流。
+那么什么是流呢？所谓的流就是指一连串流动的字符，它是以先进先出的方式发送信息的通道。
+流分为两种，输出流和输入...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+
+    <!--Title-->
+
+
+<title>关于JAVA你必须知道的那些事（七）：输入输出流和集合 | 编程思录，记录思考</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="编程思录，记录思考" type="application/atom+xml">
+
+
+    <link rel="icon" href="./favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+	<div class="hide">
+		<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+	</div>
+
+
+
+
+
+
+    
+
+    <script>
+        (function(){
+            var bp = document.createElement('script');
+            var curProtocol = window.location.protocol.split(':')[0];
+            if (curProtocol === 'https') {
+                bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+            }
+            else {
+                bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+            }
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(bp, s);
+        })();
+    </script>
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header" style="background-image:url(https://upload-images.jianshu.io/upload_images/8964398-b1ba9582ea8b69ba.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)">
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title="Envy">
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 点滴进步，都是收获 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://blog.licheetools.top">编程思录，记录思考</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>首页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/font/"><i class="fa "></i>前端</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/java/"><i class="fa "></i>Java</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/python/"><i class="fa "></i>Python</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/go/"><i class="fa "></i>Go</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/spider/"><i class="fa "></i>爬虫</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/data/"><i class="fa "></i>数据分析</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/money/"><i class="fa "></i>付费教程</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/life/"><i class="fa "></i>生活记录</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives"><i class="fa "></i>时间轴</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/about/"><i class="fa "></i>关于博主</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/liuyan/"><i class="fa "></i>留言板</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="关于JAVA你必须知道的那些事（七）：输入输出流和集合">
+            
+	            关于JAVA你必须知道的那些事（七）：输入输出流和集合
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/java/">java</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/java基础/">java基础</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2018/08/04</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h3 id="输入输出流"><a href="#输入输出流" class="headerlink" title="输入输出流"></a>输入输出流</h3><p>程序通过write（写操作），使字符从河流中依次通过，从而形成了字符流。</p>
+<p>那么什么是流呢？所谓的流就是指一连串流动的字符，它是以先进先出的方式发送信息的通道。</p>
+<p>流分为两种，输出流和输入流：</p>
+<p>输出流一般是屏幕，打印机等，用来输出的设备，而输入流则是键盘或者扫描仪等设备。</p>
+<p>数据源（键盘）将数据放到字符流中，然后程序通过read（读操作）进行读取。</p>
+<p>也就是说文件输入是读，文件输出是写。</p>
+<h2 id="File类"><a href="#File类" class="headerlink" title="File类"></a>File类</h2><p>File就是文件，它可认为是相关记录或放在一起的数据的集合，在Java中，我们使用java.io.File类对文件迸行操作。可以点击这里查看api文档：<a href="https://docs.oracle.com/javase/8/docs/api/" target="_blank" rel="noopener">javase8 api</a></p>
+<p>需要注意的是，Windows中的目录分隔符为反斜杠“\”，而Linux的目录中的分隔符则是斜杠“/”。</p>
+<p>eclipse的快速导包快捷键为ctrl+shift+o。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// 创建File对象的三种方式</span><br><span class="line">File file1 =new File(&quot;F:\\JAVA\\javatest\\io\\score.txt&quot;);   //方法一</span><br><span class="line">	</span><br><span class="line">File file1 =new File(&quot;F:\\JAVA&quot;,&quot;\\javatest\\io\\score.txt&quot;);   //方法二</span><br><span class="line">	</span><br><span class="line">File file =new File(&quot;F:\\JAVA&quot;);</span><br><span class="line">File file1 =new File(file ,&quot;\\javatest\\io\\score&quot;);   //方法三</span><br></pre></td></tr></table></figure>
+<p>下面介绍一些常见的方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">isDirectory()：判断是否是目录</span><br><span class="line">isFile()：判断是否是文件</span><br><span class="line">exists()：判断是否存在</span><br><span class="line">mkdir()：创建一级目录</span><br><span class="line">mkdirs()：创建多级目录</span><br><span class="line">createNewFile()：创建新的文件</span><br><span class="line">canRead()：是否可读</span><br><span class="line">canWrite()：是否可写</span><br></pre></td></tr></table></figure></p>
+<h3 id="字节流"><a href="#字节流" class="headerlink" title="字节流"></a>字节流</h3><p>字节分为两种：字节输入流 InputStream和字节输出流 OutputStream，我从网上找了两张图片，大家可以看一下：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-b1d9716f1c8accc3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-4b8a6b6b9bcfaa98.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<h3 id="FileInputStream文件输入流"><a href="#FileInputStream文件输入流" class="headerlink" title="FileInputStream文件输入流"></a>FileInputStream文件输入流</h3><p>FileInputStream文件输入流有几个作用：</p>
+<ul>
+<li>1、就是从文件系统中的某个文件中获得输入字节。</li>
+</ul>
+<p>举个简单的例子，复制就是把原来文件的信息进行读取的操作，然后粘贴就是把读取的信息进行写入的操作；</p>
+<ul>
+<li>2、用于读取图像数据之类的原始字节流。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>方法名</th>
+<th style="text-align:center">描述</th>
+<th style="text-align:right">备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>public int read()</td>
+<td style="text-align:center">从输入流中读取一个数据字节</td>
+</tr>
+<tr>
+<td>public int read(byte[] b)</td>
+<td style="text-align:center">从输入流中将最多b.length个字节的数据读入一个byte数组中</td>
+</tr>
+<tr>
+<td>public int read(byte[] b,int off, int len)</td>
+<td style="text-align:center">从输入流中将最多len个字节的数据读入byte数组中</td>
+</tr>
+<tr>
+<td>public void close()</td>
+<td style="text-align:center">关闭此文件输入流并释放与此流有关的所有系统资源</td>
+</tr>
+</tbody>
+</table>
+<p>注意：如果int的返回值为-1，则表示已经读到了文件的末尾。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">package JavaIO;</span><br><span class="line"></span><br><span class="line">import java.io.FileInputStream;</span><br><span class="line">import java.io.FileNotFoundException;</span><br><span class="line">import java.io.IOException;</span><br><span class="line"></span><br><span class="line">public class FileDemoInputStreamOne &#123;</span><br><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">	</span><br><span class="line">	// 创建一个FileInputStream</span><br><span class="line">	try &#123;</span><br><span class="line">		FileInputStream files =new  FileInputStream(&quot;F:\\JAVA\\javatest\\io\\score.txt&quot;);</span><br><span class="line">//		int n = files.read();  // 只能读取第一个数据字节</span><br><span class="line">//		while(n!=-1) &#123;</span><br><span class="line">//			System.out.print((char)n);</span><br><span class="line">//			n =files.read();</span><br><span class="line">//		&#125;;</span><br><span class="line">		</span><br><span class="line">		</span><br><span class="line">		int n =0;</span><br><span class="line">		while((n=files.read())!=-1) &#123;</span><br><span class="line">			System.out.print((char)n);</span><br><span class="line">		&#125;;</span><br><span class="line">		</span><br><span class="line">		files.close();</span><br><span class="line">		</span><br><span class="line">	&#125; catch (FileNotFoundException e) &#123;</span><br><span class="line">		// TODO Auto-generated catch block</span><br><span class="line">		e.printStackTrace();</span><br><span class="line">	&#125;catch(IOException e) &#123;</span><br><span class="line">		e.printStackTrace();</span><br><span class="line">	&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>再来看一个字节数组的例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">package JavaIO;</span><br><span class="line"></span><br><span class="line">import java.io.FileInputStream;</span><br><span class="line">import java.io.FileNotFoundException;</span><br><span class="line">import java.io.IOException;</span><br><span class="line"></span><br><span class="line">public class FileDemoInputStreamTwo &#123;</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line"></span><br><span class="line">		// 创建一个FileInputStream</span><br><span class="line">		try &#123;</span><br><span class="line">			FileInputStream files = new FileInputStream(&quot;F:\\JAVA\\javatest\\io\\score.txt&quot;);</span><br><span class="line">			byte [] b =new byte[100];</span><br><span class="line">			files.read(b,0,5); //后面2个是偏移量，0表示从开始读取，而5代表存取的字节的长度</span><br><span class="line">			System.out.println(new String(b));</span><br><span class="line">			files.close();</span><br><span class="line"></span><br><span class="line">		&#125; catch (FileNotFoundException e) &#123;</span><br><span class="line">			// TODO Auto-generated catch block</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125; catch (IOException e) &#123;</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;</span><br><span class="line">		;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="FileOutputStream文件输出流"><a href="#FileOutputStream文件输出流" class="headerlink" title="FileOutputStream文件输出流"></a>FileOutputStream文件输出流</h2><p>上面我们说完了FileInputStream文件输入流，接下来说文件输出流FileOutputStream：</p>
+<table>
+<thead>
+<tr>
+<th>方法名</th>
+<th style="text-align:center">描述</th>
+<th style="text-align:right">备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>public void write(int b)</td>
+<td style="text-align:center">将指定字节写入此文件输出流</td>
+</tr>
+<tr>
+<td>public void write(byte[] b)</td>
+<td style="text-align:center">将b.length个字节从指定byte数组写入此文件输出流中</td>
+</tr>
+<tr>
+<td>public void write(byte[] b,int off,int len)</td>
+<td style="text-align:center">将指定byte数组中从偏移量off开始的len个字节写入此文件输出流</td>
+</tr>
+<tr>
+<td>public void close()</td>
+<td style="text-align:center">关闭此文件输出流并释放与此流有关的所有系统资源</td>
+</tr>
+</tbody>
+</table>
+<p>注意：在上面的方法里面都有一个默认参数为append（追加的意思），但是默认为空白（False也就是覆盖的意思），如果你设为True那么就是后面追加，会保留原来的信息。</p>
+<p>上面的方法是不是和前面输入流很相似，是的这就是一个互逆的过程。</p>
+<p>不过还有一个问题就是很容易发生编码错误，所以你会发现字节流其实不是很容易适合做字符相关的操作，适合做二进制数据相关的操作。但是却是非常适合文件的复制，粘贴。</p>
+<h2 id="缓冲流"><a href="#缓冲流" class="headerlink" title="缓冲流"></a>缓冲流</h2><p>我们之前的文件读写都是直接从硬盘上读取的，其实这种方式读取非常慢的；而我们现在要说的缓冲流这表明我们可以从内存中进行读取。</p>
+<p>缓冲流包括：缓冲输入流BufferedInputStream和缓冲输出流BufferedOutputStream</p>
+<p>缓冲输入流是不能直接直接读取文件系统中的数据的，它必须要和文件输入流进行结合。</p>
+<p>缓冲区满了，会自动清空；不满则需要强制清空（你可以调用flush或者close方法）。</p>
+<p>有时候我们会比较程序的运行时间，这时候我们可以使用：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">long startTime =System.currentTimeMillis();  //获取当前的时间-1970年1月1日最后就是运行时间</span><br></pre></td></tr></table></figure></p>
+<h2 id="字符流"><a href="#字符流" class="headerlink" title="字符流"></a>字符流</h2><p>同样字符流也分为两种：字符输入流Reader和字符输出流 Writer</p>
+<p>字节流和字符流它们主要的区别就是应用的场景不一样：<a href="https://blog.csdn.net/cynhafa/article/details/6882061" target="_blank" rel="noopener">java 字节流与字符流的区别</a></p>
+<p>我网上找了2张图片，大家看一下关于字符流相关的信息：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-73464e734ce3a5f3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-30a69bdd4bdbf1c2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<h2 id="字节字符转换流"><a href="#字节字符转换流" class="headerlink" title="字节字符转换流"></a>字节字符转换流</h2><p>接下我们来谈谈字节字符转换流，顾名思义就是供字节字符转换用的（两者过渡的桥梁）：InputStreamReader和OutputStreamWriter：<br><a href="https://www.cnblogs.com/alsf/p/6778055.html" target="_blank" rel="noopener">掌握OutputStreamWriter和InputStreamReader类的作用</a></p>
+<h2 id="对象序列化"><a href="#对象序列化" class="headerlink" title="对象序列化"></a>对象序列化</h2><p>序列化 (Serialization)是将对象的状态信息转换为可以存储或传输的形式的过程。简单点说就是把java对象转换为字节序列的过程。反序列就是和它相反的过程。</p>
+<p>序列化步骤：<br>1、创建一个类，然后实现Serializable接口；<br>2、创建对象：将对象写入文件；<br>3、从文件读取对象信息<br>这个过程会涉及到两个流：对象输入流ObjectInputStream 和 对象输出流ObjectOutputStream</p>
+<p> <a href="https://www.cnblogs.com/xdp-gacl/p/3777987.html" target="_blank" rel="noopener">Java基础学习总结——Java对象的序列化和反序列化</a></p>
+<p><a href="http://www.importnew.com/17964.html" target="_blank" rel="noopener">Java对象的序列化与反序列化</a></p>
+<h2 id="集合"><a href="#集合" class="headerlink" title="集合"></a>集合</h2><p>在前面我们好像有介绍过数组（又好像没有，不管了），我们知道数组用于固定长度的数据场景，而集合更适合数据动态变化的场景。</p>
+<p>或者说集合更加适合应用于下列场景:<br>1、无法预测存储数据的数量；<br>2、同时存储具有一对一关系的数据(商品信息&amp;详情或者学生&amp;学号等)；<br>3、需要进行数据的增删；<br>4、数据不允许重复等</p>
+<h3 id="集合框架的体系结构"><a href="#集合框架的体系结构" class="headerlink" title="集合框架的体系结构"></a>集合框架的体系结构</h3><p>集合框架一共分为两类：Collection和Map。其中Collection用于存储类的对象，而Map用于以键值对的形式来存储信息。</p>
+<p>为了更好的理解，我从网上找了一张图片：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-115e000525e874e9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>Collection这个类下面有3个子接口，分别是List（序列），Queue（队列），Set（集）。其中，List（序列），Queue（队列）中存放的数据必须是有序的，并且是允许重复的；Set（集）存放的数据是无序的，且不允许重复的。每个接口下面又有许多的实现类。List的实例类是ArrayList（可以看做一个长度动态增长的数组）。Queue的实现类是LinkedList（它实现了List和Queue，也就是链表）。Set的实现类是HashSet，也就是哈希集。</p>
+<p>Map这个类可以实现的类有HashMap，也就是哈希表。</p>
+<h3 id="List-列表"><a href="#List-列表" class="headerlink" title="List(列表)"></a>List(列表)</h3><p>List：是元素有序并且可以重复的集合，称为序列或者列表。</p>
+<p>List可以精确控制每个元素的插入位置或删除某个位置的元素。</p>
+<p>List的两个主要实现类是ArrayList和LinkedList。这里我们主要介绍ArrayList类，因为这个类使用比较多。其实ArrayList和数组是比较相似的，只是它的长度可以动态增长，它其实也是内存上一片连续的存储空间进行存储。而LinkedList本身是一个链表，这两个中方法的作用是几乎相同的。</p>
+<p>ArrayList底层是由数组实现的，它的长度是可以动态增长的，用来满足应用程序的需求。如果你要在在列表尾部插入或删除数据，那么使用ArrayList是非常有效的(如果中间插入或者删除会过多挪位，并不适合)。当然它还更适合查找和更新元素，最重要的一点就是ArrayList中的<strong>元素可以为null值</strong>。</p>
+<p>我们即将要将的Collection都是存放于java.util 包中的，所以在使用的时候需要我们自己进行包的导入。</p>
+<p>下面简单介绍List接口中几种常用的方法，以便于大家在用的时候得心用手：</p>
+<p>add()：向列表末尾添加元素；clear()：清空列表中元素；contains()：判断列表中是否包含指定的对象。</p>
+<p>get()：返回此列表中指定位置的元素； indexOf ()：返回此列表中指定元素的第一次出现的索引，如果此列表不包含元素，则返回-1。</p>
+<p>isEmpty() ：集合是否为空，空返回true； iterator ()：以正确的顺序返回该列表中的元素的迭代器；remove()：删除该列表中指定位置的元素；size()：返回此列表中的元素数；sort()：对列表进行排序。</p>
+<p>接下来我们来看ArrayList这个类，你会发现它的方法其实和我们List这个接口的方法非常类似。其中<code>ArrayList()</code>是它的无参构造方法：构造一个初始容量为十的空列表；<code>ArrayList(Collection &lt;? extends E&gt; c)</code>是它的有参构造方法，它可以通过已存在的Collection来构造ArrayList。</p>
+<p>记住列表的索引号是从零开始的，这一点很重要，需要特别注意。</p>
+<p>我觉得学语言很多时候就得多看Api文档，这对自己自身能力的提高非常有帮助。</p>
+<h3 id="ArrayList案例分析"><a href="#ArrayList案例分析" class="headerlink" title="ArrayList案例分析"></a>ArrayList案例分析</h3><p>双十一的时候，很多网站都会在其首页发布一些打折的消息，我们现在的任务就是模拟这个场景，要求如下：<br>1、添加和显示信息；<br>2、在指定位置处插入信息；<br>3、删除消息；<br>4、修改消息。<br>条件：编号 id，标题 title，创建人 creator，创建时间 createTime。</p>
+<p>博主是一个重度的Python爱好者，所以这些要求刚写的时候，就已经想到如何用Python中的list去实现相关功能了。所以，如果你也喜欢Python不妨来交流学习。</p>
+<p>好了，有点跑题了，你自己先尝试通过查看api文档的方式，看看自己能否独立实现这些要求，之后再来查看结果吧。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line">package JavaCollectionTest;</span><br><span class="line"></span><br><span class="line">import java.util.Date;</span><br><span class="line"></span><br><span class="line">public class Notice &#123;</span><br><span class="line">	//公告的添加和显示;在指定位置处插入公告;删除公告;修改公告</span><br><span class="line">	// 编号 id;标题 title;创建人 creator;创建时间 createTime</span><br><span class="line">	</span><br><span class="line">	private int id;</span><br><span class="line">	private String title;</span><br><span class="line">	private String create;</span><br><span class="line">	private Date createTime;</span><br><span class="line">	</span><br><span class="line">	public Notice() &#123;&#125;;</span><br><span class="line">	</span><br><span class="line">	public Notice(int id, String title, String create, Date createTime) &#123;</span><br><span class="line">		super();</span><br><span class="line">		this.id = id;</span><br><span class="line">		this.title = title;</span><br><span class="line">		this.create = create;</span><br><span class="line">		this.createTime = createTime;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	public int getId() &#123;</span><br><span class="line">		return id;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	public void setId(int id) &#123;</span><br><span class="line">		this.id = id;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	public String getTitle() &#123;</span><br><span class="line">		return title;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	public void setTitle(String title) &#123;</span><br><span class="line">		this.title = title;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	public String getCreate() &#123;</span><br><span class="line">		return create;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	public void setCreate(String create) &#123;</span><br><span class="line">		this.create = create;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	public Date getCreateTime() &#123;</span><br><span class="line">		return createTime;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	public void setCreateTime(Date createTime) &#123;</span><br><span class="line">		this.createTime = createTime;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们再来看这个类的测试类：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">package JavaCollectionTest;</span><br><span class="line"></span><br><span class="line">import java.util.ArrayList;</span><br><span class="line">import java.util.Date;</span><br><span class="line"></span><br><span class="line">public class NoticeTest &#123;</span><br><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">	// 创建Notice类的对象，我们先实例化3条信息</span><br><span class="line">	Notice notice1 =new Notice(1,&quot;欢迎来到啃饼小白的修炼之旅&quot;,&quot;啃饼小白&quot;,new Date());</span><br><span class="line">	Notice notice2 =new Notice(2,&quot;欢迎来到java的世界&quot;,&quot;管理员&quot;,new Date());</span><br><span class="line">	Notice notice3 =new Notice(3,&quot;世界那么大，我想出去看看&quot;,&quot;思录者&quot;,new Date());</span><br><span class="line">	</span><br><span class="line">	// 将消息添加到ArrayList里面</span><br><span class="line">	ArrayList noticelist =new ArrayList();</span><br><span class="line">	noticelist.add(notice1);  // 默认为末尾添加</span><br><span class="line">	noticelist.add(notice2);</span><br><span class="line">	noticelist.add(notice3);</span><br><span class="line">	</span><br><span class="line">	// 消息的显示</span><br><span class="line">	System.out.println(&quot;消息的内容为：&quot;);</span><br><span class="line">	for(int i=0;i&lt;noticelist.size();i++) &#123;</span><br><span class="line">		System.out.println(i+1+&quot;、&quot;+((Notice)(noticelist.get(i))).getTitle());</span><br><span class="line">	&#125;;</span><br><span class="line">	</span><br><span class="line">	System.out.println(&quot;****************************************************&quot;);</span><br><span class="line">	</span><br><span class="line">	// 在第一条消息后面添加一条消息</span><br><span class="line">	Notice notice4 =new Notice(4,&quot;努力与运动兼备&quot;,&quot;拾光小白&quot;,new Date());</span><br><span class="line">	noticelist.add(1,notice4);</span><br><span class="line">	System.out.println(&quot;添加完消息以后的内容为：&quot;);</span><br><span class="line">	for(int i=0;i&lt;noticelist.size();i++) &#123;</span><br><span class="line">		System.out.println(i+1+&quot;、&quot;+((Notice)(noticelist.get(i))).getTitle());</span><br><span class="line">	&#125;;</span><br><span class="line">	</span><br><span class="line">	System.out.println(&quot;****************************************************&quot;);</span><br><span class="line">	</span><br><span class="line">	// 删除编号为3的消息：欢迎来到java的世界</span><br><span class="line">//	noticelist.remove(2);</span><br><span class="line">	noticelist.remove(notice2);</span><br><span class="line">	System.out.println(&quot;删除消息以后的内容为：&quot;);</span><br><span class="line">	for(int i=0;i&lt;noticelist.size();i++) &#123;</span><br><span class="line">		System.out.println(i+1+&quot;、&quot;+((Notice)(noticelist.get(i))).getTitle());</span><br><span class="line">	&#125;;</span><br><span class="line">	</span><br><span class="line">	System.out.println(&quot;****************************************************&quot;);</span><br><span class="line">	</span><br><span class="line">	// 修改编号为3的消息：世界那么大，我想出去看看，中的我修改为你</span><br><span class="line">	notice3.setTitle(&quot;世界那么大，你想出去看看&quot;);</span><br><span class="line">	System.out.println(&quot;修改消息以后的内容为：&quot;);</span><br><span class="line">	for(int i=0;i&lt;noticelist.size();i++) &#123;</span><br><span class="line">		System.out.println(i+1+&quot;、&quot;+((Notice)(noticelist.get(i))).getTitle());</span><br><span class="line">	&#125;;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>接下来我们来介绍集合中的另一个set。</p>
+<h2 id="set-集"><a href="#set-集" class="headerlink" title="set(集)"></a>set(集)</h2><p>Set是元素无序且不可以重复的集合，被称为集。而我们上面刚介绍的列表则是有序且重复的，这一点要弄清楚。</p>
+<p>set是一个接口，而它的实现类是HashSet（哈希集）。哈希集中的元素是无序且不可以重复的。而且在HashSet中，只允许有一个null元素因此它具有良好的存取和查找性能。</p>
+<p>由于HashSet中的方法和前面介绍的ArrayList中的差不多，因此这里就不再过多的介绍其方法了，而是直接通过一个例子来进行具体方法的使用：</p>
+<p>不过在这之前，我需要告诉你的是hashset里面是没有提供用于元素输出的get()方法，但是呢，它提供了一个iterator()方法，用于对集合元素进行遍历。</p>
+<p>Iterator (迭代器): Iterator接口可以以统一的方式对各种集合元素进行遍历。记住这个Iterator (迭代器)是存在于java.util包里面的。</p>
+<p>迭代器有2个方法：hasNext()和next()。其中hasNext()方法用于检测集合中是否还有下一个元素，这个是遍历的终止条件；而另一个next()方法是用于返回集合中的下一个元素。</p>
+<p>要求：用HashSet存储多个表示颜色的英文单词,并输出。<br>其中单词包括: “blue”,”red”,”black”,”yellow”和”white”。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">package JavaCollectionTest;</span><br><span class="line"></span><br><span class="line">import java.util.HashSet;</span><br><span class="line">import java.util.Iterator;</span><br><span class="line"></span><br><span class="line">public class HashSetDemo1 &#123;</span><br><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">	// 将英文单词添加到HashSet当中, &quot;blue&quot;,&quot;red&quot;,&quot;black&quot;,&quot;yellow&quot;和&quot;white&quot;</span><br><span class="line">	HashSet hset =new HashSet();</span><br><span class="line">	hset.add(&quot;red&quot;);</span><br><span class="line">	hset.add(&quot;blue&quot;);</span><br><span class="line">	hset.add(&quot;black&quot;);</span><br><span class="line">	hset.add(&quot;yellow&quot;);</span><br><span class="line">	hset.add(&quot;white&quot;);</span><br><span class="line">	</span><br><span class="line">	System.out.println(&quot;集合中的元素为：&quot;);</span><br><span class="line">	Iterator it =hset.iterator();</span><br><span class="line">	// 遍历迭代器并进行输出</span><br><span class="line">	while(it.hasNext()) &#123;</span><br><span class="line">		System.out.print(it.next()+&quot;,&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>现在有一个问题，如果你把一个已经重复的对象插入到集合里面，会发生什么情况呢？答案是不会报错，可以运行，但是你会发现其实你根本插入不进去。是的，集合就是这样。</p>
+<p>我们现在又来举一个例子，这个例子会让你对上面的介绍生产模糊，但这是必要的：</p>
+<p>案例：如何在HashSet中添加自定义类的对象?<br>需求：<br>1、添加和显示宠物猫信息；<br>2、查找某只宠物猫的信息并输出；<br>3、修改宠物猫的信息;删除宠物猫信息</p>
+<p>其中属性为: 名字name；年龄month；品种species<br>方法为: 构造方法；获取和设置属性值的方法；其他方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">package JavaCollectionTest;</span><br><span class="line"></span><br><span class="line">public class Cat &#123;</span><br><span class="line">private String name;</span><br><span class="line">private int month;</span><br><span class="line">private String species;</span><br><span class="line">public Cat(String name, int month, String species) &#123;</span><br><span class="line">	super();</span><br><span class="line">	this.name = name;</span><br><span class="line">	this.month = month;</span><br><span class="line">	this.species = species;</span><br><span class="line">&#125;</span><br><span class="line">public String getName() &#123;</span><br><span class="line">	return name;</span><br><span class="line">&#125;</span><br><span class="line">public void setName(String name) &#123;</span><br><span class="line">	this.name = name;</span><br><span class="line">&#125;</span><br><span class="line">public int getMonth() &#123;</span><br><span class="line">	return month;</span><br><span class="line">&#125;</span><br><span class="line">public void setMonth(int month) &#123;</span><br><span class="line">	this.month = month;</span><br><span class="line">&#125;</span><br><span class="line">public String getSpecies() &#123;</span><br><span class="line">	return species;</span><br><span class="line">&#125;</span><br><span class="line">public void setSpecies(String species) &#123;</span><br><span class="line">	this.species = species;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@Override</span><br><span class="line">public String toString() &#123;</span><br><span class="line">	return &quot; 姓名=&quot; + name + &quot;, 年龄=&quot; + month + &quot;, 品种=&quot; + species + &quot;&quot;;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>以及测试类：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">package JavaCollectionTest;</span><br><span class="line"></span><br><span class="line">import java.util.HashSet;</span><br><span class="line">import java.util.Iterator;</span><br><span class="line"></span><br><span class="line">public class CatTest &#123;</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		// 定义宠物猫对象</span><br><span class="line">		Cat huahua = new Cat(&quot;花花&quot;, 12, &quot;中华田园猫&quot;);</span><br><span class="line">		Cat fanfan = new Cat(&quot;凡凡&quot;, 10, &quot;英国短毛猫&quot;);</span><br><span class="line"></span><br><span class="line">		// 将对象添加到hashset中</span><br><span class="line">		HashSet hset = new HashSet();</span><br><span class="line">		hset.add(huahua);</span><br><span class="line">		hset.add(fanfan);</span><br><span class="line"></span><br><span class="line">		// 显示宠物猫信息</span><br><span class="line">		Iterator it = hset.iterator();</span><br><span class="line"></span><br><span class="line">		while (it.hasNext()) &#123;</span><br><span class="line">			System.out.println(it.next());</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		System.out.println(&quot;*******************************************&quot;);</span><br><span class="line">		// 添加一个与花花属性一模一样的猫</span><br><span class="line">		Cat huahua1 = new Cat(&quot;花花&quot;, 12, &quot;中华田园猫&quot;);</span><br><span class="line">		hset.add(huahua1);</span><br><span class="line">		Iterator its = hset.iterator();</span><br><span class="line">		while (its.hasNext()) &#123;</span><br><span class="line">			System.out.println(its.next());</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 输出结果：</span><br><span class="line"> 姓名=花花, 年龄=12, 品种=中华田园猫</span><br><span class="line"> 姓名=凡凡, 年龄=10, 品种=英国短毛猫</span><br><span class="line">*******************************************</span><br><span class="line"> 姓名=花花, 年龄=12, 品种=中华田园猫</span><br><span class="line"> 姓名=花花, 年龄=12, 品种=中华田园猫</span><br><span class="line"> 姓名=凡凡, 年龄=10, 品种=英国短毛猫</span><br></pre></td></tr></table></figure></p>
+<p>你运行上面的代码，你会发现一个有趣的事，你在集合里面竟然添加了一条和花花一模一样的数据，说好的集合不能添加相同的数据，你仿佛在逗我玩？我被欺骗了，宝宝不开心了。。。。。。</p>
+<p>其实刚才那句话是适合于字符串的，为什么这么说呢，那是因为字符串是系统提供给我们的类，它里面已经将数据重复的规则，也就是这两个对象是否完全一样（属性，方法等）已经定义好了。这个你可以类比到toString方法，你直接输出对象却是对象在内存中的地址，但是你输出字符串却是字符串的值，这其实也就是字符串里面已经重写了自己的toString方法。</p>
+<p>所以呢，如果你也希望自己定义的类也具有相似的功能，那么你需要重写hashCode()和equals()方法。我们知道equals()在字符串中是判断两个对象的值是否相等。在java里面，hashCode是与哈希表有关的，这是数据结构的知识，我这里简单说明一下。</p>
+<p>举个例子，假如你要存储100个数字，如果你使用前面ArrayList或者数组来存储，而不是哈希表的话，在内存中连续的开辟一个空间用来存放数据，这似乎是可以的，但是一旦要是查找你就不行了。假设你要查找的数据在第100个位置，又或者说是不存在的，但你还是得从头开始查找，这样太浪费时间了。</p>
+<p>那么如何利用哈希表来存储上述数据呢？我们可以这样：在内存中开辟3个区域来进行存放，同时为这3个区域进行编号和命名为桶0，桶1，桶2。然后我们制定一些规则用于桶里面数据的存放，而这些规则就是hashCode。假设我们定义的hashCode为n%3也就是利用数对3进行取余，来进行判断。那么桶0，桶1，桶2存放的数据分别是3的倍数，对3取余数加1，对3取余数加2。</p>
+<p>有了这样的存储结构，我们首先是判断这个数是不是在这个桶里，然后是在哪个桶里，然后就去遍历这个桶里的元素。判断元素在哪个桶里，我们使用的是hashCode()方法，而判断桶里哪一个元素是我们要找的，则是使用equals()方法。这种方法真的好快。</p>
+<p>下面是系统生成的equals方法，我觉得很麻烦，那么你自己是可以重写的：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">public boolean equals(Object obj) &#123;</span><br><span class="line">	if (this == obj)</span><br><span class="line">		return true;</span><br><span class="line">	if (obj == null)</span><br><span class="line">		return false;</span><br><span class="line">	if (getClass() != obj.getClass())</span><br><span class="line">		return false;</span><br><span class="line">	Cat other = (Cat) obj;</span><br><span class="line">	if (month != other.month)</span><br><span class="line">		return false;</span><br><span class="line">	if (name == null) &#123;</span><br><span class="line">		if (other.name != null)</span><br><span class="line">			return false;</span><br><span class="line">	&#125; else if (!name.equals(other.name))</span><br><span class="line">		return false;</span><br><span class="line">	if (species == null) &#123;</span><br><span class="line">		if (other.species != null)</span><br><span class="line">			return false;</span><br><span class="line">	&#125; else if (!species.equals(other.species))</span><br><span class="line">		return false;</span><br><span class="line">	return true;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>重写后的equals方法是：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">public boolean equals(Object obj) &#123;</span><br><span class="line">	if(this==obj) // 判断对象是否相等，相等则返回true，没必要继续比较属性</span><br><span class="line">		return true;</span><br><span class="line">	if (obj.getClass()==Cat.class) // 判断obj是否是Cat类的对象，是进行强制转换，进行对象属性的比较</span><br><span class="line">	&#123;</span><br><span class="line">		Cat cat = (Cat)obj;</span><br><span class="line">	    return (cat.getName().equals(name))&amp;&amp;(cat.getMonth()==month)&amp;&amp;(cat.getSpecies().equals(species));</span><br><span class="line">	&#125;</span><br><span class="line">	return false;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>重写了这两个方法以后，现在你再来运行我们的测试类，你会发现花花这个重复对象是不能再次添加进去了。</p>
+<p>现在我们想查找花花的信息，我们有多种方式，第一种是通过花花这个对象：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// 在集合里面查找花花的信息并进行输出</span><br><span class="line">		if(hset.contains(huahua)) &#123;</span><br><span class="line">			System.out.println(&quot;花花找到了&quot;);</span><br><span class="line">			System.out.println(huahua);</span><br><span class="line">		&#125;else &#123;</span><br><span class="line">			System.out.println(&quot;对不起，花花没有找到&quot;);</span><br><span class="line">		&#125;</span><br></pre></td></tr></table></figure></p>
+<p>第二种是通过花花的名字来查找花花的信息并进行输出：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">// 在集合里面使用名字来查找花花的信息并进行输出</span><br><span class="line">		boolean flag =false;</span><br><span class="line">		its = hset.iterator();</span><br><span class="line">		Cat cat =null ;</span><br><span class="line">		while(its.hasNext()) &#123;  // 判断是否有下一个对象</span><br><span class="line">                cat=(Cat)its.next();    // 输出下一个对象的信息</span><br><span class="line">			if(cat.getName().equals(&quot;花花&quot;)) &#123;</span><br><span class="line">				flag =true;</span><br><span class="line">				break;</span><br><span class="line">			&#125;</span><br><span class="line">	&#125;</span><br><span class="line">		if(flag) &#123;</span><br><span class="line">			System.out.println(&quot;花花找到了&quot;);</span><br><span class="line">			System.out.println(cat);</span><br><span class="line">		&#125;else &#123;</span><br><span class="line">			System.out.println(&quot;花花没有找到&quot;);</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		&#125;</span><br></pre></td></tr></table></figure></p>
+<p>说完了hsahset，接下来我们来聊聊map的那些事。</p>
+<h2 id="Map"><a href="#Map" class="headerlink" title="Map"></a>Map</h2><p>Map中的数据是以键值对( key-value )的形式存储的，这个和Python中的dict（字典）<br>很相似。</p>
+<p>key-value以Entry类型的对象实例存在，而MAp.Entry本身也是一个接口；你可以通过key值来快速地查找value的值。</p>
+<p>一个key-value的映射不能包含重复的键（Key的值必须是唯一的），但是Value是可以重复的。每个键最多只能映射到一个值。</p>
+<p>同样这个Map接口中最常用的实现类是HashMap类，我们前面说过HashSet是基于HashMap而实现的。</p>
+<p>HashMap是基于哈希表的Map接口的实现，它允许使用null值和null键（但是只能有一个）</p>
+<p>key值不允许重复，HashMap中的Entry对象是无序排列的。</p>
+<p>Map接口，HashSet 泛型有一个类，Map&lt;&gt;后可以有key的类型以及Value的类型。</p>
+<p>entrySet获取键值对所有的内容，你可以通过get(key)取Value。keySet取出所有key值。HashMap中使用put添加元素，remove根据key值来移除元素。</p>
+<p>HashMap中构造方法，默认容量16，加载因,0.75 ；你可以使用已存在map集合创建HashMap。</p>
+<p>关于这一块，大家还是多看看api文档，多自己动手操作吧。</p>
+<p>需求：完成一个类似字典的功能：<br>1、将单词以及单词的注释存储到HashMap中；<br>2、显示HashMap中的内容；<br>3、查找某个单词的注释并显示。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line">package JavaCollectionTest;</span><br><span class="line"></span><br><span class="line">import java.util.HashMap;</span><br><span class="line">import java.util.Iterator;</span><br><span class="line">import java.util.Map;</span><br><span class="line">import java.util.Map.Entry;</span><br><span class="line">import java.util.Scanner;</span><br><span class="line">import java.util.Set;</span><br><span class="line"></span><br><span class="line">public class DictionaryDemoTest &#123;</span><br><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">	Map&lt;String,String&gt; animal =new HashMap&lt;String,String&gt;();</span><br><span class="line">	System.out.println(&quot;请输入三组单词对应的注释，并存放到HashMap当中：&quot;);</span><br><span class="line">	Scanner console =new Scanner(System.in);</span><br><span class="line">	int i=0;</span><br><span class="line">	while(i&lt;3) &#123;</span><br><span class="line">		System.out.println(&quot;请输入key值(单词)：&quot;);</span><br><span class="line">		String key =console.next();</span><br><span class="line">		</span><br><span class="line">		System.out.println(&quot;请输入value值(注释)：&quot;);</span><br><span class="line">		String value =console.next();</span><br><span class="line">		animal.put(key, value);</span><br><span class="line">		i++;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	// 打印输出value的值（使用迭代器）</span><br><span class="line">	System.out.println(&quot;*************************&quot;);</span><br><span class="line">	System.out.println(&quot;使用迭代器输出所有的value的值：&quot;);</span><br><span class="line">	Iterator&lt;String&gt; it =animal.values().iterator();</span><br><span class="line">	while(it.hasNext()) &#123;</span><br><span class="line">		System.out.print(it.next()+&quot; &quot;);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	System.out.println(&quot;*************************&quot;);</span><br><span class="line">	// 打印输出key和value的值</span><br><span class="line">	// 通过entrySet方法得到key-value</span><br><span class="line">	System.out.println(&quot;通过entrySet方法得到key-value：&quot;);</span><br><span class="line">	Set&lt;Entry&lt;String,String&gt;&gt; entrySet =animal.entrySet();// 使用增强型for循环进行遍历</span><br><span class="line">	for(Entry&lt;String,String&gt; entryset:entrySet) &#123;</span><br><span class="line">		System.out.print(entryset.getKey()+&quot;-&quot;);</span><br><span class="line">		System.out.println(entryset.getValue());</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	System.out.println();</span><br><span class="line">	System.out.println(&quot;*************************&quot;);</span><br><span class="line">	// 通过单词找到注释并输出</span><br><span class="line">	// 使用KeySet方法</span><br><span class="line">	System.out.println(&quot;请输入你要查找的key(单词)&quot;);</span><br><span class="line">	String keySearch =console.next();</span><br><span class="line">	// 1、取得KeySet</span><br><span class="line">	Set&lt;String&gt; KeySet =animal.keySet();</span><br><span class="line">	//2、遍历KeySet</span><br><span class="line">	boolean flag =false;</span><br><span class="line">	for(String key:KeySet) &#123;</span><br><span class="line">		if(key.equals(keySearch)) &#123;</span><br><span class="line">			System.out.println(&quot;找到了&quot;+&quot;键值对为：&quot;+key+&quot;-&quot;+animal.get(key));</span><br><span class="line">			flag=true;</span><br><span class="line">			break;</span><br><span class="line">		&#125;	</span><br><span class="line">	&#125;</span><br><span class="line">	if(!flag) &#123;</span><br><span class="line">		System.out.println(&quot;对不起，没有找到&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>最后，我们再来看一个例子：商品信息管理的HashMap实例。</p>
+<p>需求：使用HashMap対商品信息迸行管理：其中key是商品编号, value是商品对象；<br>你需要对HashMap中的商品信息迸行増、刪、改、査操作。</p>
+<p>要求：分析商品信息类:<br>属性：商品编号: id；商品名称: name；商品价格: price<br>方法：构造方法，获取和设置属性值的方法和其他方法。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">package JavaCollectionTest;</span><br><span class="line"></span><br><span class="line">import java.util.HashMap;</span><br><span class="line">import java.util.Iterator;</span><br><span class="line">import java.util.Map;</span><br><span class="line">import java.util.Map.Entry;</span><br><span class="line">import java.util.Scanner;</span><br><span class="line">import java.util.Set;</span><br><span class="line"></span><br><span class="line">public class GoodsTest &#123;</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		Scanner console = new Scanner(System.in);</span><br><span class="line">// 定义HashMap对象</span><br><span class="line">		Map&lt;String, Goods&gt; goodsMap = new HashMap&lt;String, Goods&gt;();</span><br><span class="line">		System.out.println(&quot;请输入三条商品信息:&quot;);</span><br><span class="line">		int i = 0;</span><br><span class="line">		while (i &lt; 3) &#123;</span><br><span class="line">			System.out.println(&quot;请输入第&quot; + (i + 1) + &quot;条商品信息:&quot;);</span><br><span class="line">			System.out.println(&quot;请输入商品的编号:&quot;);</span><br><span class="line">			String goodsId = console.next();</span><br><span class="line">			System.out.println(&quot;请输入商品的名称:&quot;);</span><br><span class="line">			String goodsName = console.next();</span><br><span class="line">			System.out.println(&quot;请输入商品的价格:&quot;);</span><br><span class="line">			float goodsPrice = console.nextFloat();</span><br><span class="line"></span><br><span class="line">			// 将商品信息添加到HashMap当中</span><br><span class="line">			Goods goods = new Goods(goodsId, goodsName, goodsPrice);</span><br><span class="line">			goodsMap.put(goodsId, goods);</span><br><span class="line">			i++;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		// 遍历HashMap并输出商品的信息</span><br><span class="line">		System.out.println(&quot;输出商品的全部信息:&quot;);</span><br><span class="line">		Iterator&lt;Goods&gt; itGoods = goodsMap.values().iterator();</span><br><span class="line">		while(itGoods.hasNext()) &#123;</span><br><span class="line">			System.out.println(itGoods.next());</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这是初始的代码，这个代码尽管能运行，但是实际上运行的问题还是很多的：<br>商品编号不可以重复（后面对前面的信息进行了覆盖）；类型输入错误。接下来我们就对这些进行修改：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">package JavaCollectionTest;</span><br><span class="line"></span><br><span class="line">import java.util.HashMap;</span><br><span class="line">import java.util.InputMismatchException;</span><br><span class="line">import java.util.Iterator;</span><br><span class="line">import java.util.Map;</span><br><span class="line">import java.util.Map.Entry;</span><br><span class="line">import java.util.Scanner;</span><br><span class="line">import java.util.Set;</span><br><span class="line"></span><br><span class="line">public class GoodsTest &#123;</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		Scanner console = new Scanner(System.in);</span><br><span class="line">// 定义HashMap对象</span><br><span class="line">		Map&lt;String, Goods&gt; goodsMap = new HashMap&lt;String, Goods&gt;();</span><br><span class="line">		System.out.println(&quot;请输入三条商品信息:&quot;);</span><br><span class="line">		int i = 0;</span><br><span class="line">		while (i &lt; 3) &#123;</span><br><span class="line">			System.out.println(&quot;请输入第&quot; + (i + 1) + &quot;条商品信息:&quot;);</span><br><span class="line">			System.out.println(&quot;请输入商品的编号:&quot;);</span><br><span class="line">			String goodsId = console.next();</span><br><span class="line">			// 判断商品编号id是否存在</span><br><span class="line">			if(goodsMap.containsKey(goodsId)) &#123;</span><br><span class="line">				System.out.println(&quot;该商品编号已经存在，请重新输入&quot;);</span><br><span class="line">				continue;</span><br><span class="line">			&#125;</span><br><span class="line">			System.out.println(&quot;请输入商品的名称:&quot;);</span><br><span class="line">			String goodsName = console.next();</span><br><span class="line">			</span><br><span class="line">			float goodsPrice = 0;</span><br><span class="line">			System.out.println(&quot;请输入商品的价格:&quot;);</span><br><span class="line">			try &#123;</span><br><span class="line">				 goodsPrice = console.nextFloat();</span><br><span class="line">			&#125;catch(InputMismatchException e) &#123;</span><br><span class="line">				System.out.println(&quot;商品价格的格式不准确，请输入数值型数据&quot;);</span><br><span class="line">				console.next();</span><br><span class="line">				continue;</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">			// 将商品信息添加到HashMap当中</span><br><span class="line">			Goods goods = new Goods(goodsId, goodsName, goodsPrice);</span><br><span class="line">			goodsMap.put(goodsId, goods);</span><br><span class="line">			i++;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		// 遍历HashMap并输出商品的信息</span><br><span class="line">		System.out.println(&quot;输出商品的全部信息:&quot;);</span><br><span class="line">		Iterator&lt;Goods&gt; itGoods = goodsMap.values().iterator();</span><br><span class="line">		while(itGoods.hasNext()) &#123;</span><br><span class="line">			System.out.println(itGoods.next());</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p><img src="https://upload-images.jianshu.io/upload_images/8964398-9916f2753ebb5bf4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>我们通过这张图片，来简单的对集合进行一下总结。</p>
+<p>我们知道Collection这个接口是有3个实现接口的，list，queue和set，而每个接口下面都有其实现的类。</p>
+<p>Arraylist：底层由数组实现，它的元素是有序且可以重复的，它可以动态增长，以满足应用程序的需求。值得注意的是，ArrayList的元素值可以为null。</p>
+<p>HashSet：是Set接口的实现类，它的元素是无序且不可以重复的，不过只允许一个null元素</p>
+<p>HashMap：以键值对存储的数据，里面的键不能重复，但是允许使用null值和null键 。HashMap中的Entry对象(键值对)是无序排列的。</p>
+<p>也就是说上面3个只有第一个是有序的，其它两个都是无序的。</p>
+<p>Iterator (迭代器) ：Iterator接口以统一的方式对各种集合元素进行遍历。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Iterator&lt;String&gt; it=set.iterator();</span><br><span class="line"></span><br><span class="line">while(it.hasNext())&#123;  // 判断迭代器下一个是否有内容</span><br><span class="line"> System.out.print(it.next()+&quot;  &quot;);   // 取出存在的数据</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>我们在String对象比较的是按照ASCII值进行对比的，如果要比较我们自己定义的类呢？就必须重写我们的hashCode()方法和equals方法。如果两者的hashCode不同，那肯定不是一个对象，后面不需要使用equals方法；如果hashCode相同，我们再去调用equals方法，比较对象的其他属性或方法是否相同。</p>
+<p>本来这里应该介绍泛型的，但是考虑到篇幅的原因，下次再介绍。</p>
+
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="https://upload-images.jianshu.io/upload_images/8964398-58d04ffa926103d9.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">觉得不错，赏包辣条吃呗！</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href target="_blank">编程思录</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2018/08/05/关于JAVA你必须知道的那些事（八）：反射机制/" class="pre-post btn btn-default" title="关于JAVA你必须知道的那些事（八）：反射机制">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">关于JAVA你必须知道的那些事（八）：反射机制</span>
+        </a>
+    
+    
+        <a href="/2018/08/04/关于JAVA你必须知道的那些事（六）：包装类和多线程/" class="next-post btn btn-default" title="关于JAVA你必须知道的那些事（六）：包装类和多线程">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">关于JAVA你必须知道的那些事（六）：包装类和多线程</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+    <div id="vcomments" class="valine"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+
+    <script>
+        new Valine({
+            av: AV,
+            el: '#vcomments',
+            appId: '8zvHFFu5l2ah8lh0DEPH393B-gzGzoHsz',
+            appKey: 'UNmB24200qMtyyrun5z99nOE',
+            placeholder: '听说长得好看的，都已经留言了！',
+            notify: false,
+            verify: false,
+            avatar: 'mm',
+            meta: 'nick,mail'.split(','),
+            pageSize: '10',
+            path: window.location.pathname,
+            lang: 'zh-CN'.toLowerCase()
+        })
+    </script>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#输入输出流"><span class="toc-text">输入输出流</span></a></li></ol><li class="toc-item toc-level-2"><a class="toc-link" href="#File类"><span class="toc-text">File类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#字节流"><span class="toc-text">字节流</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#FileInputStream文件输入流"><span class="toc-text">FileInputStream文件输入流</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#FileOutputStream文件输出流"><span class="toc-text">FileOutputStream文件输出流</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#缓冲流"><span class="toc-text">缓冲流</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#字符流"><span class="toc-text">字符流</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#字节字符转换流"><span class="toc-text">字节字符转换流</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#对象序列化"><span class="toc-text">对象序列化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#集合"><span class="toc-text">集合</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#集合框架的体系结构"><span class="toc-text">集合框架的体系结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#List-列表"><span class="toc-text">List(列表)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ArrayList案例分析"><span class="toc-text">ArrayList案例分析</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#set-集"><span class="toc-text">set(集)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Map"><span class="toc-text">Map</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-text">总结</span></a>
+        
+    </li></div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2017-2019
+                </span> |
+                <span>
+				编程思录,保留所有权利
+                    <!--Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>-->
+                </span> |
+                <span>
+				<a style="color: #black" href="http://www.miitbeian.gov.cn">赣ICP备18013455号-5</a>
+                    <!--Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>-->
+                </span>
+            </div>
+			
+			<div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+			
+			<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1277113902'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s96.cnzz.com/z_stat.php%3Fid%3D1277113902%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));</script>
+        </div>
+    </div>
+</div>
+
+
+
+
+    <script src="/assets/tagcanvas.min.js?rev=2.9"></script>
+    <script>
+        var tagOption = {
+            textColour: 'red', // 字体颜色
+            outlineMethod: 'block', // 选中模式
+            outlineColour: '#FFDAB9', // 选中模式的颜色
+            interval: 30 || 30, // 动画帧之间的时间间隔，值越大，转动幅度越大
+            textHeight: 13,
+            outlineRadius: 3,
+            freezeActive: true || '', // 选中的标签是否继续滚动
+            frontSelect: true || '', // 不选标签云后部的标签
+            initial: [0.1, -0.1],
+            depth: 0.5,
+            decel: 0.95,
+            maxSpeed: 0.03,
+            reverse: true || '', // 是否反向触发
+            fadeIn: 500, // 进入动画时间
+            wheelZoom: false || '' // 是否启用鼠标滚轮
+        }
+        TagCanvas.Start('tag-cloud-3d','',tagOption);
+    </script>
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+</body>
+</html>

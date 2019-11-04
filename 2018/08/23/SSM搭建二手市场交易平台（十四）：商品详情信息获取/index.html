@@ -1,0 +1,425 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="编程思录，记录思考">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://blog.licheetools.top">
+    <!--SEO-->
+
+    <meta name="keywords" content="SSM框架,JAVA后端">
+
+
+    <meta name="description" content="写在前面本篇我们来介绍后台商品详细信息获取的功能，这里面有几个字段的获取比较特殊，需要格外注意。
+获取商品详情首先打开ProductManageController.java文件，在里面新增以下...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+
+    <!--Title-->
+
+
+<title>SSM搭建二手市场交易平台（十四）：商品详情信息获取 | 编程思录，记录思考</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="编程思录，记录思考" type="application/atom+xml">
+
+
+    <link rel="icon" href="./favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+	<div class="hide">
+		<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+	</div>
+
+
+
+
+
+
+    
+
+    <script>
+        (function(){
+            var bp = document.createElement('script');
+            var curProtocol = window.location.protocol.split(':')[0];
+            if (curProtocol === 'https') {
+                bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+            }
+            else {
+                bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+            }
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(bp, s);
+        })();
+    </script>
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header" style="background-image:url(https://upload-images.jianshu.io/upload_images/8964398-b1ba9582ea8b69ba.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)">
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title="Envy">
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 点滴进步，都是收获 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://blog.licheetools.top">编程思录，记录思考</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>首页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/font/"><i class="fa "></i>前端</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/java/"><i class="fa "></i>Java</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/python/"><i class="fa "></i>Python</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/go/"><i class="fa "></i>Go</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/spider/"><i class="fa "></i>爬虫</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/data/"><i class="fa "></i>数据分析</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/money/"><i class="fa "></i>付费教程</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/life/"><i class="fa "></i>生活记录</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives"><i class="fa "></i>时间轴</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/about/"><i class="fa "></i>关于博主</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/liuyan/"><i class="fa "></i>留言板</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="SSM搭建二手市场交易平台（十四）：商品详情信息获取">
+            
+	            SSM搭建二手市场交易平台（十四）：商品详情信息获取
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/java/">java</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/JAVA后端/">JAVA后端</a> <a class="tag-link" href="/tags/SSM框架/">SSM框架</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2018/08/23</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>本篇我们来介绍后台商品详细信息获取的功能，这里面有几个字段的获取比较特殊，需要格外注意。</p>
+<h2 id="获取商品详情"><a href="#获取商品详情" class="headerlink" title="获取商品详情"></a>获取商品详情</h2><p>首先打开ProductManageController.java文件，在里面新增以下代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">/***</span><br><span class="line">     *</span><br><span class="line">     * 后台管理员获取商品的详情</span><br><span class="line">     * */</span><br><span class="line">    @RequestMapping(&quot;detail.do&quot;)</span><br><span class="line">    @ResponseBody   //自动序列化json功能</span><br><span class="line">    public ServerResponse getDetail(HttpSession session, Integer productId)&#123;</span><br><span class="line"></span><br><span class="line">        //判断一下登录情况</span><br><span class="line">        User user=(User) session.getAttribute(Const.CURRENT_USER);</span><br><span class="line">        if(user ==null)&#123;</span><br><span class="line">            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),&quot;用户未登录，请登录&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">        //判断一下是不是管理员身份</span><br><span class="line">        if(iUserService.checkAdminRole(user).isSuccess())&#123;</span><br><span class="line">            //如果是管理员就增加我们获取商品详情的逻辑</span><br><span class="line">            return iProductService.manageGetDetail(productId);</span><br><span class="line">        &#125;else&#123;</span><br><span class="line">            return ServerResponse.createByErrorMessage(&quot;无权限操作，需要管理员权限&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>接着打开ProductServiceImpl.java文件，里面写入以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">/***</span><br><span class="line"> *</span><br><span class="line"> * 后台管理员获取商品的详情</span><br><span class="line"> * */</span><br><span class="line">public ServerResponse&lt;ProductDetailVo&gt; manageGetDetail(Integer productId) &#123;</span><br><span class="line">    //判断商品是否存在</span><br><span class="line">    if (productId == null) &#123;   //商品id不存在</span><br><span class="line">        return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(), ResponseCode.ILLEGAL_ARGUMENT.getDesc());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Product product = productMapper.selectByPrimaryKey(productId);</span><br><span class="line">    if (product == null) &#123;</span><br><span class="line">        return ServerResponse.createByErrorMessage(&quot;该商品已下架或者删除！&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    // vo对象--value object</span><br><span class="line">    //pojo --&gt;bo(business object)---&gt;vo(view object)</span><br><span class="line">    //我们这里还是先按照技术结构的演变，使用vo等到后面升级的时候再进行替换</span><br><span class="line"></span><br><span class="line">    //商品存在,我们现在是进行信息的传递</span><br><span class="line">    ProductDetailVo productDetailVo =assembleProductDetailVo(product);</span><br><span class="line">   return ServerResponse.createBySuccess(productDetailVo);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>我们知道现在是要获取商品的详细信息，那么我们可以使用不同的架构来完成，有两种架构可供选择：pojo –&gt;vo对象（value object）和pojo –&gt;bo(business object)—&gt;vo(view object)，考虑到技术的演变，我们这里还是使用vo等到后面升级的时候再进行替换。前面我们进行了商品信息是否存在的判断，现在是有商品，那么如何获取商品呢？</p>
+<p>这里我们写了一个方法，用于获取商品信息(在ProductServiceImpl.java文件里面继续写入以下代码：)：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">private ProductDetailVo assembleProductDetailVo(Product product) &#123;</span><br><span class="line">    ProductDetailVo productDetailVo = new ProductDetailVo();</span><br><span class="line">    productDetailVo.setId(product.getId());</span><br><span class="line">    productDetailVo.setSubtitle(product.getSubtitle());</span><br><span class="line">    productDetailVo.setPrice(product.getPrice());</span><br><span class="line">    productDetailVo.setMainImage(product.getMainImage());</span><br><span class="line">    productDetailVo.setSubImages(product.getSubImages());</span><br><span class="line">    productDetailVo.setCategoryId(product.getCategoryId());</span><br><span class="line">    productDetailVo.setDetail(product.getDetail());</span><br><span class="line">    productDetailVo.setName(product.getName());</span><br><span class="line">    productDetailVo.setStatus(product.getStatus());</span><br><span class="line">    productDetailVo.setStock(product.getStock());</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    //imageHost:这个我们需要进行单独的配置，这样便于后面的维护</span><br><span class="line">    productDetailVo.setImageHost(PropertiesUtil.getProperty(&quot;ftp.server.http.prefix&quot;, &quot;http://img.licheetools.top/&quot;));</span><br><span class="line"></span><br><span class="line">    //parentCategoryId</span><br><span class="line">    Category category = categoryMapper.selectByPrimaryKey(product.getId());</span><br><span class="line">    if (category ==null) &#123;</span><br><span class="line">        productDetailVo.setParentCategoryId(0);   //没有父节点就默认该节点为0</span><br><span class="line">    &#125;else &#123;</span><br><span class="line">        productDetailVo.setParentCategoryId(category.getParentId());  //存在就赋值给它</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //createTime在mybatis里面都是毫秒数，不利于我们的展示，我们需要进行配置</span><br><span class="line">    productDetailVo.setCreateTime(DateTimeUtil.dateToStr(product.getCreateTime()));</span><br><span class="line"></span><br><span class="line">    //updateTime在mybatis里面都是毫秒数，不利于我们的展示，我们需要进行配置</span><br><span class="line">    productDetailVo.setUpdateTime(DateTimeUtil.dateToStr(product.getUpdateTime()));</span><br><span class="line">    return productDetailVo;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>既然我们使用了vo那么我们就要去vo包里面新建一个ProductDetailVo.java，在里面写入以下代码，这个文件里面就是定义一些你需要查询的商品字段：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br></pre></td><td class="code"><pre><span class="line">package top.store.vo;</span><br><span class="line"></span><br><span class="line">import java.math.BigDecimal;</span><br><span class="line"></span><br><span class="line">public class ProductDetailVo &#123;</span><br><span class="line">    private Integer  id;</span><br><span class="line">    private Integer categoryId;</span><br><span class="line">    private String name;</span><br><span class="line">    private String subtitle;</span><br><span class="line">    private String mainImage;</span><br><span class="line">    private String subImages;</span><br><span class="line">    private String detail;</span><br><span class="line">    private BigDecimal price;</span><br><span class="line">    private Integer stock;</span><br><span class="line">    private Integer status;</span><br><span class="line">    private String createTime;</span><br><span class="line">    private String updateTime;</span><br><span class="line"></span><br><span class="line">    private String imageHost;   //这个是图片服务器的前缀，我们后面通过这个前缀和图片进行拼接从而形成url进行访问</span><br><span class="line">    private Integer parentCategoryId;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    public Integer getId() &#123;</span><br><span class="line">        return id;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setId(Integer id) &#123;</span><br><span class="line">        this.id = id;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public Integer getCategoryId() &#123;</span><br><span class="line">        return categoryId;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setCategoryId(Integer categoryId) &#123;</span><br><span class="line">        this.categoryId = categoryId;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String getName() &#123;</span><br><span class="line">        return name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setName(String name) &#123;</span><br><span class="line">        this.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String getSubtitle() &#123;</span><br><span class="line">        return subtitle;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setSubtitle(String subtitle) &#123;</span><br><span class="line">        this.subtitle = subtitle;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String getMainImage() &#123;</span><br><span class="line">        return mainImage;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setMainImage(String mainImage) &#123;</span><br><span class="line">        this.mainImage = mainImage;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String getSubImages() &#123;</span><br><span class="line">        return subImages;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setSubImages(String subImages) &#123;</span><br><span class="line">        this.subImages = subImages;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String getDetail() &#123;</span><br><span class="line">        return detail;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setDetail(String detail) &#123;</span><br><span class="line">        this.detail = detail;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public BigDecimal getPrice() &#123;</span><br><span class="line">        return price;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setPrice(BigDecimal price) &#123;</span><br><span class="line">        this.price = price;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public Integer getStock() &#123;</span><br><span class="line">        return stock;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setStock(Integer stock) &#123;</span><br><span class="line">        this.stock = stock;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public Integer getStatus() &#123;</span><br><span class="line">        return status;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setStatus(Integer status) &#123;</span><br><span class="line">        this.status = status;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String getCreateTime() &#123;</span><br><span class="line">        return createTime;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setCreateTime(String createTime) &#123;</span><br><span class="line">        this.createTime = createTime;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String getUpdateTime() &#123;</span><br><span class="line">        return updateTime;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setUpdateTime(String updateTime) &#123;</span><br><span class="line">        this.updateTime = updateTime;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String getImageHost() &#123;</span><br><span class="line">        return imageHost;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setImageHost(String imageHost) &#123;</span><br><span class="line">        this.imageHost = imageHost;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public Integer getParentCategoryId() &#123;</span><br><span class="line">        return parentCategoryId;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setParentCategoryId(Integer parentCategoryId) &#123;</span><br><span class="line">        this.parentCategoryId = parentCategoryId;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>里面我们有一个<code>imageHost</code>字段，它是图片服务器的前缀，我们后面通过这个前缀和图片进行拼接从而形成url进行访问。继续回到我们的ProductServiceImpl.java文件，不知道细心的你发现没有，有4个字段的获取我们是使用了特殊的方法。其实也正是因为这个原因，我们并没有直接从product对象里面直接获取信息，因为那样获取的信息有可能不是我们所需要的格式，所以我们这里就重新定义了一个ProductDetailVo类，它的实例对象都是来源于product对象但是又进行了更深层次的处理，因此它就是我们想要的。</p>
+<p>那么这4个特殊字段的获取应该怎么操作呢？接下来一一为你介绍。</p>
+<h3 id="imageHost字段获取"><a href="#imageHost字段获取" class="headerlink" title="imageHost字段获取"></a>imageHost字段获取</h3><p>前面说过因为imageHost是图片服务器的前缀，我们后面通过这个前缀和图片进行拼接从而形成url进行访问，所以肯定会涉及到一些服务器属性的配置，这样我们把与服务器属性相关的利用配置文件来处理，这样一旦服务器发送变动，你只需要修改一下配置文件即可，不需要进行很多代码的修改，无形中提高了代码的可维护性。</p>
+<p>打开util包，在里面新建一个PropertiesUtil.java文件，里面写入以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">package top.store.util;</span><br><span class="line"></span><br><span class="line">import org.apache.commons.lang.StringUtils;</span><br><span class="line">import org.slf4j.Logger;</span><br><span class="line">import org.slf4j.LoggerFactory;</span><br><span class="line"></span><br><span class="line">import java.io.IOException;</span><br><span class="line">import java.io.InputStreamReader;</span><br><span class="line">import java.util.Properties;</span><br><span class="line"></span><br><span class="line">public class PropertiesUtil &#123;</span><br><span class="line"></span><br><span class="line">    //定义日志</span><br><span class="line">    private static Logger logger = LoggerFactory.getLogger(PropertiesUtil.class);</span><br><span class="line"></span><br><span class="line">    private static Properties properties;</span><br><span class="line"></span><br><span class="line">    static &#123;</span><br><span class="line">        String fileName =&quot;store.properties&quot;;</span><br><span class="line">        properties =new Properties();</span><br><span class="line">        try &#123;</span><br><span class="line">            properties.load(new InputStreamReader(PropertiesUtil.class.getClassLoader().getResourceAsStream(fileName),&quot;UTF-8&quot;));</span><br><span class="line">        &#125; catch (IOException e) &#123;</span><br><span class="line">            logger.info(&quot;配置文件读取异常&quot;,e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    //定义方法用于从store.properties文件中读取信息</span><br><span class="line">    public static String getProperty(String key)&#123;</span><br><span class="line">        //可能我们写的property文件存在空格，需要去掉key包含的空格</span><br><span class="line">        String value =properties.getProperty(key.trim());</span><br><span class="line">        if(StringUtils.isBlank(value))&#123;   //注意这里使用isBlank，就算是空格和制表符也是为空</span><br><span class="line">            return null;</span><br><span class="line">        &#125;</span><br><span class="line">        return value.trim();  //有可能后面的值也存在空值</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //定义方法用于从store.properties文件中读取信息，添加默认参数</span><br><span class="line">    public static String getProperty(String key,String defaultValue)&#123;</span><br><span class="line">        //可能我们写的property文件存在空格，需要去掉key包含的空格</span><br><span class="line">        String value =properties.getProperty(key.trim());</span><br><span class="line">        if(StringUtils.isBlank(value))&#123;   //注意这里使用isBlank，就算是空格和制表符也是为空</span><br><span class="line">            value= defaultValue;</span><br><span class="line">        &#125;</span><br><span class="line">        return value.trim();  //有可能后面的值也存在空值</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>我们这里利用的就是静态代码块，因为它只在类被加载时执行，而且只执行一次。这里我们重载了两个方法，目的就是适应不同的业务需求。同时为了能及时发现问题，我们定义了日志，用于相关信息的输出。</p>
+<h3 id="parentCategoryId字段获取"><a href="#parentCategoryId字段获取" class="headerlink" title="parentCategoryId字段获取"></a>parentCategoryId字段获取</h3><p>因为我们这里是通过商品的Id来获取其详细信息的，这样就可能会存在一个情况就是没有父节点，所以这个字段我们需要格外注意：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">//parentCategoryId</span><br><span class="line">Category category = categoryMapper.selectByPrimaryKey(product.getId());</span><br><span class="line">if (category ==null) &#123;</span><br><span class="line">    productDetailVo.setParentCategoryId(0);   //没有父节点就默认该节点为0</span><br><span class="line">&#125;else &#123;</span><br><span class="line">    productDetailVo.setParentCategoryId(category.getParentId());  //存在就赋值给它</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="时间字段获取"><a href="#时间字段获取" class="headerlink" title="时间字段获取"></a>时间字段获取</h3><p>在这里我们有两个关于时间的字段：createTime和updateTime，我们知道在mybatis里面时间单位都是毫秒数，这是不利于我们展示的，所以需要进行配置。我们可以自己定义一个专门用于处理时间的工具类。打开util包，在里面新建一个工具类DateTimeUtil，我们知道一般时间处理就两种格式：str-&gt;Date或者是Date-&gt;str。这里我们使用了joda-time这个专门用于处理时间的工具，具体的可以参考这里：<a href="https://blog.csdn.net/backbug/article/details/78646152" target="_blank" rel="noopener">Joda-Time的使用</a>。DateTimeUtil文件写入以下信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line">package top.store.util;</span><br><span class="line"></span><br><span class="line">import org.apache.commons.lang3.StringUtils;</span><br><span class="line">import org.joda.time.DateTime;</span><br><span class="line">import org.joda.time.format.DateTimeFormat;</span><br><span class="line">import org.joda.time.format.DateTimeFormatter;</span><br><span class="line"></span><br><span class="line">import java.util.Date;</span><br><span class="line"></span><br><span class="line">public class DateTimeUtil &#123;</span><br><span class="line">    //我们使用joda-time</span><br><span class="line"></span><br><span class="line">    //定义一下我们的日期格式</span><br><span class="line">    public static final String STANDARD_FORMAT = &quot;yyyy-MM-dd HH:mm:ss&quot;;</span><br><span class="line"></span><br><span class="line">    //主要完成两种类型的转换</span><br><span class="line">    //str-&gt;Date</span><br><span class="line">    //Date-&gt;str</span><br><span class="line"></span><br><span class="line">    //str-&gt;Date，使用前面定义的默认的日期格式</span><br><span class="line">    public static Date strToDate(String dateTimeStr)&#123;</span><br><span class="line">        DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern(STANDARD_FORMAT);</span><br><span class="line">        DateTime dateTime = dateTimeFormatter.parseDateTime(dateTimeStr);</span><br><span class="line">        return dateTime.toDate();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //str-&gt;Date</span><br><span class="line">    public static Date strToDate(String dateTimeStr,String formatStr)&#123;</span><br><span class="line">        DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern(formatStr);</span><br><span class="line">        DateTime dateTime = dateTimeFormatter.parseDateTime(dateTimeStr);</span><br><span class="line">        return dateTime.toDate();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    //Date-&gt;str，使用前面定义的默认的日期格式</span><br><span class="line">    public static String dateToStr(Date date)&#123;</span><br><span class="line">        if(date == null)&#123;</span><br><span class="line">            return StringUtils.EMPTY;</span><br><span class="line">        &#125;</span><br><span class="line">        DateTime dateTime = new DateTime(date);</span><br><span class="line">        return dateTime.toString(STANDARD_FORMAT);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //Date-&gt;str</span><br><span class="line">    public static String dateToStr(Date date,String formatStr)&#123;</span><br><span class="line">        if(date == null)&#123;</span><br><span class="line">            return StringUtils.EMPTY;</span><br><span class="line">        &#125;</span><br><span class="line">        DateTime dateTime = new DateTime(date);</span><br><span class="line">        return dateTime.toString(formatStr);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    //测试上面方法有没有问题的方法</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        System.out.println(DateTimeUtil.dateToStr(new Date(),&quot;yyyy-MM-dd HH:mm:ss&quot;));</span><br><span class="line">        System.out.println(DateTimeUtil.strToDate(&quot;2008-08-08 20:08:08&quot;,&quot;yyyy-MM-dd HH:mm:ss&quot;));</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后回到ProductServiceImpl.java文件，添加以下代码（实际上前面已经写过了）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">//createTime在mybatis里面都是毫秒数，不利于我们的展示，我们需要进行配置</span><br><span class="line">      productDetailVo.setCreateTime(DateTimeUtil.dateToStr(product.getCreateTime()));</span><br><span class="line"></span><br><span class="line">//updateTime在mybatis里面都是毫秒数，不利于我们的展示，我们需要进行配置</span><br><span class="line">       productDetailVo.setUpdateTime(DateTimeUtil.dateToStr(product.getUpdateTime()));</span><br></pre></td></tr></table></figure>
+<p>最后打开IProductService.java文件，里面写入以下代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ServerResponse&lt;ProductDetailVo&gt; manageGetDetail(Integer productId);     //后台管理员获取商品的详情</span><br></pre></td></tr></table></figure>
+<p>这样我们本篇，关于后台商品详细信息获取功能的介绍就到此为止了，感谢你的赏阅！</p>
+
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="https://upload-images.jianshu.io/upload_images/8964398-58d04ffa926103d9.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">觉得不错，赏包辣条吃呗！</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href target="_blank">编程思录</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2018/08/24/SSM搭建二手市场交易平台（十五）：后台商品列表动态分页及搜索功能/" class="pre-post btn btn-default" title="SSM搭建二手市场交易平台（十五）：后台商品列表动态分页及搜索功能">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">SSM搭建二手市场交易平台（十五）：后台商品列表动态分页及搜索功能</span>
+        </a>
+    
+    
+        <a href="/2018/08/22/SSM搭建二手市场交易平台（十三）：后台商品的增加与更新/" class="next-post btn btn-default" title="SSM搭建二手市场交易平台（十三）：后台商品的增加与更新">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">SSM搭建二手市场交易平台（十三）：后台商品的增加与更新</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+    <div id="vcomments" class="valine"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+
+    <script>
+        new Valine({
+            av: AV,
+            el: '#vcomments',
+            appId: '8zvHFFu5l2ah8lh0DEPH393B-gzGzoHsz',
+            appKey: 'UNmB24200qMtyyrun5z99nOE',
+            placeholder: '听说长得好看的，都已经留言了！',
+            notify: false,
+            verify: false,
+            avatar: 'mm',
+            meta: 'nick,mail'.split(','),
+            pageSize: '10',
+            path: window.location.pathname,
+            lang: 'zh-CN'.toLowerCase()
+        })
+    </script>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#写在前面"><span class="toc-text">写在前面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#获取商品详情"><span class="toc-text">获取商品详情</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#imageHost字段获取"><span class="toc-text">imageHost字段获取</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#parentCategoryId字段获取"><span class="toc-text">parentCategoryId字段获取</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#时间字段获取"><span class="toc-text">时间字段获取</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2017-2019
+                </span> |
+                <span>
+				编程思录,保留所有权利
+                    <!--Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>-->
+                </span> |
+                <span>
+				<a style="color: #black" href="http://www.miitbeian.gov.cn">赣ICP备18013455号-5</a>
+                    <!--Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>-->
+                </span>
+            </div>
+			
+			<div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+			
+			<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1277113902'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s96.cnzz.com/z_stat.php%3Fid%3D1277113902%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));</script>
+        </div>
+    </div>
+</div>
+
+
+
+
+    <script src="/assets/tagcanvas.min.js?rev=2.9"></script>
+    <script>
+        var tagOption = {
+            textColour: 'red', // 字体颜色
+            outlineMethod: 'block', // 选中模式
+            outlineColour: '#FFDAB9', // 选中模式的颜色
+            interval: 30 || 30, // 动画帧之间的时间间隔，值越大，转动幅度越大
+            textHeight: 13,
+            outlineRadius: 3,
+            freezeActive: true || '', // 选中的标签是否继续滚动
+            frontSelect: true || '', // 不选标签云后部的标签
+            initial: [0.1, -0.1],
+            depth: 0.5,
+            decel: 0.95,
+            maxSpeed: 0.03,
+            reverse: true || '', // 是否反向触发
+            fadeIn: 500, // 进入动画时间
+            wheelZoom: false || '' // 是否启用鼠标滚轮
+        }
+        TagCanvas.Start('tag-cloud-3d','',tagOption);
+    </script>
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+</body>
+</html>

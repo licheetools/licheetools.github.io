@@ -1,0 +1,427 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="编程思录，记录思考">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://blog.licheetools.top">
+    <!--SEO-->
+
+    <meta name="keywords" content="SSM框架,JAVA后端">
+
+
+    <meta name="description" content="写在前面在前面的某一篇里面，我们完成了后台商品详情，列表，搜索，动态排序功能的开发。那么本篇我们来介绍前台商品详情，列表，搜索，动态排序功能的开发，这个和那个不一样，希望大家多看几遍，好好理解一...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+
+    <!--Title-->
+
+
+<title>SSM搭建二手市场交易平台（十七）：前台商品列表，搜索，动态排序 | 编程思录，记录思考</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="编程思录，记录思考" type="application/atom+xml">
+
+
+    <link rel="icon" href="./favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+	<div class="hide">
+		<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+	</div>
+
+
+
+
+
+
+    
+
+    <script>
+        (function(){
+            var bp = document.createElement('script');
+            var curProtocol = window.location.protocol.split(':')[0];
+            if (curProtocol === 'https') {
+                bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+            }
+            else {
+                bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+            }
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(bp, s);
+        })();
+    </script>
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header" style="background-image:url(https://upload-images.jianshu.io/upload_images/8964398-b1ba9582ea8b69ba.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)">
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title="Envy">
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 点滴进步，都是收获 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://blog.licheetools.top">编程思录，记录思考</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>首页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/font/"><i class="fa "></i>前端</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/java/"><i class="fa "></i>Java</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/python/"><i class="fa "></i>Python</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/go/"><i class="fa "></i>Go</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/spider/"><i class="fa "></i>爬虫</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/data/"><i class="fa "></i>数据分析</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/money/"><i class="fa "></i>付费教程</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/life/"><i class="fa "></i>生活记录</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives"><i class="fa "></i>时间轴</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/about/"><i class="fa "></i>关于博主</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/liuyan/"><i class="fa "></i>留言板</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="SSM搭建二手市场交易平台（十七）：前台商品列表，搜索，动态排序">
+            
+	            SSM搭建二手市场交易平台（十七）：前台商品列表，搜索，动态排序
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/java/">java</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/JAVA后端/">JAVA后端</a> <a class="tag-link" href="/tags/SSM框架/">SSM框架</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2018/08/26</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>在前面的某一篇里面，我们完成了后台商品详情，列表，搜索，动态排序功能的开发。那么本篇我们来介绍前台商品详情，列表，搜索，动态排序功能的开发，这个和那个不一样，希望大家多看几遍，好好理解一下其中的不同。</p>
+<h2 id="前台商品详情获取"><a href="#前台商品详情获取" class="headerlink" title="前台商品详情获取"></a>前台商品详情获取</h2><p>我们打开controller包，在里面的portal包里面新建ProductController.java文件，里面写入以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">/***</span><br><span class="line">  * 前台获取商品的详情信息</span><br><span class="line">  * @author lenovo</span><br><span class="line">  * */</span><br><span class="line"> @RequestMapping(value = &quot;detail.do&quot;)  //这里就是具体的每个方法的url链接</span><br><span class="line"> @ResponseBody   //自动序列化json功能</span><br><span class="line"> public ServerResponse&lt;ProductDetailVo&gt; detail(Integer productId)&#123;</span><br><span class="line">     //前台和后台关于商品详情信息的获取是非常相似的，除了前台需要判断商品的状态，如果下线或者删除就返回一个错误或者是不进行返回</span><br><span class="line">     return iProductService.getProductDetail(productId);</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></p>
+<p>接着打开ProductServiceImpl.java文件，在里面新增以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">@Autowired</span><br><span class="line">private CategoryMapper categoryMapper;</span><br><span class="line"></span><br><span class="line">/***</span><br><span class="line"> *前台获取商品的详情信息</span><br><span class="line"> * */</span><br><span class="line">public ServerResponse&lt;ProductDetailVo&gt; getProductDetail(Integer productId)&#123;</span><br><span class="line">    //判断商品是否存在</span><br><span class="line">    if (productId == null) &#123;   //商品id不存在</span><br><span class="line">        return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(), ResponseCode.ILLEGAL_ARGUMENT.getDesc());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Product product = productMapper.selectByPrimaryKey(productId);</span><br><span class="line">    if (product == null) &#123;</span><br><span class="line">        return ServerResponse.createByErrorMessage(&quot;该商品已下架或者删除！&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if(product.getStatus() != Const.ProductStatusEnum.ON_SALE.getCode())&#123;</span><br><span class="line">        return ServerResponse.createByErrorMessage(&quot;该商品已下架或者删除！&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //商品存在,我们现在是进行信息的传递</span><br><span class="line">    ProductDetailVo productDetailVo =assembleProductDetailVo(product);</span><br><span class="line">    return ServerResponse.createBySuccess(productDetailVo);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这段代码基本上和我们之前后台获取商品详情的逻辑一样，但是多了一部就是需要判断商品的状态，对于那些不存在或者已经下架的商品我们就不需要显示了，直接返回提示信息。</p>
+<p>看到<code>if(product.getStatus() != Const.ProductStatusEnum.ON_SALE.getCode()){
+            return ServerResponse.createByErrorMessage(&quot;该商品已下架或者删除！&quot;);
+        }</code>这行代码，说明我们需要新建一个枚举类，打开之前的Comm包下面的Const这个java文件，在里面新增以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">public enum ProductStatusEnum&#123;</span><br><span class="line">        ON_SALE(1,&quot;在线&quot;)</span><br><span class="line">        ;</span><br><span class="line">        private String value;</span><br><span class="line">        private int code;</span><br><span class="line"></span><br><span class="line">        ProductStatusEnum(int code,String value)&#123;</span><br><span class="line">            this.code =code;</span><br><span class="line">            this.value=value;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public String getValue() &#123;</span><br><span class="line">            return value;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public int getCode() &#123;</span><br><span class="line">            return code;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>最后打开IProductService这个接口，我们把刚才的实现类的接口代码添加进去：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ServerResponse&lt;ProductDetailVo&gt; getProductDetail(Integer productId);   //前台获取商品的详情信息</span><br></pre></td></tr></table></figure></p>
+<p>这样我们关于前台商品详情获取的功能开发就完成了，接下来就是前台列表的分页，搜索，动态排序功能了。</p>
+<h2 id="前台列表分页，搜索，动态排序实现"><a href="#前台列表分页，搜索，动态排序实现" class="headerlink" title="前台列表分页，搜索，动态排序实现"></a>前台列表分页，搜索，动态排序实现</h2><p>老规矩，我们打开ProductController.java文件，里面写入以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">/***</span><br><span class="line"> * 前台获取商品列表并进行分页,搜索，动态排序</span><br><span class="line"> * @author lenovo</span><br><span class="line"> * */</span><br><span class="line">@RequestMapping(value = &quot;list.do&quot;)  //这里就是具体的每个方法的url链接</span><br><span class="line">@ResponseBody   //自动序列化json功能</span><br><span class="line">public ServerResponse&lt;PageInfo&gt; list (@RequestParam(value = &quot;keyword&quot; ,required = false) String keyword,</span><br><span class="line">                                      @RequestParam(value = &quot;categoryId&quot; ,required = false)Integer categoryId,</span><br><span class="line">                                      @RequestParam(value = &quot;pageNum&quot; ,defaultValue = &quot;1&quot;)int pageNum,</span><br><span class="line">                                      @RequestParam(value = &quot;pageSize&quot; ,defaultValue = &quot;10&quot;)int pageSize,</span><br><span class="line">                                      @RequestParam(value = &quot;orderBy&quot; ,defaultValue = &quot;&quot;)String orderBy</span><br><span class="line">                                      )&#123;</span><br><span class="line">    return iProductService.getProductByKeywordCategory(keyword,categoryId,pageNum,pageSize,orderBy);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>接着打开ProductServiceImpl.java文件，在里面新增以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line">/***</span><br><span class="line">  * 前台获取商品列表并进行分页,搜索，动态排序</span><br><span class="line">  * @author lenovo</span><br><span class="line">  * */</span><br><span class="line"> public ServerResponse&lt;PageInfo&gt; getProductByKeywordCategory(String keyword,Integer categoryId,int pageNum,int pageSize,String orderBy)&#123;</span><br><span class="line">     //判断一下keyword和categoryId是否为空，如果是的话就显示参数错误</span><br><span class="line">     if(StringUtils.isBlank(keyword)  &amp;&amp; categoryId ==null)&#123;</span><br><span class="line">         return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(),ResponseCode.ILLEGAL_ARGUMENT.getDesc());</span><br><span class="line">     &#125;</span><br><span class="line"></span><br><span class="line">     List&lt;Integer&gt; categoryIdList = new ArrayList&lt;Integer&gt;();  //这里声明一个list用于保存通过递归得到的它的及其子类id</span><br><span class="line"></span><br><span class="line">     if(categoryId !=null)&#123;</span><br><span class="line">         //通过categoryId来获取category这个对象</span><br><span class="line">         Category category =categoryMapper.selectByPrimaryKey(categoryId);</span><br><span class="line"></span><br><span class="line">         if(category ==null&amp;&amp;StringUtils.isBlank(keyword))&#123;</span><br><span class="line">             //没有该分类,并且还没有关键字,这个时候返回一个空的结果集,不能报错</span><br><span class="line">             //这里的意思就是说假设前端请求categoryId==1,但是我们数据库里面没有1只有2，这就是不匹配而已，并不是错误</span><br><span class="line">             PageHelper.startPage(pageNum,pageSize);</span><br><span class="line">             List&lt;ProductListVo&gt; productListVoList =Lists.newArrayList();</span><br><span class="line">             PageInfo pageInfo =new PageInfo(productListVoList);</span><br><span class="line">             return ServerResponse.createBySuccess(pageInfo);</span><br><span class="line">         &#125;</span><br><span class="line"></span><br><span class="line">         //这是通过之前写的递归算法拿到了它的分类以及其子分类</span><br><span class="line">         categoryIdList =iCategoryService.selectCategoryAndChildrenById(category.getId()).getData();   //这里需要去CategoryServiceImpl里面对我们之前写的关于递归查询子节点的函数进行一个修改，添加返回值的类型List&lt;Integer&gt;</span><br><span class="line">     &#125;</span><br><span class="line"></span><br><span class="line">     //判断keyword是否为空</span><br><span class="line">     if(StringUtils.isNotBlank(keyword))&#123;</span><br><span class="line">         //将keyword变成%keyword%用于模糊查询操作</span><br><span class="line">         keyword =new StringBuilder().append(&quot;%&quot;).append(keyword).append(&quot;%&quot;).toString();</span><br><span class="line">     &#125;</span><br><span class="line">     PageHelper.startPage(pageNum,pageSize);</span><br><span class="line"></span><br><span class="line">     //进行排序处理</span><br><span class="line">     //我们和前端约定弄一个接口去实现orderBy的选择</span><br><span class="line">     //判断orderBy这个字段不为空</span><br><span class="line">     if(StringUtils.isNotBlank(orderBy))&#123;</span><br><span class="line">         //判断前端传的orderBy是否在我们定义的Const集合中</span><br><span class="line">         if(Const.ProductListOrderBy.PRICE_ASC_DESC.contains(orderBy))&#123;</span><br><span class="line">             //因为pageHelper.orderBy里面的参格式是price desc，所以我们需要对集合中的&quot;price_desc&quot;和&quot;price_asc&quot;进行分割</span><br><span class="line">             String[] orderByArray =orderBy.split(&quot;_&quot;);</span><br><span class="line">             PageHelper.orderBy(orderByArray[0]+&quot; &quot;+orderByArray[1]);  //注意一下这里双引号之间有一个空格</span><br><span class="line">         &#125;</span><br><span class="line">     &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">     //进行动态搜索</span><br><span class="line">     //这里注意我们的keyword就是productName</span><br><span class="line"></span><br><span class="line">     //仅仅使用下面的这行代码是不可以的，因为keyword和categoryIdList有可能没有，所以我们需要使用三元运算符进行判断</span><br><span class="line">    // List&lt;Product&gt; productList =productMapper.selectByNameAndCategoryIds(keyword,categoryIdList);</span><br><span class="line">     //将之前的(keyword,categoryIdList)变成(StringUtils.isBlank(keyword)?null:keyword,categoryIdList.size()==0?null:categoryIdList)</span><br><span class="line"></span><br><span class="line">     //使用sql语句获取的结果</span><br><span class="line">     List&lt;Product&gt; productList =productMapper.selectByNameAndCategoryIds(StringUtils.isBlank(keyword)?null:keyword,categoryIdList.size()==0?null:categoryIdList);</span><br><span class="line">     List&lt;ProductListVo&gt; productListVoList =Lists.newArrayList();</span><br><span class="line">     for(Product product:productList)&#123;</span><br><span class="line">         ProductListVo productListVo =assembleProductListVo(product);</span><br><span class="line">         productListVoList.add(productListVo);</span><br><span class="line">     &#125;</span><br><span class="line"></span><br><span class="line">     PageInfo pageInfo =new PageInfo(productList);  //注意这里传入的就是通过sql语句获得的列表</span><br><span class="line">     pageInfo.setList(productListVoList);</span><br><span class="line">     return ServerResponse.createBySuccess(pageInfo);</span><br><span class="line"></span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></p>
+<p>这段代码是核心代码，对此我有几个注意事项需要说明：<br>1、首先我们这个商品的查询是通过keyword来实现的，采用模糊查询。<br>2、假设前端请求categoryId==1,但是我们数据库里面没有1只有2，这就是不匹配而已，并不是错误所以我们需要进行一个信息提示。<br>3、我们前面参数中的categoryId是用来获取category这个对象，然后利用这个对象来调用递归算法拿到了它的分类以及其子分类组成的列表。<br>4、排序处理的时候，我们打开Const这个类，在里面新增以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">public interface ProductListOrderBy&#123;</span><br><span class="line">    //这里使用set是因为set的contain函数的时间复杂度是O(1),而List的contain函数的时间复杂度则是O(n);</span><br><span class="line">    Set&lt;String&gt; PRICE_ASC_DESC = Sets.newHashSet(&quot;price_desc&quot;,&quot;price_asc&quot;);  //按照价格进行排序</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这个就是排序的依据，而且不知道你注意到没有，我们这里使用了set是因为set的contains函数的时间复杂度是O(1),而List的contains函数的时间复杂度则是O(n);</p>
+<p>5、因为<code>pageHelper.orderBy</code>里面的参格式是<code>price desc</code>，所以我们需要对集合中的<code>&quot;price_desc&quot;</code>和<code>&quot;price_asc&quot;</code>进行分割，我们知道split函数最后返回的就是一个String类型的数组，最后直接调用它的<code>PageHelper.orderBy(orderByArray[0]+&quot; &quot;+orderByArray[1]);</code>就可以了。<br>6、动态搜索，这里注意我们的keyword就是productName，而且keyword和categoryIdList有可能没有，所以我们需要使用三元运算符进行判断：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">StringUtils.isBlank(keyword)?null:keyword,categoryIdList.size()==0?null:categoryIdList</span><br></pre></td></tr></table></figure></p>
+<p>7、注意这里的<code>selectByNameAndCategoryIds</code>函数，所以我们需要ProductMapper.java文件，新增以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//注意在mybatis里面，多个参数时需要使用param注解</span><br><span class="line">  List&lt;Product&gt; selectByNameAndCategoryIds(@Param(value = &quot;productName&quot;) String productName,@Param(&quot;categoryIdList&quot;)List&lt;Integer&gt; categoryIdList);</span><br></pre></td></tr></table></figure></p>
+<p>然后记得打开ProductMapper.xml文件，新增sql语句：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;select id=&quot;selectByNameAndCategoryIds&quot; resultMap=&quot;BaseResultMap&quot; parameterType=&quot;map&quot;&gt;</span><br><span class="line">    SELECT</span><br><span class="line">    &lt;include refid=&quot;Base_Column_List&quot;/&gt;</span><br><span class="line">    from store_product</span><br><span class="line">    where status = 1</span><br><span class="line">    &lt;if test=&quot;productName != null&quot;&gt;</span><br><span class="line">        and name like #&#123;productName&#125;</span><br><span class="line">    &lt;/if&gt;</span><br><span class="line">    &lt;if test=&quot;categoryIdList != null&quot; &gt;</span><br><span class="line">        and category_id in</span><br><span class="line">        &lt;foreach item=&quot;item&quot; index=&quot;index&quot; open=&quot;(&quot; separator=&quot;,&quot; close=&quot;)&quot; collection=&quot;categoryIdList&quot;&gt;</span><br><span class="line">            #&#123;item&#125;</span><br><span class="line">        &lt;/foreach&gt;</span><br><span class="line">    &lt;/if&gt;</span><br><span class="line">&lt;/select&gt;</span><br></pre></td></tr></table></figure></p>
+<p>8、<code>categoryIdList=iCategoryService.selectCategoryAndChildrenById(category.getId()).getData();</code>这里需要去CategoryServiceImpl里面对我们之前写的关于递归查询子节点的函数进行一个修改，添加返回值的类型List<integer>:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public ServerResponse&lt;List&lt;Integer&gt;&gt; selectCategoryAndChildrenById(Integer categoryId)&#123;</span><br></pre></td></tr></table></figure></integer></p>
+<p>以及iCategoryService.java文件，修改为以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ServerResponse&lt;List&lt;Integer&gt;&gt; selectCategoryAndChildrenById(Integer categoryId);    //后台管理员递归查询本节点及子节点的id并返回列表</span><br></pre></td></tr></table></figure></p>
+<p>最后记得打开IProductService这个接口，我们把刚才的实现类的接口代码添加进去：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ServerResponse&lt;PageInfo&gt; getProductByKeywordCategory(String keyword,Integer categoryId,int pageNum,int pageSize,String orderBy);   //前台获取商品列表并进行分页,搜索，动态排序</span><br></pre></td></tr></table></figure></p>
+<p>这样我们本篇关于前台商品详情，列表，搜索，动态排序功能的开发介绍就到此为止了，接下来是进行各个相关接口的测试。</p>
+<p> 由于测试比较简单，这里直接附上几张测试截图即可，不作过多说明：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-d1f1895a54197b8c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-72666196f319e983.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>这样我们本篇关于前台商品详情，列表，搜索，动态排序功能开发的介绍就到此为止了，感谢你的赏阅！</p>
+
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="https://upload-images.jianshu.io/upload_images/8964398-58d04ffa926103d9.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">觉得不错，赏包辣条吃呗！</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href target="_blank">编程思录</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2018/08/27/SSM搭建二手市场交易平台（十八）：购物车添加商品/" class="pre-post btn btn-default" title="SSM搭建二手市场交易平台（十八）：购物车添加商品">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">SSM搭建二手市场交易平台（十八）：购物车添加商品</span>
+        </a>
+    
+    
+        <a href="/2018/08/25/SSM搭建二手市场交易平台（十六）：后台文件和富文本图片上传的开发/" class="next-post btn btn-default" title="SSM搭建二手市场交易平台（十六）：后台文件和富文本图片上传的开发">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">SSM搭建二手市场交易平台（十六）：后台文件和富文本图片上传的开发</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+    <div id="vcomments" class="valine"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+
+    <script>
+        new Valine({
+            av: AV,
+            el: '#vcomments',
+            appId: '8zvHFFu5l2ah8lh0DEPH393B-gzGzoHsz',
+            appKey: 'UNmB24200qMtyyrun5z99nOE',
+            placeholder: '听说长得好看的，都已经留言了！',
+            notify: false,
+            verify: false,
+            avatar: 'mm',
+            meta: 'nick,mail'.split(','),
+            pageSize: '10',
+            path: window.location.pathname,
+            lang: 'zh-CN'.toLowerCase()
+        })
+    </script>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#写在前面"><span class="toc-text">写在前面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#前台商品详情获取"><span class="toc-text">前台商品详情获取</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#前台列表分页，搜索，动态排序实现"><span class="toc-text">前台列表分页，搜索，动态排序实现</span></a></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2017-2019
+                </span> |
+                <span>
+				编程思录,保留所有权利
+                    <!--Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>-->
+                </span> |
+                <span>
+				<a style="color: #black" href="http://www.miitbeian.gov.cn">赣ICP备18013455号-5</a>
+                    <!--Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>-->
+                </span>
+            </div>
+			
+			<div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+			
+			<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1277113902'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s96.cnzz.com/z_stat.php%3Fid%3D1277113902%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));</script>
+        </div>
+    </div>
+</div>
+
+
+
+
+    <script src="/assets/tagcanvas.min.js?rev=2.9"></script>
+    <script>
+        var tagOption = {
+            textColour: 'red', // 字体颜色
+            outlineMethod: 'block', // 选中模式
+            outlineColour: '#FFDAB9', // 选中模式的颜色
+            interval: 30 || 30, // 动画帧之间的时间间隔，值越大，转动幅度越大
+            textHeight: 13,
+            outlineRadius: 3,
+            freezeActive: true || '', // 选中的标签是否继续滚动
+            frontSelect: true || '', // 不选标签云后部的标签
+            initial: [0.1, -0.1],
+            depth: 0.5,
+            decel: 0.95,
+            maxSpeed: 0.03,
+            reverse: true || '', // 是否反向触发
+            fadeIn: 500, // 进入动画时间
+            wheelZoom: false || '' // 是否启用鼠标滚轮
+        }
+        TagCanvas.Start('tag-cloud-3d','',tagOption);
+    </script>
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+</body>
+</html>

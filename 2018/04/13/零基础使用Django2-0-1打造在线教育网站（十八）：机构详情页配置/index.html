@@ -1,0 +1,436 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="编程思录，记录思考">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://blog.licheetools.top">
+    <!--SEO-->
+
+    <meta name="keywords" content="django建站">
+
+
+    <meta name="description" content="写在前面本篇笔记我们将介绍机构详情页面的配置，主要包括四个部分：机构首页、机构课程、机构介绍和机构讲师，以及用户收藏的介绍下面我将逐一介绍说明。
+本篇笔记对应于第十八篇代码，对应于github的...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+
+    <!--Title-->
+
+
+<title>零基础使用Django2.0.1打造在线教育网站（十八）：机构详情页配置 | 编程思录，记录思考</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="编程思录，记录思考" type="application/atom+xml">
+
+
+    <link rel="icon" href="./favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+	<div class="hide">
+		<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+	</div>
+
+
+
+
+
+
+    
+
+    <script>
+        (function(){
+            var bp = document.createElement('script');
+            var curProtocol = window.location.protocol.split(':')[0];
+            if (curProtocol === 'https') {
+                bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+            }
+            else {
+                bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+            }
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(bp, s);
+        })();
+    </script>
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header" style="background-image:url(https://upload-images.jianshu.io/upload_images/8964398-b1ba9582ea8b69ba.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)">
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title="Envy">
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 点滴进步，都是收获 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://blog.licheetools.top">编程思录，记录思考</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>首页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/font/"><i class="fa "></i>前端</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/java/"><i class="fa "></i>Java</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/python/"><i class="fa "></i>Python</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/go/"><i class="fa "></i>Go</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/spider/"><i class="fa "></i>爬虫</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/data/"><i class="fa "></i>数据分析</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/money/"><i class="fa "></i>付费教程</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/life/"><i class="fa "></i>生活记录</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives"><i class="fa "></i>时间轴</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/about/"><i class="fa "></i>关于博主</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/liuyan/"><i class="fa "></i>留言板</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="零基础使用Django2.0.1打造在线教育网站（十八）：机构详情页配置">
+            
+	            零基础使用Django2.0.1打造在线教育网站（十八）：机构详情页配置
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/python/">python</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/django建站/">django建站</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2018/04/13</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>本篇笔记我们将介绍机构详情页面的配置，主要包括四个部分：<strong>机构首页</strong>、<strong>机构课程</strong>、<strong>机构介绍</strong>和<strong>机构讲师</strong>，以及用户收藏的介绍下面我将逐一介绍说明。</p>
+<p>本篇笔记对应于第十八篇代码，对应于github的位置是<a href="https://github.com/licheetools/eduline。" target="_blank" rel="noopener">https://github.com/licheetools/eduline。</a></p>
+<h2 id="机构首页"><a href="#机构首页" class="headerlink" title="机构首页"></a>机构首页</h2><p>打开浏览器，在地址栏输入:<a href="http://127.0.0.1:8000/xadmin，往里面新增10门课程和10位讲师信息:![](https://upload-images.jianshu.io/upload_images/8964398-ebb88cd33034ae62.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)" target="_blank" rel="noopener">http://127.0.0.1:8000/xadmin，往里面新增10门课程和10位讲师信息:![](https://upload-images.jianshu.io/upload_images/8964398-ebb88cd33034ae62.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)</a><br>新增课程信息的时候发现课程没有所属课程机构，这是不行的，因为我们后面还有机构课程这个模块，如果课程与课程机构之间没有外键来链接的话就无法实现相应的功能。<br><img src="https://upload-images.jianshu.io/upload_images/8964398-c0555ee873ffdb6e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt><br>所以我们需要在courses/models.py文件中，新增外键连接：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">from organization.models import CourseOrg</span><br><span class="line"></span><br><span class="line">course_org = models.ForeignKey(CourseOrg,  on_delete=models.CASCADE, verbose_name=&quot;课程机构&quot;, null=True, blank=True)</span><br></pre></td></tr></table></figure></p>
+<p>就是这个样子：<img src="https://upload-images.jianshu.io/upload_images/8964398-f759d1eec4a19081.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt><br>记住我们需要在外键里面增加要求<code>null=True, blank=True</code>,你可能会问，为什么之前的外键不用呢？那是因为之前没有课程数据，可是现在里面已经有了一门课程（之前添加的），如果不加这个要求，系统会提示之前的那门课的外键怎么办。所以为了避免这个问题，我们就加上这个要求。</p>
+<p>接下来进行数据库的生成和迁移操作：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">makemigration courses</span><br><span class="line">migrate courses</span><br></pre></td></tr></table></figure></p>
+<p>就是这个样子：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-cfd71a293b34e855.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>然后继续在xadmin后台新增课程信息：<img src="https://upload-images.jianshu.io/upload_images/8964398-87379e62e21bc5ea.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>完成以后，现在将前端资料里面与org相关的四个页面拷贝到我们的templates文件夹里面：<img src="https://upload-images.jianshu.io/upload_images/8964398-681f1f04e43608d4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>接下来，通过观察新建<strong>org_base.html</strong>页面,将org_homepage页面全部复制过去，然后修改block：<img src="https://upload-images.jianshu.io/upload_images/8964398-05919e257f29cab4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt><br><img src="https://upload-images.jianshu.io/upload_images/8964398-f09d11205729edf0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>接下来就是三部曲了：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1、页面第三行加上&#123;% load staticfiles %&#125;</span><br><span class="line">2、修改全部类型文件的static相对路径</span><br><span class="line">3、修改其中已经设置好的url，配置跳转链接</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-062098d1b9f8819a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt><br><img src="https://upload-images.jianshu.io/upload_images/8964398-d85afd6d84402791.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>现在仿照之前的Base继承，清空org_homepage页面，往里面新增图示代码：<img src="https://upload-images.jianshu.io/upload_images/8964398-11245ee6d412ddbc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt><br>然后删除<strong>org_base.html</strong>页面中的<code>`和`</code>之间的代码，就是这个样子：<img src="https://upload-images.jianshu.io/upload_images/8964398-828c07e042b1df4a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>接下来打开我们的organization/views.py文件，在底部新增如下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"># 机构首页</span><br><span class="line">class OrgHomeView(View):</span><br><span class="line">    def get(self, request, org_id):</span><br><span class="line">        # 根据id来获取课程机构</span><br><span class="line">        course_org = CourseOrg.objects.get(id=int(org_id))</span><br><span class="line"></span><br><span class="line">        # 根据取到的课程机构直接获取它的所有课程，我们取3个</span><br><span class="line">        all_courses = course_org.course_set.all()[:3]</span><br><span class="line"></span><br><span class="line">        # 根据取到的课程机构直接获取它的所有讲师，我们取1个</span><br><span class="line">        all_teachers = course_org.teacher_set.all()[:1]</span><br><span class="line"></span><br><span class="line">        render(request, &quot;org-detail-homepage.html&quot;, &#123;</span><br><span class="line">            &quot;all_courses&quot;: all_courses,</span><br><span class="line">            &quot;all_teachers&quot;: all_teachers,</span><br><span class="line">        &#125;)</span><br></pre></td></tr></table></figure></p>
+<p>然后配置我们的path,打开organization/urls.py文件，在底部新增如下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">from .views import OrgHomeView</span><br><span class="line"></span><br><span class="line"># 课程机构首页url,此处不是普通的url是因为我们必须知道是哪个机构的首页</span><br><span class="line">re_path(&apos;home/(?P&lt;org_id&gt;.*)/&apos;, OrgHomeView.as_view(), name=&quot;org_home&quot;),</span><br></pre></td></tr></table></figure></p>
+<p>接着打开org_homepage页面，删除多余的课程，采用for循环来遍历数据库中的课程信息：<img src="https://upload-images.jianshu.io/upload_images/8964398-4446b37a4a48131f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt><br>顺便修改其中的课程信息：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&#123;% for course in all_courses %&#125;</span><br><span class="line">                 &lt;div class=&quot;module1_5 box&quot;&gt;</span><br><span class="line">&lt;a href=&quot;course-detail.html&quot;&gt;&lt;img width=&quot;214&quot; src=&quot;&#123;&#123; MEDIA_URL &#125;&#125;&#123;&#123; course.image &#125;&#125;&quot;/&gt;&lt;/a&gt;</span><br><span class="line">                &lt;div class=&quot;des&quot;&gt;</span><br><span class="line">                    &lt;a href=&quot;course-detail.html&quot;&gt;&lt;h2&gt;&#123;&#123; course.name &#125;&#125;&lt;/h2&gt;&lt;/a&gt;</span><br><span class="line">                    &lt;span class=&quot;fl&quot;&gt;课时：&lt;i class=&quot;key&quot;&gt;&#123;&#123; course.learn_times &#125;&#125;&lt;/i&gt;&lt;/span&gt;</span><br><span class="line">                    &lt;span class=&quot;fr&quot;&gt;参加人数：&#123;&#123; course.students &#125;&#125;&lt;/span&gt;</span><br><span class="line">                &lt;/div&gt;</span><br><span class="line">                &lt;div class=&quot;bottom&quot;&gt;</span><br><span class="line">                    &lt;span class=&quot;fl&quot;&gt;&#123;&#123; course.course_org.name &#125;&#125;&lt;/span&gt;</span><br><span class="line">                    &lt;span class=&quot;star fr  notlogin</span><br><span class="line">                            &quot; data-favid=&quot;13&quot; data-fav-type=&quot;4&quot;&gt;</span><br><span class="line">                            &#123;&#123; course.fav_nums &#125;&#125;</span><br><span class="line">                        &lt;/span&gt;</span><br><span class="line">                &lt;/div&gt;</span><br><span class="line">            &lt;/div&gt;</span><br><span class="line">&#123;% endfor %&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>然后三部曲走一下，这里就不详细说明了。</strong></p>
+<p>接着打开org_list页面，配置跳转链接：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-e4fd915397ee3229.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt><br>修改如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;a href=&quot;&#123;% url &apos;org:org_home&apos; course_org.id %&#125;&quot;&gt;</span><br></pre></td></tr></table></figure></p>
+<p>记住因为之前我们的org_home配置的不是普通的path,所以你如果写成普通的:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;a href=&quot;&#123;% url &apos;org:org_home&apos; %&#125;&quot;&gt;</span><br></pre></td></tr></table></figure></p>
+<p>那是会报错的，我们需要在此后空一格，然后带上我们在path中定义的id,因为是跳转到课程机构首页，所以写上它的id。</p>
+<p>然后运行一下我们的项目：发现课程机构显示不同步，那我们把刚才获取到的数据返回到页面显示一下：<img src="https://upload-images.jianshu.io/upload_images/8964398-87bf1141a41b86a1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>那我们就打开我们的organization/views.py文件，在底部修改为如下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"># 机构首页</span><br><span class="line">class OrgHomeView(View):</span><br><span class="line">    def get(self, request, org_id):</span><br><span class="line">        # 根据id来获取课程机构</span><br><span class="line">        course_org = CourseOrg.objects.get(id=int(org_id))</span><br><span class="line"></span><br><span class="line">        # 根据取到的课程机构直接获取它的所有课程，我们取3个</span><br><span class="line">        all_courses = course_org.course_set.all()[:3]</span><br><span class="line"></span><br><span class="line">        # 根据取到的课程机构直接获取它的所有讲师，我们取1个</span><br><span class="line">        all_teachers = course_org.teacher_set.all()[:1]</span><br><span class="line"></span><br><span class="line">        render(request, &quot;org-detail-homepage.html&quot;, &#123;</span><br><span class="line">            &quot;all_courses&quot;: all_courses,</span><br><span class="line">            &quot;all_teachers&quot;: all_teachers,</span><br><span class="line">            &quot;course_org&quot;: course_org,</span><br><span class="line">        &#125;)</span><br></pre></td></tr></table></figure></p>
+<p>接着返回org_base页面,我们修改如下代码：<img src="https://upload-images.jianshu.io/upload_images/8964398-7a7e753f067693ca.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>这里的数据会向上传递，所以后面的那些org页面都是可以用到的。完成以后就是这个样子：<img src="https://upload-images.jianshu.io/upload_images/8964398-2297c184e2ddedc7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt><br>接着运行一下我们的项目，发现显示没有问题：<img src="https://upload-images.jianshu.io/upload_images/8964398-c2511b102dd1954f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>下面继续完成它的其余两个：机构教师和机构介绍。<br>机构教师：打开org_homepage页面，将信息修改成图示：<img src="https://upload-images.jianshu.io/upload_images/8964398-b6c2c47dbad6680c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt><br>机构介绍：还是在org_homepage页面，将信息修改成图示：<img src="https://upload-images.jianshu.io/upload_images/8964398-53aa3cbc7308ad5b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt><br>接着运行一下我们的项目，发现显示没有问题。</p>
+<p>至此，第一个机构首页的信息就全部配置完全了，其余几个很类似，所以介绍的就比较快了，当做复习一下。</p>
+<hr>
+<p><strong>由于格式存在一定问题，本篇后续内容无法上传，因此后续内容请搜索微信公众号：啃饼思录，进行阅读！！！</strong></p>
+<hr>
+<p>至此，本篇关于机构详情页面的配置以及用户收藏的介绍就到此为止了，感谢你的赏阅。</p>
+<p>本篇笔记对应于第十八篇代码，对应于github的位置是<a href="https://github.com/licheetools/eduline。" target="_blank" rel="noopener">https://github.com/licheetools/eduline。</a></p>
+
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="https://upload-images.jianshu.io/upload_images/8964398-58d04ffa926103d9.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">觉得不错，赏包辣条吃呗！</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href target="_blank">编程思录</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2018/04/13/零基础使用Django2-0-1打造在线教育网站（十九）：课程详情页配置/" class="pre-post btn btn-default" title="零基础使用Django2.0.1打造在线教育网站（十九）：课程详情页配置">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">零基础使用Django2.0.1打造在线教育网站（十九）：课程详情页配置</span>
+        </a>
+    
+    
+        <a href="/2018/04/13/零基础使用Django2-0-1打造在线教育网站（十七）：我要学习配置/" class="next-post btn btn-default" title="零基础使用Django2.0.1打造在线教育网站（十七）：我要学习配置">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">零基础使用Django2.0.1打造在线教育网站（十七）：我要学习配置</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+    <div id="vcomments" class="valine"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+
+    <script>
+        new Valine({
+            av: AV,
+            el: '#vcomments',
+            appId: '8zvHFFu5l2ah8lh0DEPH393B-gzGzoHsz',
+            appKey: 'UNmB24200qMtyyrun5z99nOE',
+            placeholder: '听说长得好看的，都已经留言了！',
+            notify: false,
+            verify: false,
+            avatar: 'mm',
+            meta: 'nick,mail'.split(','),
+            pageSize: '10',
+            path: window.location.pathname,
+            lang: 'zh-CN'.toLowerCase()
+        })
+    </script>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#写在前面"><span class="toc-text">写在前面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#机构首页"><span class="toc-text">机构首页</span></a></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2017-2019
+                </span> |
+                <span>
+				编程思录,保留所有权利
+                    <!--Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>-->
+                </span> |
+                <span>
+				<a style="color: #black" href="http://www.miitbeian.gov.cn">赣ICP备18013455号-5</a>
+                    <!--Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>-->
+                </span>
+            </div>
+			
+			<div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+			
+			<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1277113902'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s96.cnzz.com/z_stat.php%3Fid%3D1277113902%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));</script>
+        </div>
+    </div>
+</div>
+
+
+
+
+    <script src="/assets/tagcanvas.min.js?rev=2.9"></script>
+    <script>
+        var tagOption = {
+            textColour: 'red', // 字体颜色
+            outlineMethod: 'block', // 选中模式
+            outlineColour: '#FFDAB9', // 选中模式的颜色
+            interval: 30 || 30, // 动画帧之间的时间间隔，值越大，转动幅度越大
+            textHeight: 13,
+            outlineRadius: 3,
+            freezeActive: true || '', // 选中的标签是否继续滚动
+            frontSelect: true || '', // 不选标签云后部的标签
+            initial: [0.1, -0.1],
+            depth: 0.5,
+            decel: 0.95,
+            maxSpeed: 0.03,
+            reverse: true || '', // 是否反向触发
+            fadeIn: 500, // 进入动画时间
+            wheelZoom: false || '' // 是否启用鼠标滚轮
+        }
+        TagCanvas.Start('tag-cloud-3d','',tagOption);
+    </script>
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+</body>
+</html>

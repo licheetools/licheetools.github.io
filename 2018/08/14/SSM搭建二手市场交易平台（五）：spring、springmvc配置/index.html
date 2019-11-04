@@ -1,0 +1,432 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="编程思录，记录思考">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://blog.licheetools.top">
+    <!--SEO-->
+
+    <meta name="keywords" content="SSM框架,JAVA后端">
+
+
+    <meta name="description" content="写在前面本篇我们就来介绍spring、springmvc的相关配置，这一篇也是单独罗列出来的，便于今后学习与应用。
+点击这里查看spring-framework的官方网站：spring-fram...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+
+    <!--Title-->
+
+
+<title>SSM搭建二手市场交易平台（五）：spring、springmvc配置 | 编程思录，记录思考</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="编程思录，记录思考" type="application/atom+xml">
+
+
+    <link rel="icon" href="./favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+	<div class="hide">
+		<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+	</div>
+
+
+
+
+
+
+    
+
+    <script>
+        (function(){
+            var bp = document.createElement('script');
+            var curProtocol = window.location.protocol.split(':')[0];
+            if (curProtocol === 'https') {
+                bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+            }
+            else {
+                bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+            }
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(bp, s);
+        })();
+    </script>
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header" style="background-image:url(https://upload-images.jianshu.io/upload_images/8964398-b1ba9582ea8b69ba.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)">
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title="Envy">
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 点滴进步，都是收获 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://blog.licheetools.top">编程思录，记录思考</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>首页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/font/"><i class="fa "></i>前端</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/java/"><i class="fa "></i>Java</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/python/"><i class="fa "></i>Python</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/go/"><i class="fa "></i>Go</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/spider/"><i class="fa "></i>爬虫</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/data/"><i class="fa "></i>数据分析</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/money/"><i class="fa "></i>付费教程</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/life/"><i class="fa "></i>生活记录</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives"><i class="fa "></i>时间轴</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/about/"><i class="fa "></i>关于博主</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/liuyan/"><i class="fa "></i>留言板</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="SSM搭建二手市场交易平台（五）：spring、springmvc配置">
+            
+	            SSM搭建二手市场交易平台（五）：spring、springmvc配置
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/java/">java</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/JAVA后端/">JAVA后端</a> <a class="tag-link" href="/tags/SSM框架/">SSM框架</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2018/08/14</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>本篇我们就来介绍spring、springmvc的相关配置，这一篇也是单独罗列出来的，便于今后学习与应用。</p>
+<p>点击这里查看spring-framework的官方网站：<a href="https://spring.io/projects/spring-framework" target="_blank" rel="noopener">spring-framework</a>，然后spring也提供了一些官方的demo，非常经典有<strong><a href="https://github.com/spring-projects/spring-petclinic" target="_blank" rel="noopener">spring-petclinic</a></strong>，<strong><a href="https://github.com/spring-projects/greenhouse" target="_blank" rel="noopener">greenhouse</a></strong>，<strong><a href="https://github.com/spring-projects/spring-mvc-showcase" target="_blank" rel="noopener">spring-mvc-showcase</a></strong>等，大家没事可以去看看。需要注意的是xml的配置文件，我们不可能采取一行一行的敲的方式，最好的方式是从直接从官方拷贝，因为这样可以避免一些包的不兼容问题。</p>
+<p>从我的github上面复制图中所示的文件至图中所示位置：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-7c7a2a320867ad23.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>如果你是完全按照我的配置来的，那么这些配置文件你可以复制粘贴拿来用了，里面都是一些过滤器，监听器，spring，spring mvc的配置，这里就不详细介绍了。</p>
+<p>值得注意的是，如果出现下面的问题，请按照要求进行修改：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-22f074be18802202.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>解决办法，file–&gt;modules–&gt;图中所示：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-464c4c45d8cc543f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-969686395b2ea832.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>点击确定，然后那样的提示就不存在了。</p>
+<h2 id="logback和ftp服务器配置"><a href="#logback和ftp服务器配置" class="headerlink" title="logback和ftp服务器配置"></a>logback和ftp服务器配置</h2><p>接下来继续去我的github上面，复制logback.xml文件至图中所示位置：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-5d9a0d9108537dcd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>还是那句话和我保持一致的就不需要对里面的数据进行修改。</p>
+<p>接下来进行ftp服务器的配置，这里你需要修改之前复制的store.properties文件：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ftp.server.ip=你的FTP服务器ip地址</span><br><span class="line">ftp.user=你的FTP服务器用户名</span><br><span class="line">ftp.pass=你的FTP服务器密码</span><br><span class="line">ftp.server.http.prefix=http://img.licheetools.top/</span><br><span class="line">alipay.callback.url=</span><br><span class="line">password.salt =</span><br></pre></td></tr></table></figure></p>
+<p>关于这一部分，后面会在介绍图片上传的时候再次介绍，大家对此有一个清醒的认识就可以了。</p>
+<h3 id="idea的注入与自动编译配置"><a href="#idea的注入与自动编译配置" class="headerlink" title="idea的注入与自动编译配置"></a>idea的注入与自动编译配置</h3><p>打开idea，file –&gt;settings–搜索compiler–选择出现的make peoject automatically，你勾选一下这个就可以实时进行编译。（目前最新版idea好像没有这个配置了）</p>
+<p>还有一个idea的注入：file –&gt;settings–搜索inspections–按照图示进行操作：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-e15f8270768589d5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>注意6步骤是将红色的error，修改为黄色的warning ，最后点击apply和ok即可。</p>
+<h3 id="项目初始化文件的提交"><a href="#项目初始化文件的提交" class="headerlink" title="项目初始化文件的提交"></a>项目初始化文件的提交</h3><p>在idea的terminal下面，依次执行下面的命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ git status</span><br><span class="line"></span><br><span class="line">$ git add .</span><br><span class="line"></span><br><span class="line">$ git status</span><br><span class="line"></span><br><span class="line">$  git commit -am &apos;project init commit&apos;</span><br><span class="line"></span><br><span class="line">$ git push</span><br></pre></td></tr></table></figure></p>
+<p>最后去你的github上面查看你v0.1的版本代码吧：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-6c8ee5adf11c4a90.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<h3 id="两个好用的插件"><a href="#两个好用的插件" class="headerlink" title="两个好用的插件"></a>两个好用的插件</h3><p>接下来介绍两个好用的插件，我这里是chrome浏览器，推荐大家也使用这个。首先点击这里：<a href="https://chrome.google.com/webstore/category/extensions?hl=zh-CN" target="_blank" rel="noopener">拓展中心</a>，然后在里面搜索fe助手，这个工具很强大，自己下载完可以玩一玩：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-e83f8d1aae046c94.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>另一个好用的插件则是restlet client，同样你下载完可以试试，这个用于测试的，非常好用。</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-d63dbae92bc356b9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>至此，我们本篇文章的介绍就到此为止了，从此下一篇开始，我们就开始进行项目的开发阶段了，感谢你的赏阅！</p>
+
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="https://upload-images.jianshu.io/upload_images/8964398-58d04ffa926103d9.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">觉得不错，赏包辣条吃呗！</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href target="_blank">编程思录</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2018/08/15/SSM搭建二手市场交易平台（六）：用户登录模块/" class="pre-post btn btn-default" title="SSM搭建二手市场交易平台（六）：用户登录模块">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">SSM搭建二手市场交易平台（六）：用户登录模块</span>
+        </a>
+    
+    
+        <a href="/2018/08/13/SSM搭建二手市场交易平台（四）：mybatis介绍与使用/" class="next-post btn btn-default" title="SSM搭建二手市场交易平台（四）：mybatis介绍与使用">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">SSM搭建二手市场交易平台（四）：mybatis介绍与使用</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+    <div id="vcomments" class="valine"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+
+    <script>
+        new Valine({
+            av: AV,
+            el: '#vcomments',
+            appId: '8zvHFFu5l2ah8lh0DEPH393B-gzGzoHsz',
+            appKey: 'UNmB24200qMtyyrun5z99nOE',
+            placeholder: '听说长得好看的，都已经留言了！',
+            notify: false,
+            verify: false,
+            avatar: 'mm',
+            meta: 'nick,mail'.split(','),
+            pageSize: '10',
+            path: window.location.pathname,
+            lang: 'zh-CN'.toLowerCase()
+        })
+    </script>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#写在前面"><span class="toc-text">写在前面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#logback和ftp服务器配置"><span class="toc-text">logback和ftp服务器配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#idea的注入与自动编译配置"><span class="toc-text">idea的注入与自动编译配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#项目初始化文件的提交"><span class="toc-text">项目初始化文件的提交</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#两个好用的插件"><span class="toc-text">两个好用的插件</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2017-2019
+                </span> |
+                <span>
+				编程思录,保留所有权利
+                    <!--Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>-->
+                </span> |
+                <span>
+				<a style="color: #black" href="http://www.miitbeian.gov.cn">赣ICP备18013455号-5</a>
+                    <!--Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>-->
+                </span>
+            </div>
+			
+			<div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+			
+			<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1277113902'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s96.cnzz.com/z_stat.php%3Fid%3D1277113902%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));</script>
+        </div>
+    </div>
+</div>
+
+
+
+
+    <script src="/assets/tagcanvas.min.js?rev=2.9"></script>
+    <script>
+        var tagOption = {
+            textColour: 'red', // 字体颜色
+            outlineMethod: 'block', // 选中模式
+            outlineColour: '#FFDAB9', // 选中模式的颜色
+            interval: 30 || 30, // 动画帧之间的时间间隔，值越大，转动幅度越大
+            textHeight: 13,
+            outlineRadius: 3,
+            freezeActive: true || '', // 选中的标签是否继续滚动
+            frontSelect: true || '', // 不选标签云后部的标签
+            initial: [0.1, -0.1],
+            depth: 0.5,
+            decel: 0.95,
+            maxSpeed: 0.03,
+            reverse: true || '', // 是否反向触发
+            fadeIn: 500, // 进入动画时间
+            wheelZoom: false || '' // 是否启用鼠标滚轮
+        }
+        TagCanvas.Start('tag-cloud-3d','',tagOption);
+    </script>
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+</body>
+</html>

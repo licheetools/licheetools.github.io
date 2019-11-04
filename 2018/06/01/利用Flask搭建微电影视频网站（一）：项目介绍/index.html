@@ -1,0 +1,460 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="编程思录，记录思考">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://blog.licheetools.top">
+    <!--SEO-->
+
+    <meta name="keywords" content="Flask建站,Pytohn后端">
+
+
+    <meta name="description" content="写在前面嘿，小伙伴们好久不见。在上一套教程里，我们利用了Python的Django框架搭建了一个在线教育网站，这次我们尝试接触Python web开发的另一个框架：Flask。我们同样尝试利用它...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+
+    <!--Title-->
+
+
+<title>利用Flask搭建微电影视频网站（一）：项目介绍 | 编程思录，记录思考</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="编程思录，记录思考" type="application/atom+xml">
+
+
+    <link rel="icon" href="./favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+	<div class="hide">
+		<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+	</div>
+
+
+
+
+
+
+    
+
+    <script>
+        (function(){
+            var bp = document.createElement('script');
+            var curProtocol = window.location.protocol.split(':')[0];
+            if (curProtocol === 'https') {
+                bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+            }
+            else {
+                bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+            }
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(bp, s);
+        })();
+    </script>
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header" style="background-image:url(https://upload-images.jianshu.io/upload_images/8964398-b1ba9582ea8b69ba.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)">
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title="Envy">
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 点滴进步，都是收获 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://blog.licheetools.top">编程思录，记录思考</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>首页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/font/"><i class="fa "></i>前端</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/java/"><i class="fa "></i>Java</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/python/"><i class="fa "></i>Python</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/go/"><i class="fa "></i>Go</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/spider/"><i class="fa "></i>爬虫</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/data/"><i class="fa "></i>数据分析</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/money/"><i class="fa "></i>付费教程</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/life/"><i class="fa "></i>生活记录</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives"><i class="fa "></i>时间轴</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/about/"><i class="fa "></i>关于博主</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/liuyan/"><i class="fa "></i>留言板</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="利用Flask搭建微电影视频网站（一）：项目介绍">
+            
+	            利用Flask搭建微电影视频网站（一）：项目介绍
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/python/">python</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/Flask建站/">Flask建站</a> <a class="tag-link" href="/tags/Pytohn后端/">Pytohn后端</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2018/06/01</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>嘿，小伙伴们好久不见。在上一套教程里，我们利用了Python的Django框架搭建了一个在线教育网站，这次我们尝试接触Python web开发的另一个框架：Flask。我们同样尝试利用它来搭建一个网站，这次我们是搭建一个在线的微电影视频网站。通过对比，我们来学着在比较中提升自己。同样在每篇文章的后面，我会把我在这部分出现的BUG以及解决方法附上，以供大家参考，大家有什么问题可以在评论下方留言。</p>
+<h2 id="项目介绍"><a href="#项目介绍" class="headerlink" title="项目介绍"></a>项目介绍</h2><h3 id="Flask介绍"><a href="#Flask介绍" class="headerlink" title="Flask介绍"></a>Flask介绍</h3><p>Flask是一个用 Python 编写的轻量级 Web 应用框架。其 WSGI工具箱采用 Werkzeug ，模板引擎则使用 Jinja2 。Flask使用 BSD 授权。Flask也被称为 “microframework” ，因为它使用简单的核心，用 extension 增加其他功能。Flask没有默认使用的数据库、窗体验证工具。所以与Django相比，它没有很多系统自带的功能就显得非常轻巧，但是另一方面就意味着你必须自己动手去实现一些看似非常简单的功能，从这点来说Flask比Django需要花费更多的时间来学习。</p>
+<p>目前Django一般都是适合一些访问量较小的，规模不大的网站，真正那些访问量大的网站管理人员会采用Flask进行编辑，例如果壳网，知乎网，豆瓣网：<img src="https://upload-images.jianshu.io/upload_images/8964398-aab9a50a3563db0a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<h3 id="Flask与Django，Tornado对比"><a href="#Flask与Django，Tornado对比" class="headerlink" title="Flask与Django，Tornado对比"></a>Flask与Django，Tornado对比</h3><p><img src="https://upload-images.jianshu.io/upload_images/8964398-e41c9769759182e2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<h3 id="网站介绍"><a href="#网站介绍" class="headerlink" title="网站介绍"></a>网站介绍</h3><p><img src="https://upload-images.jianshu.io/upload_images/8964398-0a579bfebd1f162e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt><br>前台包括：首页-电影筛选-电影列表- 播放详情-评论-收藏-搜索-注册-登录-会员中心（修改会员资料，查看评论记录，登录日志，收藏电影）</p>
+<p>后台包括：电影标签-电影管理-电影预告-网站会员-评论-收藏-日志-权限管理-角色-管理员等。</p>
+<p><strong>总体设计框架</strong>为：<img src="https://upload-images.jianshu.io/upload_images/8964398-9b34dcd28fe5617b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt><br><strong>开发环境</strong>为：<img src="https://upload-images.jianshu.io/upload_images/8964398-c99f9c86bbbabeba.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<h3 id="Flask丰富的扩展插件"><a href="#Flask丰富的扩展插件" class="headerlink" title="Flask丰富的扩展插件"></a>Flask丰富的扩展插件</h3><p><img src="https://upload-images.jianshu.io/upload_images/8964398-45b8643c9ac34946.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-64a802a077c70272.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<h3 id="你能学到的知识"><a href="#你能学到的知识" class="headerlink" title="你能学到的知识"></a>你能学到的知识</h3><p><img src="https://upload-images.jianshu.io/upload_images/8964398-194ee6626f79d9a3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-6eaa07744ca9cdaf.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-377a6ffc4f75e628.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt><br>以及视频技术：<br><img src="https://upload-images.jianshu.io/upload_images/8964398-ba54db0092786239.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<h2 id="环境搭建与工具"><a href="#环境搭建与工具" class="headerlink" title="环境搭建与工具"></a>环境搭建与工具</h2><p>网站是在windows下通过pycharm和virtualenv搭建的开发环境下进行的开发，具体涉及到的软件我们接下来为你介绍。</p>
+<h3 id="Pycharm的安装"><a href="#Pycharm的安装" class="headerlink" title="Pycharm的安装"></a>Pycharm的安装</h3><p>我在前面有一篇文章介绍了Pycharm的详细安装，这里就不赘述了，开启传送大门：<a href="https://www.jianshu.com/p/3c5a0457c643" target="_blank" rel="noopener">Python Web技术开发软件安装</a></p>
+<h3 id="虚拟环境vritualenv的安装"><a href="#虚拟环境vritualenv的安装" class="headerlink" title="虚拟环境vritualenv的安装"></a>虚拟环境vritualenv的安装</h3><p>同样virtualenv的安装我之前也有3篇文章进行过介绍，为了便于学习，我这里直接复制过来了！</p>
+<h3 id="1、安装pip"><a href="#1、安装pip" class="headerlink" title="1、安装pip"></a>1、安装pip</h3><p>我们同样需要在Python的官网上去下载，下载完成之后，解压到一个文件夹<code>(记住要和Python放在同一目录下)</code>，采用添加环境变量的方法<code>（我的电脑，右键--&gt;属性,单击--&gt;高级系统环境设置，单击--&gt;高级，单击--&gt;环境变量，单击--&gt;系统变量下的Path）</code>，我们在PATH最后添加上Python中的scripts的地址，再用CMD控制台进入解压目录<code>(举个例子：你当前在C盘要进入F盘只需要输入F:，回车即可。cd用于进入子目录，比如)进入F盘下的Python目录， 只需输入cd Python回车即可，cd与Python之间空一格</code>，</p>
+<blockquote>
+<p>C:\Users\YC-Jiang&gt;F:<br>F:&gt;cd Python<br>F:\Python&gt;cd pystall<br>F:\Python\pystall&gt;</p>
+</blockquote>
+<p>然后输入：<code>python setup.py install</code>回车，等待几分钟即可。</p>
+<p>最后，确认你的 pip 是否成功安装，在命令行输入 cmd （ windows 桌⾯面–&gt;快速启动–&gt;附件<br>–&gt;cmd，看到以管理员身份运行类似的话，点击确定）或者<code>Windows徽标+R</code>中输入</p>
+<blockquote>
+<p>pip -—version</p>
+</blockquote>
+<p>小白请注意：需要输入空格，注意有两条-，注意需要直接在命令行执行而不是输入<br>python 之后再执行（这一段中文是写给你的提醒，不是你要敲到终端里执行的语句）</p>
+<p>如果已经成功<strong>安装 pip</strong>，会提示类似下面的：</p>
+<blockquote>
+<p>pip 1.5.6 from C:\Python35\lib\site-packages\pip-1.5.6-py3.5.egg</p>
+</blockquote>
+<p>pip 后面的数字是版本号，from后面的是pip的安装路径，具体的版本号和路径是什么<br>每个人都会不同，但只要电脑返回类似这样的提示就说明 pip 安装成功了。</p>
+<p>如果你的电脑没有返回类似上的提示，而是有报错提示你 pip 没有被定义，请参考<br>这个方法为你的 Windows电脑安装pip: <a href="https://taizilongxu.gitbooks.io/stackoverflowabout-python/content/8/README.html" target="_blank" rel="noopener">pip安装问题</a></p>
+<h3 id="2、安装virtualenv"><a href="#2、安装virtualenv" class="headerlink" title="2、安装virtualenv"></a>2、安装virtualenv</h3><p>在终端输入以下命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">pip install virtualenv </span><br><span class="line">virtualenv testvir  # 在当前用户目录(win+r %HOMEPATH%可查看)生成</span><br><span class="line">cd %homepath%</span><br><span class="line">cd testvir</span><br><span class="line">cd Scripts</span><br><span class="line">activate.bat  # 激活</span><br><span class="line">pip list </span><br><span class="line">deactivate.bat</span><br></pre></td></tr></table></figure>
+<p>其实这种方法挺麻烦的，这里我推荐一种简单方法，<strong>安装virtualenvwrapper</strong></p>
+<h3 id="3、安装virtualenvwrapper"><a href="#3、安装virtualenvwrapper" class="headerlink" title="3、安装virtualenvwrapper"></a>3、安装virtualenvwrapper</h3><p>在终端输入如下命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install virtualenvwrapper-win</span><br></pre></td></tr></table></figure>
+<p>接下来便是创建虚拟环境了，同样采用如下命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkvirtualenv movie  # movie 为你新建虚拟环境的名称</span><br></pre></td></tr></table></figure>
+<p>它会创建在C:\Users\YC\Envs当前用户目录下的Envs目录。</p>
+<p>你可以自定义修改mkvirtualenv创建的目录：新增环境变量WORKON_HOME</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/8964398-036cc39d39c4a23f?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image"></p>
+<p><strong>退出激活状态命令</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">deactivate</span><br></pre></td></tr></table></figure>
+<p><strong>知道有哪些虚拟环境命令</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">workon</span><br></pre></td></tr></table></figure>
+<p><strong>直接进入虚拟环境命令</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">workon movie</span><br></pre></td></tr></table></figure>
+<p>如果出现这种情况，表示你已经进入到虚拟环境中。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">F:\Envs\movie</span><br></pre></td></tr></table></figure>
+<p>再次说明，出现前面的(movie)就代表进入了虚拟环境，之后就可以进行包和库的安装了。输入pip list查看一下现在已经安装的包：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">(movie) F:\Envs\movie&gt;pip list</span><br><span class="line">Package    Version</span><br><span class="line">---------- -------</span><br><span class="line">pip        18.0</span><br><span class="line">setuptools 40.2.0</span><br><span class="line">wheel      0.31.1</span><br><span class="line"></span><br><span class="line">(movie) F:\Envs\movie&gt;</span><br></pre></td></tr></table></figure></p>
+<p>接下来是进行Flask的安装，这个其实和Django的安装很类似，只不过多了一个安装前和安装后的环境检测而已.</p>
+<h3 id="Flask的安装"><a href="#Flask的安装" class="headerlink" title="Flask的安装"></a>Flask的安装</h3><hr>
+<p>安装前检测：pip freeze<br>安装flask： pip install flask -i <a href="https://pypi.tuna.tsinghua.edu.cn/simple" target="_blank" rel="noopener">https://pypi.tuna.tsinghua.edu.cn/simple</a><br>安装后检测：pip freeze</p>
+<hr>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">(movie) F:\Envs\movie&gt;pip list</span><br><span class="line">Package      Version</span><br><span class="line">------------ -------</span><br><span class="line">click        6.7</span><br><span class="line">Flask        1.0.2</span><br><span class="line">itsdangerous 0.24</span><br><span class="line">Jinja2       2.10</span><br><span class="line">MarkupSafe   1.0</span><br><span class="line">pip          18.0</span><br><span class="line">setuptools   40.2.0</span><br><span class="line">Werkzeug     0.14.1</span><br><span class="line">wheel        0.31.1</span><br><span class="line"></span><br><span class="line">(movie) F:\Envs\movie&gt;</span><br></pre></td></tr></table></figure>
+<p>至此本篇关于项目的介绍以及开发环境的搭建就到此为止，感谢你的赏阅！</p>
+<h2 id="补充资料"><a href="#补充资料" class="headerlink" title="补充资料"></a>补充资料</h2><p><strong>1、</strong><a href="http://www.pythondoc.com/flask-mega-tutorial/" target="_blank" rel="noopener">欢迎进入Flask大型教程项目！</a>一个不错的Flask介绍网站。<br><strong>2、</strong><a href="http://docs.jinkan.org/docs/flask/" target="_blank" rel="noopener">Flask文档介绍</a>，挺官方的一个技术文档。<br><strong>3、</strong><a href="https://www.yiibai.com/flask/" target="_blank" rel="noopener">Flask教程</a>，一个受欢迎的技术网站。<br><strong>4、<a href="https://study.163.com/course/introduction.htm?courseId=1004091002" target="_blank" rel="noopener">Python Flask系列（1）——基础</a></strong>,网易云课堂的<strong>免费视频</strong>，教你如何入门Flask。</p>
+
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="https://upload-images.jianshu.io/upload_images/8964398-58d04ffa926103d9.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">觉得不错，赏包辣条吃呗！</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href target="_blank">编程思录</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2018/06/02/利用Flask搭建微电影视频网站（二）：项目优化与模型设计/" class="pre-post btn btn-default" title="利用Flask搭建微电影视频网站（二）：项目优化与模型设计">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">利用Flask搭建微电影视频网站（二）：项目优化与模型设计</span>
+        </a>
+    
+    
+        <a href="/2018/05/15/采用Vue-Django-Restful-framework构建生鲜电商项目（十一）：商品类别数据显示（下）/" class="next-post btn btn-default" title="采用Vue+Django Restful framework构建生鲜电商项目（十一）：商品类别数据显示（下）">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">采用Vue+Django Restful framework构建生鲜电商项目（十一）：商品类别数据显示（下）</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+    <div id="vcomments" class="valine"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+
+    <script>
+        new Valine({
+            av: AV,
+            el: '#vcomments',
+            appId: '8zvHFFu5l2ah8lh0DEPH393B-gzGzoHsz',
+            appKey: 'UNmB24200qMtyyrun5z99nOE',
+            placeholder: '听说长得好看的，都已经留言了！',
+            notify: false,
+            verify: false,
+            avatar: 'mm',
+            meta: 'nick,mail'.split(','),
+            pageSize: '10',
+            path: window.location.pathname,
+            lang: 'zh-CN'.toLowerCase()
+        })
+    </script>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#写在前面"><span class="toc-text">写在前面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#项目介绍"><span class="toc-text">项目介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Flask介绍"><span class="toc-text">Flask介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Flask与Django，Tornado对比"><span class="toc-text">Flask与Django，Tornado对比</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#网站介绍"><span class="toc-text">网站介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Flask丰富的扩展插件"><span class="toc-text">Flask丰富的扩展插件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#你能学到的知识"><span class="toc-text">你能学到的知识</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#环境搭建与工具"><span class="toc-text">环境搭建与工具</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Pycharm的安装"><span class="toc-text">Pycharm的安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#虚拟环境vritualenv的安装"><span class="toc-text">虚拟环境vritualenv的安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1、安装pip"><span class="toc-text">1、安装pip</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、安装virtualenv"><span class="toc-text">2、安装virtualenv</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、安装virtualenvwrapper"><span class="toc-text">3、安装virtualenvwrapper</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Flask的安装"><span class="toc-text">Flask的安装</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#补充资料"><span class="toc-text">补充资料</span></a></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2017-2019
+                </span> |
+                <span>
+				编程思录,保留所有权利
+                    <!--Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>-->
+                </span> |
+                <span>
+				<a style="color: #black" href="http://www.miitbeian.gov.cn">赣ICP备18013455号-5</a>
+                    <!--Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>-->
+                </span>
+            </div>
+			
+			<div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+			
+			<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1277113902'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s96.cnzz.com/z_stat.php%3Fid%3D1277113902%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));</script>
+        </div>
+    </div>
+</div>
+
+
+
+
+    <script src="/assets/tagcanvas.min.js?rev=2.9"></script>
+    <script>
+        var tagOption = {
+            textColour: 'red', // 字体颜色
+            outlineMethod: 'block', // 选中模式
+            outlineColour: '#FFDAB9', // 选中模式的颜色
+            interval: 30 || 30, // 动画帧之间的时间间隔，值越大，转动幅度越大
+            textHeight: 13,
+            outlineRadius: 3,
+            freezeActive: true || '', // 选中的标签是否继续滚动
+            frontSelect: true || '', // 不选标签云后部的标签
+            initial: [0.1, -0.1],
+            depth: 0.5,
+            decel: 0.95,
+            maxSpeed: 0.03,
+            reverse: true || '', // 是否反向触发
+            fadeIn: 500, // 进入动画时间
+            wheelZoom: false || '' // 是否启用鼠标滚轮
+        }
+        TagCanvas.Start('tag-cloud-3d','',tagOption);
+    </script>
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+</body>
+</html>

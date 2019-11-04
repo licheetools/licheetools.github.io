@@ -1,0 +1,496 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="编程思录，记录思考">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://blog.licheetools.top">
+    <!--SEO-->
+
+    <meta name="keywords" content="django建站,Vue前端">
+
+
+    <meta name="description" content="写在前面本篇我们继续进行商品列表页面的配置，里面包含的知识比较多，所以分成3篇文章进行介绍。
+基于类来配置商品列表页现在我们不使用那个APIView，而是使用更上层的view：GenericAP...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+
+    <!--Title-->
+
+
+<title>采用Vue+Django Restful framework构建生鲜电商项目（八）：商品列表页的配置（中） | 编程思录，记录思考</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="编程思录，记录思考" type="application/atom+xml">
+
+
+    <link rel="icon" href="./favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+	<div class="hide">
+		<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+	</div>
+
+
+
+
+
+
+    
+
+    <script>
+        (function(){
+            var bp = document.createElement('script');
+            var curProtocol = window.location.protocol.split(':')[0];
+            if (curProtocol === 'https') {
+                bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+            }
+            else {
+                bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+            }
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(bp, s);
+        })();
+    </script>
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header" style="background-image:url(https://upload-images.jianshu.io/upload_images/8964398-b1ba9582ea8b69ba.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)">
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title="Envy">
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 点滴进步，都是收获 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://blog.licheetools.top">编程思录，记录思考</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>首页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/font/"><i class="fa "></i>前端</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/java/"><i class="fa "></i>Java</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/python/"><i class="fa "></i>Python</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/go/"><i class="fa "></i>Go</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/spider/"><i class="fa "></i>爬虫</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/data/"><i class="fa "></i>数据分析</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/money/"><i class="fa "></i>付费教程</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/life/"><i class="fa "></i>生活记录</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives"><i class="fa "></i>时间轴</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/about/"><i class="fa "></i>关于博主</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/liuyan/"><i class="fa "></i>留言板</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="采用Vue+Django Restful framework构建生鲜电商项目（八）：商品列表页的配置（中）">
+            
+	            采用Vue+Django Restful framework构建生鲜电商项目（八）：商品列表页的配置（中）
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/python/">python</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/Vue前端/">Vue前端</a> <a class="tag-link" href="/tags/django建站/">django建站</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2018/05/01</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>本篇我们继续进行商品列表页面的配置，里面包含的知识比较多，所以分成3篇文章进行介绍。</p>
+<h2 id="基于类来配置商品列表页"><a href="#基于类来配置商品列表页" class="headerlink" title="基于类来配置商品列表页"></a>基于类来配置商品列表页</h2><p>现在我们不使用那个APIView，而是使用更上层的view：<code>GenericAPIView</code><a href="https://www.django-rest-framework.org/tutorial/3-class-based-views/#using-mixins" target="_blank" rel="noopener">Using mixins</a>，这样写起来更加简单。使用Using mixins 和 GenericAPIView，其中GenericAPIView是在APIView的基础上进行了更深层次的封装，里面加入了一些东西如分页用的pagination_class，过滤用的filter_backends等。</p>
+<p>我们看到官方给我们提供的文档代码是：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">from snippets.models import Snippet</span><br><span class="line">from snippets.serializers import SnippetSerializer</span><br><span class="line">from rest_framework import mixins</span><br><span class="line">from rest_framework import generics</span><br><span class="line"></span><br><span class="line">class SnippetList(mixins.ListModelMixin,</span><br><span class="line">                  mixins.CreateModelMixin,</span><br><span class="line">                  generics.GenericAPIView):</span><br><span class="line">    queryset = Snippet.objects.all()</span><br><span class="line">    serializer_class = SnippetSerializer</span><br><span class="line"></span><br><span class="line">    def get(self, request, *args, **kwargs):</span><br><span class="line">        return self.list(request, *args, **kwargs)</span><br><span class="line"></span><br><span class="line">    def post(self, request, *args, **kwargs):</span><br><span class="line">        return self.create(request, *args, **kwargs)</span><br></pre></td></tr></table></figure></p>
+<p>所以，我们按照这个代码来修改我们的goods\views.py文件：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">from .serializers import GoodsSerializer</span><br><span class="line">from rest_framework.views import APIView</span><br><span class="line">from rest_framework.response import Response</span><br><span class="line">from .models import Goods</span><br><span class="line">from rest_framework import mixins</span><br><span class="line">from rest_framework import generics</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class GoodsListView(mixins.ListModelMixin, generics.GenericAPIView):    # 注意这里不需要mixins.CreateModelMixin,因为我们数据在数据库里面已经添加了</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    商品列表页</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    queryset = Goods.objects.all()[:10]</span><br><span class="line">    serializer_class = GoodsSerializer</span><br><span class="line"></span><br><span class="line">    def get(self, request, *args, **kwargs):</span><br><span class="line">        return self.list(request, *args, **kwargs)</span><br></pre></td></tr></table></figure></p>
+<p>我们通过get方法最后返回的是一个list函数，我们看一下list函数到底是干嘛的，我们可以看到在mixin.py文件里面：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-6566bfa836c6aad5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>它其实已经可以实现分页和序列化的功能了。</p>
+<p>现在我们尝试把get方法注释掉，运行一下项目，发现出了问题：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;detail&quot;: &quot;方法 “GET” 不被允许。&quot;</span><br></pre></td></tr></table></figure></p>
+<p>所以说，不论是何种view，我们都需要去重写它的get或者post等http请求的方法（drf默认是不会接收任何方法请求的）</p>
+<p>这样是不是很简单，几行代码就解决了问题。那么我要是告诉你还有比这更简单的方法，都不用你去写get或者post等http请求，是不是觉得太方便了呢。</p>
+<p>我们查看Pycharm左边的源码：<code>F:\Envs\vueshop\Lib\site-packages\rest_framework\generics.py</code>:</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-2402453503feb539.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>点击那个<code>ListAPIView</code>，有没有发现右侧的代码和我们刚才写的一模一样，所以我们可以直接继承这个<code>ListAPIView</code>，就不用写那些多余的代码了。注意到没有，右边的函数都直接继承了两个：<code>mixins.XXXXModelMixin, GenericAPIView</code>，这个和我们前面代码所继承的一模一样（<code>mixins.ListModelMixin, generics.GenericAPIView</code>这里直接在generics.py文件里使用，所以不加generics），所以直接使用<br><code>ListAPIView</code>即可：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">from rest_framework.generics import ListAPIView</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class GoodsListView(ListAPIView):    # 注意这里不需要mixins.CreateModelMixin,因为我们数据在数据库里面已经添加了</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    商品列表页</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    queryset = Goods.objects.all()[:10]</span><br><span class="line">    serializer_class = GoodsSerializer</span><br></pre></td></tr></table></figure>
+<p>简单说一下几个常用的APIView：ListAPIview (用于获取列表)，CreateAPiView (用于创建一条信息)，RetrieveAPIView(用于获取某一条信息)。具体可以点击这里进行查看：<a href="https://www.cnblogs.com/yangxiaoling/p/6914880.html" target="_blank" rel="noopener">API Guide(四)之Generic views</a></p>
+<p>现在又有问题，一般的列表页都是需要分页的，你不可能一下子把所有的信息都给展示出来,我们有简单的方法，只需要通过在setting里面配置一个参数就能完成我们的分页功能。我们所有关于rest-framework的配置都是在<code>F:\Envs\vueshop\Lib\site-packages\rest_framework\settings.py</code>里面的：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-77b283c5c240d09a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>可以看到，drf默认是不提供分页的，需要我们自己来写，我们打开vueshop\settings.py文件，在底部新增如下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">REST_FRAMEWORK = &#123;</span><br><span class="line">    &apos;DEFAULT_PAGINATION_CLASS&apos;: &apos;rest_framework.pagination.LimitOffsetPagination&apos;,</span><br><span class="line">    &apos;PAGE_SIZE&apos;: 10,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这些功能都是刚才提到的<code>GenericAPIView</code>来实现的。我们发现运行之后都直接给图片把域名都给加上了，可以直接进行访问了：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-2fb3d6901c7b116e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>还可以自定义pagination的样式： <a href="https://www.django-rest-framework.org/api-guide/pagination/#setting-the-pagination-style" target="_blank" rel="noopener">Setting the pagination style</a><br>我们继续在views.py里面进行修改：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">from rest_framework.pagination import PageNumberPagination</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class GoodsPagination(PageNumberPagination):</span><br><span class="line">    page_size = 10   # 默认每页个数</span><br><span class="line">    page_size_query_param = &apos;page_size&apos;  # 可以自定义每页的个数</span><br><span class="line">    page_query_param = &quot;p&quot;</span><br><span class="line">    max_page_size = 100  # 默认每页最大个数</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class GoodsListView(generics.ListAPIView):    # 注意这里不需要mixins.CreateModelMixin,因为我们数据在数据库里面已经添加了</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    商品列表页</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    queryset = Goods.objects.all()</span><br><span class="line">    serializer_class = GoodsSerializer</span><br><span class="line">    pagination_class = GoodsPagination</span><br></pre></td></tr></table></figure></p>
+<p>注意这里在<code>GoodsListView</code>里面必须添加<code>pagination_class</code>字段，因为在<code>GenericAPIView</code>里面有这个参数，还字段调用了这个<code>DEFAULT_PAGINATION_CLASS</code>，也就意味着有了这个你就要把刚才在settings.py里面配置的那个<code>DEFAULT_PAGINATION_CLASS</code>给注释掉，否则就会出错哈：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-0443de0023fcb94f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>运行结果如下(第几页，每页多少个都是可以自定义的，你不定义就用默认的)：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-30d3d400539a3ee1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<h2 id="Viewsets和router完成商品列表页"><a href="#Viewsets和router完成商品列表页" class="headerlink" title="Viewsets和router完成商品列表页"></a>Viewsets和router完成商品列表页</h2><p>现在我们来说一个比GenericAPIView还要更深层次的东西：Viewsets，这个不是某个具体的View，他包函5个view：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-706bfbdca1ee3aad.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>我们现在将使用它的GenericViewSet，看到没有它不仅封装了我们的GenericAPIView，还添加了一个ViewSetMixin：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-df201f1205830bb3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>我们来看一下这个ViewSetMixin里面包含了什么：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-a5646d36b4e02fa9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>里面有4个方法，第一个就是路由函数的配置。</p>
+<p>我们知道我们刚才在GoodsListView里面继承的是这个：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">class GoodsListView(generics.ListAPIView):</span><br></pre></td></tr></table></figure></p>
+<p>我们点开ListAPIView，发现ListAPIView其实继承了mixins.ListModelMixin和GenericAPIView<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">class ListAPIView(mixins.ListModelMixin,</span><br><span class="line">                  GenericAPIView):</span><br></pre></td></tr></table></figure></p>
+<p>而如果我们只这样写，发现GenericViewSet其实继承的是ViewSetMixin和generics.GenericAPIView，是不是少了一个，对把mixins.ListModelMixin给丢了，所以我们需要补上：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">class GoodsListView(viewsets.GenericViewSet):</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">class GenericViewSet(ViewSetMixin, generics.GenericAPIView):</span><br></pre></td></tr></table></figure>
+<p>现在我们看这个： <a href="https://www.django-rest-framework.org/api-guide/viewsets/#viewsets" target="_blank" rel="noopener">ViewSets</a>，尝试将ViewSets和Routers来进行配套使用。为了更好地知道我们这里是使用了viewset，因此我们将GoodsListView进行改名：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">class GoodsListViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):    # 注意这里不需要mixins.CreateModelMixin,因为我们数据在数据库里面已经添加了</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    商品列表页</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    queryset = Goods.objects.all()</span><br><span class="line">    serializer_class = GoodsSerializer</span><br><span class="line">    pagination_class = GoodsPagination</span><br></pre></td></tr></table></figure></p>
+<p>接下来去我们的urls.py文件里面配置我们的url:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">from goods.views import GoodsListViewSet</span><br><span class="line"></span><br><span class="line">goods_list = GoodsListViewSet.as_view(&#123;</span><br><span class="line">    &apos;get&apos;: &apos;list&apos;,</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>我们可以直接将get请求绑定到list上面，类似于前面看到的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">def get(self, request, *args, **kwargs):</span><br><span class="line">    return self.list(request, *args, **kwargs)</span><br></pre></td></tr></table></figure></p>
+<p>既然这样弄好了，我们之前的url映射就要修改了（我们不再需要添加as_view()了）：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 商品列表页</span><br><span class="line">path(&apos;goods/&apos;, goods_list, name=&quot;goods-list&quot;),</span><br></pre></td></tr></table></figure></p>
+<p>其实还有更简单的呢，我们可以看到官方文档里面有介绍这个<code>DefaultRouter</code>：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-d60fb33bc336e167.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>注意由于官方是1.x的文档，所以2.0的drf配置可能url就有些不同，但是没关系，我这个我经过了测试，没有问题。我们继续修改urls.py文件：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">from rest_framework.routers import DefaultRouter</span><br><span class="line"></span><br><span class="line">router = DefaultRouter()</span><br><span class="line"># 配置goods的url</span><br><span class="line">router.register(r&apos;goods&apos;, GoodsListViewSet)  # 这里前面加r可以进行转义</span><br></pre></td></tr></table></figure></p>
+<p>然后去掉之前对于goods的配置，在urlpatterns中添加：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 对于goods的router path路径</span><br><span class="line">  re_path(&apos;^&apos;, include(router.urls)),</span><br></pre></td></tr></table></figure></p>
+<p>然后运行我们的项目，发现么有任何问题。</p>
+<p>看到这里大家就可能会懵圈，其实我也是，因为我们不知道什么时候用GenericViewSet, GenericAPIView ，APIView  和 View。懵圈就是对的，我们接下来就是说明这些东西的层次结构，以后你就不会晕了。</p>
+<h2 id="GenericViewSet，-GenericAPIView，APIView-和View的使用"><a href="#GenericViewSet，-GenericAPIView，APIView-和View的使用" class="headerlink" title="GenericViewSet， GenericAPIView，APIView 和View的使用"></a>GenericViewSet， GenericAPIView，APIView 和View的使用</h2><p>现在我们来理清一下这些view之间的关系，还有mixins.ListModelMixin以及这些关系如何来进行组合使用，这样我们就清楚什么时候使用什么了。看这里：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">GenericViewSet(viewset) -drf</span><br><span class="line">    GenericAPIView      -drf</span><br><span class="line">        APIView         -drf</span><br><span class="line">            View        -django</span><br></pre></td></tr></table></figure></p>
+<p>层级关系有了（越往上就是对底层的一次封装）也就是说下面有的功能上面一定都有，而上面有的功能下面却不一定有：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">class GenericViewSet(ViewSetMixin, generics.GenericAPIView):</span><br><span class="line">class GenericAPIView(views.APIView):</span><br><span class="line">class APIView(View):</span><br></pre></td></tr></table></figure></p>
+<p>但还是不清楚各个view的区别（这里是指功能view），我们需要借助mixin来进行理解了：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-3b1b89805fd9ba0a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>上面可以看到mixin一共有5种类型，各个view 之间的差异其实就是通过这个mixin来实现的。这就好比英语中的时态一样，都是完成时，却又不同（前面那个层级关系就类似说明了，过去时，现在时，将来时的区别（实际上又没有，里面的意思你肯定懂））：</p>
+<hr>
+<p>过去完成时，现在完成时，将来完成时，过去将来完成时</p>
+<hr>
+<p>有点跑题，不懂的点这里看一下，毕竟英语还是挺重要的：<a href="https://baijiahao.baidu.com/s?id=1592289962651390333&amp;wfr=spider&amp;for=pc" target="_blank" rel="noopener">现在完成时+过去完成时+将来完成时+过去将来完成时</a>。我们来看这5个mixin，我们以其中的ListModelMixin为例，来进行说明：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">class ListModelMixin(object):</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    List a queryset.</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    def list(self, request, *args, **kwargs):</span><br><span class="line">        queryset = self.filter_queryset(self.get_queryset())</span><br><span class="line"></span><br><span class="line">        page = self.paginate_queryset(queryset)</span><br><span class="line">        if page is not None:</span><br><span class="line">            serializer = self.get_serializer(page, many=True)</span><br><span class="line">            return self.get_paginated_response(serializer.data)</span><br><span class="line"></span><br><span class="line">        serializer = self.get_serializer(queryset, many=True)</span><br><span class="line">        return Response(serializer.data)</span><br></pre></td></tr></table></figure></p>
+<p>我们看到这个<code>ListModelMixin</code>继承的是最高类object（祖宗类），这个没什么说的。关键是这里的list方法，它将get 和 list进行了连接，里面实现了过滤，分页和序列化的功能。</p>
+<p>其他的Mixin：<br>CreateModelMixin ：创建数据会用到；<br>RetrieveModelMixin：获取具体的信息，序列化；<br>UpdateModelMixin：更新全部还是部分的信息；<br>DestroyModelMixin：用来连接delete操作，并在操作的时候设置返回状态如200，204等。<br>上面这些功能都是由<code>mixin</code>来完成的，<code>GenericAPIView</code>并没有做，所以要实现相应的功能就必须通过两者结合来达到。那现在的问题就是这个<code>GenericAPIView</code>到底做了什么事情，不可能绑定这么一个没有的东西吧。</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-0b1eaab2f0b14899.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p><code>GenericAPIView</code>有好多种，我们以<code>ListAPIView</code>为例说明：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">class ListAPIView(mixins.ListModelMixin, GenericAPIView):</span><br></pre></td></tr></table></figure></p>
+<p>点击右边的<code>GenericAPIView</code>，我们可以看到它是继承了<code>views.APIView</code>：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">class GenericAPIView(views.APIView):</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    Base class for all other generic views.</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    # You&apos;ll need to either set these attributes,</span><br><span class="line">    # or override `get_queryset()`/`get_serializer_class()`.</span><br><span class="line">    # If you are overriding a view method, it is important that you call</span><br><span class="line">    # `get_queryset()` instead of accessing the `queryset` property directly,</span><br><span class="line">    # as `queryset` will get evaluated only once, and those results are cached</span><br><span class="line">    # for all subsequent requests.</span><br><span class="line">    queryset = None</span><br><span class="line">    serializer_class = None</span><br><span class="line"></span><br><span class="line">    # If you want to use object lookups other than pk, set &apos;lookup_field&apos;.</span><br><span class="line">    # For more complex lookup requirements override `get_object()`.</span><br><span class="line">    lookup_field = &apos;pk&apos;</span><br><span class="line">    lookup_url_kwarg = None</span><br><span class="line"></span><br><span class="line">    # The filter backend classes to use for queryset filtering</span><br><span class="line">    filter_backends = api_settings.DEFAULT_FILTER_BACKENDS</span><br><span class="line"></span><br><span class="line">    # The style to use for queryset pagination.</span><br><span class="line">    pagination_class = api_settings.DEFAULT_PAGINATION_CLASS</span><br></pre></td></tr></table></figure></p>
+<p>看到上面的注释没有：<code>Base class for all other generic views</code>：所有通用（一般）视图的基类。里面还有两行代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># The filter backend classes to use for queryset filtering</span><br><span class="line">filter_backends = api_settings.DEFAULT_FILTER_BACKENDS</span><br><span class="line"></span><br><span class="line"># The style to use for queryset pagination.</span><br><span class="line">pagination_class = api_settings.DEFAULT_PAGINATION_CLASS</span><br></pre></td></tr></table></figure></p>
+<p>看到了，为什么我们可以过滤，可以分页？原因就在这里。我们再点击右边的APIView，看看这里面是什么：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-e95f74b4583e1057.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>这就是一些基本的功能，我们前面的<code>GenericAPIView</code>就已经封装具有了这些，一些没有的功能就在更深的view上面。这就好比你一年级会+，-运算，二年级你除了会+，-还会了*，/运算；到了后面，你不仅会前面的还会乘方，开方。。。。运算。</p>
+<p>现在我们谈一下马上用到的<code>RetrieveAPIView</code>:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">class RetrieveAPIView(mixins.RetrieveModelMixin,</span><br><span class="line">                      GenericAPIView):</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    Concrete view for retrieving a model instance.</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    def get(self, request, *args, **kwargs):</span><br><span class="line">        return self.retrieve(request, *args, **kwargs)</span><br></pre></td></tr></table></figure></p>
+<p>这个注释<code>Concrete view for retrieving a model instance.</code>的意思是：取到一个模型实例化的具体视图。然后将get方法与retrieve方法进行绑定，就能利用到retrieve的方法了，而不仅仅只是get数据了。而且通过浏览器发送过来的请求只有http协议中规定的几种，我们这里就不只有那些了。我们点<code>retrieve</code>进去，看看这个函数实现了什么功能。它自动帮我们跳到了RetrieveModelMixin这个类，而里面有一个<code>retrieve</code>函数。这个类的作用就是获取一个模型的实例而且是通过<code>retrieve</code>函数来完成的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">class RetrieveModelMixin(object):</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    Retrieve a model instance.</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    def retrieve(self, request, *args, **kwargs):</span><br><span class="line">        instance = self.get_object()</span><br><span class="line">        serializer = self.get_serializer(instance)</span><br><span class="line">        return Response(serializer.data)</span><br></pre></td></tr></table></figure>
+<p>所以这其实就是<code>mixins.RetrieveModelMixin</code>和<code>GenericAPIView</code>的一次组合，实际上你通过那个RetrieveAPIView的继承关系就能看出来：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">class RetrieveAPIView(mixins.RetrieveModelMixin, GenericAPIView):</span><br></pre></td></tr></table></figure></p>
+<p>那么按照这种组合我们是否可以自己组合自己想要的类呢？答案是可以的，但是别忘了把get 方法和 retrieve方法进行绑定，也就是说光有下面是不可以的：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">class RetrieveAPIView(mixins.RetrieveModelMixin,</span><br><span class="line">                      GenericAPIView):</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    Concrete view for retrieving a model instance.</span><br><span class="line">    &quot;&quot;&quot;</span><br></pre></td></tr></table></figure></p>
+<p>正确的应该是这样：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">class RetrieveAPIView(mixins.RetrieveModelMixin,</span><br><span class="line">                      GenericAPIView):</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    Concrete view for retrieving a model instance.</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    def get(self, request, *args, **kwargs):</span><br><span class="line">        return self.retrieve(request, *args, **kwargs)</span><br></pre></td></tr></table></figure></p>
+<p>所以一般情况我们都会优先考虑那些已经组合好的APIView，只有在满足不了需求的情况下，我们才进行组合，记得将http请求方法（不一定是get）与mixin方法进行绑定哈:</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-6b1a3b176a4188c8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>我们往上走，说完了<code>GenericAPIView</code>，现在来说一下<code>GenericViewSet(viewset)</code>：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">GenericViewSet(viewset) -drf</span><br><span class="line">    GenericAPIView      -drf</span><br><span class="line">        APIView         -drf</span><br><span class="line">            View        -django</span><br></pre></td></tr></table></figure></p>
+<p>这个viewset有什么好处呢？我们知道这个viewset有5种：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-d8db077e5e58398c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>它们也都继承了GenericAPIView，并都与唯一的ViewSetMixin进行了组合：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">class GenericViewSet(ViewSetMixin, generics.GenericAPIView):</span><br></pre></td></tr></table></figure></p>
+<p>我们看一下这个<code>ViewSetMixin</code>它里面是什么：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-4f43f5c4ea8596da.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>这个<code>ViewSetMixin</code>将具体的每个modelmixin(例如:(mixins.DestroyModelMixin，mixins.UpdateModelMixin)进行了功能合并，形成了唯一的一个<code>ViewSetMixin</code>。</p>
+<p>在讲<code>GenericAPIView</code>的时候我们说过，当你自定义APIView的时候需要将http请求方法与mixin方法进行绑定。那么上面说过这个唯一的<code>ViewSetMixin</code>既然是进行了功能合并，那我们就不需要进行方法绑定了。<strong>注意我这里是说不需要进行方法的绑定，但没说不需要其他的绑定关系。</strong></p>
+<p>url的配置还是需要配置的，我们打开那个viewsets.py文件（实际上我们上通过点击这个GenericViewSet来直接进入该文件的）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">class GoodsListViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-7e97c6fc89718e6b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>这其实就是url的配置，它重写了as_view方法，接受参数，并传递到对应的method 与action进行绑定。所以我们在urls.py文件里面，就要修改了：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">goods_list = GoodsListViewSet.as_view(&#123;</span><br><span class="line">    &apos;get&apos;: &apos;list&apos;,</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">urlpatterns = [</span><br><span class="line">path(&apos;goods/&apos;, goods_list ,name=&quot;goods-list&quot;),  # 这里就不需要as_view()了</span><br><span class="line"></span><br><span class="line">]</span><br></pre></td></tr></table></figure></p>
+<p>这样尽管很简单，但是drf还是给我们提供了一个更简单的Routers：<a href="https://www.django-rest-framework.org/tutorial/6-viewsets-and-routers/#using-routers" target="_blank" rel="noopener">Using Routers</a></p>
+<p>我们可以使用这个进行默认的绑定，这个其实和generic中的差不多，怎么用呢？直接在urls.py文件里面进行配置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">from goods.views import GoodsListViewSet</span><br><span class="line"></span><br><span class="line">from rest_framework.routers import DefaultRouter</span><br><span class="line"></span><br><span class="line">router = DefaultRouter()</span><br><span class="line"># 配置goods的url</span><br><span class="line">router.register(r&apos;goods&apos;, GoodsListViewSet)  # 这里前面加r可以进行转义</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">urlpatterns = [</span><br><span class="line">   # 对于goods的router path路径</span><br><span class="line">   re_path(&apos;^&apos;, include(router.urls)),</span><br><span class="line"></span><br><span class="line">]</span><br></pre></td></tr></table></figure></p>
+<p>是不是很简单。<code>ViewSetMixin</code>除了不需要进行方法绑定，还有其他的好处：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-efc04ca2f8909702.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>比如依赖于具体的request请求方法，来给视图绑定动作。这个操作在后面的开发中进行动态的serializer时具有非常大的好处，非常方便。</p>
+<p>最后奉上一张图片，让你对此有更直观的认识：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-5d185b88b06f7ffa.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>大家可以点击这里，了解更多关于drf的知识：<a href="https://github.com/leilux/Django-REST-Framework-Tutorial_zh-CN" target="_blank" rel="noopener">drf翻译的教程</a></p>
+<p>至此，我们本篇关于商品列表页面的配置中篇的介绍就到此为止了，感谢你的赏阅！</p>
+
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="https://upload-images.jianshu.io/upload_images/8964398-58d04ffa926103d9.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">觉得不错，赏包辣条吃呗！</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href target="_blank">编程思录</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2018/05/02/采用Vue-Django-Restful-framework构建生鲜电商项目（九）：商品列表页的配置（下）/" class="pre-post btn btn-default" title="采用Vue+Django Restful framework构建生鲜电商项目（九）：商品列表页的配置（下）">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">采用Vue+Django Restful framework构建生鲜电商项目（九）：商品列表页的配置（下）</span>
+        </a>
+    
+    
+        <a href="/2018/04/22/采用Vue-Django-Restful-framework构建生鲜电商项目（七）：商品列表页的配置（上）/" class="next-post btn btn-default" title="采用Vue+Django Restful framework构建生鲜电商项目（七）：商品列表页的配置（上）">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">采用Vue+Django Restful framework构建生鲜电商项目（七）：商品列表页的配置（上）</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+    <div id="vcomments" class="valine"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+
+    <script>
+        new Valine({
+            av: AV,
+            el: '#vcomments',
+            appId: '8zvHFFu5l2ah8lh0DEPH393B-gzGzoHsz',
+            appKey: 'UNmB24200qMtyyrun5z99nOE',
+            placeholder: '听说长得好看的，都已经留言了！',
+            notify: false,
+            verify: false,
+            avatar: 'mm',
+            meta: 'nick,mail'.split(','),
+            pageSize: '10',
+            path: window.location.pathname,
+            lang: 'zh-CN'.toLowerCase()
+        })
+    </script>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#写在前面"><span class="toc-text">写在前面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#基于类来配置商品列表页"><span class="toc-text">基于类来配置商品列表页</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Viewsets和router完成商品列表页"><span class="toc-text">Viewsets和router完成商品列表页</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GenericViewSet，-GenericAPIView，APIView-和View的使用"><span class="toc-text">GenericViewSet， GenericAPIView，APIView 和View的使用</span></a></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2017-2019
+                </span> |
+                <span>
+				编程思录,保留所有权利
+                    <!--Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>-->
+                </span> |
+                <span>
+				<a style="color: #black" href="http://www.miitbeian.gov.cn">赣ICP备18013455号-5</a>
+                    <!--Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>-->
+                </span>
+            </div>
+			
+			<div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+			
+			<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1277113902'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s96.cnzz.com/z_stat.php%3Fid%3D1277113902%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));</script>
+        </div>
+    </div>
+</div>
+
+
+
+
+    <script src="/assets/tagcanvas.min.js?rev=2.9"></script>
+    <script>
+        var tagOption = {
+            textColour: 'red', // 字体颜色
+            outlineMethod: 'block', // 选中模式
+            outlineColour: '#FFDAB9', // 选中模式的颜色
+            interval: 30 || 30, // 动画帧之间的时间间隔，值越大，转动幅度越大
+            textHeight: 13,
+            outlineRadius: 3,
+            freezeActive: true || '', // 选中的标签是否继续滚动
+            frontSelect: true || '', // 不选标签云后部的标签
+            initial: [0.1, -0.1],
+            depth: 0.5,
+            decel: 0.95,
+            maxSpeed: 0.03,
+            reverse: true || '', // 是否反向触发
+            fadeIn: 500, // 进入动画时间
+            wheelZoom: false || '' // 是否启用鼠标滚轮
+        }
+        TagCanvas.Start('tag-cloud-3d','',tagOption);
+    </script>
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+</body>
+</html>

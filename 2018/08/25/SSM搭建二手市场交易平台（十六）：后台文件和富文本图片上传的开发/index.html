@@ -1,0 +1,422 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="编程思录，记录思考">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://blog.licheetools.top">
+    <!--SEO-->
+
+    <meta name="keywords" content="SSM框架,JAVA后端">
+
+
+    <meta name="description" content="写在前面本篇我们来介绍后台文件上传和后台富文本图片上传的开发，这里面涉及到的内容比较多，而且还是具有一定的难度，建议大家没事多看几遍，多敲代码。
+后台文件上传首先打开ProductManageC...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+
+    <!--Title-->
+
+
+<title>SSM搭建二手市场交易平台（十六）：后台文件和富文本图片上传的开发 | 编程思录，记录思考</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="编程思录，记录思考" type="application/atom+xml">
+
+
+    <link rel="icon" href="./favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+	<div class="hide">
+		<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+	</div>
+
+
+
+
+
+
+    
+
+    <script>
+        (function(){
+            var bp = document.createElement('script');
+            var curProtocol = window.location.protocol.split(':')[0];
+            if (curProtocol === 'https') {
+                bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+            }
+            else {
+                bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+            }
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(bp, s);
+        })();
+    </script>
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header" style="background-image:url(https://upload-images.jianshu.io/upload_images/8964398-b1ba9582ea8b69ba.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)">
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title="Envy">
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 点滴进步，都是收获 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://blog.licheetools.top">编程思录，记录思考</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>首页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/font/"><i class="fa "></i>前端</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/java/"><i class="fa "></i>Java</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/python/"><i class="fa "></i>Python</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/go/"><i class="fa "></i>Go</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/spider/"><i class="fa "></i>爬虫</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/data/"><i class="fa "></i>数据分析</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/money/"><i class="fa "></i>付费教程</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/life/"><i class="fa "></i>生活记录</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives"><i class="fa "></i>时间轴</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/about/"><i class="fa "></i>关于博主</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/liuyan/"><i class="fa "></i>留言板</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="SSM搭建二手市场交易平台（十六）：后台文件和富文本图片上传的开发">
+            
+	            SSM搭建二手市场交易平台（十六）：后台文件和富文本图片上传的开发
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/java/">java</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/JAVA后端/">JAVA后端</a> <a class="tag-link" href="/tags/SSM框架/">SSM框架</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2018/08/25</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>本篇我们来介绍后台文件上传和后台富文本图片上传的开发，这里面涉及到的内容比较多，而且还是具有一定的难度，建议大家没事多看几遍，多敲代码。</p>
+<h2 id="后台文件上传"><a href="#后台文件上传" class="headerlink" title="后台文件上传"></a>后台文件上传</h2><p>首先打开ProductManageController.java文件，在里面新增以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">/***</span><br><span class="line">    *</span><br><span class="line">    * 后台管理员--上传文件到服务器（spring mvc）</span><br><span class="line">    * */</span><br><span class="line">   @RequestMapping(&quot;upload.do&quot;)</span><br><span class="line">   @ResponseBody</span><br><span class="line">   public ServerResponse upload(HttpSession session, @RequestParam(value = &quot;upload_file&quot;,required = false) MultipartFile file, HttpServletRequest request)&#123;</span><br><span class="line">       //判断一下登录情况</span><br><span class="line">       User user = (User)session.getAttribute(Const.CURRENT_USER);</span><br><span class="line">       if(user == null)&#123;</span><br><span class="line">           return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),&quot;用户未登录,请登录管理员&quot;);</span><br><span class="line">       &#125;</span><br><span class="line">       //判断一下是不是管理员身份</span><br><span class="line">       if(iUserService.checkAdminRole(user).isSuccess())&#123;</span><br><span class="line"></span><br><span class="line">           //如果是管理员就进行后台上传文件的逻辑</span><br><span class="line">           String path = request.getSession().getServletContext().getRealPath(&quot;upload&quot;);</span><br><span class="line">           String targetFileName = iFileService.upload(file,path);</span><br><span class="line">           String url = PropertiesUtil.getProperty(&quot;ftp.server.http.prefix&quot;)+targetFileName;   //进行url的拼接以供前端使用</span><br><span class="line"></span><br><span class="line">           Map fileMap = Maps.newHashMap();</span><br><span class="line">           fileMap.put(&quot;uri&quot;,targetFileName);</span><br><span class="line">           fileMap.put(&quot;url&quot;,url);</span><br><span class="line">           return ServerResponse.createBySuccess(fileMap);</span><br><span class="line">       &#125;else&#123;</span><br><span class="line">           return ServerResponse.createByErrorMessage(&quot;无权限操作，需要管理员权限&quot;);</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p>
+<p>关于这段代码，我需要说明几点：<br>1、参数问题，这里不仅仅需要登录，而且还需要一个文件参数（非必须）和请求参数（必须因为文件上传路径需要从它里面进行获取）。<br>2、<code>String targetFileName = iFileService.upload(file,path);</code>看到这里就说明你需要完成几个事情：首先新建iFileService这个接口，然后再创建一个该接口的实现类。<br>打开service这个包，在里面新建一个IFileService.java的接口，里面的代码如下：(按照我们之前的说明应该是最后进行的，这里考虑到介绍的顺序问题，就这里写吧)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">package top.store.service;</span><br><span class="line"></span><br><span class="line">import org.springframework.web.multipart.MultipartFile;</span><br><span class="line"></span><br><span class="line">public interface IFileService &#123;</span><br><span class="line">    String upload(MultipartFile file, String path);   //上传文件到ftp服务器上面</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>然后打开impl文件，在里面新建FileServiceImpl.java文件来实现我们IFileService这个接口，里面的代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line">package top.store.service.impl;</span><br><span class="line"></span><br><span class="line">import com.google.common.collect.Lists;</span><br><span class="line">import org.slf4j.Logger;</span><br><span class="line">import org.slf4j.LoggerFactory;</span><br><span class="line">import org.springframework.stereotype.Service;</span><br><span class="line">import org.springframework.web.multipart.MultipartFile;</span><br><span class="line">import top.store.service.IFileService;</span><br><span class="line">import top.store.util.FTPUtil;</span><br><span class="line"></span><br><span class="line">import java.io.File;</span><br><span class="line">import java.io.IOException;</span><br><span class="line">import java.util.UUID;</span><br><span class="line"></span><br><span class="line">@Service(&quot;iFileService&quot;)</span><br><span class="line">public class FileServiceImpl implements IFileService &#123;</span><br><span class="line"></span><br><span class="line">    //添加一个用于目录列表为空的日志</span><br><span class="line">    private Logger logger = LoggerFactory.getLogger(FileServiceImpl.class);</span><br><span class="line"></span><br><span class="line">    public  String upload(MultipartFile file,String path)&#123;</span><br><span class="line">        //上传文件的名称</span><br><span class="line">        String fileName =file.getOriginalFilename();</span><br><span class="line">        //扩展名test.jpg，我们要获取jpg</span><br><span class="line">        String fileExtensionName =fileName.substring(fileName.lastIndexOf(&quot;.&quot;)+1);</span><br><span class="line"></span><br><span class="line">        //文件上传的名称</span><br><span class="line">        String uploadFileName = UUID.randomUUID().toString()+&quot;.&quot;+fileExtensionName;</span><br><span class="line"></span><br><span class="line">        logger.info(&quot;开始上传文件,上传文件的文件名:&#123;&#125;,上传的路径:&#123;&#125;,新文件名:&#123;&#125;&quot;,fileName,path,uploadFileName);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        File fileDir = new File(path);</span><br><span class="line">        if(!fileDir.exists())&#123;</span><br><span class="line">            //文件可以设置权限</span><br><span class="line">            fileDir.setWritable(true);</span><br><span class="line">            //创建多个文件</span><br><span class="line">            fileDir.mkdirs();</span><br><span class="line">        &#125;</span><br><span class="line">        File targetFile = new File(path,uploadFileName);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        try &#123;</span><br><span class="line">            file.transferTo(targetFile);  //文件已经上传成功了</span><br><span class="line"></span><br><span class="line">            FTPUtil.uploadFile(Lists.newArrayList(targetFile));   //已经上传到ftp服务器上</span><br><span class="line"></span><br><span class="line">            targetFile.delete();  //删除upload下面的文件</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        &#125; catch (IOException e) &#123;</span><br><span class="line">            logger.error(&quot;上传文件异常&quot;,e);</span><br><span class="line">            return null;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        //1:test.jpg 这里就是说明我们前面使用UUID的必要性，否则就很容易造成重复</span><br><span class="line">        //2:test.jpg</span><br><span class="line">        return targetFile.getName();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>上面这个实现文件上传的类不仅仅用在文件上传，而且后台富文本图片上传也是需要依靠它的。同样这里的<code>FTPUtil.uploadFile(Lists.newArrayList(targetFile));</code>也是需要你注意的，打开util包，在里面新建一个FTPUtil.java的工具类，我们在里面新增以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br></pre></td><td class="code"><pre><span class="line">package top.store.util;</span><br><span class="line"></span><br><span class="line">import org.apache.commons.net.ftp.FTPClient;</span><br><span class="line">import org.slf4j.Logger;</span><br><span class="line">import org.slf4j.LoggerFactory;</span><br><span class="line"></span><br><span class="line">import java.io.File;</span><br><span class="line">import java.io.FileInputStream;</span><br><span class="line">import java.io.IOException;</span><br><span class="line">import java.util.List;</span><br><span class="line"></span><br><span class="line">public class FTPUtil &#123;</span><br><span class="line"></span><br><span class="line">    //添加一个用于目录列表为空的日志</span><br><span class="line">    private static final Logger logger = LoggerFactory.getLogger(FTPUtil.class);</span><br><span class="line"></span><br><span class="line">    //使用我们之前定义的PropertiesUtil这个工具类来获取服务器属性</span><br><span class="line">    private static String ftpIp =PropertiesUtil.getProperty(&quot;ftp.server.ip&quot;);</span><br><span class="line">    private static String ftpUser =PropertiesUtil.getProperty(&quot;ftp.user&quot;);</span><br><span class="line">    private static String ftpPass =PropertiesUtil.getProperty(&quot;ftp.pass&quot;);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    private String ip;</span><br><span class="line">    private int port;</span><br><span class="line">    private String user;</span><br><span class="line">    private String pwd;</span><br><span class="line">    private FTPClient ftpClient;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    public FTPUtil(String ip,int port,String user,String pwd )&#123;</span><br><span class="line">        this.ip =ip;</span><br><span class="line">        this.port =port;</span><br><span class="line">        this.user=user;</span><br><span class="line">        this.pwd =pwd;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    //上传服务器</span><br><span class="line">    public static boolean uploadFile(List&lt;File&gt; fileList) throws IOException &#123;</span><br><span class="line">        FTPUtil ftpUtil = new FTPUtil(ftpIp,21,ftpUser,ftpPass);</span><br><span class="line">        logger.info(&quot;开始连接 ftp 服务器&quot;);</span><br><span class="line">        boolean result = ftpUtil.uploadFile(&quot;img&quot;,fileList);</span><br><span class="line">        logger.info(&quot;开始连接 ftp 服务器,结束上传,上传结果:&#123;&#125;&quot;);</span><br><span class="line">        return result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    private boolean uploadFile(String remotePath,List&lt;File&gt; fileList) throws IOException &#123;</span><br><span class="line">        boolean uploaded = true;</span><br><span class="line">        FileInputStream fis = null;</span><br><span class="line">        //连接 FTP 服务器</span><br><span class="line">        if(connectServer(this.ip,this.port,this.user,this.pwd))&#123;</span><br><span class="line">            try &#123;</span><br><span class="line">                ftpClient.changeWorkingDirectory(remotePath);</span><br><span class="line">                ftpClient.setBufferSize(1024);</span><br><span class="line">                ftpClient.setControlEncoding(&quot;UTF-8&quot;);</span><br><span class="line">                ftpClient.setFileType(FTPClient.BINARY_FILE_TYPE);  //二进制类型，可以防止乱码</span><br><span class="line">                ftpClient.enterLocalPassiveMode();   //打开本地的被动模式</span><br><span class="line">                for(File fileItem : fileList)&#123;</span><br><span class="line">                    fis = new FileInputStream(fileItem);</span><br><span class="line">                    ftpClient.storeFile(fileItem.getName(),fis);</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">            &#125; catch (IOException e) &#123;</span><br><span class="line">                logger.error(&quot;上传文件异常&quot;,e);</span><br><span class="line">                uploaded = false;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125; finally &#123;</span><br><span class="line">                fis.close();  //释放连接</span><br><span class="line">                ftpClient.disconnect();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return uploaded;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    //连接Ftp服务器</span><br><span class="line">    private boolean connectServer(String ip,int port,String user,String pwd)&#123;</span><br><span class="line"></span><br><span class="line">        boolean isSuccess = false;</span><br><span class="line">        ftpClient = new FTPClient();</span><br><span class="line">        try &#123;</span><br><span class="line">            ftpClient.connect(ip);</span><br><span class="line">            isSuccess = ftpClient.login(user,pwd);</span><br><span class="line">        &#125; catch (IOException e) &#123;</span><br><span class="line">            logger.error(&quot;连接 FTP 服务器异常&quot;,e);</span><br><span class="line">        &#125;</span><br><span class="line">        return isSuccess;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    public String getIp() &#123;</span><br><span class="line">        return ip;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setIp(String ip) &#123;</span><br><span class="line">        this.ip = ip;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public int getPort() &#123;</span><br><span class="line">        return port;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setPort(int port) &#123;</span><br><span class="line">        this.port = port;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String getUser() &#123;</span><br><span class="line">        return user;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setUser(String user) &#123;</span><br><span class="line">        this.user = user;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String getPwd() &#123;</span><br><span class="line">        return pwd;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setPwd(String pwd) &#123;</span><br><span class="line">        this.pwd = pwd;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public FTPClient getFtpClient() &#123;</span><br><span class="line">        return ftpClient;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setFtpClient(FTPClient ftpClient) &#123;</span><br><span class="line">        this.ftpClient = ftpClient;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这个文件的作用就是获取服务器的属性以及负责连接服务器和上传文件到服务器。</p>
+<p>3、我们继续回到ProductManageController.java文件，在最上面进行IFileService 的注入：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@Autowired</span><br><span class="line">private IFileService iFileService;</span><br></pre></td></tr></table></figure></p>
+<p>关于文件上传的一些参数的设置，大家可以打开dispatcher-servlet.xml文件：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- 文件上传 --&gt;</span><br><span class="line">&lt;bean id=&quot;multipartResolver&quot; class=&quot;org.springframework.web.multipart.commons.CommonsMultipartResolver&quot;&gt;</span><br><span class="line">        &lt;property name=&quot;maxUploadSize&quot; value=&quot;10485760&quot;/&gt; &lt;!-- 10m --&gt;</span><br><span class="line">        &lt;property name=&quot;maxInMemorySize&quot; value=&quot;4096&quot; /&gt;</span><br><span class="line">        &lt;property name=&quot;defaultEncoding&quot; value=&quot;UTF-8&quot;&gt;&lt;/property&gt;</span><br><span class="line">&lt;/bean&gt;</span><br></pre></td></tr></table></figure></p>
+<p>上面说了允许文件上传的最大尺寸，默认编码方式以及阈值，低于此值，只保留在内存里，超过此阈值，生成硬盘上的临时文件。</p>
+<p>为了后面进行测试，你可以打开webapp下面的index.jsp文件，在里面添加如下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;%--springmvc 上传文件--%&gt;</span><br><span class="line">&lt;form name=&quot;form1&quot; action=&quot;/manage/product/upload.do&quot; method=&quot;post&quot; enctype=&quot;multipart/form-data&quot;&gt;</span><br><span class="line">    &lt;input type=&quot;file&quot; name=&quot;upload_file&quot; /&gt;</span><br><span class="line">    &lt;input type=&quot;submit&quot; value=&quot;springmvc 上传文件&quot; /&gt;</span><br><span class="line">&lt;/form&gt;</span><br></pre></td></tr></table></figure></p>
+<p>这样后台文件上传的实现就介绍完了，接下来就进行后台富文本图片上传的开发。</p>
+<h2 id="后台富文本图片上传的开发"><a href="#后台富文本图片上传的开发" class="headerlink" title="后台富文本图片上传的开发"></a>后台富文本图片上传的开发</h2><p>前面说过，我们这两个功能的接口是一样的，因此那部分代码就可以不用再写了，直接就可以进行使用。但是我们这里使用了simditor，你可以点击这里进行了解：<a href="https://simditor.tower.im/docs/doc-config.html" target="_blank" rel="noopener">simditor</a>，我们这里主要使用json，因此你可以拉到底部看到这段代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;success&quot;: true/false,</span><br><span class="line">  &quot;msg&quot;: &quot;error message&quot;, # optional</span><br><span class="line">  &quot;file_path&quot;: &quot;[real file path]&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>所以我们后面图片文件上传之后，返回的格式就是这个样子，这里告诉大家希望大家对此有个提前的认识。我们打开ProductManageController.java文件，在里面新增以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">/***</span><br><span class="line"> *</span><br><span class="line"> * 后台管理员--富文本图片上传文件到服务器</span><br><span class="line"> * */</span><br><span class="line">@RequestMapping(&quot;richtext_img_upload.do&quot;)</span><br><span class="line">@ResponseBody</span><br><span class="line">public Map  richtextImgUpload(HttpSession session, @RequestParam(value = &quot;upload_file&quot;,required = false) MultipartFile file, HttpServletRequest request, HttpServletResponse response)&#123;</span><br><span class="line">    Map resultMap =Maps.newHashMap();</span><br><span class="line">    //判断一下登录情况</span><br><span class="line">    User user = (User)session.getAttribute(Const.CURRENT_USER);</span><br><span class="line">    if(user == null)&#123;</span><br><span class="line">        resultMap.put(&quot;success&quot;,false);</span><br><span class="line">        resultMap.put(&quot;msg&quot;,&quot;请登录管理员&quot;);</span><br><span class="line">        return resultMap;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //富文本中对于返回值有自己的要求,我们使用simditor，因此按照simditor的要求进行返回，前面我们也说过了。</span><br><span class="line">    //&#123;</span><br><span class="line">    //     &quot;success&quot;: true/false,</span><br><span class="line">    //     &quot;msg&quot;: &quot;error message&quot;, # optional</span><br><span class="line">    //     &quot;file_path&quot;: &quot;[real file path]&quot;</span><br><span class="line">    //&#125;</span><br><span class="line"></span><br><span class="line">    //判断一下是不是管理员身份</span><br><span class="line">    if(iUserService.checkAdminRole(user).isSuccess())&#123;</span><br><span class="line"></span><br><span class="line">        //如果是管理员就进行后台上传富文本文件的逻辑</span><br><span class="line">        String path = request.getSession().getServletContext().getRealPath(&quot;upload&quot;);</span><br><span class="line">        String targetFileName = iFileService.upload(file,path);</span><br><span class="line"></span><br><span class="line">       //判断文件名是否为空，如果为空的话</span><br><span class="line">        if(StringUtils.isBlank(targetFileName))&#123;</span><br><span class="line">            resultMap.put(&quot;success&quot;,false);</span><br><span class="line">            resultMap.put(&quot;msg&quot;,&quot;上传失败&quot;);</span><br><span class="line">            return resultMap;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        String url = PropertiesUtil.getProperty(&quot;ftp.server.http.prefix&quot;)+targetFileName;   //进行url的拼接以供前端使用</span><br><span class="line">        resultMap.put(&quot;success&quot;,true);</span><br><span class="line">        resultMap.put(&quot;msg&quot;,&quot;上传成功&quot;);</span><br><span class="line">        resultMap.put(&quot;file_path&quot;,url);</span><br><span class="line">        response.addHeader(&quot;Access-Control-Allow-Headers&quot;,&quot;X-File-Name&quot;);</span><br><span class="line">        return resultMap;</span><br><span class="line"></span><br><span class="line">    &#125;else&#123;</span><br><span class="line">        resultMap.put(&quot;success&quot;,false);</span><br><span class="line">        resultMap.put(&quot;msg&quot;,&quot;无权限操作，需要管理员权限&quot;);</span><br><span class="line">        return resultMap;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这个段代码就是核心代码，所以我需要说明几点：<br>1、为什么我们最后的返回是一个map，因为simditor文档要求最后返回的是一个json而且是以一种键值对的格式进行返回，所以你要莫使用map，当然使用object也是可以的，你可以参考这篇文章：<a href="https://blog.csdn.net/qq_35221138/article/details/81239968" target="_blank" rel="noopener">list、map、对象对应json的格式</a>。</p>
+<p>2、记住我们本项目都是使用了guava提供的map,set,list等，因为它们进行了更深层次的封装。</p>
+<p>3、这里的逻辑就是先判断文件存在与否，不存在就直接返回失败，存在就进行url的拼接以及保存到header里面并及时显示成功之后的信息。这个逻辑还行，能理解。</p>
+<p>同样为了后面进行测试，你可以打开webapp下面的index.jsp文件，在里面添加如下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;%--富文本图片上传文件--%&gt;</span><br><span class="line">&lt;form name=&quot;form2&quot; action=&quot;/manage/product/richtext_img_upload.do&quot; method=&quot;post&quot; enctype=&quot;multipart/form-data&quot;&gt;</span><br><span class="line">    &lt;input type=&quot;file&quot; name=&quot;upload_file&quot; /&gt;</span><br><span class="line">    &lt;input type=&quot;submit&quot; value=&quot;富文本图片上传文件&quot; /&gt;</span><br><span class="line">&lt;/form&gt;</span><br></pre></td></tr></table></figure></p>
+<p>这样我们本篇关于后台文件上传和后台富文本图片上传开发的介绍就到此为止了，感谢你的赏阅！</p>
+
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="https://upload-images.jianshu.io/upload_images/8964398-58d04ffa926103d9.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">觉得不错，赏包辣条吃呗！</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href target="_blank">编程思录</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2018/08/26/SSM搭建二手市场交易平台（十七）：前台商品列表，搜索，动态排序/" class="pre-post btn btn-default" title="SSM搭建二手市场交易平台（十七）：前台商品列表，搜索，动态排序">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">SSM搭建二手市场交易平台（十七）：前台商品列表，搜索，动态排序</span>
+        </a>
+    
+    
+        <a href="/2018/08/24/SSM搭建二手市场交易平台（十五）：后台商品列表动态分页及搜索功能/" class="next-post btn btn-default" title="SSM搭建二手市场交易平台（十五）：后台商品列表动态分页及搜索功能">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">SSM搭建二手市场交易平台（十五）：后台商品列表动态分页及搜索功能</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+    <div id="vcomments" class="valine"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+
+    <script>
+        new Valine({
+            av: AV,
+            el: '#vcomments',
+            appId: '8zvHFFu5l2ah8lh0DEPH393B-gzGzoHsz',
+            appKey: 'UNmB24200qMtyyrun5z99nOE',
+            placeholder: '听说长得好看的，都已经留言了！',
+            notify: false,
+            verify: false,
+            avatar: 'mm',
+            meta: 'nick,mail'.split(','),
+            pageSize: '10',
+            path: window.location.pathname,
+            lang: 'zh-CN'.toLowerCase()
+        })
+    </script>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#写在前面"><span class="toc-text">写在前面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#后台文件上传"><span class="toc-text">后台文件上传</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#后台富文本图片上传的开发"><span class="toc-text">后台富文本图片上传的开发</span></a></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2017-2019
+                </span> |
+                <span>
+				编程思录,保留所有权利
+                    <!--Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>-->
+                </span> |
+                <span>
+				<a style="color: #black" href="http://www.miitbeian.gov.cn">赣ICP备18013455号-5</a>
+                    <!--Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>-->
+                </span>
+            </div>
+			
+			<div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+			
+			<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1277113902'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s96.cnzz.com/z_stat.php%3Fid%3D1277113902%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));</script>
+        </div>
+    </div>
+</div>
+
+
+
+
+    <script src="/assets/tagcanvas.min.js?rev=2.9"></script>
+    <script>
+        var tagOption = {
+            textColour: 'red', // 字体颜色
+            outlineMethod: 'block', // 选中模式
+            outlineColour: '#FFDAB9', // 选中模式的颜色
+            interval: 30 || 30, // 动画帧之间的时间间隔，值越大，转动幅度越大
+            textHeight: 13,
+            outlineRadius: 3,
+            freezeActive: true || '', // 选中的标签是否继续滚动
+            frontSelect: true || '', // 不选标签云后部的标签
+            initial: [0.1, -0.1],
+            depth: 0.5,
+            decel: 0.95,
+            maxSpeed: 0.03,
+            reverse: true || '', // 是否反向触发
+            fadeIn: 500, // 进入动画时间
+            wheelZoom: false || '' // 是否启用鼠标滚轮
+        }
+        TagCanvas.Start('tag-cloud-3d','',tagOption);
+    </script>
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+</body>
+</html>

@@ -1,0 +1,422 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="编程思录，记录思考">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://blog.licheetools.top">
+    <!--SEO-->
+
+    <meta name="keywords" content="SSM框架,JAVA后端">
+
+
+    <meta name="description" content="写在前面上一篇中我们介绍了登录状态下重置密码功能开发，更新用户个人信息功能开发。那么本篇我们就来介绍如何获取用户详细信息的功能开发从而完成所有用户信息功能的开发。里面的内容很多，希望大家对此有一...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+
+    <!--Title-->
+
+
+<title>SSM搭建二手市场交易平台（十）：获取用户详细信息的功能开发 | 编程思录，记录思考</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="编程思录，记录思考" type="application/atom+xml">
+
+
+    <link rel="icon" href="./favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+	<div class="hide">
+		<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+	</div>
+
+
+
+
+
+
+    
+
+    <script>
+        (function(){
+            var bp = document.createElement('script');
+            var curProtocol = window.location.protocol.split(':')[0];
+            if (curProtocol === 'https') {
+                bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+            }
+            else {
+                bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+            }
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(bp, s);
+        })();
+    </script>
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header" style="background-image:url(https://upload-images.jianshu.io/upload_images/8964398-b1ba9582ea8b69ba.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)">
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title="Envy">
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 点滴进步，都是收获 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://blog.licheetools.top">编程思录，记录思考</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>首页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/font/"><i class="fa "></i>前端</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/java/"><i class="fa "></i>Java</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/python/"><i class="fa "></i>Python</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/go/"><i class="fa "></i>Go</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/spider/"><i class="fa "></i>爬虫</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/data/"><i class="fa "></i>数据分析</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/money/"><i class="fa "></i>付费教程</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/life/"><i class="fa "></i>生活记录</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives"><i class="fa "></i>时间轴</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/about/"><i class="fa "></i>关于博主</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/liuyan/"><i class="fa "></i>留言板</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="SSM搭建二手市场交易平台（十）：获取用户详细信息的功能开发">
+            
+	            SSM搭建二手市场交易平台（十）：获取用户详细信息的功能开发
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/java/">java</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/JAVA后端/">JAVA后端</a> <a class="tag-link" href="/tags/SSM框架/">SSM框架</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2018/08/19</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>上一篇中我们介绍了登录状态下重置密码功能开发，更新用户个人信息功能开发。那么本篇我们就来介绍如何获取用户详细信息的功能开发从而完成所有用户信息功能的开发。里面的内容很多，希望大家对此有一个提前的认识。</p>
+<h2 id="获取用户详细信息的功能开发"><a href="#获取用户详细信息的功能开发" class="headerlink" title="获取用户详细信息的功能开发"></a>获取用户详细信息的功能开发</h2><p>我们的开发顺序是<code>service--&gt;mybatis--&gt;dao</code>，所以再次强调它的重要性！！！<br>打开UserController.java文件，写入以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">/***</span><br><span class="line"> *</span><br><span class="line"> * 登录状态下的获取用户的详细信息</span><br><span class="line"> */</span><br><span class="line">@RequestMapping(value = &quot;get_information.do&quot;,method = RequestMethod.POST)  //这里就是具体的每个方法的url链接</span><br><span class="line">@ResponseBody   //自动序列化json功能</span><br><span class="line">public ServerResponse&lt;User&gt; getInformation(HttpSession session)&#123;</span><br><span class="line">    User currentUser =(User)session.getAttribute(Const.CURRENT_USER);   //注意这里我们已经在session里面拿到了用户的信息，因此后面使用的就是user对象本身了</span><br><span class="line">    if(currentUser ==null)&#123;</span><br><span class="line">        return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),&quot;用户未登录需要强制登录，状态status为10&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return iUserService.getInformation(currentUser.getId());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>接着打开UserServiceImpl.java文件：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">/***</span><br><span class="line"> *</span><br><span class="line"> * 登录状态下的获取用户的详细信息</span><br><span class="line"> */</span><br><span class="line">public ServerResponse&lt;User&gt; getInformation(Integer userId)&#123;</span><br><span class="line">    User user =userMapper.selectByPrimaryKey(userId);</span><br><span class="line">    if(user ==null)&#123;//根据用户id来获取其详细信息</span><br><span class="line">        return ServerResponse.createByErrorMessage(&quot;该用户不存在&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    user.setPassword(StringUtils.EMPTY);  //将密码这种关键信息设置为空</span><br><span class="line">    return ServerResponse.createBySuccess(user);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>注意一下，我们这里使用了<code>selectByPrimaryKey</code>方法，目的就是根据userId来进行个人信息查询的。当然我们需要在后台提供一个管理员登录的方法，不会允许任何人都可以使用个人信息查询功能，只有管理员才有登录后台的权限。我们在controller 包下面再新建一个名为backend的包（backend顾名思义就是后台模块），然后在backend包下面新建UserManageController.java文件，在里面写入以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">package top.store.controller.backend;</span><br><span class="line"></span><br><span class="line">import org.springframework.beans.factory.annotation.Autowired;</span><br><span class="line">import org.springframework.stereotype.Controller;</span><br><span class="line">import org.springframework.web.bind.annotation.RequestMapping;</span><br><span class="line">import org.springframework.web.bind.annotation.RequestMethod;</span><br><span class="line">import org.springframework.web.bind.annotation.ResponseBody;</span><br><span class="line">import top.store.common.Const;</span><br><span class="line">import top.store.common.ServerResponse;</span><br><span class="line">import top.store.pojo.User;</span><br><span class="line">import top.store.service.IUserService;</span><br><span class="line"></span><br><span class="line">import javax.servlet.http.HttpSession;</span><br><span class="line"></span><br><span class="line">@Controller</span><br><span class="line">@RequestMapping(&quot;/manage/user&quot;)</span><br><span class="line">public class UserManageController &#123;</span><br><span class="line"></span><br><span class="line">    @Autowired</span><br><span class="line">    private IUserService iUserService;</span><br><span class="line"></span><br><span class="line">    @RequestMapping(value = &quot;login.do&quot;,method = RequestMethod.POST)</span><br><span class="line">    @ResponseBody   //自动序列化json功能</span><br><span class="line">    public ServerResponse&lt;User&gt; login (String username, String password, HttpSession session)&#123;</span><br><span class="line">        ServerResponse&lt;User&gt; response =iUserService.login(username,password);</span><br><span class="line">        if(response.isSuccess())&#123;   //请求成功</span><br><span class="line">            User user = response.getData();</span><br><span class="line">            if(user.getRole() == Const.Role.ROLE_ADMIN)&#123;  //说明登录的是管理员</span><br><span class="line">                session.setAttribute(Const.CURRENT_USER,user);   //把用户添加到session里面</span><br><span class="line">                return response;</span><br><span class="line">            &#125;else &#123;</span><br><span class="line">                return ServerResponse.createByErrorMessage(&quot;不是管理员，无法登录&quot;);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return response;</span><br><span class="line">    &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>最后记得去IUserService.java文件里面添加接口类的声明：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ServerResponse&lt;User&gt; getInformation(Integer userId);   //登录状态下的获取用户的详细信息</span><br></pre></td></tr></table></figure></p>
+<p>这样我们登录状态下获取用户个人详细信息的功能就开发完毕了。</p>
+<p>最后记得去打开UserController.java文件，将里面目前为止所有的<code>method = RequestMethod.GET</code>修改为<code>method = RequestMethod.POST</code>，可以按住Ctrl+F调出搜索框，然后直接进行替换就可以了。</p>
+<h3 id="Md5加盐值的问题"><a href="#Md5加盐值的问题" class="headerlink" title="Md5加盐值的问题"></a>Md5加盐值的问题</h3><p>这个问题后面会教大家如何使用，现在大家了解这个网站就行：<a href="https://www.cmd5.com/" target="_blank" rel="noopener">cmd5</a></p>
+<h2 id="单元测试"><a href="#单元测试" class="headerlink" title="单元测试"></a>单元测试</h2><p>到目前为止，关于个人用户的信息的开发已经完成了，接下来进行模块单元测试。<br>首先确保我们的tomcat的配置没有问题，打开logback.xml文件，具体检查的内容包括：项目日志的File和fileNamePattern的前一部分相同，然后启动我们的tomcat：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-f86d082aa8f653ae.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>正常浏览器会自动打开<code>http://localhost:8080/</code>页面，上面只有Hello World，但是并不影响我们的测试，我们然后打开我们的restlet client进行模块测试，我这里以注册为例进行说明（注意需要打开数据库，实时观察数据的变动）：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-1bf568fdcb2ed77c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-5d186cbafc1b7aa5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>上面的测试过程非常简单，选择post提交方式，根据你在UserController里的mapping设置，补充完整url，然后选择form，输入你在接口类声明的参数，点击提交就能出现结果了（具体的结果根据你参数的填写而有所不同）：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-bd60ce31d3703ee2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>上图是用户板块所有的测试接口，下面则是我们在测试时打印的日志：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-916285f2edec7cbf.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>通过上面的测试我们发现上面的接口都没有问题。</p>
+<p>至此，我们关于用户的相关功能的实现就全部结束了，接下来我们开始进行商品信息的相关配置，感谢你的赏阅！</p>
+
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="https://upload-images.jianshu.io/upload_images/8964398-58d04ffa926103d9.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">觉得不错，赏包辣条吃呗！</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href target="_blank">编程思录</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2018/08/20/SSM搭建二手市场交易平台（十一）：添加和更新分类名称/" class="pre-post btn btn-default" title="SSM搭建二手市场交易平台（十一）：添加和更新分类名称">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">SSM搭建二手市场交易平台（十一）：添加和更新分类名称</span>
+        </a>
+    
+    
+        <a href="/2018/08/18/SSM搭建二手市场交易平台（九）：更新用户信息功能开发/" class="next-post btn btn-default" title="SSM搭建二手市场交易平台（九）：更新用户信息功能开发">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">SSM搭建二手市场交易平台（九）：更新用户信息功能开发</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+    <div id="vcomments" class="valine"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+
+    <script>
+        new Valine({
+            av: AV,
+            el: '#vcomments',
+            appId: '8zvHFFu5l2ah8lh0DEPH393B-gzGzoHsz',
+            appKey: 'UNmB24200qMtyyrun5z99nOE',
+            placeholder: '听说长得好看的，都已经留言了！',
+            notify: false,
+            verify: false,
+            avatar: 'mm',
+            meta: 'nick,mail'.split(','),
+            pageSize: '10',
+            path: window.location.pathname,
+            lang: 'zh-CN'.toLowerCase()
+        })
+    </script>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#写在前面"><span class="toc-text">写在前面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#获取用户详细信息的功能开发"><span class="toc-text">获取用户详细信息的功能开发</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Md5加盐值的问题"><span class="toc-text">Md5加盐值的问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#单元测试"><span class="toc-text">单元测试</span></a></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2017-2019
+                </span> |
+                <span>
+				编程思录,保留所有权利
+                    <!--Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>-->
+                </span> |
+                <span>
+				<a style="color: #black" href="http://www.miitbeian.gov.cn">赣ICP备18013455号-5</a>
+                    <!--Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>-->
+                </span>
+            </div>
+			
+			<div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+			
+			<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1277113902'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s96.cnzz.com/z_stat.php%3Fid%3D1277113902%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));</script>
+        </div>
+    </div>
+</div>
+
+
+
+
+    <script src="/assets/tagcanvas.min.js?rev=2.9"></script>
+    <script>
+        var tagOption = {
+            textColour: 'red', // 字体颜色
+            outlineMethod: 'block', // 选中模式
+            outlineColour: '#FFDAB9', // 选中模式的颜色
+            interval: 30 || 30, // 动画帧之间的时间间隔，值越大，转动幅度越大
+            textHeight: 13,
+            outlineRadius: 3,
+            freezeActive: true || '', // 选中的标签是否继续滚动
+            frontSelect: true || '', // 不选标签云后部的标签
+            initial: [0.1, -0.1],
+            depth: 0.5,
+            decel: 0.95,
+            maxSpeed: 0.03,
+            reverse: true || '', // 是否反向触发
+            fadeIn: 500, // 进入动画时间
+            wheelZoom: false || '' // 是否启用鼠标滚轮
+        }
+        TagCanvas.Start('tag-cloud-3d','',tagOption);
+    </script>
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+</body>
+</html>

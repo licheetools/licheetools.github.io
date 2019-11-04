@@ -1,0 +1,436 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="编程思录，记录思考">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://blog.licheetools.top">
+    <!--SEO-->
+
+    <meta name="keywords" content="django建站,Vue前端">
+
+
+    <meta name="description" content="写在前面本篇我们将开始介绍restful api以及Vue的结构。
+为什么要前后端分离1、pc,app,pad多端适应随着技术的发展，我们所开发的网站不仅仅是适配于PC端了，更需要进行多个服务端...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+
+    <!--Title-->
+
+
+<title>采用Vue+Django Restful framework构建生鲜电商项目（六）：restful api以及Vue的结构介绍 | 编程思录，记录思考</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="编程思录，记录思考" type="application/atom+xml">
+
+
+    <link rel="icon" href="./favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+	<div class="hide">
+		<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+	</div>
+
+
+
+
+
+
+    
+
+    <script>
+        (function(){
+            var bp = document.createElement('script');
+            var curProtocol = window.location.protocol.split(':')[0];
+            if (curProtocol === 'https') {
+                bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+            }
+            else {
+                bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+            }
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(bp, s);
+        })();
+    </script>
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header" style="background-image:url(https://upload-images.jianshu.io/upload_images/8964398-b1ba9582ea8b69ba.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)">
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title="Envy">
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 点滴进步，都是收获 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://blog.licheetools.top">编程思录，记录思考</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>首页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/font/"><i class="fa "></i>前端</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/java/"><i class="fa "></i>Java</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/python/"><i class="fa "></i>Python</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/go/"><i class="fa "></i>Go</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/spider/"><i class="fa "></i>爬虫</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/data/"><i class="fa "></i>数据分析</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/money/"><i class="fa "></i>付费教程</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/life/"><i class="fa "></i>生活记录</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives"><i class="fa "></i>时间轴</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/about/"><i class="fa "></i>关于博主</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/liuyan/"><i class="fa "></i>留言板</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="采用Vue+Django Restful framework构建生鲜电商项目（六）：restful api以及Vue的结构介绍">
+            
+	            采用Vue+Django Restful framework构建生鲜电商项目（六）：restful api以及Vue的结构介绍
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/python/">python</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/Vue前端/">Vue前端</a> <a class="tag-link" href="/tags/django建站/">django建站</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2018/04/20</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>本篇我们将开始介绍restful api以及Vue的结构。</p>
+<h2 id="为什么要前后端分离"><a href="#为什么要前后端分离" class="headerlink" title="为什么要前后端分离"></a>为什么要前后端分离</h2><p><strong>1、pc,app,pad多端适应</strong><br>随着技术的发展，我们所开发的网站不仅仅是适配于PC端了，更需要进行多个服务端的匹配，目前来说后端模板渲染的方式非常适合pc端，但是对于app，pad端却是不友好的。</p>
+<p><strong>2、SPA开发模式开始流行</strong><br>所谓的SPA开发模式，其实就是单页面应用。单页Web应用（single page web application，SPA），就是只有一张Web页面的应用，是加载单个HTML 页面并在用户与应用程序交互时动态更新该页面的Web应用程序。现在最流行的方式就是前后端分离，由前端提供页面，后端提供接口。</p>
+<p><strong>3、前后端开发的职责分不清</strong><br>正如我们在前面说过，其实Django的模板到底由谁来写？谁来拆分这都是值得大家头疼的事。我上次我下载了几百套的织梦cms模板，想用Django来搭建网站，发现里面嵌入了太多的php，java ，Ajax。。。代码，ajax，java代码还能理解一点，但是php我就不会了，所以这个问题就显得特别重要。</p>
+<p><strong>4、开发效率问题，前后端互相等待</strong><br>前后端分离的坏处就是对方及时看不到项目的进展，很容易出现你等我，我等他的尴尬刚 局面。</p>
+<p><strong>5、前端一直配合着后端，能力受限</strong><br>就拿Django来说吧，后端觉得某个字段起的名字有问题，想要修改就必须及时通知前端人员，这样前端一直配合着后端，要求高水平的能力。</p>
+<p><strong>6、后台开发语言和模板高度耦合，导致开发语言依赖严重</strong><br>其实很多开发语言都有属于自己的Web框架，Python就有Django，Flask，Tornado，而在java Web里面就有Spring，Struts，Hibernate。这些开发语言和模板高度耦合，使得你如果不会Python语法就不会使用Django，不会Java就不会Spring。</p>
+<p>但是前后端尽管很流弊，但也有缺点。</p>
+<h2 id="前后端分离缺点"><a href="#前后端分离缺点" class="headerlink" title="前后端分离缺点"></a>前后端分离缺点</h2><ul>
+<li>前后端学习的门槛增加，后端使用if else来显示数据的语法其实完全可以交给前端</li>
+<li>数据依赖导致文档重要性增加，如果没有文档，那么前端人员不知道后端的业务逻辑</li>
+<li>前端工作量加大（大部分数据显示的工作都由他来负责）</li>
+<li>seo的难度加大，爬虫请求不到数据（有些是ajax请求，爬虫只会爬到静态html代码）</li>
+<li>后端开发模式迁移增加成本</li>
+</ul>
+<h2 id="restful-api的介绍"><a href="#restful-api的介绍" class="headerlink" title="restful api的介绍"></a>restful api的介绍</h2><p>restful api 目前是前后端分离的最佳实践(它只是一套标准，建议性质的，类似于PEP8的规范，你可以不遵循它，但是为了更好的开发与他人交流最好还是遵循它)</p>
+<h2 id="restful-api的特点"><a href="#restful-api的特点" class="headerlink" title="restful api的特点"></a>restful api的特点</h2><p>1、轻量，直接通过http，不需要额外的协议，通过post/get/put/delete进行操作；’<br>2、面向资源，一目了然，具有自解释性。<br>看看这篇面向资源的架构文章：<a href="https://blog.csdn.net/u012068294/article/details/78519058" target="_blank" rel="noopener">面向资源的架构</a>。资源是名词，post/get/put/delete等是动词，那么如何关联呢？这就是restful了。推荐两篇文章：<a href="http://www.ruanyifeng.com/blog/2011/09/restful.html" target="_blank" rel="noopener">理解RESTful架构</a>，这篇写的比较久，注重于概念，但是比较容易理解。<a href="http://www.ruanyifeng.com/blog/2014/05/restful_api.html" target="_blank" rel="noopener">RESTful API 设计指南</a>，这篇注重于实践，非常详细。</p>
+<h2 id="Vue的介绍"><a href="#Vue的介绍" class="headerlink" title="Vue的介绍"></a>Vue的介绍</h2><h3 id="Vue基本概念"><a href="#Vue基本概念" class="headerlink" title="Vue基本概念"></a>Vue基本概念</h3><p>1、前端工程化： <a href="https://www.cnblogs.com/fsyz/p/8274727.html" target="_blank" rel="noopener">浅谈什么是前端工程化</a><br>2、数据双向绑定：<a href="https://blog.csdn.net/zhang5207892/article/details/78389121" target="_blank" rel="noopener">怎么理解vue的数据双向绑定</a><br>3、组件化开发：<a href="https://blog.csdn.net/lican_2017/article/details/79365573" target="_blank" rel="noopener">什么叫组件化开发</a></p>
+<p>MVVM是Model-View-ViewModel的简写。它本质上就是MVC 的改进版。MVVM 就是将其中的View 的状态和行为抽象化，让我们将视图 UI 和业务逻辑分开。当然这些事 ViewModel 已经帮我们做了，它可以取出 Model 的数据同时帮忙处理 View 中由于需要展示内容而涉及的业务逻辑。说白了就是:数据驱动view，view又改变数据。</p>
+<p>数据双向绑定，你可以点击<a href="https://cn.vuejs.org/v2/guide/forms.html#%E5%A4%9A%E8%A1%8C%E6%96%87%E6%9C%AC" target="_blank" rel="noopener">表单输入绑定</a>，体会一下它的用途，都不需要你另写js代码来进行实现。</p>
+<h3 id="Vue开发中的几个概念"><a href="#Vue开发中的几个概念" class="headerlink" title="Vue开发中的几个概念"></a>Vue开发中的几个概念</h3><p><strong>1、webpack</strong><br>它只是一个js工具，用于es6到es5代码转换，记住是vue不能被浏览器识别的，浏览器只能识别老三样：HTML，CSS，JAVASCRIPT。所以webpack就是把我们的代码转换成这种浏览器可以识别的代码。你可以打开我们的项目，F12查看源码，发现里面的东西很少，那是因为我们的代码都在这个js文件里面了：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-853feabd911b0fae.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p><strong>2、Vue全家桶（vue，vuex，vue_router，axios）</strong><br>vue（框架），vuex（组件通讯），vue_router（单页面的路由），axios（Vue里面类似于ajax。因为是前端框架肯定需要发送ajax请求，但是我们不推荐直接来操作dom而是通过jQuery来进行操作。不过如果我们只需要一个函数，但也需要把整个JQuery包导入，而我们又只用ajax.。鉴于此，官方推荐我们使用axios，这个就不需要了，用到就导入那个）</p>
+<p><strong>3、ES6, babel</strong><br>Es6语法是将来的趋势，但是目前浏览器还都只是ES5，所以需要用babel将Es6转换为Es5。</p>
+<h2 id="vue项目的目录结构"><a href="#vue项目的目录结构" class="headerlink" title="vue项目的目录结构"></a>vue项目的目录结构</h2><p><img src="https://upload-images.jianshu.io/upload_images/8964398-5fbdf75e77ee8663.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>Mock数据（Mock.js生成随机数据,拦截Ajax 请求 ，前后端分离，让前端攻城师独立于后端进行开发：<a href="http://mockjs.com/examples.html" target="_blank" rel="noopener">mock.js官网</a>）;node_modules这个就是我们利用node.js启动必备的文件；src则是一些资源包。</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-514b00e332b667c0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>api：我们请求网络的api，所有组件的api都是在这里进行配置的；<br>axios：我们在里面配置了全局拦截；<br>components：这个是一些基础组件；<br>router ：路由；<br>static：全局的静态文件；<br>store：一些Js文件；<br>style：一些css样式表单；<br>views：所有的组件；</p>
+<p>接下来我们就看一下所有的组件：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-771f78d9369f1260.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>差不多就是这些：导航栏组件；轮播图组件；新品组件；分页组件；个人中心组件；结算组。。。如果想在浏览器里面快速知道页面是由哪些vue的组件构成的，可以下载安装官方的插件:<strong>vuejs devtools</strong>，具体安装方法在这里：<a href="https://www.cnblogs.com/alice-fee/p/8038367.html" target="_blank" rel="noopener">谷歌浏览器chrome的vuejs devtools 插件的安装</a>。</p>
+<p>至此，我们本篇关于restful api以及Vue结构的介绍就到此为止了，感谢你的赏阅！</p>
+
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="https://upload-images.jianshu.io/upload_images/8964398-58d04ffa926103d9.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">觉得不错，赏包辣条吃呗！</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href target="_blank">编程思录</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2018/04/22/采用Vue-Django-Restful-framework构建生鲜电商项目（七）：商品列表页的配置（上）/" class="pre-post btn btn-default" title="采用Vue+Django Restful framework构建生鲜电商项目（七）：商品列表页的配置（上）">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">采用Vue+Django Restful framework构建生鲜电商项目（七）：商品列表页的配置（上）</span>
+        </a>
+    
+    
+        <a href="/2018/04/18/采用Vue-Django-Restful-framework构建生鲜电商项目（五）：xadmin后台管理配置及资源导入/" class="next-post btn btn-default" title="采用Vue+Django Restful framework构建生鲜电商项目（五）：xadmin后台管理配置及资源导入">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">采用Vue+Django Restful framework构建生鲜电商项目（五）：xadmin后台管理配置及资源导入</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+    <div id="vcomments" class="valine"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+
+    <script>
+        new Valine({
+            av: AV,
+            el: '#vcomments',
+            appId: '8zvHFFu5l2ah8lh0DEPH393B-gzGzoHsz',
+            appKey: 'UNmB24200qMtyyrun5z99nOE',
+            placeholder: '听说长得好看的，都已经留言了！',
+            notify: false,
+            verify: false,
+            avatar: 'mm',
+            meta: 'nick,mail'.split(','),
+            pageSize: '10',
+            path: window.location.pathname,
+            lang: 'zh-CN'.toLowerCase()
+        })
+    </script>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#写在前面"><span class="toc-text">写在前面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#为什么要前后端分离"><span class="toc-text">为什么要前后端分离</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#前后端分离缺点"><span class="toc-text">前后端分离缺点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#restful-api的介绍"><span class="toc-text">restful api的介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#restful-api的特点"><span class="toc-text">restful api的特点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vue的介绍"><span class="toc-text">Vue的介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Vue基本概念"><span class="toc-text">Vue基本概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Vue开发中的几个概念"><span class="toc-text">Vue开发中的几个概念</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#vue项目的目录结构"><span class="toc-text">vue项目的目录结构</span></a></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2017-2019
+                </span> |
+                <span>
+				编程思录,保留所有权利
+                    <!--Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>-->
+                </span> |
+                <span>
+				<a style="color: #black" href="http://www.miitbeian.gov.cn">赣ICP备18013455号-5</a>
+                    <!--Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>-->
+                </span>
+            </div>
+			
+			<div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+			
+			<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1277113902'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s96.cnzz.com/z_stat.php%3Fid%3D1277113902%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));</script>
+        </div>
+    </div>
+</div>
+
+
+
+
+    <script src="/assets/tagcanvas.min.js?rev=2.9"></script>
+    <script>
+        var tagOption = {
+            textColour: 'red', // 字体颜色
+            outlineMethod: 'block', // 选中模式
+            outlineColour: '#FFDAB9', // 选中模式的颜色
+            interval: 30 || 30, // 动画帧之间的时间间隔，值越大，转动幅度越大
+            textHeight: 13,
+            outlineRadius: 3,
+            freezeActive: true || '', // 选中的标签是否继续滚动
+            frontSelect: true || '', // 不选标签云后部的标签
+            initial: [0.1, -0.1],
+            depth: 0.5,
+            decel: 0.95,
+            maxSpeed: 0.03,
+            reverse: true || '', // 是否反向触发
+            fadeIn: 500, // 进入动画时间
+            wheelZoom: false || '' // 是否启用鼠标滚轮
+        }
+        TagCanvas.Start('tag-cloud-3d','',tagOption);
+    </script>
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+</body>
+</html>

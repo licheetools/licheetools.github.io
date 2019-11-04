@@ -1,0 +1,420 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="编程思录，记录思考">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://blog.licheetools.top">
+    <!--SEO-->
+
+    <meta name="keywords" content="SSM框架,JAVA后端">
+
+
+    <meta name="description" content="写在前面本篇我们来介绍后台商品新增，更新和上下架功能开发。说的比较通俗易懂的话，其实就是后台商品的增删改查一部分功能而已。
+商品模块开发商品模块开发分为前台和后台两部分，其中前台包括产品搜索，动...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+
+    <!--Title-->
+
+
+<title>SSM搭建二手市场交易平台（十三）：后台商品的增加与更新 | 编程思录，记录思考</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="编程思录，记录思考" type="application/atom+xml">
+
+
+    <link rel="icon" href="./favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+	<div class="hide">
+		<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+	</div>
+
+
+
+
+
+
+    
+
+    <script>
+        (function(){
+            var bp = document.createElement('script');
+            var curProtocol = window.location.protocol.split(':')[0];
+            if (curProtocol === 'https') {
+                bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+            }
+            else {
+                bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+            }
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(bp, s);
+        })();
+    </script>
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header" style="background-image:url(https://upload-images.jianshu.io/upload_images/8964398-b1ba9582ea8b69ba.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)">
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title="Envy">
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 点滴进步，都是收获 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://blog.licheetools.top">编程思录，记录思考</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>首页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/font/"><i class="fa "></i>前端</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/java/"><i class="fa "></i>Java</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/python/"><i class="fa "></i>Python</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/go/"><i class="fa "></i>Go</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/spider/"><i class="fa "></i>爬虫</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/data/"><i class="fa "></i>数据分析</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/money/"><i class="fa "></i>付费教程</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/life/"><i class="fa "></i>生活记录</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives"><i class="fa "></i>时间轴</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/about/"><i class="fa "></i>关于博主</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/liuyan/"><i class="fa "></i>留言板</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="SSM搭建二手市场交易平台（十三）：后台商品的增加与更新">
+            
+	            SSM搭建二手市场交易平台（十三）：后台商品的增加与更新
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/java/">java</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/JAVA后端/">JAVA后端</a> <a class="tag-link" href="/tags/SSM框架/">SSM框架</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2018/08/22</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>本篇我们来介绍后台商品新增，更新和上下架功能开发。说的比较通俗易懂的话，其实就是后台商品的增删改查一部分功能而已。</p>
+<h3 id="商品模块开发"><a href="#商品模块开发" class="headerlink" title="商品模块开发"></a>商品模块开发</h3><p>商品模块开发分为前台和后台两部分，其中前台包括产品搜索，动态排序列表和商品详情；后台包括：商品列表、商品搜索、图片上传、富文本上传、商品详情、商品上下架、增加商品以及更新商品等。</p>
+<p>在此过程中，你将会学到一下知识：1、FTP 服务器的对接；2、SpringMVC 文件上传；3、流读取 Properties 配置文件；4、抽取 POJO、BO、VO 对象之间的转换关系及解决思路；5、joda-time 快速入门；6、静态块；7、Mybatis-PageHelper 高效准确地分页及动态排序；8、Mybatis 对 List 遍历的实现方法；9、Mybatis 对 where 语句动态拼装的几个版本演变等。</p>
+<h3 id="POJO、BO、VO"><a href="#POJO、BO、VO" class="headerlink" title="POJO、BO、VO"></a>POJO、BO、VO</h3><p><img src="https://upload-images.jianshu.io/upload_images/8964398-b33db7e922a826f0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<h3 id="POJO、VO"><a href="#POJO、VO" class="headerlink" title="POJO、VO"></a>POJO、VO</h3><p><img src="https://upload-images.jianshu.io/upload_images/8964398-3cbb6ef1c69493c5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>数据表设计：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-4f8d63402964d9e6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<h2 id="后台产品新增"><a href="#后台产品新增" class="headerlink" title="后台产品新增"></a>后台产品新增</h2><p>在controller文件的backend包里面新建一个ProductManageController.java文件，里面写入以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">package top.store.controller.backend;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">import org.springframework.beans.factory.annotation.Autowired;</span><br><span class="line">import org.springframework.stereotype.Controller;</span><br><span class="line">import org.springframework.web.bind.annotation.RequestMapping;</span><br><span class="line">import org.springframework.web.bind.annotation.ResponseBody;</span><br><span class="line">import top.store.common.Const;</span><br><span class="line">import top.store.common.ResponseCode;</span><br><span class="line">import top.store.common.ServerResponse;</span><br><span class="line">import top.store.pojo.Product;</span><br><span class="line">import top.store.pojo.User;</span><br><span class="line">import top.store.service.IProductService;</span><br><span class="line">import top.store.service.IUserService;</span><br><span class="line"></span><br><span class="line">import javax.servlet.http.HttpSession;</span><br><span class="line"></span><br><span class="line">@Controller</span><br><span class="line">@RequestMapping(&quot;/manage/product&quot;)</span><br><span class="line">public class ProductManageController &#123;</span><br><span class="line"></span><br><span class="line">    @Autowired</span><br><span class="line">    private IUserService iUserService;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    @Autowired</span><br><span class="line">    private IProductService iProductService;</span><br><span class="line"></span><br><span class="line">    /****</span><br><span class="line">     *</span><br><span class="line">     * 后台管理员保存商品</span><br><span class="line">     * */</span><br><span class="line">    @RequestMapping(&quot;save.do&quot;)</span><br><span class="line">    @ResponseBody   //自动序列化json功能</span><br><span class="line">    public ServerResponse productSave(HttpSession session, Product product)&#123;</span><br><span class="line"></span><br><span class="line">        //判断一下登录情况</span><br><span class="line">        User user=(User) session.getAttribute(Const.CURRENT_USER);</span><br><span class="line">        if(user ==null)&#123;</span><br><span class="line">            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),&quot;用户未登录，请登录&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">        //判断一下是不是管理员身份</span><br><span class="line">        if(iUserService.checkAdminRole(user).isSuccess())&#123;</span><br><span class="line">            //如果是管理员就增加我们保存商品的逻辑</span><br><span class="line">            return iProductService.saveOrUpdateProduct(product);</span><br><span class="line">        &#125;else&#123;</span><br><span class="line">            return ServerResponse.createByErrorMessage(&quot;无权限操作，需要管理员权限&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这个和之前写的关于商品分类的模块其实很类似。接着我们在impl包里面新建一个ProductServiceImpl.java文件，里面写入以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">package top.store.service.impl;</span><br><span class="line"></span><br><span class="line">import org.apache.commons.lang3.StringUtils;</span><br><span class="line">import org.springframework.beans.factory.annotation.Autowired;</span><br><span class="line">import org.springframework.stereotype.Service;</span><br><span class="line">import top.store.common.ResponseCode;</span><br><span class="line">import top.store.common.ServerResponse;</span><br><span class="line">import top.store.dao.ProductMapper;</span><br><span class="line">import top.store.pojo.Product;</span><br><span class="line">import top.store.service.IProductService;</span><br><span class="line"></span><br><span class="line">@Service(&quot;iProductService&quot;)</span><br><span class="line">public class ProductServiceImpl implements IProductService &#123;</span><br><span class="line"></span><br><span class="line">    @Autowired</span><br><span class="line">    private ProductMapper productMapper;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    /***</span><br><span class="line">     * 后台管理员保存商品</span><br><span class="line">     * */</span><br><span class="line">    public ServerResponse saveOrUpdateProduct(Product product)&#123;</span><br><span class="line">        if(product != null)&#123;</span><br><span class="line">            //产品主图的选择</span><br><span class="line">            if(StringUtils.isNoneBlank(product.getSubImages()))&#123;  //存在子图的情况下</span><br><span class="line">                String[] subImageArray = product.getSubImages().split(&quot;,&quot;);</span><br><span class="line">                if(subImageArray.length&gt;0)&#123;</span><br><span class="line">                    product.setMainImage(subImageArray[0]);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            //如果是更新的话，我们产品的id肯定是存在的，不能为空（与前端进行了约定）</span><br><span class="line">            if(product.getId() != null)&#123;</span><br><span class="line">               int rowCount = productMapper.updateByPrimaryKey(product);   //前端更新肯定是全部商品</span><br><span class="line">                if(rowCount&gt;0)&#123;</span><br><span class="line">                    return ServerResponse.createBySuccessMassage(&quot;更新产品成功&quot;);</span><br><span class="line">                &#125;</span><br><span class="line">                return ServerResponse.createByErrorMessage(&quot;更新产品失败&quot;);</span><br><span class="line">            &#125;else&#123;</span><br><span class="line">                //如果是新增的话，产品是没有id的，就要执行插入操作</span><br><span class="line">              int rowCount =  productMapper.insert(product);   //前端更新肯定是全部商品</span><br><span class="line">                if(rowCount&gt;0)&#123;</span><br><span class="line">                    return ServerResponse.createBySuccessMassage(&quot;新增产品成功&quot;);</span><br><span class="line">                &#125;</span><br><span class="line">                return ServerResponse.createByErrorMessage(&quot;新增产品失败&quot;);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return ServerResponse.createByErrorMessage(&quot;保存或更新产品参数不正确&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>注意几点：</strong><br><strong>1、</strong>我们首先需要判断产品是否存在，存在然后判断产品是否存在子图，如果存在，我们就取第一个子图作为产品的主图进行前台的显示。<br><strong>2、</strong>我们这里把商品的修改和更新的逻辑写在一起了，我们在前端进行了声明：就是如果是进行产品的更新就必须把产品id传进来，然后依据Id来进行判断，否则就是新增产品的操作，这个应该还是比较好理解的.</p>
+<p>接着我们在Service包里面新建一个IProductService.java文件（记住前面是I说明是接口），里面写入以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">package top.store.service;</span><br><span class="line"></span><br><span class="line">import top.store.common.ServerResponse;</span><br><span class="line">import top.store.pojo.Product;</span><br><span class="line"></span><br><span class="line">public interface IProductService  &#123;</span><br><span class="line">    ServerResponse saveOrUpdateProduct(Product product);    //后台管理员保存商品</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这样我们关于商品的更新和新增操作就完成了，接下来是后台管理员进行商品信息的状态设置。</p>
+<h2 id="上下架功能开发"><a href="#上下架功能开发" class="headerlink" title="上下架功能开发"></a>上下架功能开发</h2><p>首先打开ProductManageController.java文件，在里面新增以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">/***</span><br><span class="line">    *</span><br><span class="line">    * 后台管理员进行商品的上下架状态修改</span><br><span class="line">    * */</span><br><span class="line">   @RequestMapping(&quot;set_sale_status.do&quot;)</span><br><span class="line">   @ResponseBody   //自动序列化json功能</span><br><span class="line">   public ServerResponse setSaleStatus(HttpSession session, Integer productId,Integer status)&#123;</span><br><span class="line"></span><br><span class="line">       //判断一下登录情况</span><br><span class="line">       User user=(User) session.getAttribute(Const.CURRENT_USER);</span><br><span class="line">       if(user ==null)&#123;</span><br><span class="line">           return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),&quot;用户未登录，请登录&quot;);</span><br><span class="line">       &#125;</span><br><span class="line">       //判断一下是不是管理员身份</span><br><span class="line">       if(iUserService.checkAdminRole(user).isSuccess())&#123;</span><br><span class="line">           //如果是管理员就增加我们进行商品上下架的逻辑</span><br><span class="line">           return iProductService.setSaleStatus(productId,status);</span><br><span class="line">       &#125;else&#123;</span><br><span class="line">           return ServerResponse.createByErrorMessage(&quot;无权限操作，需要管理员权限&quot;);</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p>
+<p>接着打开ProductServiceImpl.java文件，里面写入以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">/***</span><br><span class="line">    *</span><br><span class="line">    * 后台管理员进行商品的上下架状态修改</span><br><span class="line">    * */</span><br><span class="line">   public ServerResponse&lt;String&gt; setSaleStatus(Integer productId,Integer status)&#123;</span><br><span class="line">       if(productId ==null || status ==null)&#123;</span><br><span class="line">           return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(),ResponseCode.ILLEGAL_ARGUMENT.getDesc());</span><br><span class="line">       &#125;</span><br><span class="line">       Product product =new Product();</span><br><span class="line">       product.setId(productId);</span><br><span class="line">       product.setStatus(status);</span><br><span class="line"></span><br><span class="line">       int rowCount = productMapper.updateByPrimaryKeySelective(product);    //我们这里是仅对状态进行修改，所以只需更新选中的即可</span><br><span class="line">       if(rowCount&gt;0)&#123;</span><br><span class="line">           return ServerResponse.createBySuccessMassage(&quot;修改产品销售状态成功！&quot;);</span><br><span class="line">       &#125;</span><br><span class="line">       return ServerResponse.createByErrorMessage(&quot;修改产品销售状态失败！&quot;);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p>
+<p>最后打开IProductService.java文件，里面写入以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ServerResponse&lt;String&gt; setSaleStatus(Integer productId,Integer status);    //后台管理员进行商品的上下架状态修改</span><br></pre></td></tr></table></figure></p>
+<p>这样我们本篇关于后台商品新增，更新和上下架功能开发的介绍就到此为止了，感谢你的赏阅！</p>
+
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="https://upload-images.jianshu.io/upload_images/8964398-58d04ffa926103d9.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">觉得不错，赏包辣条吃呗！</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href target="_blank">编程思录</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2018/08/23/SSM搭建二手市场交易平台（十四）：商品详情信息获取/" class="pre-post btn btn-default" title="SSM搭建二手市场交易平台（十四）：商品详情信息获取">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">SSM搭建二手市场交易平台（十四）：商品详情信息获取</span>
+        </a>
+    
+    
+        <a href="/2018/08/21/SSM搭建二手市场交易平台（十二）：分类管理功能开发/" class="next-post btn btn-default" title="SSM搭建二手市场交易平台（十二）：分类管理功能开发">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">SSM搭建二手市场交易平台（十二）：分类管理功能开发</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+    <div id="vcomments" class="valine"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+
+    <script>
+        new Valine({
+            av: AV,
+            el: '#vcomments',
+            appId: '8zvHFFu5l2ah8lh0DEPH393B-gzGzoHsz',
+            appKey: 'UNmB24200qMtyyrun5z99nOE',
+            placeholder: '听说长得好看的，都已经留言了！',
+            notify: false,
+            verify: false,
+            avatar: 'mm',
+            meta: 'nick,mail'.split(','),
+            pageSize: '10',
+            path: window.location.pathname,
+            lang: 'zh-CN'.toLowerCase()
+        })
+    </script>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#写在前面"><span class="toc-text">写在前面</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#商品模块开发"><span class="toc-text">商品模块开发</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#POJO、BO、VO"><span class="toc-text">POJO、BO、VO</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#POJO、VO"><span class="toc-text">POJO、VO</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#后台产品新增"><span class="toc-text">后台产品新增</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#上下架功能开发"><span class="toc-text">上下架功能开发</span></a></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2017-2019
+                </span> |
+                <span>
+				编程思录,保留所有权利
+                    <!--Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>-->
+                </span> |
+                <span>
+				<a style="color: #black" href="http://www.miitbeian.gov.cn">赣ICP备18013455号-5</a>
+                    <!--Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>-->
+                </span>
+            </div>
+			
+			<div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+			
+			<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1277113902'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s96.cnzz.com/z_stat.php%3Fid%3D1277113902%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));</script>
+        </div>
+    </div>
+</div>
+
+
+
+
+    <script src="/assets/tagcanvas.min.js?rev=2.9"></script>
+    <script>
+        var tagOption = {
+            textColour: 'red', // 字体颜色
+            outlineMethod: 'block', // 选中模式
+            outlineColour: '#FFDAB9', // 选中模式的颜色
+            interval: 30 || 30, // 动画帧之间的时间间隔，值越大，转动幅度越大
+            textHeight: 13,
+            outlineRadius: 3,
+            freezeActive: true || '', // 选中的标签是否继续滚动
+            frontSelect: true || '', // 不选标签云后部的标签
+            initial: [0.1, -0.1],
+            depth: 0.5,
+            decel: 0.95,
+            maxSpeed: 0.03,
+            reverse: true || '', // 是否反向触发
+            fadeIn: 500, // 进入动画时间
+            wheelZoom: false || '' // 是否启用鼠标滚轮
+        }
+        TagCanvas.Start('tag-cloud-3d','',tagOption);
+    </script>
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+</body>
+</html>

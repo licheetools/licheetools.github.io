@@ -1,0 +1,432 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="编程思录，记录思考">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://blog.licheetools.top">
+    <!--SEO-->
+
+    <meta name="keywords" content="SSM框架,JAVA后端">
+
+
+    <meta name="description" content="写在前面本章节我们来介绍购物车模块相关功能的开发，具体包括加入商品；更新商品数；查询商品数；移除商品；单选/取消；全选/取消和购物车列表等这几个功能。本篇主要介绍如何将商品加入到购物车，这里面会...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+
+    <!--Title-->
+
+
+<title>SSM搭建二手市场交易平台（十八）：购物车添加商品 | 编程思录，记录思考</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="编程思录，记录思考" type="application/atom+xml">
+
+
+    <link rel="icon" href="./favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+	<div class="hide">
+		<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+	</div>
+
+
+
+
+
+
+    
+
+    <script>
+        (function(){
+            var bp = document.createElement('script');
+            var curProtocol = window.location.protocol.split(':')[0];
+            if (curProtocol === 'https') {
+                bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+            }
+            else {
+                bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+            }
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(bp, s);
+        })();
+    </script>
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header" style="background-image:url(https://upload-images.jianshu.io/upload_images/8964398-b1ba9582ea8b69ba.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)">
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title="Envy">
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 点滴进步，都是收获 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://blog.licheetools.top">编程思录，记录思考</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>首页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/font/"><i class="fa "></i>前端</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/java/"><i class="fa "></i>Java</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/python/"><i class="fa "></i>Python</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/go/"><i class="fa "></i>Go</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/spider/"><i class="fa "></i>爬虫</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/data/"><i class="fa "></i>数据分析</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/money/"><i class="fa "></i>付费教程</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/life/"><i class="fa "></i>生活记录</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives"><i class="fa "></i>时间轴</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/about/"><i class="fa "></i>关于博主</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/liuyan/"><i class="fa "></i>留言板</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="SSM搭建二手市场交易平台（十八）：购物车添加商品">
+            
+	            SSM搭建二手市场交易平台（十八）：购物车添加商品
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/java/">java</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/JAVA后端/">JAVA后端</a> <a class="tag-link" href="/tags/SSM框架/">SSM框架</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2018/08/27</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>本章节我们来介绍购物车模块相关功能的开发，具体包括加入商品；更新商品数；查询商品数；移除商品；单选/取消；全选/取消和购物车列表等这几个功能。本篇主要介绍如何将商品加入到购物车，这里面会定义一些可以复用的购物车代码，还有一些功能：如字段校验，数量校验，价格的动态变化等。</p>
+<h2 id="技能掌握"><a href="#技能掌握" class="headerlink" title="技能掌握"></a>技能掌握</h2><p>1、购物车模块的设计思想；<br>2、如何封装一个高复用的购物车核心方法；<br>3、解决浮点型商业运算中丢失精度的问题；</p>
+<p>数据表设计：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-56a5d44e063c7ba8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<h2 id="商品添加到购物车"><a href="#商品添加到购物车" class="headerlink" title="商品添加到购物车"></a>商品添加到购物车</h2><p>首先我们打开controller这个包下面的portal包，在里面新建一个CartController.java文件，里面写入以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">package top.store.controller.portal;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">import org.springframework.beans.factory.annotation.Autowired;</span><br><span class="line">import org.springframework.stereotype.Controller;</span><br><span class="line">import org.springframework.web.bind.annotation.RequestMapping;</span><br><span class="line">import org.springframework.web.bind.annotation.ResponseBody;</span><br><span class="line">import top.store.common.Const;</span><br><span class="line">import top.store.common.ResponseCode;</span><br><span class="line">import top.store.common.ServerResponse;</span><br><span class="line">import top.store.pojo.User;</span><br><span class="line">import top.store.service.ICartService;</span><br><span class="line">import top.store.vo.CartVo;</span><br><span class="line"></span><br><span class="line">import javax.servlet.http.HttpSession;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@Controller</span><br><span class="line">@RequestMapping(&quot;/cart/&quot;)  //这是我们对整个前台商品功能配置的一个类似于namespace的东西</span><br><span class="line">public class CartController &#123;</span><br><span class="line"></span><br><span class="line">    @Autowired</span><br><span class="line">    private ICartService iCartService;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    /***</span><br><span class="line">     * 前台往购物车添加商品</span><br><span class="line">     * @author lenovo</span><br><span class="line">     * */</span><br><span class="line">    @RequestMapping(value = &quot;add.do&quot;)  //这里就是具体的每个方法的url链接</span><br><span class="line">    @ResponseBody   //自动序列化json功能</span><br><span class="line">    public ServerResponse&lt;CartVo&gt; add(HttpSession session, Integer productId, Integer count)&#123;</span><br><span class="line">        //验证用户是否登录</span><br><span class="line">        User user =(User) session.getAttribute(Const.CURRENT_USER);</span><br><span class="line">        //未登录需要用户强制登录</span><br><span class="line">        if(user ==null)&#123;</span><br><span class="line">            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        //实现我们购物车添加商品的逻辑</span><br><span class="line">        return iCartService.add(user.getId(),productId,count);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>然后打开service这个包，在里面新建ICartService接口，里面写入以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">package top.store.service;</span><br><span class="line"></span><br><span class="line">import top.store.common.ServerResponse;</span><br><span class="line">import top.store.vo.CartVo;</span><br><span class="line"></span><br><span class="line">public interface ICartService &#123;</span><br><span class="line">    ServerResponse&lt;CartVo&gt; add(Integer userId, Integer productId, Integer count);   //前台购物车添加商品</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>以及在Impl包里面新建一个CartServiceImpl.java文件，里面写入以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br></pre></td><td class="code"><pre><span class="line">package top.store.service.impl;</span><br><span class="line"></span><br><span class="line">import com.google.common.collect.Lists;</span><br><span class="line">import org.apache.commons.collections.CollectionUtils;</span><br><span class="line">import org.springframework.beans.factory.annotation.Autowired;</span><br><span class="line">import org.springframework.stereotype.Service;</span><br><span class="line">import top.store.common.Const;</span><br><span class="line">import top.store.common.ResponseCode;</span><br><span class="line">import top.store.common.ServerResponse;</span><br><span class="line">import top.store.dao.CartMapper;</span><br><span class="line">import top.store.dao.ProductMapper;</span><br><span class="line">import top.store.pojo.Cart;</span><br><span class="line">import top.store.pojo.Product;</span><br><span class="line">import top.store.service.ICartService;</span><br><span class="line">import top.store.util.BigDecimalUtil;</span><br><span class="line">import top.store.util.PropertiesUtil;</span><br><span class="line">import top.store.vo.CartProductVo;</span><br><span class="line">import top.store.vo.CartVo;</span><br><span class="line"></span><br><span class="line">import java.math.BigDecimal;</span><br><span class="line">import java.util.List;</span><br><span class="line"></span><br><span class="line">@Service(&quot;iCartService&quot;)</span><br><span class="line">public class CartServiceImpl implements ICartService &#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    @Autowired</span><br><span class="line">    private CartMapper cartMapper;</span><br><span class="line"></span><br><span class="line">    @Autowired</span><br><span class="line">    private ProductMapper productMapper;</span><br><span class="line"></span><br><span class="line">    /***</span><br><span class="line">     * 前台往购物车添加商品</span><br><span class="line">     * @author lenovo</span><br><span class="line">     * */</span><br><span class="line">    //注意此处的add里面必须包含userId，因为这个必须是精确到个人进行购物车的商品添加</span><br><span class="line">    public ServerResponse&lt;CartVo&gt; add(Integer userId,Integer productId,Integer count)&#123;</span><br><span class="line">        //传入的参数不正确</span><br><span class="line">        if(productId ==null ||count ==null)&#123;</span><br><span class="line">            return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(),ResponseCode.ILLEGAL_ARGUMENT.getDesc());</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        //去购物车里面查询相关的信息</span><br><span class="line">        Cart cart =cartMapper.selectCartByUserIdAndProductId(userId,productId);   //自定义的sql语句</span><br><span class="line">        if(cart ==null)&#123;</span><br><span class="line">            //该产品不在这个购物车里面,因此需要新增一个这个产品的记录</span><br><span class="line">            Cart cartItem =new Cart();</span><br><span class="line">            cartItem.setQuantity(count);  //往购物车里面添加count数量的商品</span><br><span class="line">            cartItem.setChecked(Const.Cart.CHECKED);   //设置该商品被选中状态（放入购物车的产品是自动被选中的）</span><br><span class="line">            cartItem.setProductId(productId);   //设置商品id</span><br><span class="line">            cartItem.setUserId(userId);    //商品属于用户</span><br><span class="line">            cartMapper.insert(cartItem);   //将商品插入到购物车里面</span><br><span class="line"></span><br><span class="line">        &#125;else&#123;</span><br><span class="line">            //说明该商品已经存在于购物车里.</span><br><span class="line">            //商品已存在,我们就要进行数量相加</span><br><span class="line">            count  =cart.getQuantity() +count;</span><br><span class="line">            cart.setQuantity(count);</span><br><span class="line">            cartMapper.updateByPrimaryKeySelective(cart);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        //接下来是核心的功能，如数量判断，值校验，购物车里面的商品也有图片，因此需要组装一个“新的”vo对象。</span><br><span class="line">        CartVo cartVo = this.getCartVoLimit(userId);</span><br><span class="line">        return ServerResponse.createBySuccess(cartVo);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    //创建一个用于实现购物车信息的函数</span><br><span class="line">    private CartVo getCartVoLimit(Integer userId)&#123;</span><br><span class="line">        CartVo cartVo =new CartVo();</span><br><span class="line">        List&lt;Cart&gt; cartList =cartMapper.selectCartByUserId(userId);  //自定义的sql语句</span><br><span class="line">        List&lt;CartProductVo&gt; cartProductVoList = Lists.newArrayList();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        //记住这里一定要使用它的String构造器，否则会出现更大的错误</span><br><span class="line">        BigDecimal cartTotalPrice = new BigDecimal(&quot;0&quot;);</span><br><span class="line"></span><br><span class="line">        if(CollectionUtils.isNotEmpty(cartList))&#123;</span><br><span class="line">            for(Cart cartItem:cartList)&#123;</span><br><span class="line">                CartProductVo cartProductVo =new CartProductVo();</span><br><span class="line">                cartProductVo.setId(cartItem.getId());</span><br><span class="line">                cartProductVo.setUserId(cartItem.getUserId());</span><br><span class="line">                cartProductVo.setProductId(cartItem.getProductId());</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">                //根据购物车里面的商品Id来获取商品的信息</span><br><span class="line">                Product product =productMapper.selectByPrimaryKey(cartItem.getProductId());</span><br><span class="line">                //如果该商品存在的话，我们就使用前面的CartProductVo进行商品的组装(因为CartProductVo本身是一个对象，但是具体需要什么我们需要进行设置)</span><br><span class="line">                if(product != null)&#123;</span><br><span class="line">                    //我们这里之所以不直接从商品对象里获取信息，是因为后面有些是存在于购物车的，有些存在于商品，很容易造成混乱，因此我们这里就使用了一个组装的购物车商品对象，你需要的时候调用它就可以</span><br><span class="line">                    cartProductVo.setProductName(product.getName());</span><br><span class="line">                    cartProductVo.setProductSubtitle(product.getSubtitle());</span><br><span class="line">                    cartProductVo.setProductMainImage(product.getMainImage());</span><br><span class="line">                    cartProductVo.setProductStatus(product.getStatus());</span><br><span class="line">                    cartProductVo.setProductStock(product.getStock());</span><br><span class="line"></span><br><span class="line">                    //判断库存数量</span><br><span class="line">                    int buyLimitCount = 0;</span><br><span class="line">                    if(product.getStock() &gt;= cartItem.getQuantity())&#123;</span><br><span class="line">                        //库存充足的时候，系统会提示LIMIT_NUM_SUCCESS</span><br><span class="line">                        buyLimitCount = cartItem.getQuantity();</span><br><span class="line">                        cartProductVo.setLimitQuantity(Const.Cart.LIMIT_NUM_SUCCESS);</span><br><span class="line">                &#125;else&#123;</span><br><span class="line">                        //库存不足的时候，系统提示LIMIT_NUM_FAIL</span><br><span class="line">                        buyLimitCount =product.getStock();</span><br><span class="line">                        cartProductVo.setLimitQuantity(Const.Cart.LIMIT_NUM_FAIL);</span><br><span class="line"></span><br><span class="line">                        //自动更新购物车的有效库存</span><br><span class="line">                        Cart cartForQuantity =new Cart();</span><br><span class="line">                        cartForQuantity.setId(cartItem.getId());</span><br><span class="line">                        cartForQuantity.setQuantity(buyLimitCount);</span><br><span class="line">                        cartMapper.updateByPrimaryKeySelective(cartForQuantity);</span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    //现在更新cartProductVo对象的其他信息</span><br><span class="line">                    cartProductVo.setQuantity(buyLimitCount);</span><br><span class="line">                    //计算该商品的总价，仅仅针对该商品</span><br><span class="line">                    //进行乘法运算:价格*数量，注意这里的单价因为是BigDecimal类型，所以需要转换成double类型，最后再利用工具类的toString调用String构造器</span><br><span class="line">                    //cartProductVo.setProductTotalPrice(BigDecimalUtil.mut(cartProductVo.getProductPrice().doubleValue(),cartProductVo.getQuantity()));  //这样会引发空指针异常</span><br><span class="line">  cartProductVo.setProductTotalPrice(BigDecimalUtil.mut(product.getPrice().doubleValue(),cartProductVo.getQuantity()));</span><br><span class="line">                    cartProductVo.setProductChecked(cartItem.getChecked());   //选中状态使用购物车自带的属性，不用商品自己设置属性</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                //如果不判断是否有商品就进行添加购物车操作，会报空指针异常。(其实就是判断购物车是否是处于被选中状态)</span><br><span class="line">                if(cartItem.getChecked()  ==Const.Cart.CHECKED)&#123;</span><br><span class="line">                    //如果已经勾选,就把之前的商品价格添加到整个购物车总价中进行结算</span><br><span class="line">                    //这里面有2个参数，一个是我们在初始化的时候设置的0，另一个就是上面计算出来的ProductTotalPrice，这两个都需要进行double转化</span><br><span class="line">                    cartTotalPrice =BigDecimalUtil.add(cartTotalPrice.doubleValue(),cartProductVo.getProductTotalPrice().doubleValue());</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                //把我们上面设置的cartProductVo添加到cartProductVoList里面</span><br><span class="line">                cartProductVoList.add(cartProductVo);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        //把CartProductVo放入到我们的CartVo里面</span><br><span class="line">        cartVo.setCartTotalPrice(cartTotalPrice);</span><br><span class="line">        cartVo.setCartProductVoList(cartProductVoList);</span><br><span class="line">        cartVo.setAllChecked(this.getAllCheckedStatus(userId));</span><br><span class="line">        cartVo.setImageHost(PropertiesUtil.getProperty(&quot;ftp.server.http.prefix&quot;));   //这里需要直接从服务器中获取</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        return cartVo;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //根据用户id来判断购物车是否处于选中状态</span><br><span class="line">    public boolean getAllCheckedStatus (Integer userId)&#123;</span><br><span class="line">        if(userId ==null)&#123;</span><br><span class="line">            return false;</span><br><span class="line">        &#125;</span><br><span class="line">        //如果用户不为空</span><br><span class="line">        //这里sql语句结果之所以没有返回boolean是因为我们去数据库里面一般返回的都是int，所以需要进行二次判断</span><br><span class="line">        return cartMapper.selectCartProductCheckedStatusByUserId(userId) ==0;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>上面那个是我们的核心代码，所以我依旧啰嗦几句：<br><strong>1、</strong>首先判断传入的参数是否正确：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if(productId ==null ||count ==null)&#123;</span><br><span class="line">           return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(),ResponseCode.ILLEGAL_ARGUMENT.getDesc());</span><br><span class="line">       &#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>2、</strong>看到<code>Cart cart =cartMapper.selectCartByUserIdAndProductId(userId,productId);   //自定义的sql语句</code>就知道需要去dao层的CartMapper.java文件，新增一行代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//注意在mybatis中使用多个参数时，需要使用param注解</span><br><span class="line">Cart selectCartByUserIdAndProductId(@Param(value =&quot;userId&quot; )Integer userId,@Param(value = &quot;productId&quot;) Integer productId);</span><br></pre></td></tr></table></figure></p>
+<p>接着打开mappers包的CartMapper.xml文件，里面新增以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;select id=&quot;selectCartByUserIdAndProductId&quot; resultMap=&quot;BaseResultMap&quot; parameterType=&quot;map&quot;&gt;</span><br><span class="line">  select</span><br><span class="line">  &lt;include refid=&quot;Base_Column_List&quot;/&gt;</span><br><span class="line">  from store_cart</span><br><span class="line">  where user_id=#&#123;userId&#125;</span><br><span class="line">  and  product_id =#&#123;productId&#125;</span><br><span class="line">&lt;/select&gt;</span><br></pre></td></tr></table></figure></p>
+<p><strong>3、</strong>继续回到CartServiceImpl.java文件，我们发现该产品不在这个购物车里面,因此需要新增一个这个产品的记录，而且商品的选中是自动的，也就是需要设置一个常量。我们能打开common包下面的const文件，在里面新增以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">public interface Cart&#123;</span><br><span class="line">    int CHECKED = 1;//购物车选中状态</span><br><span class="line">    int UN_CHECKED = 0;//购物车中未选中状态</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>4、</strong>接下来是核心的功能，如数量判断，值校验，购物车里面的商品也有图片，因此需要组装一个“新的”vo对象。因此，我们需要在Vo这个包里面，新建两个java类，一个是CartProductVo，它是结合了购物车和商品的对象，因此你可以去购物车和商品对象中选择你所需要的字段，里面的代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br></pre></td><td class="code"><pre><span class="line">package top.store.vo;</span><br><span class="line"></span><br><span class="line">import java.math.BigDecimal;</span><br><span class="line"></span><br><span class="line">public class CartProductVo &#123;</span><br><span class="line"></span><br><span class="line">    //本vo是结合了购物车和商品的对象，因此你可以去购物车和商品对象中选择你所需要的字段</span><br><span class="line">    private Integer id;  //购物车id</span><br><span class="line">    private Integer userId;</span><br><span class="line">    private Integer productId;</span><br><span class="line">    private Integer quantity;  //购物车中商品的数量</span><br><span class="line">    private String productName;   //商品名称</span><br><span class="line">    private String productSubtitle;   //商品子标题</span><br><span class="line">    private String productMainImage;  //商品主图</span><br><span class="line">    private BigDecimal productPrice;  //商品价格</span><br><span class="line">    private Integer productStatus;   //商品状态</span><br><span class="line">    private BigDecimal productTotalPrice;  //商品总价</span><br><span class="line">    private Integer productStock;   //商品库存</span><br><span class="line">    private Integer productChecked;//商品是否勾选</span><br><span class="line"></span><br><span class="line">    private String limitQuantity;//用于限制数量的一个返回结果</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    public Integer getId() &#123;</span><br><span class="line">        return id;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setId(Integer id) &#123;</span><br><span class="line">        this.id = id;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public Integer getUserId() &#123;</span><br><span class="line">        return userId;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setUserId(Integer userId) &#123;</span><br><span class="line">        this.userId = userId;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public Integer getProductId() &#123;</span><br><span class="line">        return productId;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setProductId(Integer productId) &#123;</span><br><span class="line">        this.productId = productId;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public Integer getQuantity() &#123;</span><br><span class="line">        return quantity;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setQuantity(Integer quantity) &#123;</span><br><span class="line">        this.quantity = quantity;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String getProductName() &#123;</span><br><span class="line">        return productName;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setProductName(String productName) &#123;</span><br><span class="line">        this.productName = productName;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String getProductSubtitle() &#123;</span><br><span class="line">        return productSubtitle;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setProductSubtitle(String productSubtitle) &#123;</span><br><span class="line">        this.productSubtitle = productSubtitle;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String getProductMainImage() &#123;</span><br><span class="line">        return productMainImage;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setProductMainImage(String productMainImage) &#123;</span><br><span class="line">        this.productMainImage = productMainImage;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public BigDecimal getProductPrice() &#123;</span><br><span class="line">        return productPrice;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setProductPrice(BigDecimal productPrice) &#123;</span><br><span class="line">        this.productPrice = productPrice;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public Integer getProductStatus() &#123;</span><br><span class="line">        return productStatus;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setProductStatus(Integer productStatus) &#123;</span><br><span class="line">        this.productStatus = productStatus;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public BigDecimal getProductTotalPrice() &#123;</span><br><span class="line">        return productTotalPrice;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setProductTotalPrice(BigDecimal productTotalPrice) &#123;</span><br><span class="line">        this.productTotalPrice = productTotalPrice;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public Integer getProductStock() &#123;</span><br><span class="line">        return productStock;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setProductStock(Integer productStock) &#123;</span><br><span class="line">        this.productStock = productStock;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public Integer getProductChecked() &#123;</span><br><span class="line">        return productChecked;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setProductChecked(Integer productChecked) &#123;</span><br><span class="line">        this.productChecked = productChecked;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String getLimitQuantity() &#123;</span><br><span class="line">        return limitQuantity;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setLimitQuantity(String limitQuantity) &#123;</span><br><span class="line">        this.limitQuantity = limitQuantity;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>另一个文件是CartVo，里面的代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">package top.store.vo;</span><br><span class="line"></span><br><span class="line">import java.math.BigDecimal;</span><br><span class="line">import java.util.List;</span><br><span class="line"></span><br><span class="line">public class CartVo &#123;</span><br><span class="line">    //购物车Vo对象</span><br><span class="line">    private List&lt;CartProductVo&gt; cartProductVoList;   //商品对象</span><br><span class="line">    private BigDecimal cartTotalPrice;  //购物车所有商品总价</span><br><span class="line">    private boolean allChecked;   //购物车是否处于选中状态</span><br><span class="line">    private String imageHost;  //购物车对象的主图</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    public List&lt;CartProductVo&gt; getCartProductVoList() &#123;</span><br><span class="line">        return cartProductVoList;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setCartProductVoList(List&lt;CartProductVo&gt; cartProductVoList) &#123;</span><br><span class="line">        this.cartProductVoList = cartProductVoList;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public BigDecimal getCartTotalPrice() &#123;</span><br><span class="line">        return cartTotalPrice;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setCartTotalPrice(BigDecimal cartTotalPrice) &#123;</span><br><span class="line">        this.cartTotalPrice = cartTotalPrice;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public boolean isAllChecked() &#123;</span><br><span class="line">        return allChecked;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setAllChecked(boolean allChecked) &#123;</span><br><span class="line">        this.allChecked = allChecked;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String getImageHost() &#123;</span><br><span class="line">        return imageHost;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setImageHost(String imageHost) &#123;</span><br><span class="line">        this.imageHost = imageHost;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>5、</strong>我们继续回到CartServiceImpl.java文件，看到这行代码<code>List&lt;Cart&gt; cartList =cartMapper.selectCartByUserId(userId);  //自定义的sql语句</code>就知道需要去dao层的CartMapper.java文件，新增一行代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Cart&gt; selectCartByUserId(Integer UserId);</span><br></pre></td></tr></table></figure></p>
+<p>接着打开mappers包的CartMapper.xml文件，里面新增以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;select id=&quot;selectCartByUserId&quot; resultMap=&quot;BaseResultMap&quot; parameterType=&quot;int&quot;&gt;</span><br><span class="line">  select</span><br><span class="line">  &lt;include refid=&quot;Base_Column_List&quot;/&gt;</span><br><span class="line">  from store_cart</span><br><span class="line">  where user_id =#&#123;userId&#125;</span><br><span class="line"></span><br><span class="line">&lt;/select&gt;</span><br></pre></td></tr></table></figure></p>
+<p><strong>6、</strong>Java中丢失精度的问题是一个值得注意的问题，因此我们需要进行设置。float和double只能用于科学计算和工程计算，商业运算必须使用BigDecimal。通过查看BigDecimal的String构造器，我们发现：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">When a &#123;@code double&#125; must be used as a source for a</span><br><span class="line">* &#123;@code BigDecimal&#125;, note that this constructor provides an</span><br><span class="line">* exact conversion; it does not give the same result as</span><br><span class="line">* converting the &#123;@code double&#125; to a &#123;@code String&#125; using the</span><br><span class="line">* &#123;@link Double#toString(double)&#125; method and then using the</span><br><span class="line">* &#123;@link #BigDecimal(String)&#125; constructor.  To get that result,</span><br><span class="line">* use the &#123;@code static&#125; &#123;@link #valueOf(double)&#125; method.</span><br></pre></td></tr></table></figure></p>
+<p>从上面的源码中我们也发现了这一情况，因此需要使用它的String构造器。但是呢，我们的数据库中存放的都是int类型，因此我们需要创建一个用于转换类型的工具类，打开Util这个包，我们在里面新建一个BigDecimalUtil.java的文件，在里面写入以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">package top.store.util;</span><br><span class="line"></span><br><span class="line">import java.math.BigDecimal;</span><br><span class="line"></span><br><span class="line">public class BigDecimalUtil &#123;</span><br><span class="line">    //我们不能使我们的工具类在外部进行实例化，因此将构造方法私有化</span><br><span class="line">    private BigDecimalUtil()&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    //加法</span><br><span class="line">    public static BigDecimal add(double a1,double a2)&#123;</span><br><span class="line">        BigDecimal b1 =new BigDecimal(Double.toString(a1));</span><br><span class="line">        BigDecimal b2 =new BigDecimal(Double.toString(a2));</span><br><span class="line">        return b1.add(b2);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //减法</span><br><span class="line">    public static BigDecimal sub(double a1,double a2)&#123;</span><br><span class="line">        BigDecimal b1 =new BigDecimal(Double.toString(a1));</span><br><span class="line">        BigDecimal b2 =new BigDecimal(Double.toString(a2));</span><br><span class="line">        return b1.subtract(b2);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    //乘法</span><br><span class="line">    public static BigDecimal mut(double a1,double a2)&#123;</span><br><span class="line">        BigDecimal b1 =new BigDecimal(Double.toString(a1));</span><br><span class="line">        BigDecimal b2 =new BigDecimal(Double.toString(a2));</span><br><span class="line">        return b1.multiply(b2);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    //除法，注意使用四舍五入</span><br><span class="line">    public static BigDecimal div(double a1,double a2)&#123;</span><br><span class="line">        BigDecimal b1 =new BigDecimal(Double.toString(a1));</span><br><span class="line">        BigDecimal b2 =new BigDecimal(Double.toString(a2));</span><br><span class="line">        return b1.divide(b2,2,BigDecimal.ROUND_HALF_UP);  //四舍五入模式，保留2位小数</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>你可以使用Ctrl+O（字母O）来查看该类的不同类型的构造方法,我们使用下面的构造方法，scale是指你保留的位数，roundingMode是指什么模式：ROUND_HALF_UP是四舍五入模式。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public BigDecimal divide(BigDecimal divisor, int scale, int roundingMode)</span><br></pre></td></tr></table></figure></p>
+<p>具体的可以参看这篇文章：<a href="https://www.cnblogs.com/yingchen/p/5459501.html" target="_blank" rel="noopener">BigDecimal.ROUND_HALF_XXX的各种用法</a><br><strong>7、</strong>我们这里之所以不直接从商品对象里获取信息，是因为后面有些是存在于购物车的，有些存在于商品，很容易造成混乱，因此我们这里就使用了一个组装的购物车商品对象，你需要的时候调用它就可以。<br><strong>8、</strong>在判断库存数量的时候，我们需要注意设置一个常量，用于提示前端最低库存，继续打开common包下面的const文件，在里面新增以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">String LIMIT_NUM_FAIL = &quot;LIMIT_NUM_FAIL&quot;;</span><br><span class="line">String LIMIT_NUM_SUCCESS = &quot;LIMIT_NUM_SUCCESS&quot;;</span><br></pre></td></tr></table></figure></p>
+<p>把之前的购物车状态代码合在一块就是：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public interface Cart&#123;</span><br><span class="line">    int CHECKED = 1;//购物车选中状态</span><br><span class="line">    int UN_CHECKED = 0;//购物车中未选中状态</span><br><span class="line"></span><br><span class="line">    String LIMIT_NUM_FAIL = &quot;LIMIT_NUM_FAIL&quot;;</span><br><span class="line">    String LIMIT_NUM_SUCCESS = &quot;LIMIT_NUM_SUCCESS&quot;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>9、</strong>然后就是<code>cartVo.setImageHost(PropertiesUtil.getProperty(&quot;ftp.server.http.prefix&quot;));   //这里需要直接从服务器中获取</code>这个很多注意事项我都在代码里面作了详细的说明。<br><strong>10、</strong>看到这行代码，你同样需要<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">//如果用户不为空</span><br><span class="line">//这里sql语句结果之所以没有返回boolean是因为我们去数据库里面一般返回的都是int，所以需要进行二次判断</span><br><span class="line">return cartMapper.selectCartProductCheckedStatusByUserId(userId) ==0;</span><br></pre></td></tr></table></figure></p>
+<p>去dao层的CartMapper.java文件，新增一行代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">int selectCartProductCheckedStatusByUserId(Integer userId);</span><br></pre></td></tr></table></figure></p>
+<p>接着打开mappers包的CartMapper.xml文件，里面新增以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">  &lt;select id=&quot;selectCartProductCheckedStatusByUserId&quot; resultType=&quot;int&quot; parameterType=&quot;int&quot;&gt; &lt;!--这里就是说里面有没有选中的就意味着不是全选--&gt;</span><br><span class="line">    SELECT  count(1) from store_cart where checked = 0 and user_id = #&#123;userId&#125;</span><br><span class="line">  &lt;/select&gt;</span><br><span class="line">&lt;/mapper&gt;</span><br></pre></td></tr></table></figure></p>
+<h3 id="精度测试"><a href="#精度测试" class="headerlink" title="精度测试"></a>精度测试</h3><p>对了，还有前面的精度测试，我们打开test包下面的java包，里面新建一个包<code>top.licheetools.test</code>，名字随意，我这里就是这个样子，然后新建BigDecimalTest.java文件：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">package top.licheetools.test;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">import org.junit.Test;</span><br><span class="line"></span><br><span class="line">import java.math.BigDecimal;</span><br><span class="line"></span><br><span class="line">//这里因为是专门的测试包，所以不需要使用junit，也不需要加载Spring容器</span><br><span class="line">public class BigDecimalTest &#123;</span><br><span class="line"></span><br><span class="line">    @Test</span><br><span class="line">    public void test1()&#123;</span><br><span class="line">        System.out.println(0.08+0.05);</span><br><span class="line">        System.out.println(2.01-0.58);</span><br><span class="line">        System.out.println(0.08*100);</span><br><span class="line">        System.out.println(6.89/100);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    @Test</span><br><span class="line">    public void test2()&#123;</span><br><span class="line">        //使用BigDecimal的Integer构造函数</span><br><span class="line">        BigDecimal b1 =new BigDecimal(0.06);</span><br><span class="line">        BigDecimal b2 =new BigDecimal(0.09);</span><br><span class="line">        System.out.println(b1.add(b2));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Test</span><br><span class="line">    public void test3()&#123;</span><br><span class="line">        //使用BigDecimal的String构造函数</span><br><span class="line">        BigDecimal b1 =new BigDecimal(&quot;0.06&quot;);</span><br><span class="line">        BigDecimal b2 =new BigDecimal(&quot;0.09&quot;);</span><br><span class="line">        System.out.println(b1.add(b2));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>运行结果我这里就只附上截图：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-011f1c75b8ca614b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-b8be261813fbfae1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-624dce4cccb03d30.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>这样我们本篇关于如何将商品加入到购物车的介绍就到此为止了，这里因为需要构造一个复用的购物车模型，所以需要很多时间，但是后面功能的实现就能直接借助它了，开发起来还是快速的，感谢你的赏阅！</p>
+
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="https://upload-images.jianshu.io/upload_images/8964398-58d04ffa926103d9.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">觉得不错，赏包辣条吃呗！</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href target="_blank">编程思录</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2018/08/28/SSM搭建二手市场交易平台（十九）：购物车更新删除查询商品/" class="pre-post btn btn-default" title="SSM搭建二手市场交易平台（十九）：购物车更新删除查询商品">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">SSM搭建二手市场交易平台（十九）：购物车更新删除查询商品</span>
+        </a>
+    
+    
+        <a href="/2018/08/26/SSM搭建二手市场交易平台（十七）：前台商品列表，搜索，动态排序/" class="next-post btn btn-default" title="SSM搭建二手市场交易平台（十七）：前台商品列表，搜索，动态排序">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">SSM搭建二手市场交易平台（十七）：前台商品列表，搜索，动态排序</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+    <div id="vcomments" class="valine"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+
+    <script>
+        new Valine({
+            av: AV,
+            el: '#vcomments',
+            appId: '8zvHFFu5l2ah8lh0DEPH393B-gzGzoHsz',
+            appKey: 'UNmB24200qMtyyrun5z99nOE',
+            placeholder: '听说长得好看的，都已经留言了！',
+            notify: false,
+            verify: false,
+            avatar: 'mm',
+            meta: 'nick,mail'.split(','),
+            pageSize: '10',
+            path: window.location.pathname,
+            lang: 'zh-CN'.toLowerCase()
+        })
+    </script>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#写在前面"><span class="toc-text">写在前面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#技能掌握"><span class="toc-text">技能掌握</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#商品添加到购物车"><span class="toc-text">商品添加到购物车</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#精度测试"><span class="toc-text">精度测试</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2017-2019
+                </span> |
+                <span>
+				编程思录,保留所有权利
+                    <!--Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>-->
+                </span> |
+                <span>
+				<a style="color: #black" href="http://www.miitbeian.gov.cn">赣ICP备18013455号-5</a>
+                    <!--Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>-->
+                </span>
+            </div>
+			
+			<div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+			
+			<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1277113902'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s96.cnzz.com/z_stat.php%3Fid%3D1277113902%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));</script>
+        </div>
+    </div>
+</div>
+
+
+
+
+    <script src="/assets/tagcanvas.min.js?rev=2.9"></script>
+    <script>
+        var tagOption = {
+            textColour: 'red', // 字体颜色
+            outlineMethod: 'block', // 选中模式
+            outlineColour: '#FFDAB9', // 选中模式的颜色
+            interval: 30 || 30, // 动画帧之间的时间间隔，值越大，转动幅度越大
+            textHeight: 13,
+            outlineRadius: 3,
+            freezeActive: true || '', // 选中的标签是否继续滚动
+            frontSelect: true || '', // 不选标签云后部的标签
+            initial: [0.1, -0.1],
+            depth: 0.5,
+            decel: 0.95,
+            maxSpeed: 0.03,
+            reverse: true || '', // 是否反向触发
+            fadeIn: 500, // 进入动画时间
+            wheelZoom: false || '' // 是否启用鼠标滚轮
+        }
+        TagCanvas.Start('tag-cloud-3d','',tagOption);
+    </script>
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+</body>
+</html>

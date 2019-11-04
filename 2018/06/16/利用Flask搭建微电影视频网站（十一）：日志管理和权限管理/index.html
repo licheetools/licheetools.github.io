@@ -1,0 +1,470 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="编程思录，记录思考">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://blog.licheetools.top">
+    <!--SEO-->
+
+    <meta name="keywords" content="Flask建站,Pytohn后端">
+
+
+    <meta name="description" content="写在前面本篇笔记，我们介绍日志管理和权限管理，其中日志管理包括操作日志列表，管理员登录日志列表，会员登录日志列表，这个和前面介绍的标签，电影，预告管理也是差不多，所以我就加快速度，话不多说，开始...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+
+    <!--Title-->
+
+
+<title>利用Flask搭建微电影视频网站（十一）：日志管理和权限管理 | 编程思录，记录思考</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="编程思录，记录思考" type="application/atom+xml">
+
+
+    <link rel="icon" href="./favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+	<div class="hide">
+		<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+	</div>
+
+
+
+
+
+
+    
+
+    <script>
+        (function(){
+            var bp = document.createElement('script');
+            var curProtocol = window.location.protocol.split(':')[0];
+            if (curProtocol === 'https') {
+                bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+            }
+            else {
+                bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+            }
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(bp, s);
+        })();
+    </script>
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header" style="background-image:url(https://upload-images.jianshu.io/upload_images/8964398-b1ba9582ea8b69ba.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)">
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title="Envy">
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 点滴进步，都是收获 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://blog.licheetools.top">编程思录，记录思考</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>首页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/font/"><i class="fa "></i>前端</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/java/"><i class="fa "></i>Java</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/python/"><i class="fa "></i>Python</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/go/"><i class="fa "></i>Go</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/spider/"><i class="fa "></i>爬虫</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/data/"><i class="fa "></i>数据分析</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/money/"><i class="fa "></i>付费教程</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/life/"><i class="fa "></i>生活记录</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives"><i class="fa "></i>时间轴</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/about/"><i class="fa "></i>关于博主</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/liuyan/"><i class="fa "></i>留言板</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="利用Flask搭建微电影视频网站（十一）：日志管理和权限管理">
+            
+	            利用Flask搭建微电影视频网站（十一）：日志管理和权限管理
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/python/">python</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/Flask建站/">Flask建站</a> <a class="tag-link" href="/tags/Pytohn后端/">Pytohn后端</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2018/06/16</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>本篇笔记，我们介绍日志管理和权限管理，其中日志管理包括操作日志列表，管理员登录日志列表，会员登录日志列表，这个和前面介绍的标签，电影，预告管理也是差不多，所以我就加快速度，话不多说，开始学习吧。</p>
+<p>本篇笔记对应上传的仓库为:<a href="https://github.com/licheetools/movie对应第十一篇。" target="_blank" rel="noopener">https://github.com/licheetools/movie对应第十一篇。</a></p>
+<h2 id="日志管理"><a href="#日志管理" class="headerlink" title="日志管理"></a>日志管理</h2><h2 id="操作日志列表"><a href="#操作日志列表" class="headerlink" title="操作日志列表"></a>操作日志列表</h2><h3 id="使用到的内容"><a href="#使用到的内容" class="headerlink" title="使用到的内容"></a>使用到的内容</h3><p>我们将使用到的内容有：<br>模型：Oplog ，Userlog ，Adminlog<br>表单: 无 （这个不涉及到表单的提交）<br>请求方法: GET<br>访问控制: @admin_login_req</p>
+<h3 id="上下文应用处理器"><a href="#上下文应用处理器" class="headerlink" title="上下文应用处理器"></a>上下文应用处理器</h3><p>这里我们需要引入上下文应用处理器的概念，它是可以封装全局变量并把全局变量展现到模板里面，我们前面在个人中心里面没有对操作时间进行配置，因为操作时间就是需要用到上下文处理器。我们打开views.py文件，新定义下面的函数：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">import datetime</span><br><span class="line"></span><br><span class="line"># 上下文处理器</span><br><span class="line">@admin.context_processor</span><br><span class="line">def tpl_extra():</span><br><span class="line">    data = dict(</span><br><span class="line">        online_time=datetime.datetime.now().strftime(&quot;%Y-%m-%d %H:%M:%S&quot;)</span><br><span class="line">    )</span><br><span class="line">    return data</span><br></pre></td></tr></table></figure></p>
+<p>接着用我们这里定义的<code>online_time</code>，去填充我们的admin.html页面里面的操作时间：<img src="https://upload-images.jianshu.io/upload_images/8964398-029b0b3cc86f65d4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt><br>然后刷新一下我们的页面，发现操作时间就可以正常显示了。</p>
+<p>注意一下，<code>import datetime</code>和<code>from datetime import datetime</code>是不同的，你可以点击这里<a href="https://stackoverflow.com/questions/15707532/python-import-datetime-v-s-from-datetime-import-datetime" target="_blank" rel="noopener">区别</a>！</p>
+<h3 id="记录增删改查操作"><a href="#记录增删改查操作" class="headerlink" title="记录增删改查操作"></a>记录增删改查操作</h3><p>打开views.py文件，我们需要把登录时用户的id一块记录下来，修改登录函数：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-5a6df71f73a890bb.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">session[&quot;admin_id&quot;] = admin.id</span><br><span class="line">session.pop(&quot;admin_id&quot;, None)</span><br></pre></td></tr></table></figure></p>
+<p>然后继续完善我们的视views.py,我们这里以添加标签为例，进行操作的记录演示：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">from app.models import OpLog, UserLog, AdminLog</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">oplog = OpLog(</span><br><span class="line">            admin_id=session[&quot;admin_id&quot;],</span><br><span class="line">            ip=request.remote_addr,</span><br><span class="line">            reason=&quot;添加标签%s&quot; % data[&quot;name&quot;]</span><br><span class="line">        )</span><br><span class="line">        db.session.add(oplog)</span><br><span class="line">        db.session.commit()</span><br></pre></td></tr></table></figure></p>
+<p>就是这样：<img src="https://upload-images.jianshu.io/upload_images/8964398-bf55301e3ac72ef1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>flask中获取ip地址使用<code>request.remote_addr</code>，可以点击这里了解一下：<br><a href="https://www.jb51.net/article/62608.htm" target="_blank" rel="noopener">python使用Flask框架获取用户IP地址的方法</a></p>
+<p>接下来你可以去添加几个标签，然后查询一下数据库，看是不是有了相应的记录！</p>
+<p>然后发现数据库里面有了日志，但是我们还需要把它们给显示出来。</p>
+<h3 id="操作日志页面显示"><a href="#操作日志页面显示" class="headerlink" title="操作日志页面显示"></a>操作日志页面显示</h3><p>打开views.py文件，我们修改日志列表函数：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"># 操作日志列表</span><br><span class="line">@admin.route(&apos;/oploglist/&lt;int:page&gt;/&apos;, methods=[&quot;GET&quot;])</span><br><span class="line">@admin_login_req</span><br><span class="line">def oplog_list(page=None):</span><br><span class="line">    if page is None:</span><br><span class="line">        page = 1</span><br><span class="line">        # 查询的时候关联标签，采用join来加进去,多表关联用filter,过滤用filter_by</span><br><span class="line">    page_data = OpLog.query.join(</span><br><span class="line">        Admin</span><br><span class="line">    ).filter(</span><br><span class="line">        Admin.id == OpLog.admin_id</span><br><span class="line">    ).order_by(</span><br><span class="line">        OpLog.addtime.desc()</span><br><span class="line">    ).paginate(page=page, per_page=10)</span><br><span class="line">    return render_template(&quot;admin/oplog_list.html&quot;, page_data=page_data)</span><br></pre></td></tr></table></figure></p>
+<p>然后打开oplog_list.html页面，开始for循环的遍历：<img src="https://upload-images.jianshu.io/upload_images/8964398-6d4a97be5ef585b6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>然后就是分页功能了，做了很多遍了：删除html页面的分页代码，我们在开头导入刚才的admin_page.html文件，然后开始调用：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% import &quot;ui/admin_page.html&quot; as pg %&#125;</span><br></pre></td></tr></table></figure></p>
+<p>将下面的代码填充你刚才删除的那段的位置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123; pg.page(page_data, &quot;admin.oplog_list&quot;) &#125;&#125;</span><br></pre></td></tr></table></figure></p>
+<p>最后别忘了去grid.html页面，添加<code>page=1</code>:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;a href=&quot;&#123;&#123; url_for(&apos;admin.oplog_list&apos;, page=1) &#125;&#125;&quot;&gt;</span><br><span class="line"> &lt;i class=&quot;fa fa-circle-o&quot;&gt;&lt;/i&gt; 操作日志列表</span><br><span class="line">&lt;/a&gt;</span><br></pre></td></tr></table></figure></p>
+<p>至此，关于操作日志列表的介绍就到此为止了！接下来是管理员登录日志列表！</p>
+<h2 id="管理员登录日志列表"><a href="#管理员登录日志列表" class="headerlink" title="管理员登录日志列表"></a>管理员登录日志列表</h2><p>管理员登录日志列表是处理与管理员登录有关的列表，自然而的我们就要修改我们的登录函数了：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">adminlog = AdminLog(</span><br><span class="line">          admin_id=session[&quot;admin_id&quot;],</span><br><span class="line">          ip=request.remote_addr,</span><br><span class="line">      )</span><br><span class="line">      db.session.add(adminlog)</span><br><span class="line">      db.session.commit()</span><br></pre></td></tr></table></figure></p>
+<p>接下来你可以重新登录或退出，然后查询一下数据库，看是不是有了相应的记录！</p>
+<p>然后发现数据库里面有了日志，但是我们还需要把它们给显示出来。</p>
+<h2 id="管理员登录日志页面显示"><a href="#管理员登录日志页面显示" class="headerlink" title="管理员登录日志页面显示"></a>管理员登录日志页面显示</h2><p>打开views.py文件，我们修改管理员登录日志列表函数：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"># 管理员登录日志列表</span><br><span class="line">@admin.route(&apos;/adminloginlog/list/&lt;int:page&gt;/&apos;, methods=[&quot;GET&quot;])</span><br><span class="line">@admin_login_req</span><br><span class="line">def adminloginlog_list(page=None):</span><br><span class="line">    if page is None:</span><br><span class="line">        page = 1</span><br><span class="line">        # 查询的时候关联标签，采用join来加进去,多表关联用filter,过滤用filter_by</span><br><span class="line">    page_data = AdminLog.query.join(</span><br><span class="line">        Admin</span><br><span class="line">    ).filter(</span><br><span class="line">        Admin.id == AdminLog.admin_id</span><br><span class="line">    ).order_by(</span><br><span class="line">        AdminLog.addtime.desc()</span><br><span class="line">    ).paginate(page=page, per_page=10)</span><br><span class="line">    return render_template(&quot;admin/adminloginlog_list.html&quot;, page_data=page_data)</span><br></pre></td></tr></table></figure></p>
+<p>然后打开adminloginlog_list.html页面，开始for循环的遍历：<br><img src="https://upload-images.jianshu.io/upload_images/8964398-b3095c52611fe0f9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>然后就是分页功能了，做了很多遍了：删除html页面的分页代码，我们在开头导入刚才的admin_page.html文件，然后开始调用：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% import &quot;ui/admin_page.html&quot; as pg %&#125;</span><br></pre></td></tr></table></figure></p>
+<p>将下面的代码填充你刚才删除的那段的位置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123; pg.page(page_data, &quot;admin.adminloginlog_list&quot;) &#125;&#125;</span><br></pre></td></tr></table></figure></p>
+<p>最后别忘了去grid.html页面，添加page=1:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;a href=&quot;&#123;&#123; url_for(&apos;admin.adminloginlog_list&apos;, page=1) &#125;&#125;&quot;&gt;</span><br><span class="line"> &lt;i class=&quot;fa fa-circle-o&quot;&gt;&lt;/i&gt; 管理员登录日志列表</span><br><span class="line">  &lt;/a&gt;</span><br></pre></td></tr></table></figure></p>
+<p>至此，关于管理员登录日志列表的介绍就到此为止了！接下来是会员登录日志列表！</p>
+<h2 id="会员登录日志列表"><a href="#会员登录日志列表" class="headerlink" title="会员登录日志列表"></a>会员登录日志列表</h2><p>为了后续开发的必要，我们来在数据库里，插入一些数据：在终端输入cmd，然后输入mysql -uroot -proot后回车，接着use movie; 然后查询一下userlog的信息：select * from userlog;接着复制粘贴下面的代码:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">insert into userlog(user_id,ip,addtime) values(1,&quot;192.188.8.1&quot;,now());</span><br><span class="line">insert into userlog(user_id,ip,addtime) values(2,&quot;192.188.8.2&quot;,now());</span><br><span class="line">insert into userlog(user_id,ip,addtime) values(3,&quot;192.188.8.3&quot;,now());</span><br><span class="line">insert into userlog(user_id,ip,addtime) values(4,&quot;192.188.8.4&quot;,now());</span><br><span class="line">insert into userlog(user_id,ip,addtime) values(5,&quot;192.188.8.5&quot;,now());</span><br><span class="line">insert into userlog(user_id,ip,addtime) values(6,&quot;192.188.8.6&quot;,now());</span><br><span class="line">insert into userlog(user_id,ip,addtime) values(7,&quot;192.188.8.7&quot;,now());</span><br><span class="line">insert into userlog(user_id,ip,addtime) values(8,&quot;192.188.8.8&quot;,now());</span><br><span class="line">insert into userlog(user_id,ip,addtime) values(8,&quot;192.188.8.9&quot;,now());</span><br></pre></td></tr></table></figure></p>
+<p>之后回车，然后再次查询一下我们的数据库：select * from userlog;，看是不是这样的信息：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from userlog;</span><br><span class="line">+----+---------+-------------+---------------------+</span><br><span class="line">| id | user_id | ip          | addtime             |</span><br><span class="line">+----+---------+-------------+---------------------+</span><br><span class="line">|  1 |       1 | 192.188.8.1 | 2018-08-11 18:24:37 |</span><br><span class="line">|  2 |       2 | 192.188.8.2 | 2018-08-11 18:24:38 |</span><br><span class="line">|  3 |       3 | 192.188.8.3 | 2018-08-11 18:24:38 |</span><br><span class="line">|  4 |       4 | 192.188.8.4 | 2018-08-11 18:24:38 |</span><br><span class="line">|  5 |       5 | 192.188.8.5 | 2018-08-11 18:24:38 |</span><br><span class="line">|  6 |       6 | 192.188.8.6 | 2018-08-11 18:24:38 |</span><br><span class="line">|  7 |       7 | 192.188.8.7 | 2018-08-11 18:24:38 |</span><br><span class="line">|  8 |       8 | 192.188.8.8 | 2018-08-11 18:24:38 |</span><br><span class="line">|  9 |       8 | 192.188.8.9 | 2018-08-11 18:24:38 |</span><br><span class="line">+----+---------+-------------+---------------------+</span><br><span class="line">9 rows in set (0.19 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt;</span><br></pre></td></tr></table></figure></p>
+<p>接着打开views.py文件，我们修改会员登录日志列表函数（仿照之前的管理员登录列表）：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"># 会员登录日志列表</span><br><span class="line">@admin.route(&apos;/userloginlog/list/&lt;int:page&gt;/&apos;, methods=[&quot;GET&quot;])</span><br><span class="line">@admin_login_req</span><br><span class="line">def userloginlog_list(page=None):</span><br><span class="line">    if page is None:</span><br><span class="line">        page = 1</span><br><span class="line">        # 查询的时候关联标签，采用join来加进去,多表关联用filter,过滤用filter_by</span><br><span class="line">    page_data = UserLog.query.join(</span><br><span class="line">        User</span><br><span class="line">    ).filter(</span><br><span class="line">        User.id == UserLog.user_id</span><br><span class="line">    ).order_by(</span><br><span class="line">        UserLog.addtime.desc()</span><br><span class="line">    ).paginate(page=page, per_page=10)</span><br><span class="line">    return render_template(&quot;admin/userloginlog_list.html&quot;, page_data=page_data)</span><br></pre></td></tr></table></figure></p>
+<p>然后打开userloginlog_list.html页面，开始for循环的遍历：<img src="https://upload-images.jianshu.io/upload_images/8964398-8ba362fd48f9b40d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>然后就是分页功能了，做了很多遍了：删除html页面的分页代码，我们在开头导入刚才的admin_page.html文件，然后开始调用：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% import &quot;ui/admin_page.html&quot; as pg %&#125;</span><br></pre></td></tr></table></figure></p>
+<p>将下面的代码填充你刚才删除的那段的位置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123; pg.page(page_data, &quot;admin.userloginlog_list&quot;) &#125;&#125;</span><br></pre></td></tr></table></figure></p>
+<p>最后别忘了去grid.html页面，添加page=1:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">  &lt;a href=&quot;&#123;&#123; url_for(&apos;admin.userloginlog_list&apos;, page=1) &#125;&#125;&quot;&gt;</span><br><span class="line">     &lt;i class=&quot;fa fa-circle-o&quot;&gt;&lt;/i&gt; 会员登录日志列表</span><br><span class="line">&lt;/a&gt;</span><br></pre></td></tr></table></figure></p>
+<p>至此，关于会员登录日志列表的介绍就到此为止了，接下来便是权限管理的介绍了！</p>
+<h2 id="权限管理"><a href="#权限管理" class="headerlink" title="权限管理"></a>权限管理</h2><h3 id="使用到的内容-1"><a href="#使用到的内容-1" class="headerlink" title="使用到的内容"></a>使用到的内容</h3><p>我们将使用到的内容有：<br>模型：Auth<br>表单: AuthForm<br>请求方法: GET，POST<br>访问控制: @admin_login_req</p>
+<h3 id="1、添加表单验证字段"><a href="#1、添加表单验证字段" class="headerlink" title="1、添加表单验证字段"></a>1、添加表单验证字段</h3><p>打开forms.py，我们定义Form字段，注意因为是权限管理模块，所以对应的html页面就是<code>auth_add.html</code>，而且我们在forms.py里面定义的字段必须与<code>auth_add.html</code>里面的保持一致！（如果觉得不是很容易看出来，可以运行项目，直接访问auth_add.html页面，这样明显多了！）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"># 添加权限</span><br><span class="line">class AuthForm(FlaskForm):</span><br><span class="line">    name = StringField(</span><br><span class="line">        label=&quot;权限名称&quot;,</span><br><span class="line">        validators=[</span><br><span class="line">            DataRequired(&quot;权限名称不能为空&quot;)</span><br><span class="line">        ],</span><br><span class="line">        description=&quot;权限名称&quot;,</span><br><span class="line">        render_kw=&#123;</span><br><span class="line">            &quot;class&quot;: &quot;form-control&quot;,</span><br><span class="line">            &quot;id&quot;: &quot;input_name&quot;,</span><br><span class="line">            &quot;placeholder&quot;: &quot;请输入权限名称！&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    )</span><br><span class="line">    url = StringField(</span><br><span class="line">        label=&quot;权限地址&quot;,</span><br><span class="line">        validators=[</span><br><span class="line">            DataRequired(&quot;权限地址不能为空&quot;)</span><br><span class="line">        ],</span><br><span class="line">        description=&quot;权限地址&quot;,</span><br><span class="line">        render_kw=&#123;</span><br><span class="line">            &quot;class&quot;: &quot;form-control&quot;,</span><br><span class="line">            &quot;id&quot;: &quot;input_url&quot;,</span><br><span class="line">            &quot;placeholder&quot;: &quot;请输入权限地址！&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    )</span><br><span class="line">    submit = SubmitField(</span><br><span class="line">        &apos;修改&apos;,</span><br><span class="line">        render_kw=&#123;</span><br><span class="line">            &quot;class&quot;: &quot;btn btn-primary&quot;,</span><br><span class="line">        &#125;</span><br><span class="line">    )</span><br></pre></td></tr></table></figure></p>
+<h3 id="2、准备页面渲染字段"><a href="#2、准备页面渲染字段" class="headerlink" title="2、准备页面渲染字段"></a>2、准备页面渲染字段</h3><p>打开admin/views.py文件，我们修改<code>auth_add</code>函数：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">from app.admin.forms import AuthForm</span><br><span class="line">from app.models import Auth</span><br><span class="line"></span><br><span class="line"># 添加权限</span><br><span class="line">@admin.route(&apos;/auth/add&apos;, methods=[&quot;GET&quot;, &quot;POST&quot;])</span><br><span class="line">@admin_login_req</span><br><span class="line">def auth_add():</span><br><span class="line">    form = AuthForm()</span><br><span class="line">    return render_template(&quot;admin/auth_add.html&quot;, form=form)</span><br></pre></td></tr></table></figure></p>
+<h3 id="3、后台页面传值显示以及操作信息提示"><a href="#3、后台页面传值显示以及操作信息提示" class="headerlink" title="3、后台页面传值显示以及操作信息提示"></a>3、后台页面传值显示以及操作信息提示</h3><p>可以仿照前面的movie_add.html来修改auth_add.html:</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-41778f12a04c0ded.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>记得在submit的上面添加，还有form提交的方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;form role=&quot;form&quot; method=&quot;post&quot; &gt;</span><br></pre></td></tr></table></figure></p>
+<h3 id="4、后台页面错误信息提示"><a href="#4、后台页面错误信息提示" class="headerlink" title="4、后台页面错误信息提示"></a>4、后台页面错误信息提示</h3><p>打开auth_add.html页面，我们同样可以仿照movie_add.html来进行修改：（里面的title需要按照我们数据库里字段的要求进行修改）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;% for err in form.title.errors %&#125;</span><br><span class="line">&lt;div class=&quot;col-md-12&quot;&gt;</span><br><span class="line">&lt;p style=&quot;color:red&quot;&gt;&#123;&#123; err &#125;&#125;&lt;/p&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">&#123;% endfor %&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="5、修改权限添加函数"><a href="#5、修改权限添加函数" class="headerlink" title="5、修改权限添加函数"></a>5、修改权限添加函数</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"># 添加权限</span><br><span class="line">@admin.route(&apos;/auth/add&apos;, methods=[&quot;GET&quot;, &quot;POST&quot;])</span><br><span class="line">@admin_login_req</span><br><span class="line">def auth_add():</span><br><span class="line">    form = AuthForm()</span><br><span class="line">    if form.validate_on_submit():</span><br><span class="line">        data = form.data</span><br><span class="line">        auth = Auth(</span><br><span class="line">            name=data[&quot;name&quot;],</span><br><span class="line">            url=data[&quot;url&quot;]</span><br><span class="line">        )</span><br><span class="line">        db.session.add(auth)</span><br><span class="line">        db.session.commit()</span><br><span class="line">        flash(&quot;添加权限成功！&quot;, &quot;ok&quot;)</span><br><span class="line">    return render_template(&quot;admin/auth_add.html&quot;, form=form)</span><br></pre></td></tr></table></figure>
+<p>然后运行一下我们的manage.py文件，就可以去后台添加我们的权限了：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-a4cb7d4b5e150f34.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>查询一下数据库，发现这样的信息就说明权限添加成功了：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from auth;</span><br><span class="line">+----+--------------------+-----------------------------+---------------------+</span><br><span class="line">| id | name               | url                         | addtime             |</span><br><span class="line">+----+--------------------+-----------------------------+---------------------+</span><br><span class="line">|  1 | 添加标签权限       | /admin/tag/add              | 2018-08-12 14:42:30 |</span><br><span class="line">|  2 | 编辑标签权限       | /admin/tag/edit/&lt;int:id&gt;/   | 2018-08-12 14:44:07 |</span><br><span class="line">|  3 | 标签列表权限       | /admin/tag/list/&lt;int:page&gt;/ | 2018-08-12 14:45:00 |</span><br><span class="line">|  5 | 删除标签权限       | /admin/tag/del/&lt;int:id&gt;/    | 2018-08-12 14:46:02 |</span><br><span class="line">+----+--------------------+-----------------------------+---------------------+</span><br><span class="line">4 rows in set (0.10 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt;</span><br></pre></td></tr></table></figure></p>
+<h2 id="权限列表的配置"><a href="#权限列表的配置" class="headerlink" title="权限列表的配置"></a>权限列表的配置</h2><p>打开我们的views.py文件，我们参考之前的标签列表的配置，对权限列表进行配置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"># 权限列表</span><br><span class="line">@admin.route(&apos;/auth/list/&lt;int:page&gt;&apos;, methods=[&quot;GET&quot;])</span><br><span class="line">@admin_login_req</span><br><span class="line">def auth_list(page=None):</span><br><span class="line">    if page is None:</span><br><span class="line">        page = 1  </span><br><span class="line"># 查询的时候关联标签，采用join来加进去,多表关联用filter,过滤用filter_by</span><br><span class="line">    page_data = Auth.query.order_by(</span><br><span class="line">        Auth.addtime.desc()</span><br><span class="line">    ).paginate(page=page, per_page=2)</span><br><span class="line">    return render_template(&quot;admin/auth_list.html&quot;, page_data=page_data)</span><br></pre></td></tr></table></figure></p>
+<p>接着去我们的grid.html页面添加page参数（page=1），记住所以的列表都要有一个初始页，也就是说肯定有一个页面去显示，就算没有数据也要有页面，否则就是404嘛，这既然不是404，就得有个页面，空的页面也是可以的：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-71f352efceaa7db6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>然后我们打开auth_list.html页面，进行for循环的填充：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-316e41d427f5cc1c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>然后就是分页功能了，我们参考之前在标签列表页面的配置，打开auth_list.html,删除那个<code>&lt;ul class=&quot;pagination pagination-sm no-margin pull-right&quot;&gt; ....... &lt;/ul&gt;</code>标签里的内容，我们在开头导入刚才的admin_page.html文件，然后开始调用：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% import &quot;ui/admin_page.html&quot; as pg %&#125;</span><br></pre></td></tr></table></figure></p>
+<p>将下面的代码填充你刚才删除的那段的位置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123; pg.page(page_data, &quot;admin.auth_list&quot;) &#125;&#125;</span><br></pre></td></tr></table></figure></p>
+<p>至此，关于权限列表的介绍就到此为止了！接下来是权限的删除！</p>
+<h2 id="权限的删除"><a href="#权限的删除" class="headerlink" title="权限的删除"></a>权限的删除</h2><p>打开views.py文件，我们新定义auth_del函数：（仿照会员删除的函数）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># 权限删除</span><br><span class="line">@admin.route(&apos;/auth/del/&lt;int:id&gt;&apos;, methods=[&quot;GET&quot;])</span><br><span class="line">@admin_login_req</span><br><span class="line">def auth_del(id=None):</span><br><span class="line">    auth = Auth.query.filter_by(id=id).first_or_404()</span><br><span class="line">    db.session.delete(auth)</span><br><span class="line">    db.session.commit()</span><br><span class="line">    flash(&quot;权限删除成功！&quot;, &quot;ok&quot;)</span><br><span class="line">    return redirect(url_for(&quot;admin.auth_list&quot;, page=1))</span><br></pre></td></tr></table></figure></p>
+<p>然后打开auth_list.html页面，我们添加删除成功的flash提示（同样可以复制我们的preview_list.html页面的那一部分）：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-06a8c82facc2bc15.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>最后别忘了在auth_list.html页面添加删除跳转链接：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;a href=&quot;&#123;&#123; url_for(&apos;admin.auth_del&apos;, id=v.id) &#125;&#125;&quot; class=&quot;label label-danger&quot;&gt;删除&lt;/a&gt;</span><br></pre></td></tr></table></figure></p>
+<p>然后去测试一下我们的项目，看一看权限删除功能是否已经实现了呢，接下来进行权限的编辑功能的实现！</p>
+<h2 id="权限的编辑"><a href="#权限的编辑" class="headerlink" title="权限的编辑"></a>权限的编辑</h2><p>打开views.py文件，我们在权限列表的下面新增以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"># 权限编辑</span><br><span class="line">@admin.route(&apos;/auth/edit/&lt;int:id&gt;&apos;, methods=[&quot;GET&quot;, &quot;POST&quot;])</span><br><span class="line">@admin_login_req</span><br><span class="line">def auth_edit(id=None):</span><br><span class="line">    form = AuthForm()   # 实例化一个TagForm，然后将form传递到前端页面去。</span><br><span class="line">    auth = Auth.query.get_or_404(id)</span><br><span class="line">    if form.validate_on_submit():</span><br><span class="line">        data = form.data</span><br><span class="line">        auth.url = data[&quot;url&quot;]</span><br><span class="line">        auth.name = data[&quot;name&quot;]</span><br><span class="line">        db.session.add(auth)</span><br><span class="line">        db.session.commit()</span><br><span class="line">        flash(&quot;修改权限成功！&quot;, &quot;ok&quot;)</span><br><span class="line">        return redirect(url_for(&quot;admin.auth_edit&quot;, id=id))</span><br><span class="line">    return render_template(&quot;admin/auth_edit.html&quot;, form=form, auth=auth)</span><br></pre></td></tr></table></figure></p>
+<p>接着在admin下面新建auth_edit.html页面，将auth_add.html页面全部添加进去，然后开始修改:将所有的添加字段改为编辑。并且给那些需要编辑的字段赋初值：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-3d4f685a7f371142.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>然后在auth_list里面修改页面的跳转：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;a href=&quot;&#123;&#123; url_for(&apos;admin.auth_edit&apos;, id =v.id) &#125;&#125;&quot; class=&quot;label label-success&quot;&gt;编辑&lt;/a&gt;</span><br></pre></td></tr></table></figure></p>
+<p>刷新一下，看看关于权限这一功能我们的项目是不是都能使用了！</p>
+<p>至此，本篇关于日志管理和权限管理的介绍就到此为止了，感谢你的赏阅！</p>
+<p>本篇笔记对应上传的仓库为:<a href="https://github.com/licheetools/movie对应第十一篇。" target="_blank" rel="noopener">https://github.com/licheetools/movie对应第十一篇。</a></p>
+
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="https://upload-images.jianshu.io/upload_images/8964398-58d04ffa926103d9.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">觉得不错，赏包辣条吃呗！</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href target="_blank">编程思录</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2018/06/18/利用Flask搭建微电影视频网站（十二）：角色和管理员管理/" class="pre-post btn btn-default" title="利用Flask搭建微电影视频网站（十二）：角色和管理员管理">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">利用Flask搭建微电影视频网站（十二）：角色和管理员管理</span>
+        </a>
+    
+    
+        <a href="/2018/06/14/利用Flask搭建微电影视频网站（十）：收藏管理和密码修改/" class="next-post btn btn-default" title="利用Flask搭建微电影视频网站（十）：收藏管理和密码修改">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">利用Flask搭建微电影视频网站（十）：收藏管理和密码修改</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+    <div id="vcomments" class="valine"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+
+    <script>
+        new Valine({
+            av: AV,
+            el: '#vcomments',
+            appId: '8zvHFFu5l2ah8lh0DEPH393B-gzGzoHsz',
+            appKey: 'UNmB24200qMtyyrun5z99nOE',
+            placeholder: '听说长得好看的，都已经留言了！',
+            notify: false,
+            verify: false,
+            avatar: 'mm',
+            meta: 'nick,mail'.split(','),
+            pageSize: '10',
+            path: window.location.pathname,
+            lang: 'zh-CN'.toLowerCase()
+        })
+    </script>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#写在前面"><span class="toc-text">写在前面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#日志管理"><span class="toc-text">日志管理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#操作日志列表"><span class="toc-text">操作日志列表</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#使用到的内容"><span class="toc-text">使用到的内容</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#上下文应用处理器"><span class="toc-text">上下文应用处理器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#记录增删改查操作"><span class="toc-text">记录增删改查操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#操作日志页面显示"><span class="toc-text">操作日志页面显示</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#管理员登录日志列表"><span class="toc-text">管理员登录日志列表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#管理员登录日志页面显示"><span class="toc-text">管理员登录日志页面显示</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#会员登录日志列表"><span class="toc-text">会员登录日志列表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#权限管理"><span class="toc-text">权限管理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#使用到的内容-1"><span class="toc-text">使用到的内容</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1、添加表单验证字段"><span class="toc-text">1、添加表单验证字段</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、准备页面渲染字段"><span class="toc-text">2、准备页面渲染字段</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、后台页面传值显示以及操作信息提示"><span class="toc-text">3、后台页面传值显示以及操作信息提示</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4、后台页面错误信息提示"><span class="toc-text">4、后台页面错误信息提示</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5、修改权限添加函数"><span class="toc-text">5、修改权限添加函数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#权限列表的配置"><span class="toc-text">权限列表的配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#权限的删除"><span class="toc-text">权限的删除</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#权限的编辑"><span class="toc-text">权限的编辑</span></a></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2017-2019
+                </span> |
+                <span>
+				编程思录,保留所有权利
+                    <!--Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>-->
+                </span> |
+                <span>
+				<a style="color: #black" href="http://www.miitbeian.gov.cn">赣ICP备18013455号-5</a>
+                    <!--Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>-->
+                </span>
+            </div>
+			
+			<div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+			
+			<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1277113902'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s96.cnzz.com/z_stat.php%3Fid%3D1277113902%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));</script>
+        </div>
+    </div>
+</div>
+
+
+
+
+    <script src="/assets/tagcanvas.min.js?rev=2.9"></script>
+    <script>
+        var tagOption = {
+            textColour: 'red', // 字体颜色
+            outlineMethod: 'block', // 选中模式
+            outlineColour: '#FFDAB9', // 选中模式的颜色
+            interval: 30 || 30, // 动画帧之间的时间间隔，值越大，转动幅度越大
+            textHeight: 13,
+            outlineRadius: 3,
+            freezeActive: true || '', // 选中的标签是否继续滚动
+            frontSelect: true || '', // 不选标签云后部的标签
+            initial: [0.1, -0.1],
+            depth: 0.5,
+            decel: 0.95,
+            maxSpeed: 0.03,
+            reverse: true || '', // 是否反向触发
+            fadeIn: 500, // 进入动画时间
+            wheelZoom: false || '' // 是否启用鼠标滚轮
+        }
+        TagCanvas.Start('tag-cloud-3d','',tagOption);
+    </script>
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+</body>
+</html>

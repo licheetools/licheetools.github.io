@@ -1,0 +1,443 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="编程思录，记录思考">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://blog.licheetools.top">
+    <!--SEO-->
+
+    <meta name="keywords" content="Flask建站,Pytohn后端">
+
+
+    <meta name="description" content="写在前面本篇笔记，我们继续介绍后台页面逻辑的开发（所有的内容都是在后台admin下面，不与前台home有关系），今天分享的是关于标签的介绍，内容比较难懂，请多熟悉一下。
+本篇笔记对应上传的仓库为...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+
+    <!--Title-->
+
+
+<title>利用Flask搭建微电影视频网站（六）：标签管理 | 编程思录，记录思考</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="编程思录，记录思考" type="application/atom+xml">
+
+
+    <link rel="icon" href="./favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+	<div class="hide">
+		<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+	</div>
+
+
+
+
+
+
+    
+
+    <script>
+        (function(){
+            var bp = document.createElement('script');
+            var curProtocol = window.location.protocol.split(':')[0];
+            if (curProtocol === 'https') {
+                bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+            }
+            else {
+                bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+            }
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(bp, s);
+        })();
+    </script>
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header" style="background-image:url(https://upload-images.jianshu.io/upload_images/8964398-b1ba9582ea8b69ba.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)">
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title="Envy">
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 点滴进步，都是收获 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://blog.licheetools.top">编程思录，记录思考</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>首页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/font/"><i class="fa "></i>前端</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/java/"><i class="fa "></i>Java</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/python/"><i class="fa "></i>Python</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/go/"><i class="fa "></i>Go</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/spider/"><i class="fa "></i>爬虫</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/data/"><i class="fa "></i>数据分析</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/money/"><i class="fa "></i>付费教程</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/life/"><i class="fa "></i>生活记录</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives"><i class="fa "></i>时间轴</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/about/"><i class="fa "></i>关于博主</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/liuyan/"><i class="fa "></i>留言板</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="利用Flask搭建微电影视频网站（六）：标签管理">
+            
+	            利用Flask搭建微电影视频网站（六）：标签管理
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/python/">python</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/Flask建站/">Flask建站</a> <a class="tag-link" href="/tags/Pytohn后端/">Pytohn后端</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2018/06/09</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>本篇笔记，我们继续介绍后台页面逻辑的开发（所有的内容都是在后台admin下面，不与前台home有关系），今天分享的是关于标签的介绍，内容比较难懂，请多熟悉一下。</p>
+<p>本篇笔记对应上传的仓库为:<a href="https://github.com/licheetools/movie对应第六篇。" target="_blank" rel="noopener">https://github.com/licheetools/movie对应第六篇。</a></p>
+<h2 id="标签管理的配置"><a href="#标签管理的配置" class="headerlink" title="标签管理的配置"></a>标签管理的配置</h2><p>后面所有的后台功能的配置几乎都是这样，像电影管理，预告管理，会员管理。。。<br>所以我这里介绍详细一点，后面的可能就没这么详细了，好了话不多说，我们开始介绍！</p>
+<h3 id="使用到的内容"><a href="#使用到的内容" class="headerlink" title="使用到的内容"></a>使用到的内容</h3><p>我们将使用到的内容有：<br>模型：Tag<br>表单: TagForm<br>请求方法: GET POST<br>访问控制: @admin_login_req</p>
+<h3 id="1、添加表单验证字段"><a href="#1、添加表单验证字段" class="headerlink" title="1、添加表单验证字段"></a>1、添加表单验证字段</h3><p>打开forms.py，我们定义Form字段，注意因为是标签添加模块，所以对应的html页面就是<code>tag_add.html</code>，而且我们在forms.py里面定义的字段必须与<code>tag_add.html</code>里面的保持一致！<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"># 添加标签</span><br><span class="line">class TagForm(FlaskForm):</span><br><span class="line">    name = StringField(</span><br><span class="line">        label=&quot;名称&quot;,</span><br><span class="line">        validators=[</span><br><span class="line">            DataRequired(&quot;请输入标签&quot;)</span><br><span class="line">        ],</span><br><span class="line">        description=&quot;标签&quot;,</span><br><span class="line">        render_kw=&#123;</span><br><span class="line">            &quot;class&quot;: &quot;form-control&quot;,</span><br><span class="line">            &quot;id&quot;: &quot;input_name&quot;,</span><br><span class="line">            &quot;placeholder&quot;: &quot;请输入标签名称！&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    submit = SubmitField(</span><br><span class="line">        &quot;添加&quot;,</span><br><span class="line">        render_kw=&#123;</span><br><span class="line">            &quot;class&quot;: &quot;btn btn-primary&quot;,</span><br><span class="line">        &#125;</span><br><span class="line">    )</span><br></pre></td></tr></table></figure></p>
+<h3 id="2、准备页面渲染字段"><a href="#2、准备页面渲染字段" class="headerlink" title="2、准备页面渲染字段"></a>2、准备页面渲染字段</h3><p>打开admin/views.py文件，我们修改<code>tag_add</code>函数：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">from app.admin.forms import TagForm</span><br><span class="line">from app.models import Tag</span><br><span class="line"></span><br><span class="line"># 标签编辑</span><br><span class="line">@admin.route(&apos;/tag/add&apos;)</span><br><span class="line">@admin_login_req</span><br><span class="line">def tag_add():</span><br><span class="line">    form = TagForm()   # 实例化一个TagForm，然后将form传递到前端页面去。</span><br><span class="line">    return render_template(&quot;admin/tag_add.html&quot;, form=form)</span><br></pre></td></tr></table></figure></p>
+<h3 id="3、后台页面传值显示"><a href="#3、后台页面传值显示" class="headerlink" title="3、后台页面传值显示"></a>3、后台页面传值显示</h3><p>修改<code>tag_add.html</code>:<img src="https://upload-images.jianshu.io/upload_images/8964398-194356115caf95e8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<h3 id="4、后台页面错误信息提示"><a href="#4、后台页面错误信息提示" class="headerlink" title="4、后台页面错误信息提示"></a>4、后台页面错误信息提示</h3><p>打开tag_tag.html页面，我们进行修改：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;% for err in form.name.errors %&#125;</span><br><span class="line">&lt;div class=&quot;col-md-12&quot;&gt;</span><br><span class="line">&lt;p style=&quot;color:red&quot;&gt;&#123;&#123; err &#125;&#125;&lt;/p&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">&#123;% endfor %&#125;</span><br></pre></td></tr></table></figure></p>
+<p>就是这个样子：<img src="https://upload-images.jianshu.io/upload_images/8964398-cde6ef1259bb0157.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<h3 id="5、修改提交方法"><a href="#5、修改提交方法" class="headerlink" title="5、修改提交方法"></a>5、修改提交方法</h3><p>打开tag_tag.html页面，我们进行修改：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-9dfbf4cc4cc63623.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>接着我们回到views.py文件，修改add_tag函数的提交方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 标签编辑</span><br><span class="line">@admin.route(&apos;/tag/add&apos;, methods=[&quot;GET&quot;, &quot;POST&quot;])</span><br></pre></td></tr></table></figure></p>
+<h3 id="6、标签去除重名"><a href="#6、标签去除重名" class="headerlink" title="6、标签去除重名"></a>6、标签去除重名</h3><p>打开views.py文件，我们继续修改tag_add函数：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"># 标签编辑</span><br><span class="line">@admin.route(&apos;/tag/add&apos;, methods=[&quot;GET&quot;, &quot;POST&quot;])</span><br><span class="line">@admin_login_req</span><br><span class="line">def tag_add():</span><br><span class="line">    form = TagForm()   # 实例化一个TagForm，然后将form传递到前端页面去。</span><br><span class="line">    if form.validate_on_submit():</span><br><span class="line">        data = form.data</span><br><span class="line">        tag = Tag.query.filter_by(name=data[&quot;name&quot;]).count()</span><br><span class="line">        # 标签去重</span><br><span class="line">        if tag == 1:</span><br><span class="line">            flash(&quot;该标签已经存在了！&quot;, &quot;err&quot;)</span><br><span class="line">            return redirect(url_for(&quot;admin.tag_add&quot;))</span><br><span class="line">        tag = Tag(</span><br><span class="line">            name=data[&quot;name&quot;]</span><br><span class="line">        )</span><br><span class="line">        db.session.add(tag)</span><br><span class="line">        db.session.commit()</span><br><span class="line">        flash(&quot;添加标签成功！&quot;, &quot;ok&quot;)</span><br><span class="line">        return redirect(url_for(&quot;admin.tag_add&quot;))</span><br><span class="line">    return render_template(&quot;admin/tag_add.html&quot;, form=form)</span><br></pre></td></tr></table></figure></p>
+<h3 id="7、添加成功或者失败提示"><a href="#7、添加成功或者失败提示" class="headerlink" title="7、添加成功或者失败提示"></a>7、添加成功或者失败提示</h3><p>打开static/admin/index.html页面，我们用浏览器打开，点击UI element/General，就出现：<img src="https://upload-images.jianshu.io/upload_images/8964398-e9a0cbe184c1387a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt><br>或者点击这里<a href="https://adminlte.io/" target="_blank" rel="noopener">admin LE2</a>，先下载文件，然后点击查看也可以！接着我们按键盘上的F12开启开发者工具，然后定位绿色的成功框，复制它的html源代码到我们的tag_agg.html页面，然后修改一下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;div class=&quot;alert alert-success alert-dismissible&quot;&gt;</span><br><span class="line">&lt;button type=&quot;button&quot; class=&quot;close&quot; data-dismiss=&quot;alert&quot; aria-hidden=&quot;true&quot;&gt;×</span><br><span class="line">&lt;/button&gt;</span><br><span class="line">  &lt;h4&gt;&lt;i class=&quot;icon fa fa-check&quot;&gt;&lt;/i&gt; 操作成功&lt;/h4&gt;</span><br><span class="line">        添加标签成功！</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure></p>
+<p>觉得格式不好看，可以ctal+alt+L进行代码的格式化。然后进行for循环遍历，就是这样：<img src="https://upload-images.jianshu.io/upload_images/8964398-bde4aa4c1d7937cd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt><br>因为已经for循环了，所以需要把里面的 <strong>添加标签成功！</strong>修改为！<br>那么失败呢？也是类似的操作（用红色的框的代码），这里就只附上代码了：<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;% for msg in get_flashed_messages("err") %&#125;</span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"alert alert-danger alert-dismissible"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">button</span> <span class="attr">type</span>=<span class="string">"button"</span> <span class="attr">class</span>=<span class="string">"close"</span> <span class="attr">data-dismiss</span>=<span class="string">"alert"</span> <span class="attr">aria-hidden</span>=<span class="string">"true"</span>&gt;</span>×</span><br><span class="line"><span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h4</span>&gt;</span><span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">"icon fa fa-ban"</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span> 操作失败<span class="tag">&lt;/<span class="name">h4</span>&gt;</span></span><br><span class="line"> &#123;&#123; msg &#125;&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">&#123;% endfor %&#125;</span><br></pre></td></tr></table></figure></p>
+<p>运行一下manage.py，然后添加一个标签，发现出了问题：<img src="https://upload-images.jianshu.io/upload_images/8964398-ad6fa066a9b6a432.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt><br>这是因为我们的get_flashed_messages用错了，可以点击这里查看官方文档：<a href="http://docs.jinkan.org/docs/flask/patterns/flashing.html" target="_blank" rel="noopener">过滤闪现消息</a><br>修改为这样：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">get_flashed_messages(category_filter=[&quot;ok&quot;])</span><br><span class="line"></span><br><span class="line">get_flashed_messages(category_filter=[&quot;err&quot;])</span><br></pre></td></tr></table></figure></p>
+<p>现在添加就没有问题了！</p>
+<p>至此，我们关于标签的添加就介绍完了，下面就是标签的动态显示了！</p>
+<h2 id="标签列表的配置"><a href="#标签列表的配置" class="headerlink" title="标签列表的配置"></a>标签列表的配置</h2><p>打开admin/views.py文件，修改tag_list函数如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"># 标签列表</span><br><span class="line">@admin.route(&apos;/tag/list/&lt;int:page&gt;&apos;, methods=[&quot;GET&quot;])</span><br><span class="line">@admin_login_req</span><br><span class="line">def tag_list(page=None):</span><br><span class="line">    if page is None:</span><br><span class="line">        page = 1</span><br><span class="line">    page_data = Tag.query.order_by(</span><br><span class="line">        Tag.addtime.desc()</span><br><span class="line">    ).paginate(page=page, per_page=1)</span><br><span class="line">    return render_template(&quot;admin/tag_list.html&quot;, page_data=page_data)</span><br></pre></td></tr></table></figure></p>
+<p>然后tag_list.htm页面：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&#123;% for v in page_data.items %&#125;</span><br><span class="line">&lt;tr&gt;</span><br><span class="line">  &lt;td&gt;&#123;&#123; v.id &#125;&#125;&lt;/td&gt;</span><br><span class="line">td&gt;&#123;&#123; v.name &#125;&#125;&lt;/td&gt;</span><br><span class="line">&lt;td&gt;&#123;&#123; v.addtime &#125;&#125;&lt;/td&gt;</span><br><span class="line">&lt;td&gt;</span><br><span class="line">&lt;a class=&quot;label label-success&quot;&gt;编辑&lt;/a&gt;</span><br><span class="line">&amp;nbsp;</span><br><span class="line">&lt;a class=&quot;label label-danger&quot;&gt;删除&lt;/a&gt;</span><br><span class="line">&lt;/td&gt;</span><br><span class="line"> &lt;/tr&gt;</span><br><span class="line"> &#123;% endfor %&#125;</span><br></pre></td></tr></table></figure></p>
+<p>接着打开grid.html页面，修改gird中标签列表的url，为其添加参数page =1：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;a href=&quot;&#123;&#123; url_for(&apos;admin.tag_list&apos;, page=1) &#125;&#125;&quot;&gt;</span><br><span class="line">         &lt;i class=&quot;fa fa-circle-o&quot;&gt;&lt;/i&gt; 标签列表</span><br><span class="line">&lt;/a&gt;</span><br></pre></td></tr></table></figure></p>
+<h2 id="分页功能"><a href="#分页功能" class="headerlink" title="分页功能"></a>分页功能</h2><p>点击这里，获取api<a href="http://www.pythondoc.com/flask-sqlalchemy/api.html#id4" target="_blank" rel="noopener">实用工具</a>，我们采用了macro的语法，我们在static文件夹下面新建一个ui的文件，然后在里面创建admin_page.html文件：<img src="https://upload-images.jianshu.io/upload_images/8964398-5b9027a160859caf.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt><br>然后复制这段代码到里面去：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">&#123;% macro page(data,url) -%&#125;</span><br><span class="line">    &#123;% if data %&#125;</span><br><span class="line">        &lt;ul class=&quot;pagination pagination-sm no-margin pull-right&quot;&gt;</span><br><span class="line">            &lt;li&gt;&lt;a href=&quot;&#123;&#123; url_for(url,page=1) &#125;&#125;&quot;&gt;首页&lt;/a&gt;&lt;/li&gt;</span><br><span class="line"></span><br><span class="line">            &#123;% if data.has_prev %&#125;</span><br><span class="line">                &lt;li&gt;&lt;a href=&quot;&#123;&#123; url_for(url,page=data.prev_num) &#125;&#125;&quot;&gt;上一页&lt;/a&gt;&lt;/li&gt;</span><br><span class="line">            &#123;% else %&#125;</span><br><span class="line">                &lt;li class=&quot;disabled&quot;&gt;&lt;a href=&quot;#&quot;&gt;上一页&lt;/a&gt;&lt;/li&gt;</span><br><span class="line">            &#123;% endif %&#125;</span><br><span class="line"></span><br><span class="line">            &#123;% for v in data.iter_pages() %&#125;</span><br><span class="line">                &#123;% if v %&#125;</span><br><span class="line">                    &#123;% if v == data.page %&#125;</span><br><span class="line">                        &lt;li class=&quot;active&quot;&gt;&lt;a href=&quot;#&quot;&gt;&#123;&#123; v &#125;&#125;&lt;/a&gt;&lt;/li&gt;</span><br><span class="line">                    &#123;% else %&#125;</span><br><span class="line">                        &lt;li&gt;&lt;a href=&quot;&#123;&#123; url_for(url,page=v) &#125;&#125;&quot;&gt;&#123;&#123; v &#125;&#125;&lt;/a&gt;&lt;/li&gt;</span><br><span class="line">                    &#123;% endif %&#125;</span><br><span class="line">                &#123;% endif %&#125;</span><br><span class="line">            &#123;% endfor %&#125;</span><br><span class="line"></span><br><span class="line">            &#123;% if data.has_next %&#125;</span><br><span class="line">                &lt;li&gt;&lt;a href=&quot;&#123;&#123; url_for(url,page=data.next_num) &#125;&#125;&quot;&gt;下一页&lt;/a&gt;&lt;/li&gt;</span><br><span class="line">            &#123;% else %&#125;</span><br><span class="line">                &lt;li class=&quot;disabled&quot;&gt;&lt;a href=&quot;#&quot;&gt;下一页&lt;/a&gt;&lt;/li&gt;</span><br><span class="line">            &#123;% endif %&#125;</span><br><span class="line"></span><br><span class="line">            &lt;li&gt;&lt;a href=&quot;&#123;&#123; url_for(url,page=data.pages) &#125;&#125;&quot;&gt;尾页&lt;/a&gt;&lt;/li&gt;</span><br><span class="line">        &lt;/ul&gt;</span><br><span class="line">    &#123;% endif %&#125;</span><br><span class="line">&#123;%- endmacro %&#125;</span><br></pre></td></tr></table></figure></p>
+<p>然后去掉tag_list.html里面的图中所示的那段代码：<br><img src="https://upload-images.jianshu.io/upload_images/8964398-13cd9dbcb7227a9a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>并且在开头导入刚才的admin_page.html文件，然后开始调用：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% import &quot;ui/admin_page.html&quot; as pg %&#125;</span><br></pre></td></tr></table></figure></p>
+<p>将下面的代码填充你刚才删除的那段的位置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123; pg.page(page_data, &quot;admin.tag_list&quot;) &#125;&#125;</span><br></pre></td></tr></table></figure></p>
+<p>至此，关于标签列表的介绍就到此为止了！接下来是标签的删除和编辑！</p>
+<h2 id="标签的删除"><a href="#标签的删除" class="headerlink" title="标签的删除"></a>标签的删除</h2><p>首先点击这里，获取官方文档<a href="http://www.pythondoc.com/flask-sqlalchemy/queries.html" target="_blank" rel="noopener">flask-sqlalchemy删除</a>,了解一下，我们现在开始编辑代码：打开views.py文件，我们在标签列表的下面新增以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># 标签删除</span><br><span class="line">@admin.route(&apos;/tag/del/&lt;int:id&gt;&apos;, methods=[&quot;GET&quot;])</span><br><span class="line">@admin_login_req</span><br><span class="line">def tag_del(id=None):</span><br><span class="line">    tag = Tag.query.filter_by(id=id).first_or_404()</span><br><span class="line">    db.session.delete(tag)</span><br><span class="line">    db.session.commit()</span><br><span class="line">    flash(&quot;标签删除成功！&quot;, &quot;ok&quot;)</span><br><span class="line">    return redirect(url_for(&quot;admin.tag_list&quot;, page=1))</span><br></pre></td></tr></table></figure></p>
+<p>接着打开tag_list.html页面，我们复制提示成功的代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"> &#123;% for msg in get_flashed_messages(category_filter=[&quot;ok&quot;]) %&#125;</span><br><span class="line">&lt;div class=&quot;alert alert-success alert-dismissible&quot;&gt;</span><br><span class="line"> &lt;button type=&quot;button&quot; class=&quot;close&quot; data-dismiss=&quot;alert&quot; aria-hidden=&quot;true&quot;&gt;×</span><br><span class="line">&lt;/button&gt;</span><br><span class="line">&lt;h4&gt;&lt;i class=&quot;icon fa fa-check&quot;&gt;&lt;/i&gt; 操作成功&lt;/h4&gt;</span><br><span class="line"> &#123;&#123; msg &#125;&#125;</span><br><span class="line"> &lt;/div&gt;</span><br><span class="line"> &#123;% endfor %&#125;</span><br></pre></td></tr></table></figure></p>
+<p>放在这个位置：<img src="https://upload-images.jianshu.io/upload_images/8964398-451a1e8bfee46c51.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>然后修改删除的跳转链接：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;a href=&quot;&#123;&#123; url_for(&apos;admin.tag_del&apos;, id=v.id) &#125;&#125;&quot; class=&quot;label label-danger&quot;&gt;删除&lt;/a&gt;</span><br></pre></td></tr></table></figure></p>
+<p>然后就可以测试你的项目了！</p>
+<h2 id="标签的编辑"><a href="#标签的编辑" class="headerlink" title="标签的编辑"></a>标签的编辑</h2><p>打开views.py文件，我们在标签列表的下面新增以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"># 编辑标签</span><br><span class="line">@admin.route(&apos;/tag/edit/&lt;int:id&gt;&apos;, methods=[&quot;GET&quot;, &quot;POST&quot;])</span><br><span class="line">@admin_login_req</span><br><span class="line">def tag_edit(id=None):</span><br><span class="line">    form = TagForm()   # 实例化一个TagForm，然后将form传递到前端页面去。</span><br><span class="line">    tag = Tag.query.get_or_404(id)</span><br><span class="line">    if form.validate_on_submit():</span><br><span class="line">        data = form.data</span><br><span class="line">        tag_count = Tag.query.filter_by(name=data[&quot;name&quot;]).count()</span><br><span class="line">        # 标签去重</span><br><span class="line">        if tag.name != data[&quot;name&quot;] and tag_count == 1:</span><br><span class="line">            flash(&quot;该标签已经存在了！&quot;, &quot;err&quot;)</span><br><span class="line">            return redirect(url_for(&quot;admin.tag_edit&quot;, id=id))</span><br><span class="line">        tag.name = data[&quot;name&quot;]</span><br><span class="line">        db.session.add(tag)</span><br><span class="line">        db.session.commit()</span><br><span class="line">        flash(&quot;修改标签成功！&quot;, &quot;ok&quot;)</span><br><span class="line">        return redirect(url_for(&quot;admin.tag_edit&quot;, id=id))</span><br><span class="line">    return render_template(&quot;admin/tag_edit.html&quot;, form=form, tag=tag)</span><br></pre></td></tr></table></figure></p>
+<p>接着在admin下面新建tag_edit.html页面，将tag_add.html页面全部添加进去，然后开始修改:将所有的添加字段改为编辑，为form.name增加属性(value=tag.name)，还要在form提交时添加action:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;form role=&quot;form&quot; method=&quot;post&quot; action=&quot;&#123;&#123; url_for(&apos;admin.tag_edit&apos;, id=tag.id) &#125;&#125;&quot;&gt;</span><br></pre></td></tr></table></figure></p>
+<p>然后在tag_list里面修改页面的跳转：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;a href=&quot;&#123;&#123; url_for(&apos;admin.tag_edit&apos;, id=v.id) &#125;&#125;&quot; class=&quot;label label-success&quot;&gt;编辑&lt;/a&gt;</span><br></pre></td></tr></table></figure></p>
+<p>以及标签的提示：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;input name=&quot;id&quot; value=&quot;&#123;&#123; tag.id &#125;&#125;&quot; type=&quot;hidden&quot;&gt;</span><br></pre></td></tr></table></figure></p>
+<p>就是这样：<img src="https://upload-images.jianshu.io/upload_images/8964398-8e13098af79daaa7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>刷新一下，我们的项目关于标签这一功能是不是都能使用了！</p>
+<p>至此，我们关于标签的介绍就到此为止了，感谢你的赏阅！！！</p>
+<p>本篇笔记对应上传的仓库为:<a href="https://github.com/licheetools/movie对应第六篇。" target="_blank" rel="noopener">https://github.com/licheetools/movie对应第六篇。</a></p>
+
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="https://upload-images.jianshu.io/upload_images/8964398-58d04ffa926103d9.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">觉得不错，赏包辣条吃呗！</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href target="_blank">编程思录</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2018/06/11/利用Flask搭建微电影视频网站（七）：电影管理/" class="pre-post btn btn-default" title="利用Flask搭建微电影视频网站（七）：电影管理">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">利用Flask搭建微电影视频网站（七）：电影管理</span>
+        </a>
+    
+    
+        <a href="/2018/06/06/利用Flask搭建微电影视频网站（五）：访问控制器/" class="next-post btn btn-default" title="利用Flask搭建微电影视频网站（五）：访问控制器">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">利用Flask搭建微电影视频网站（五）：访问控制器</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+    <div id="vcomments" class="valine"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+
+    <script>
+        new Valine({
+            av: AV,
+            el: '#vcomments',
+            appId: '8zvHFFu5l2ah8lh0DEPH393B-gzGzoHsz',
+            appKey: 'UNmB24200qMtyyrun5z99nOE',
+            placeholder: '听说长得好看的，都已经留言了！',
+            notify: false,
+            verify: false,
+            avatar: 'mm',
+            meta: 'nick,mail'.split(','),
+            pageSize: '10',
+            path: window.location.pathname,
+            lang: 'zh-CN'.toLowerCase()
+        })
+    </script>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#写在前面"><span class="toc-text">写在前面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#标签管理的配置"><span class="toc-text">标签管理的配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#使用到的内容"><span class="toc-text">使用到的内容</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1、添加表单验证字段"><span class="toc-text">1、添加表单验证字段</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、准备页面渲染字段"><span class="toc-text">2、准备页面渲染字段</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、后台页面传值显示"><span class="toc-text">3、后台页面传值显示</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4、后台页面错误信息提示"><span class="toc-text">4、后台页面错误信息提示</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5、修改提交方法"><span class="toc-text">5、修改提交方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6、标签去除重名"><span class="toc-text">6、标签去除重名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7、添加成功或者失败提示"><span class="toc-text">7、添加成功或者失败提示</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#标签列表的配置"><span class="toc-text">标签列表的配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#分页功能"><span class="toc-text">分页功能</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#标签的删除"><span class="toc-text">标签的删除</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#标签的编辑"><span class="toc-text">标签的编辑</span></a></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2017-2019
+                </span> |
+                <span>
+				编程思录,保留所有权利
+                    <!--Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>-->
+                </span> |
+                <span>
+				<a style="color: #black" href="http://www.miitbeian.gov.cn">赣ICP备18013455号-5</a>
+                    <!--Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>-->
+                </span>
+            </div>
+			
+			<div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+			
+			<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1277113902'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s96.cnzz.com/z_stat.php%3Fid%3D1277113902%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));</script>
+        </div>
+    </div>
+</div>
+
+
+
+
+    <script src="/assets/tagcanvas.min.js?rev=2.9"></script>
+    <script>
+        var tagOption = {
+            textColour: 'red', // 字体颜色
+            outlineMethod: 'block', // 选中模式
+            outlineColour: '#FFDAB9', // 选中模式的颜色
+            interval: 30 || 30, // 动画帧之间的时间间隔，值越大，转动幅度越大
+            textHeight: 13,
+            outlineRadius: 3,
+            freezeActive: true || '', // 选中的标签是否继续滚动
+            frontSelect: true || '', // 不选标签云后部的标签
+            initial: [0.1, -0.1],
+            depth: 0.5,
+            decel: 0.95,
+            maxSpeed: 0.03,
+            reverse: true || '', // 是否反向触发
+            fadeIn: 500, // 进入动画时间
+            wheelZoom: false || '' // 是否启用鼠标滚轮
+        }
+        TagCanvas.Start('tag-cloud-3d','',tagOption);
+    </script>
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+</body>
+</html>

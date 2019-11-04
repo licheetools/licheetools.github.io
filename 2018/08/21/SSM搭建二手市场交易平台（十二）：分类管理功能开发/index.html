@@ -1,0 +1,424 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="编程思录，记录思考">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://blog.licheetools.top">
+    <!--SEO-->
+
+    <meta name="keywords" content="SSM框架,JAVA后端">
+
+
+    <meta name="description" content="写在前面本篇我们继续来介绍有关分类管理的内容，具体包括：查询节点和递归查找功能开发等。
+查询节点功能开发我们打开CategoryManageController.java文件，在里面新增以下代码...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+
+    <!--Title-->
+
+
+<title>SSM搭建二手市场交易平台（十二）：分类管理功能开发 | 编程思录，记录思考</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="编程思录，记录思考" type="application/atom+xml">
+
+
+    <link rel="icon" href="./favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+	<div class="hide">
+		<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+	</div>
+
+
+
+
+
+
+    
+
+    <script>
+        (function(){
+            var bp = document.createElement('script');
+            var curProtocol = window.location.protocol.split(':')[0];
+            if (curProtocol === 'https') {
+                bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+            }
+            else {
+                bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+            }
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(bp, s);
+        })();
+    </script>
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header" style="background-image:url(https://upload-images.jianshu.io/upload_images/8964398-b1ba9582ea8b69ba.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)">
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title="Envy">
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 点滴进步，都是收获 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://blog.licheetools.top">编程思录，记录思考</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>首页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/font/"><i class="fa "></i>前端</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/java/"><i class="fa "></i>Java</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/python/"><i class="fa "></i>Python</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/go/"><i class="fa "></i>Go</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/spider/"><i class="fa "></i>爬虫</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/data/"><i class="fa "></i>数据分析</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/money/"><i class="fa "></i>付费教程</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/life/"><i class="fa "></i>生活记录</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives"><i class="fa "></i>时间轴</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/about/"><i class="fa "></i>关于博主</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/liuyan/"><i class="fa "></i>留言板</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="SSM搭建二手市场交易平台（十二）：分类管理功能开发">
+            
+	            SSM搭建二手市场交易平台（十二）：分类管理功能开发
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/java/">java</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/JAVA后端/">JAVA后端</a> <a class="tag-link" href="/tags/SSM框架/">SSM框架</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2018/08/21</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>本篇我们继续来介绍有关分类管理的内容，具体包括：查询节点和递归查找功能开发等。</p>
+<h3 id="查询节点功能开发"><a href="#查询节点功能开发" class="headerlink" title="查询节点功能开发"></a>查询节点功能开发</h3><p>我们打开CategoryManageController.java文件，在里面新增以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">   * 后台管理员查询品类子节点（平级）</span><br><span class="line">   * */</span><br><span class="line">  @RequestMapping(value = &quot;get_category.do&quot;)</span><br><span class="line">  @ResponseBody   //自动序列化json功能</span><br><span class="line">  public ServerResponse getChildrenParallelCategory(HttpSession session,@RequestParam(value = &quot;categoryId&quot;,defaultValue = &quot;0&quot;) Integer categoryId)&#123;</span><br><span class="line">      //判断一下登录情况</span><br><span class="line">      User user=(User) session.getAttribute(Const.CURRENT_USER);</span><br><span class="line">      if(user ==null)&#123;</span><br><span class="line">          return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),&quot;用户未登录，请登录&quot;);</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      //判断一下是不是管理员身份</span><br><span class="line">      if(iUserService.checkAdminRole(user).isSuccess())&#123;</span><br><span class="line">          //如果是管理员,我们就查询子节点的category信息，并且不递归，保持平级</span><br><span class="line">          return iCategoryService.getChildrenParallelCategory(categoryId);</span><br><span class="line"></span><br><span class="line">      &#125;else &#123;</span><br><span class="line">          return  ServerResponse.createByErrorMessage(&quot;无权限操作，需要管理员权限&quot;);</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
+<p>接着打开CategoryServiceImpl.java文件，新增代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"> /****</span><br><span class="line"> *</span><br><span class="line"> *后台管理员查询品类子节点</span><br><span class="line"> */</span><br><span class="line">public ServerResponse&lt;List&lt;Category&gt;&gt; getChildrenParallelCategory(Integer categoryId)&#123;</span><br><span class="line">    List&lt;Category&gt; categoryList = categoryMapper.selectChildrenCategoryByParentId(categoryId);</span><br><span class="line">    if(CollectionUtils.isEmpty(categoryList))&#123;</span><br><span class="line">        loggger.info(&quot;未找到当前分类的子分类&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    return ServerResponse.createBySuccess(categoryList);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>几点说明：</strong><br><strong>1、</strong>在这里我们自己新定义了方法selectChildrenCategoryByParentId，所以我们要去CategoryMappr.java文件里面进行配置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Category&gt; selectChildrenCategoryByParentId(Integer parentId);</span><br></pre></td></tr></table></figure></p>
+<p>然后自然就得去CategoryMappr.xml文件里面进行sql语句的建立：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;select id=&quot;selectChildrenCategoryByParentId&quot; resultMap=&quot;BaseResultMap&quot; parameterType=&quot;int&quot;&gt;  </span><br><span class="line">  select</span><br><span class="line">  &lt;include refid=&quot;Base_Column_List&quot; /&gt;</span><br><span class="line">  from store_category</span><br><span class="line">  where parent_id = #&#123;parentId&#125;</span><br><span class="line">&lt;/select&gt;</span><br></pre></td></tr></table></figure></p>
+<p>关于上面为什么这样写大家可以参看18-23行代码：(本文件)，也就是下面的代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;select id=&quot;selectByPrimaryKey&quot; resultMap=&quot;BaseResultMap&quot; parameterType=&quot;java.lang.Integer&quot; &gt;</span><br><span class="line">  select </span><br><span class="line">  &lt;include refid=&quot;Base_Column_List&quot; /&gt;</span><br><span class="line">  from store_category</span><br><span class="line">  where id = #&#123;id,jdbcType=INTEGER&#125;</span><br><span class="line">&lt;/select&gt;</span><br></pre></td></tr></table></figure></p>
+<p><strong>2、</strong>这里判断列表是否为空，使用了<code>CollectionUtils.isEmpty</code>方法，返回的是boolean类型，注意我们之前判断字符串是否为空使用了<code>StringUtils.isEmpty</code>方法，我们简单看一下上面那个<code>CollectionUtils.isEmpty</code>方法的源码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public static boolean isEmpty(Collection coll) &#123;</span><br><span class="line">    return coll == null || coll.isEmpty();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>对于是否是空和空集合都进行了判断，所以我们就可以不用考虑多种情况了。</p>
+<p>最后打开ICategoryService.java文件，里面新增代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ServerResponse&lt;List&lt;Category&gt;&gt; getChildrenParallelCategory(Integer categoryId);   //后台管理员查询品类子节点（不递归保持平级）</span><br></pre></td></tr></table></figure></p>
+<h2 id="递归查找功能开发"><a href="#递归查找功能开发" class="headerlink" title="递归查找功能开发"></a>递归查找功能开发</h2><p>我们上面那个查询节点功能开发完成的只是对于平级的查询，是不进行递归查询的。<br>接下来我们就来完成递归查找功能的开发，可能会有一些难以理解，但是我尽量以通俗易懂的方式来进行说明。</p>
+<p>我们打开CategoryManageController.java文件，在里面新增以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 后台管理员查询品类子节点（递归）</span><br><span class="line"> * */</span><br><span class="line">@RequestMapping(value = &quot;get_deep_category.do&quot;)</span><br><span class="line">@ResponseBody   //自动序列化json功能</span><br><span class="line">public ServerResponse getCategoryAndDeepChildrenCategory(HttpSession session,@RequestParam(value = &quot;categoryId&quot;,defaultValue = &quot;0&quot;) Integer categoryId)&#123;</span><br><span class="line">    //判断一下登录情况</span><br><span class="line">    User user=(User) session.getAttribute(Const.CURRENT_USER);</span><br><span class="line">    if(user ==null)&#123;</span><br><span class="line">        return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),&quot;用户未登录，请登录&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //判断一下是不是管理员身份</span><br><span class="line">    if(iUserService.checkAdminRole(user).isSuccess())&#123;</span><br><span class="line">        //如果是管理员,我们就查询当前节点的id和递归查询子节点的id</span><br><span class="line">        return iCategoryService.selectCategoryAndChildrenById(categoryId);</span><br><span class="line"></span><br><span class="line">    &#125;else &#123;</span><br><span class="line">        return  ServerResponse.createByErrorMessage(&quot;无权限操作，需要管理员权限&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>接着打开CategoryServiceImpl.java文件，新增代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"> /****</span><br><span class="line">     *</span><br><span class="line">     *后台管理员递归查询本节点及子节点的id并返回列表</span><br><span class="line">     */</span><br><span class="line">    public ServerResponse selectCategoryAndChildrenById(Integer categoryId)&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> //递归算法，自己调用自己</span><br><span class="line">    private Set&lt;Category&gt; findChildrenCategory(Set&lt;Category&gt; categorySet,Integer categoryId)&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>我们现在来完成递归算法的部分，递归就是自己调用自己，我们上面那个方法（<code>selectCategoryAndChildrenById</code>）就是实现总的要求查询本节点及子节点的id并返回列表。而递归算法的作用就是遍历当前节点，如果有子节点就把子节点当做父节点进行遍历，当父节点没有子节点的时候就进行递归退出：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">//递归算法，自己调用自己</span><br><span class="line">    private Set&lt;Category&gt; findChildrenCategory(Set&lt;Category&gt; categorySet,Integer categoryId)&#123;</span><br><span class="line">        Category category =categoryMapper.selectByPrimaryKey(categoryId);</span><br><span class="line">        //判断当前节点是否为空，不为空则继续</span><br><span class="line">        if(category != null)&#123;</span><br><span class="line">            categorySet.add(category);  //当前节点不为空就添加到集合里面，从它开始判断后面的子节点</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        //查找子节点，递归算法一定要有一个退出的条件（也就是基准条件）这里是没有子节点就退出</span><br><span class="line">        List&lt;Category&gt; categoryList =categoryMapper.selectChildrenCategoryByParentId(categoryId);</span><br><span class="line">        //注意一下，因为我们这里是使用了mybatis，因此就算我们这里的categoryList是空，也不会返回null值，从而不会造成空指针异常</span><br><span class="line">        //对查询到的子节点进行遍历，然后调用前面查询当前节点的方法，其实也就是子节点被当做父节点使用，进行它下面的子节点的查询</span><br><span class="line">        for(Category categoryItem:categoryList)&#123;</span><br><span class="line">            findChildrenCategory(categorySet,categoryItem.getId());</span><br><span class="line">        &#125;</span><br><span class="line">        return categorySet;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>里面的注释写的应该比较详细了。对了还有一件事就是我们这里需要保证我们的category里面是没有重复元素的，如何实现没有重复元素呢？集合就可以，所以我们需要把我们category变成具有类似于集合的无重复性功能，你只要重写hashCode和equals方法，为什么重写这两个方法就可以呢？（在pojo里面的Category.java文件里面）这里我就不介绍了，我在另一篇《关于JAVA你必须知道的那些事（七）：输入输出流和集合》里面有过介绍，大家可以去我微信公众号里进行查看。如何快速重写这两个方法呢？在idea里面：code–&gt;generate–&gt;equals() and hashCode()，然后选择id就可以了，我们是通过id来进行判断的;<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">//重写equals和hashcode方法，目的就是使我们自定义的Category类型也能和集合一样具有消除不重复元素的功能</span><br><span class="line">@Override</span><br><span class="line">public boolean equals(Object o) &#123;</span><br><span class="line">    if (this == o) return true;</span><br><span class="line">    if (o == null || getClass() != o.getClass()) return false;</span><br><span class="line">    Category category = (Category) o;</span><br><span class="line">    return Objects.equals(id, category.id);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@Override</span><br><span class="line">public int hashCode() &#123;</span><br><span class="line">    return Objects.hash(id);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>我们继续回到CategoryServiceImpl.java文件，修改<code>selectCategoryAndChildrenById</code>方法的代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">public ServerResponse selectCategoryAndChildrenById(Integer categoryId)&#123;</span><br><span class="line">    Set&lt;Category&gt; categorySet = Sets.newHashSet();   //调用递归算法的时候进行初始化，使用sets这是guava提供的对于set的优化</span><br><span class="line">    findChildrenCategory(categorySet,categoryId);</span><br><span class="line"></span><br><span class="line">    List&lt;Integer&gt; categoryIdList = Lists.newArrayList();</span><br><span class="line">    if(categoryId != null)&#123;</span><br><span class="line">        for(Category categoryItem:categorySet)&#123;</span><br><span class="line">            categoryIdList.add(categoryItem.getId());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return ServerResponse.createBySuccess(categoryIdList);  //返回查到的当前包括子节点的id列表</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>注意<code>Sets.newHashSet()</code>和<code>Lists.newArrayList()</code>都是使用了guava提供的类，具体可以参看这里：<a href="http://ifeve.com/google-guava/" target="_blank" rel="noopener">Google Guava官方教程（中文版）</a></p>
+<p>最后打开ICategoryService.java文件，里面新增代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ServerResponse selectCategoryAndChildrenById(Integer categoryId);    //后台管理员递归查询本节点及子节点的id并返回列表</span><br></pre></td></tr></table></figure></p>
+<p>不知道细心的你发现没有，我们这里关于分类的功能的地方，都没有强制使用提交的方式GET或者POST，因为分类可以允许你带参数，也可以不带参数，所以方法就不要求了。就类似于这样的，理解了么：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@RequestMapping(value = &quot;get_deep_category.do&quot;,method = RequestMethod.POST)</span><br></pre></td></tr></table></figure></p>
+<p>接下来便是进行相关的商品品类的接口测试，这里就不介绍了，之前介绍过。</p>
+<p>这样我们本篇关于查询节点和递归查找功能开发的介绍就到此为止了，感谢你的赏阅！</p>
+
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="https://upload-images.jianshu.io/upload_images/8964398-58d04ffa926103d9.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">觉得不错，赏包辣条吃呗！</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href target="_blank">编程思录</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2018/08/22/SSM搭建二手市场交易平台（十三）：后台商品的增加与更新/" class="pre-post btn btn-default" title="SSM搭建二手市场交易平台（十三）：后台商品的增加与更新">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">SSM搭建二手市场交易平台（十三）：后台商品的增加与更新</span>
+        </a>
+    
+    
+        <a href="/2018/08/20/SSM搭建二手市场交易平台（十一）：添加和更新分类名称/" class="next-post btn btn-default" title="SSM搭建二手市场交易平台（十一）：添加和更新分类名称">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">SSM搭建二手市场交易平台（十一）：添加和更新分类名称</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+    <div id="vcomments" class="valine"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+
+    <script>
+        new Valine({
+            av: AV,
+            el: '#vcomments',
+            appId: '8zvHFFu5l2ah8lh0DEPH393B-gzGzoHsz',
+            appKey: 'UNmB24200qMtyyrun5z99nOE',
+            placeholder: '听说长得好看的，都已经留言了！',
+            notify: false,
+            verify: false,
+            avatar: 'mm',
+            meta: 'nick,mail'.split(','),
+            pageSize: '10',
+            path: window.location.pathname,
+            lang: 'zh-CN'.toLowerCase()
+        })
+    </script>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#写在前面"><span class="toc-text">写在前面</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#查询节点功能开发"><span class="toc-text">查询节点功能开发</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#递归查找功能开发"><span class="toc-text">递归查找功能开发</span></a></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2017-2019
+                </span> |
+                <span>
+				编程思录,保留所有权利
+                    <!--Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>-->
+                </span> |
+                <span>
+				<a style="color: #black" href="http://www.miitbeian.gov.cn">赣ICP备18013455号-5</a>
+                    <!--Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>-->
+                </span>
+            </div>
+			
+			<div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+			
+			<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1277113902'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s96.cnzz.com/z_stat.php%3Fid%3D1277113902%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));</script>
+        </div>
+    </div>
+</div>
+
+
+
+
+    <script src="/assets/tagcanvas.min.js?rev=2.9"></script>
+    <script>
+        var tagOption = {
+            textColour: 'red', // 字体颜色
+            outlineMethod: 'block', // 选中模式
+            outlineColour: '#FFDAB9', // 选中模式的颜色
+            interval: 30 || 30, // 动画帧之间的时间间隔，值越大，转动幅度越大
+            textHeight: 13,
+            outlineRadius: 3,
+            freezeActive: true || '', // 选中的标签是否继续滚动
+            frontSelect: true || '', // 不选标签云后部的标签
+            initial: [0.1, -0.1],
+            depth: 0.5,
+            decel: 0.95,
+            maxSpeed: 0.03,
+            reverse: true || '', // 是否反向触发
+            fadeIn: 500, // 进入动画时间
+            wheelZoom: false || '' // 是否启用鼠标滚轮
+        }
+        TagCanvas.Start('tag-cloud-3d','',tagOption);
+    </script>
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+</body>
+</html>
