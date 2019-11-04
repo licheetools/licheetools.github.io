@@ -1,0 +1,464 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="编程思录，记录思考">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://blog.licheetools.top">
+    <!--SEO-->
+
+    <meta name="keywords" content="golang">
+
+
+    <meta name="description" content="接口本篇主要介绍Go语言中的特色功能面向接口，由于Go语言的面向对象只支持封装，因此需要借助于接口来实现类似于继承和多态的功能。
+Duck Typing简介在介绍接口之前，有必要介绍Duck T...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+
+    <!--Title-->
+
+
+<title>Go语言学习笔记（7）：面向接口 | 编程思录，记录思考</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="编程思录，记录思考" type="application/atom+xml">
+
+
+    <link rel="icon" href="./favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+	<div class="hide">
+		<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+	</div>
+
+
+
+
+
+
+    
+
+    <script>
+        (function(){
+            var bp = document.createElement('script');
+            var curProtocol = window.location.protocol.split(':')[0];
+            if (curProtocol === 'https') {
+                bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+            }
+            else {
+                bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+            }
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(bp, s);
+        })();
+    </script>
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header" style="background-image:url(https://upload-images.jianshu.io/upload_images/8964398-b1ba9582ea8b69ba.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)">
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title="Envy">
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 点滴进步，都是收获 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://blog.licheetools.top">编程思录，记录思考</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>首页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/font/"><i class="fa "></i>前端</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/java/"><i class="fa "></i>Java</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/python/"><i class="fa "></i>Python</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/go/"><i class="fa "></i>Go</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/spider/"><i class="fa "></i>爬虫</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/data/"><i class="fa "></i>数据分析</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/money/"><i class="fa "></i>付费教程</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/life/"><i class="fa "></i>生活记录</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives"><i class="fa "></i>时间轴</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/about/"><i class="fa "></i>关于博主</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/liuyan/"><i class="fa "></i>留言板</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Go语言学习笔记（7）：面向接口">
+            
+	            Go语言学习笔记（7）：面向接口
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/go/">go</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/golang/">golang</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2019/05/15</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h1 id="接口"><a href="#接口" class="headerlink" title="接口"></a>接口</h1><p>本篇主要介绍Go语言中的特色功能面向接口，由于Go语言的面向对象只支持封装，因此需要借助于接口来实现类似于继承和多态的功能。</p>
+<h1 id="Duck-Typing简介"><a href="#Duck-Typing简介" class="headerlink" title="Duck Typing简介"></a>Duck Typing简介</h1><p>在介绍接口之前，有必要介绍Duck Typing（鸭子类型），学过Python的应该就知道这个。”当看到一只鸟走起来像鸭子、游泳起来像鸭子、叫起来也像鸭子，那么这只鸟就可以被称为鸭子，”这就是所谓的鸭子类型。</p>
+<p>对于一门强类型的静态语言来说，要想通过运行时多态来隔离变化，多个实现类就必须属于同一类型体系，必须通过继承的方式与同一抽象类型建立is-a关系。而Duck Typing则是一种基于特征，而不是基于类型的多态方式。Duck Typing仍然关心is-a，只不过is-a关系是以对方是否具备相关的特征来确定的。是否满足is-a关系可以使用所谓的鸭子测试（Duck Test）进行判断。</p>
+<p>当初提Duck Typing的前提是需要动态绑定，但是Go语言是在编译时就绑定的，因此从这个角度看其实Go语言并不是Duck Typing。但是我们假如只是关注描述事物的外部行为而非内部结构时，可以说Go语言是Duck Typing。</p>
+<h3 id="Python中的Duck-Typing"><a href="#Python中的Duck-Typing" class="headerlink" title="Python中的Duck Typing"></a>Python中的Duck Typing</h3><p>来看看Python中的Duck Typing:（图片来自于互联网）</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-0e21ba791a403d06.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>我们发现Python中的Duck Typing其实是非常灵活的，无需关注retriever到底是哪个，只需要它里面具有get方法就能作为参数传入download函数。不过只有在运行的时候才知道传入的retriever是否包含get，因此想要提前知道必须借助于注释来说明这个问题。</p>
+<h3 id="C-中的Duck-Typing"><a href="#C-中的Duck-Typing" class="headerlink" title="C++中的Duck Typing"></a>C++中的Duck Typing</h3><p>再来看一下C++中的Duck Typing：（C++原生支持Duck Typing，图片来自于互联网）</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-87688c2caae0367f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>C++通过使用模板继承来实现Duck Typing，同样这个retriever也是只需要具有get方法时，就能作为参数传入download函数。不过只有在编译的时候（敲代码的时候不知道）才知道传入的retriever是否包含get，因此想要提前知道还是必须借助于注释来说明这个问题。</p>
+<p>总的来说Python和C++差不多，只是Python没有编译器，而C++有而已。</p>
+<h3 id="Java中没有Duck-Typing"><a href="#Java中没有Duck-Typing" class="headerlink" title="Java中没有Duck Typing"></a>Java中没有Duck Typing</h3><p>Java没有Duck Typing，只有实现该功能的类似代码：（图片来自于互联网）</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-4143fc286934e450.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>我们发现首先其实也是使用了模板R，然后实现了Retriever接口，因此download方法的参数必须是实现了Retriever接口的对象，不过这样做的好处就是不需要判断对象是否具有get方法了，因为你已经强制每个对象都必须包含get方法了。但是这个并不是Duck Typing，因为它强调了必须要实现Retriever接口，你传入的对象仅仅包含get方法还不行，必须实现Retriever接口方可。Java这样做的好处就是不在需要借助于注释来说明接口。</p>
+<p>Java那种方式尽管不错，但是当download方法需要传入的R对象必须实现多个接口时，这就显得非常麻烦了。如同时需要Readable、Appendable怎么办？（可以使用apache polygene，但是依旧非常麻烦）。</p>
+<p>我们希望Go语言中的Duck Typing能解决Java中的接口组装问题，具有Python、C++中的灵活性，还具有Java中的类型检查（在敲代码的时候提示），Go语言的设计者就真的做到了这一点。</p>
+<h3 id="Go语言中的Duck-Typing"><a href="#Go语言中的Duck-Typing" class="headerlink" title="Go语言中的Duck Typing"></a>Go语言中的Duck Typing</h3><p><img src="https://upload-images.jianshu.io/upload_images/8964398-4143fc286934e450.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-e58f5871da0cfcb1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>注意Go语言的接口是由使用者来定义的，这与传统的接口不同，传统的接口是由实现者定义的，你只要实现了我这个接口就能干什么事情。</p>
+<p>接下来通过代码来理解<strong>Go语言的接口是由使用者来定义的</strong>这句话。</p>
+<p>第一步，先创建retriever文件夹，再在里面创建一个envy文件夹，里面新建一个envyretriever.go文件：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">package envy</span><br><span class="line"></span><br><span class="line">//envy来实现这个接口的Get方法</span><br><span class="line">type Retriever struct &#123;</span><br><span class="line">	Contents string</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func (r Retriever)Get(url string)string&#123;</span><br><span class="line">	return r.Contents</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>第二步，在retriever文件夹里面再创建一个real文件夹，里面新建一个realretriever.go文件（一个简易的爬虫）：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">package real</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">	&quot;net/http&quot;</span><br><span class="line">	&quot;net/http/httputil&quot;</span><br><span class="line">	&quot;time&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">//创建一个真实的retriever</span><br><span class="line">type Retriever struct &#123;</span><br><span class="line">	UserAgent string</span><br><span class="line">	Timeout time.Duration  //时间段</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func (r Retriever) Get(url string) string &#123;</span><br><span class="line">    //这个Get方法说Caller should close resp.Body when done reading from it.</span><br><span class="line">	response ,err:= http.Get(url)  </span><br><span class="line">	if err !=nil&#123;</span><br><span class="line">		panic(err)</span><br><span class="line">	&#125;</span><br><span class="line">    //一个参数是response，另一个是否把response作为body</span><br><span class="line">	result, err:= httputil.DumpResponse(response,true)   </span><br><span class="line"></span><br><span class="line">	//因此需要读完这个response需要关闭这个response.Body</span><br><span class="line">	_ = response.Body.Close()</span><br><span class="line">	if err !=nil&#123;</span><br><span class="line">		panic(err)</span><br><span class="line">	&#125;</span><br><span class="line">	return string(result)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>第三步，在retriever文件夹里面再次创建一个main.go文件作为程序的入口：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">	&quot;chapter05/retriever/envy&quot;</span><br><span class="line">	real2 &quot;chapter05/retriever/real&quot;</span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">type Retriever interface &#123;</span><br><span class="line">	Get(url string) string  //Get方法是接口中的方法，不过不需要使用func关键词定义，因为它本身就是函数</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func download(r Retriever)string&#123;   //Retriever是接口</span><br><span class="line">	return r.Get(&quot;http://www.baidu.com&quot;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">	var r Retriever  //此时运行会出错，因为引发空指针异常</span><br><span class="line">	r = envy.Retriever&#123;&quot;这是envy创建的Retriever对象&quot;&#125;</span><br><span class="line">	//fmt.Println(download(envy.Retriever&#123;&quot;这是envy创建的Retriever对象&quot;&#125;))</span><br><span class="line">	r = real2.Retriever&#123;&#125;</span><br><span class="line">	fmt.Println(download(r))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//运行结果：</span><br><span class="line"></span><br><span class="line">这是envy创建的Retriever对象</span><br><span class="line"></span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">    </span><br><span class="line">    &lt;meta http-equiv=&quot;content-type&quot; content=&quot;text/html;charset=utf-8&quot;&gt;</span><br><span class="line">    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=Edge&quot;&gt;</span><br><span class="line">	&lt;meta content=&quot;always&quot; name=&quot;referrer&quot;&gt;</span><br><span class="line">    &lt;meta name=&quot;theme-color&quot; content=&quot;#2932e1&quot;&gt;</span><br><span class="line">    &lt;link rel=&quot;shortcut icon&quot; href=&quot;/favicon.ico&quot; type=&quot;image/x-icon&quot; /&gt;</span><br><span class="line">    &lt;link rel=&quot;search&quot; type=&quot;application&quot; href=&quot;/content-search.xml&quot; title=&quot;百度搜索&quot; /&gt;</span><br><span class="line">    &lt;link rel=&quot;icon&quot; sizes=&quot;any&quot; mask href=&quot;//www.baidu.com/img/baidu_&gt;</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	&lt;link rel=&quot;dns-prefetch&quot; href=&quot;//s1.bdstatic.com&quot;/&gt;</span><br><span class="line">	&lt;link rel=&quot;dns-prefetch&quot; href=&quot;//t1.baidu.com&quot;/&gt;</span><br><span class="line">	&lt;link rel=&quot;dns-prefetch&quot; href=&quot;//t2.baidu.com&quot;/&gt;</span><br><span class="line">	&lt;link rel=&quot;dns-prefetch&quot; href=&quot;//t3.baidu.com&quot;/&gt;</span><br><span class="line">	&lt;link rel=&quot;dns-prefetch&quot; href=&quot;//t10.baidu.com&quot;/&gt;</span><br><span class="line">	&lt;link rel=&quot;dns-prefetch&quot; href=&quot;//t11.baidu.com&quot;/&gt;</span><br><span class="line">	&lt;link rel=&quot;dns-prefetch&quot; href=&quot;//t12.baidu.com&quot;/&gt;</span><br><span class="line">	&lt;link rel=&quot;dns-prefetch&quot; href=&quot;//b1.bdstatic.com&quot;/&gt;</span><br><span class="line">      ......................................</span><br></pre></td></tr></table></figure></p>
+<p>通过上面三个步骤，相信大家现在一定对<strong>Go语言的接口是由使用者来定义的</strong>这句话有了更深刻的理解。我们知道Go语言中只有值传递，因此上面的对象r都不是指针，都是实际存在的东西，那我们输出打印看看它们到底是什么：（%T输出类型，%v输出值）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">func main() &#123;</span><br><span class="line">	var r Retriever  //此时运行会出错，因为引发空指针异常</span><br><span class="line">	r = envy.Retriever&#123;&quot;这是envy创建的Retriever对象&quot;&#125;</span><br><span class="line">	//fmt.Println(download(envy.Retriever&#123;&quot;这是envy创建的Retriever对象&quot;&#125;))</span><br><span class="line">	fmt.Printf(&quot;%T,%v\n&quot;,r,r)</span><br><span class="line">	r = real2.Retriever&#123;</span><br><span class="line">		UserAgent:&quot;Chrome/70.0.3538.110&quot;,</span><br><span class="line">		Timeout: time.Minute,</span><br><span class="line">	&#125;</span><br><span class="line">	//fmt.Println(download(r))</span><br><span class="line">	fmt.Printf(&quot;%T,%v\n&quot;,r,r)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//运行结果：</span><br><span class="line">envy.Retriever,&#123;这是envy创建的Retriever对象&#125;</span><br><span class="line">real.Retriever,&#123;Chrome/70.0.3538.110 1m0s&#125;</span><br></pre></td></tr></table></figure></p>
+<p>我们尝试修改<code>real2.Retriever</code>的参数，使之传入指针参数：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">func (r *Retriever) Get(url string) string &#123;&#125;</span><br><span class="line"></span><br><span class="line">r = &amp;real2.Retriever&#123;</span><br><span class="line">		UserAgent:&quot;Chrome/70.0.3538.110&quot;,</span><br><span class="line">		Timeout: time.Minute,</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">//运行结果：</span><br><span class="line">envy.Retriever,&#123;这是envy创建的Retriever对象&#125;</span><br><span class="line">*real.Retriever,&amp;&#123;Chrome/70.0.3538.110 1m0s&#125;</span><br></pre></td></tr></table></figure></p>
+<p>看到没最后输出的其实都是类型和值，不过我们一般都不会使用到接口的指针。</p>
+<p>我们其实可以根据r对象的类型不同让它输出不同的信息：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">func main() &#123;</span><br><span class="line">	var r Retriever  //此时运行会出错，因为引发空指针异常</span><br><span class="line">	r = envy.Retriever&#123;&quot;这是envy创建的Retriever对象&quot;&#125;</span><br><span class="line">	inspect(r)</span><br><span class="line">	r = real2.Retriever&#123;</span><br><span class="line">		UserAgent:&quot;Chrome/70.0.3538.110&quot;,</span><br><span class="line">		Timeout: time.Minute,</span><br><span class="line">	&#125;</span><br><span class="line">	inspect(r)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func inspect(r Retriever)&#123;</span><br><span class="line">	fmt.Printf(&quot;%T,%v\n&quot;,r,r)</span><br><span class="line">	switch v:=r.(type)&#123;</span><br><span class="line">	case envy.Retriever:</span><br><span class="line">		fmt.Println(&quot;内容是：&quot;,v.Contents)</span><br><span class="line">	case real2.Retriever:</span><br><span class="line">		fmt.Println(&quot;内容是：&quot;,v.UserAgent)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//运行结果：</span><br><span class="line">envy.Retriever,&#123;这是envy创建的Retriever对象&#125;</span><br><span class="line">内容是： 这是envy创建的Retriever对象</span><br><span class="line">real.Retriever,&#123;Chrome/70.0.3538.110 1m0s&#125;</span><br><span class="line">内容是： Chrome/70.0.3538.110</span><br></pre></td></tr></table></figure></p>
+<p><code>r.(type)</code>是Go语言中的断言（Type Assertion），检查r的动态类型是否是type，在本篇的后续会介绍Go语言中的断言。</p>
+<p>如果我们尝试将<code>real.Retriever</code>对象当做<code>envy.Retriever</code>来使用，那么程序会报错：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">r = real2.Retriever&#123;</span><br><span class="line">		UserAgent:&quot;Chrome/70.0.3538.110&quot;,</span><br><span class="line">		Timeout: time.Minute,</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">envyRetriever :=r.(envy.Retriever)</span><br><span class="line">fmt.Println(envyRetriever.Contents)</span><br><span class="line"></span><br><span class="line">//运行会报错</span><br><span class="line">panic: interface conversion: main.Retriever is real.Retriever, not envy.Retriever</span><br></pre></td></tr></table></figure></p>
+<p>你还可以借助于返回值状态进行判断：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">//通过断言判断</span><br><span class="line">if envyretriever,ok :=r.(envy.Retriever);ok&#123;</span><br><span class="line">	fmt.Println(envyretriever.Contents)</span><br><span class="line">&#125;else&#123;</span><br><span class="line">	fmt.Println(&quot;该对象不是envy.Retriever&quot;)</span><br><span class="line">&#125;</span><br><span class="line">//运行结果：</span><br><span class="line">该对象不是envy.Retriever</span><br></pre></td></tr></table></figure></p>
+<p>那么接口变量中到底包含什么呢？其实它包含实现者的类型和实现者的值这两部分：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-751ef3ab26d25d46.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>或者说是实现者和实现者指针指向实现者：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8964398-d9dabb753d828184.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p><strong>也就是说接口变量其实是自带指针的，接口变量同样采用值传递，因此几乎不需要接口的指针。指针接收者只能以指针方式使用；值接收者传递地址和指针两种方式都可以。</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">//envyretriever.go文件中：</span><br><span class="line">func (r Retriever)Get(url string)string&#123;&#125;  //值传递</span><br><span class="line"></span><br><span class="line">//realretriever.go文件中：</span><br><span class="line">func (r *Retriever) Get(url string) string &#123;&#125; //指针传递</span><br><span class="line"></span><br><span class="line">//main.go文件中：</span><br><span class="line">func main() &#123;</span><br><span class="line">	var r Retriever  //此时运行会出错，因为引发空指针异常</span><br><span class="line">	r = &amp;envy.Retriever&#123;&quot;这是envy创建的Retriever对象&quot;&#125;   //使用地址</span><br><span class="line">	</span><br><span class="line">	fmt.Printf(&quot;%T,%v\n&quot;,r,r)</span><br><span class="line">	r = &amp;real2.Retriever&#123;    //使用地址</span><br><span class="line">		UserAgent:&quot;Chrome/70.0.3538.110&quot;,</span><br><span class="line">		Timeout: time.Minute,</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Printf(&quot;%T,%v\n&quot;,r,r)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//运行结果：</span><br><span class="line">*envy.Retriever,&amp;&#123;这是envy创建的Retriever对象&#125;</span><br><span class="line">*real.Retriever,&amp;&#123;Chrome/70.0.3538.110 1m0s&#125;</span><br></pre></td></tr></table></figure></p>
+<p>看到没有，值接收者对于参数是没有要求的，而指针接收者要求必须传入指针参数。</p>
+<p>如何查看接口变量呢？表示任何类型可以使用<code>interface{}</code>，Type Assertion（断言），Type Switch(类型判断)。</p>
+<p>接下来通过常见的数据结构队列来演示如何用<code>interface{}</code>表示任何类型。不过一开始还是定义一个只是int类型的队列：(Queue包/Queue.go文件)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">package Queue</span><br><span class="line"></span><br><span class="line">type Queue [] int   //定义int切片类型的Queue</span><br><span class="line"></span><br><span class="line">func (q Queue)Push(v int)&#123;</span><br><span class="line">	q = append(q,v)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func (q Queue)Pop()int&#123;</span><br><span class="line">	head:=q[0]</span><br><span class="line">	return head</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func (q Queue)IsEmpty()bool&#123;</span><br><span class="line">	return len(q)==0</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>再来看一下(main包/main.go文件)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">	&quot;chapter05/Queue&quot;</span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">	q :=Queue.Queue&#123;1&#125;</span><br><span class="line">	q.Push(2)</span><br><span class="line">	q.Push(3)</span><br><span class="line">	fmt.Println(q.Pop())</span><br><span class="line">	fmt.Println(q.Pop())</span><br><span class="line">	fmt.Println(q.IsEmpty())</span><br><span class="line">	fmt.Println(q.Pop())</span><br><span class="line">	fmt.Println(q.IsEmpty())</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//运行结果：</span><br><span class="line">1</span><br><span class="line">1</span><br><span class="line">false</span><br><span class="line">1</span><br><span class="line">false</span><br></pre></td></tr></table></figure></p>
+<p>因为Go语言是值传递，因此这个代码写的其实有问题，需要借助于指针才能修改队列信息，只需要修改：(Queue包/Queue.go文件)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">package Queue</span><br><span class="line"></span><br><span class="line">type Queue [] int   //定义int切片类型的Queue</span><br><span class="line"></span><br><span class="line">func (q *Queue)Push(v int)&#123;</span><br><span class="line">	*q = append(*q,v)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func (q *Queue)Pop()int&#123;</span><br><span class="line">	head:=(*q)[0]</span><br><span class="line">	*q = (*q)[1:]</span><br><span class="line">	return head</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func (q *Queue)IsEmpty()bool&#123;</span><br><span class="line">	return len(*q)==0</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>然后点击运行结果：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">false</span><br><span class="line">3</span><br><span class="line">true</span><br></pre></td></tr></table></figure></p>
+<p>这样就能修改队列数据了，但是只能传入int类型，一旦我们将Queue包/Queue.go文件中的<code>type Queue [] int</code>修改为<code>type Queue [] interface{}</code>,修改后的代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">package Queue</span><br><span class="line"></span><br><span class="line">//type Queue [] int   //定义int切片类型的Queue</span><br><span class="line">type Queue [] interface&#123;&#125;   //定义Queue</span><br><span class="line"></span><br><span class="line">func (q *Queue)Push(v interface&#123;&#125; )&#123;</span><br><span class="line">	*q = append(*q,v)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func (q *Queue)Pop()interface&#123;&#125; &#123;</span><br><span class="line">	head:=(*q)[0]</span><br><span class="line">	*q = (*q)[1:]</span><br><span class="line">	return head</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func (q *Queue)IsEmpty()bool&#123;</span><br><span class="line">	return len(*q)==0</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>然后在mian.go中添加以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">q.Push(&quot;test&quot;)</span><br><span class="line">fmt.Println(q)</span><br><span class="line"></span><br><span class="line">//运行结果：</span><br><span class="line">[test]</span><br></pre></td></tr></table></figure></p>
+<p>这样我们的队列就支持插入不同的数据类型了。</p>
+<h3 id="接口的组合"><a href="#接口的组合" class="headerlink" title="接口的组合"></a>接口的组合</h3><p>其实Go语言中的接口和Java中的接口都差不多，都是具有什么样的功能罢了，因此所谓的接口组合其实就是定义了多个接口，可以一起拿来使用罢了：</p>
+<p>之前我们在retriever/main.go文件中只是定义了一个Retriever接口，接下来增加其他的接口：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">type Retriever interface &#123;  //获取信息接口</span><br><span class="line">	Get(url string) string  //Get方法是接口中的方法，不过不需要使用func关键词定义，因为它本身就是函数</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">type Poster interface &#123;  //提交信息接口</span><br><span class="line">	Post(url string, form map[string]string)string</span><br><span class="line">	//Post方法是接口中的方法，不过不需要使用func关键词定义，因为它本身就是函数</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func download(r Retriever)string&#123;   //Retriever是接口</span><br><span class="line">	return r.Get(&quot;http://www.baidu.com&quot;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func post(poster Poster)&#123;   //Poster是接口</span><br><span class="line">	poster.Post(&quot;http://www.baidu.com&quot;,</span><br><span class="line">		map[string]string&#123;</span><br><span class="line">			&quot;name&quot;: &quot;envy&quot;,</span><br><span class="line">			&quot;language&quot;: &quot;golang&quot;,</span><br><span class="line">		&#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">type RetrieverPoster interface &#123;</span><br><span class="line">	Retriever   //此处直接调用之前的接口</span><br><span class="line">	Poster</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func session(reposter RetrieverPoster)&#123;</span><br><span class="line">	reposter.Get(&quot;http://www.baidu.com&quot;)</span><br><span class="line">	reposter.Post(&quot;http://www.baidu.com&quot;,</span><br><span class="line">		map[string]string&#123;</span><br><span class="line">			&quot;name&quot;: &quot;envy&quot;,</span><br><span class="line">			&quot;language&quot;: &quot;golang&quot;,</span><br><span class="line">		&#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>在上面我们定义了两个接口<code>Retriever</code>和<code>Poster</code>，然后各自接口都有一个对象分别去调用接口中实现的方法，接着我们还定义了一个组合接口<code>RetrieverPoster</code>，这个<code>RetrieverPoster</code>接口中只是分别调用了<code>Retriever</code>和<code>Poster</code>这两个接口，这就是组合接口，最后的<code>session</code>方法中传入的<code>RetrieverPoster</code>对象可以调用Get和Post方法。</p>
+<p>接下来在envyretriever.go文件中新增Post方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">func (r Retriever)Get(url string)string&#123;  //通过值传递无法修改其参数的值</span><br><span class="line">	return r.Contents</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func (r Retriever)Post(url string, form map[string]string)string&#123;   </span><br><span class="line">//我们这里的Retriever对象实现了Poster接口中的Post方法</span><br><span class="line">	r.Contents = form[&quot;contents&quot;]  //通过值传递无法修改其参数的值</span><br><span class="line">	return &quot;ok&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这里我们的Retriever对象现在有了Get和Post方法，按照Go语言中鸭子类型的说法，那这个Retriever对象其实就是”RetrieverPoster”对象了，那就可以调用session方法了。打开retriever/main.go文件：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">func session(reposter RetrieverPoster)string&#123;</span><br><span class="line">	reposter.Post(url, map[string]string&#123;</span><br><span class="line">		&quot;contents&quot;: &quot;这是组合接口中的RetrieverPoster对象&quot;,</span><br><span class="line">	&#125;)</span><br><span class="line">	return reposter.Get(url)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">	retriever := envy.Retriever&#123;&quot;这是envy创建的Retriever对象&quot;&#125;</span><br><span class="line">	fmt.Println(&quot;调用session方法&quot;)</span><br><span class="line">	fmt.Println(session(retriever))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//运行结果：</span><br><span class="line">调用session方法</span><br><span class="line">这是envy创建的Retriever对象</span><br></pre></td></tr></table></figure></p>
+<p>你会发现怎么输出结果不是<code>&quot;这是组合接口中的RetrieverPoster对象&quot;</code>这句话呢？那是因为你忘记了Go语言中只有值传递，值传递无法修改其参数，因此需要使用指针，也就是在类型参数前加<code>*</code>，在变量值后加<code>&amp;</code>取地址，之后运行结果为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">调用session方法</span><br><span class="line">这是组合接口中的RetrieverPoster对象</span><br></pre></td></tr></table></figure></p>
+<p>这也正确验证了Go语言中的鸭子类型是准确的。再次强调Go语言中的接口是由使用者来定义的，因此灵活度非常高，而实现者只需实现相应的方法即可，至于具体使用哪种接口则无所谓。</p>
+<p>其实在Go语言中这种组合接口非常常见，如IO库中的<code>ReadWriter</code>、<code>ReadCloser</code>等：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">// ReadWriter is the interface that groups the basic Read and Write methods.</span><br><span class="line">type ReadWriter interface &#123;</span><br><span class="line">	Reader</span><br><span class="line">	Writer</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// ReadCloser is the interface that groups the basic Read and Close methods.</span><br><span class="line">type ReadCloser interface &#123;</span><br><span class="line">	Reader</span><br><span class="line">	Closer</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// WriteCloser is the interface that groups the basic Write and Close methods.</span><br><span class="line">type WriteCloser interface &#123;</span><br><span class="line">	Writer</span><br><span class="line">	Closer</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h1 id="Go语言中常用的标准接口"><a href="#Go语言中常用的标准接口" class="headerlink" title="Go语言中常用的标准接口"></a>Go语言中常用的标准接口</h1><p>接下来介绍Go语言中几个非常有用的标准接口，这对于平时开发有很大的帮助。</p>
+<h3 id="Stringer"><a href="#Stringer" class="headerlink" title="Stringer"></a>Stringer</h3><p><code>Stringer</code>其实就是Java中的<code>toString</code>方法，<code>Stringer</code>存在于<code>fmt</code>包中，查看一下它的源码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// Stringer is implemented by any value that has a String method,</span><br><span class="line">// which defines the ``native&apos;&apos; format for that value.</span><br><span class="line">// The String method is used to print values passed as an operand</span><br><span class="line">// to any format that accepts a string or to an unformatted printer</span><br><span class="line">// such as Print.</span><br><span class="line">type Stringer interface &#123;</span><br><span class="line">	String() string</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>我们尝试在之前的envyretriever.go文件中新增String方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">func (r *Retriever)String()string&#123;</span><br><span class="line">	return fmt.Sprintf(</span><br><span class="line">		&quot;Retriever:&#123;Contents=%s&#125;&quot;,r.Contents)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>注意此时既然是<code>String</code>方法，那当然是仅仅对参数是值对象才行，因此需要将envyretriever.go文件中的<code>Get</code>和<code>Post</code>方法修改为值接收者，然后在main.go文件中传入值参数就能自动调用这个String方法。</p>
+<h3 id="Reader和Writer"><a href="#Reader和Writer" class="headerlink" title="Reader和Writer"></a>Reader和Writer</h3><p><code>Reader</code>及<code>Writer</code>接口存在于<code>io</code>包中，查看一下它的源码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">type Reader interface &#123;</span><br><span class="line">	Read(p []byte) (n int, err error)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">type Writer interface &#123;</span><br><span class="line">	Write(p []byte) (n int, err error)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>Reader和Writer接口是对文件的一个抽象，不一定是文件才能使用ReaderWriter接口，磁盘上的、网络上的都可以。</p>
+<p>Go语言中的接口是由是由使用者定义的，实现者只需要实现其中的方法即可。</p>
+<p><a href="https://www.jianshu.com/p/6a46fc7b6e5b" target="_blank" rel="noopener">go语言的类型断言(Type Assertion)</a></p>
+
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="https://upload-images.jianshu.io/upload_images/8964398-58d04ffa926103d9.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">觉得不错，赏包辣条吃呗！</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href target="_blank">编程思录</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2019/05/16/Go语言学习笔记（8）：函数式编程/" class="pre-post btn btn-default" title="Go语言学习笔记（8）：函数式编程">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">Go语言学习笔记（8）：函数式编程</span>
+        </a>
+    
+    
+        <a href="/2019/05/13/Go语言学习笔记（6）：面向对象/" class="next-post btn btn-default" title="Go语言学习笔记（6）：面向对象">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">Go语言学习笔记（6）：面向对象</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+    <div id="vcomments" class="valine"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+
+    <script>
+        new Valine({
+            av: AV,
+            el: '#vcomments',
+            appId: '8zvHFFu5l2ah8lh0DEPH393B-gzGzoHsz',
+            appKey: 'UNmB24200qMtyyrun5z99nOE',
+            placeholder: '听说长得好看的，都已经留言了！',
+            notify: false,
+            verify: false,
+            avatar: 'mm',
+            meta: 'nick,mail'.split(','),
+            pageSize: '10',
+            path: window.location.pathname,
+            lang: 'zh-CN'.toLowerCase()
+        })
+    </script>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#接口"><span class="toc-text">接口</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Duck-Typing简介"><span class="toc-text">Duck Typing简介</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Python中的Duck-Typing"><span class="toc-text">Python中的Duck Typing</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#C-中的Duck-Typing"><span class="toc-text">C++中的Duck Typing</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Java中没有Duck-Typing"><span class="toc-text">Java中没有Duck Typing</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Go语言中的Duck-Typing"><span class="toc-text">Go语言中的Duck Typing</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#接口的组合"><span class="toc-text">接口的组合</span></a></li></ol></li></ol><li class="toc-item toc-level-1"><a class="toc-link" href="#Go语言中常用的标准接口"><span class="toc-text">Go语言中常用的标准接口</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Stringer"><span class="toc-text">Stringer</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Reader和Writer"><span class="toc-text">Reader和Writer</span></a></li></ol></li>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2017-2019
+                </span> |
+                <span>
+				编程思录,保留所有权利
+                    <!--Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>-->
+                </span> |
+                <span>
+				<a style="color: #black" href="http://www.miitbeian.gov.cn">赣ICP备18013455号-5</a>
+                    <!--Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>-->
+                </span>
+            </div>
+			
+			<div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+			
+			<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1277113902'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s96.cnzz.com/z_stat.php%3Fid%3D1277113902%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));</script>
+        </div>
+    </div>
+</div>
+
+
+
+
+    <script src="/assets/tagcanvas.min.js?rev=2.9"></script>
+    <script>
+        var tagOption = {
+            textColour: 'red', // 字体颜色
+            outlineMethod: 'block', // 选中模式
+            outlineColour: '#FFDAB9', // 选中模式的颜色
+            interval: 30 || 30, // 动画帧之间的时间间隔，值越大，转动幅度越大
+            textHeight: 13,
+            outlineRadius: 3,
+            freezeActive: true || '', // 选中的标签是否继续滚动
+            frontSelect: true || '', // 不选标签云后部的标签
+            initial: [0.1, -0.1],
+            depth: 0.5,
+            decel: 0.95,
+            maxSpeed: 0.03,
+            reverse: true || '', // 是否反向触发
+            fadeIn: 500, // 进入动画时间
+            wheelZoom: false || '' // 是否启用鼠标滚轮
+        }
+        TagCanvas.Start('tag-cloud-3d','',tagOption);
+    </script>
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+</body>
+</html>

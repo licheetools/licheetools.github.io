@@ -1,3 +1,11 @@
+http://blog.licheetools.top/2019/05/16/Go语言学习笔记（8）：函数式编程/
+http://blog.licheetools.top/2019/05/15/Go语言学习笔记（7）：面向接口/
+http://blog.licheetools.top/2019/05/13/Go语言学习笔记（6）：面向对象/
+http://blog.licheetools.top/2019/05/12/Go语言学习笔记（4）：内建容器之数组、切片/
+http://blog.licheetools.top/2019/05/11/Go语言学习笔记（3）：程序结构/
+http://blog.licheetools.top/2019/05/11/Go语言学习笔记（5）：内建容器之Map、字符、字符串/
+http://blog.licheetools.top/2019/05/10/Go语言学习笔记（2）：变量/
+http://blog.licheetools.top/2019/05/10/Go语言学习笔记（1）：概述/
 http://blog.licheetools.top/2018/09/06/SSM搭建二手市场交易平台（二十九）：项目部署上线/
 http://blog.licheetools.top/2018/09/05/SSM搭建二手市场交易平台（二十八）：前台订单获取以及后台管理员订单管理功能开发/
 http://blog.licheetools.top/2018/09/05/SSM搭建二手市场交易平台（二十七）：取消订单和获取商品信息功能开发/
@@ -88,11 +96,5 @@ http://blog.licheetools.top/2018/04/11/零基础使用Django2-0-1打造在线教
 http://blog.licheetools.top/2018/04/10/零基础使用Django2-0-1打造在线教育网站（六）：教育网站开发配置/
 http://blog.licheetools.top/2018/04/10/零基础使用Django2-0-1打造在线教育网站（五）：简易留言簿交互实现/
 http://blog.licheetools.top/2018/04/10/零基础使用Django2-0-1打造在线教育网站（四）：简易留言簿基础开发/
-http://blog.licheetools.top/2018/04/10/零基础使用Django2-0-1打造在线教育网站（三）：Django基础知识回顾/
 http://blog.licheetools.top/2018/04/10/零基础使用Django2-0-1打造在线教育网站（一）：项目介绍/
-http://blog.licheetools.top/2018/04/09/零基础使用Django2-0-1打造在线教育网站（二）：开发环境配置/
-http://blog.licheetools.top/2017/03/04/关于博主/
-http://blog.licheetools.top/2017/03/03/你有什么话，想对我说嘛？/
-http://blog.licheetools.top/2017/03/02/爬虫实战系列：（二）猫途鹰(tripadvisor)旅游景点信息爬取/
-http://blog.licheetools.top/2017/03/02/爬虫实战系列：（一）58同城-转转商品信息爬取/
-http://blog.licheetools.top/2017/03/01/行者有梦，千里亦趋/
+http://blog.licheetools.top/2018/04/10/零基础使用Django2-0-1打造在线教育网站（三）：Django基础知识回顾/
